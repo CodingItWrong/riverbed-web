@@ -7,7 +7,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "test": "jest --watchAll"
+    "test": "jest --watchAll",
+    "cypress": "cypress open"
   },
   "dependencies": {
     "expo": "~47.0.9",
@@ -20,6 +21,7 @@
     "@testing-library/jest-native": "^5.4.0",
     "@testing-library/react-native": "^11.5.0",
     "@types/jest": "^29.2.4",
+    "cypress": "^12.2.0",
     "eslint-plugin-testing-library": "^5.9.1",
     "jest": "^26",
     "jest-expo": "^47.0.1"
