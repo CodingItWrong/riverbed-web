@@ -1,13 +1,10 @@
 import {useQuery} from '@tanstack/react-query';
 import {Text, View} from 'react-native';
+import api from '../api';
 
 export default function CardList() {
-  const {data: fields} = useQuery(['fields'], () =>
-    fetch('http://localhost:3000/fields').then(response => response.json()),
-  );
-  const {data: cards} = useQuery(['cards'], () =>
-    fetch('http://localhost:3000/cards').then(response => response.json()),
-  );
+  const {data: fields} = useQuery(['fields'], () => api.get('/fields'));
+  const {data: cards} = useQuery(['cards'], () => api.get('/cards'));
 
   if (!cards || !fields) {
     return null;
@@ -15,11 +12,10 @@ export default function CardList() {
 
   return (
     <View>
-      <Text>CardList</Text>
       {cards.data.map(card => (
-        <View>
+        <View key={card.id}>
           {fields.data.map(field => (
-            <Text>
+            <Text key={field.id}>
               {card.attributes['field-values'][field.attributes.name]}
             </Text>
           ))}
