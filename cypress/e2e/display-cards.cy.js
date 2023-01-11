@@ -25,11 +25,11 @@ describe('empty spec', () => {
       data: [
         {
           id: '1',
-          attributes: {name: 'title'},
+          attributes: {name: 'title', 'show-in-summary': true},
         },
         {
           id: '2',
-          attributes: {name: 'publisher'},
+          attributes: {name: 'publisher', 'show-in-summary': false},
         },
       ],
     });
@@ -40,8 +40,13 @@ describe('empty spec', () => {
     cy.visit('/');
 
     cy.contains(cards[0].attributes['field-values'].title);
-    cy.contains(cards[0].attributes['field-values'].publisher);
     cy.contains(cards[1].attributes['field-values'].title);
-    cy.contains(cards[1].attributes['field-values'].publisher);
+    cy.contains(cards[0].attributes['field-values'].publisher).should(
+      'not.exist',
+    );
+
+    // show detail
+    cy.contains(cards[0].attributes['field-values'].title).click();
+    cy.contains(cards[0].attributes['field-values'].publisher);
   });
 });
