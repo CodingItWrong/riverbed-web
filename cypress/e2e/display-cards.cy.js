@@ -48,5 +48,11 @@ describe('empty spec', () => {
     // show detail
     cy.contains(cards[0].attributes['field-values'].title).click();
     cy.contains(cards[0].attributes['field-values'].publisher);
+
+    // hide detail
+    cy.contains('Cancel').click();
+    cy.contains(cards[0].attributes['field-values'].publisher).should(
+      'not.exist',
+    );
   });
 });

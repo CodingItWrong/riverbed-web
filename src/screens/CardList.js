@@ -1,6 +1,6 @@
 import {useQuery} from '@tanstack/react-query';
 import {useState} from 'react';
-import {Card, Text} from 'react-native-paper';
+import {Button, Card, Text} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import api from '../api';
 
@@ -31,6 +31,13 @@ export default function CardList() {
                 </Text>
               ))}
             </Card.Content>
+            {showDetail && (
+              <Card.Actions>
+                <Button onPress={() => setCardToShowDetail(null)}>
+                  Cancel
+                </Button>
+              </Card.Actions>
+            )}
           </Card>
         );
       })}
