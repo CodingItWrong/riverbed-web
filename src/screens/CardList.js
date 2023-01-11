@@ -1,6 +1,6 @@
 import {useQuery} from '@tanstack/react-query';
-import {View} from 'react-native';
 import {Card, Text} from 'react-native-paper';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import api from '../api';
 
 export default function CardList() {
@@ -12,7 +12,7 @@ export default function CardList() {
   }
 
   return (
-    <View>
+    <SafeAreaView>
       {cards.data.map(card => (
         <Card key={card.id}>
           <Card.Content>
@@ -24,6 +24,6 @@ export default function CardList() {
           </Card.Content>
         </Card>
       ))}
-    </View>
+    </SafeAreaView>
   );
 }
