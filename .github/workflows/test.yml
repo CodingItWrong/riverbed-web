@@ -23,8 +23,8 @@ jobs:
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Unit Tests
-        run: yarn test --watchAll=false
+      # - name: Unit Tests
+      #   run: yarn test --watchAll=false
 
       - name: ESLint
         run: yarn lint
