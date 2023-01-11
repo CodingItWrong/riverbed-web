@@ -1,12 +1,16 @@
-import {SafeAreaView, StatusBar, Text} from 'react-native';
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
+import {StatusBar} from 'react-native';
+import CardList from './src/screens/CardList';
+
+const queryClient = new QueryClient();
 
 export default function App() {
   return (
     <>
       <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <Text>Hello, React Native!</Text>
-      </SafeAreaView>
+      <QueryClientProvider client={queryClient}>
+        <CardList />
+      </QueryClientProvider>
     </>
   );
 }
