@@ -21,7 +21,7 @@ describe('empty spec', () => {
       },
     ];
 
-    cy.intercept('https://localhost:3000/fields', {
+    cy.intercept('http://localhost:3000/fields', {
       data: [
         {
           id: '1',
@@ -33,7 +33,7 @@ describe('empty spec', () => {
         },
       ],
     });
-    cy.intercept('https://localhost:3000/cards', {
+    cy.intercept('http://localhost:3000/cards', {
       data: cards,
     });
 
