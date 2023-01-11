@@ -1,5 +1,5 @@
-describe('empty spec', () => {
-  it('passes', () => {
+describe('display cards', () => {
+  it('displays cards from the server', () => {
     const cards = [
       {
         id: '1',
