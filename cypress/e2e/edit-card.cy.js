@@ -111,6 +111,7 @@ describe('edit cards', () => {
     cy.intercept('PATCH', 'http://localhost:3000/cards/1', {success: true}).as(
       'updateCard1',
     );
+    cy.intercept('PATCH', 'http://localhost:3000/cards/3', {success: true});
     cy.intercept('DELETE', 'http://localhost:3000/cards/2', {success: true}).as(
       'deleteCard2',
     );
