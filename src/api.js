@@ -1,12 +1,8 @@
 import {Platform} from 'react-native';
-
-const BASE_URL = Platform.select({
-  android: 'http://10.0.2.2:3000',
-  default: 'http://localhost:3000',
-});
+import baseUrl from './baseUrl';
 
 function fullUrl(path) {
-  return `${BASE_URL}${path}`;
+  return `${baseUrl}${path}`;
 }
 
 const api = {

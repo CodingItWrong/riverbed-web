@@ -9,7 +9,8 @@
     "web": "expo start --web",
     "test": "jest --watchAll",
     "cypress": "cypress open",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "deploy:web": "expo export:web && cp _redirects web-build && netlify deploy --prod"
   },
   "dependencies": {
     "@expo/webpack-config": "^0.17.2",
