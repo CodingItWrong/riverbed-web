@@ -9,6 +9,10 @@ const api = {
     const response = await fetch(fullUrl(path));
     return response.json();
   },
+  async post(path) {
+    const response = await fetch(fullUrl(path), {method: 'POST'});
+    return response.json();
+  },
   async patch(path, body) {
     const response = await fetch(fullUrl(path), {
       method: 'PATCH',

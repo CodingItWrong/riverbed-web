@@ -1,5 +1,6 @@
 describe('edit cards', () => {
   it('allows editing cards', () => {
+    // TODO: restructure this test for less duplication here. Maybe only one card at a time
     const cards = [
       {
         id: '1',
@@ -51,8 +52,44 @@ describe('edit cards', () => {
         },
       },
     ];
+    const cardsAfterAdd = [
+      {
+        id: '1',
+        attributes: {
+          'field-values': {
+            Title: 'Chrono Trigger',
+            Publisher: 'Square Enix',
+          },
+        },
+      },
+      {
+        id: '3',
+        attributes: {
+          'field-values': {},
+        },
+      },
+    ];
+    const cardsAfterUpdateNew = [
+      {
+        id: '1',
+        attributes: {
+          'field-values': {
+            Title: 'Chrono Trigger',
+            Publisher: 'Square Enix',
+          },
+        },
+      },
+      {
+        id: '3',
+        attributes: {
+          'field-values': {
+            Title: 'Earthbound',
+          },
+        },
+      },
+    ];
 
-    cy.intercept('http://localhost:3000/fields', {
+    cy.intercept('GET', 'http://localhost:3000/fields', {
       data: [
         {
           id: '1',
@@ -64,9 +101,13 @@ describe('edit cards', () => {
         },
       ],
     });
-    cy.intercept('http://localhost:3000/cards', {
+    cy.intercept('GET', 'http://localhost:3000/cards', {
       data: cards,
     });
+    cy.intercept('POST', 'http://localhost:3000/cards', {
+      data: {type: 'cards', id: '3', attributes: {'field-values': {}}},
+    });
+
     cy.intercept('PATCH', 'http://localhost:3000/cards/1', {success: true}).as(
       'updateCard1',
     );
@@ -87,13 +128,13 @@ describe('edit cards', () => {
     );
 
     // edit card
-    cy.intercept('http://localhost:3000/cards', {
+    cy.intercept('GET', 'http://localhost:3000/cards', {
       data: cardsAfterUpdate,
     });
 
-    const newTitle = 'Chrono Trigger';
+    const updatedTitle = 'Chrono Trigger';
     cy.contains(cards[0].attributes['field-values'].Title).click();
-    cy.get('[data-testid=text-input-Title]').clear().type(newTitle);
+    cy.get('[data-testid=text-input-Title]').clear().type(updatedTitle);
     cy.contains('Save').click();
 
     cy.wait('@updateCard1')
@@ -112,17 +153,30 @@ describe('edit cards', () => {
     cy.contains(cards[0].attributes['field-values'].Publisher).should(
       'not.exist',
     );
-    cy.contains(newTitle);
+    cy.contains(updatedTitle);
 
     // delete card
-    cy.intercept('http://localhost:3000/cards', {
+    cy.intercept('GET', 'http://localhost:3000/cards', {
       data: cardsAfterDelete,
     });
 
     cy.contains(cards[1].attributes['field-values'].Title).click();
     cy.contains('Delete').click();
     cy.wait('@deleteCard2');
-    cy.contains('Delete').should('not.exist');
     cy.contains(cards[1].attributes['field-values'].Title).should('not.exist');
+
+    // create card
+    cy.intercept('GET', 'http://localhost:3000/cards', {
+      data: cardsAfterAdd,
+    });
+    const newTitle = 'Earthbound';
+    cy.contains('Add Card').click();
+    cy.get('[data-testid=text-input-Title]').clear().type(newTitle);
+    cy.intercept('GET', 'http://localhost:3000/cards', {
+      data: cardsAfterUpdateNew,
+    });
+
+    cy.contains('Save').click();
+    cy.contains(newTitle);
   });
 });

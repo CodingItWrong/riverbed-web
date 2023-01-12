@@ -11,7 +11,7 @@ import TextField from '../components/TextField';
 
 export default function CardList() {
   const queryClient = useQueryClient();
-  const [cardIdToShowDetail, setCardIdToShowDetail] = useState(null);
+  const [selectedCardId, setSelectedCardId] = useState(null);
   const [fieldValues, setFieldValues] = useState(null);
 
   const {data: fields} = useQuery(['fields'], () => api.get('/fields'));
@@ -19,14 +19,24 @@ export default function CardList() {
 
   const refreshCards = () => queryClient.invalidateQueries(['cards']);
 
+  const {mutate: addCard} = useMutation({
+    mutationFn: () => api.post('/cards'),
+    onSuccess: response => {
+      setSelectedCardId(response.data.id);
+      // TODO: remove duplication in having to remember to set field values
+      setFieldValues(response.data.attributes['field-values']);
+      refreshCards();
+    },
+  });
+
   const {mutate: updateCard} = useMutation({
     mutationFn: () => {
       const cardUpdates = {
         type: 'cards',
-        id: cardIdToShowDetail,
+        id: selectedCardId,
         attributes: {'field-values': fieldValues},
       };
-      return api.patch(`/cards/${cardIdToShowDetail}`, {data: cardUpdates});
+      return api.patch(`/cards/${selectedCardId}`, {data: cardUpdates});
     },
     onSuccess: () => {
       refreshCards();
@@ -35,10 +45,7 @@ export default function CardList() {
   });
 
   const {mutate: deleteCard} = useMutation({
-    mutationFn: () => {
-      console.log('DELETIN');
-      return api.delete(`/cards/${cardIdToShowDetail}`);
-    },
+    mutationFn: () => api.delete(`/cards/${selectedCardId}`),
     onSuccess: () => {
       refreshCards();
       hideDetail();
@@ -50,7 +57,7 @@ export default function CardList() {
   }
 
   function showDetail(cardId) {
-    setCardIdToShowDetail(cardId);
+    setSelectedCardId(cardId);
     setFieldValues(
       cards.data.find(card => card.id === cardId).attributes['field-values'],
     );
@@ -61,18 +68,19 @@ export default function CardList() {
   }
 
   function hideDetail() {
-    setCardIdToShowDetail(null);
+    setSelectedCardId(null);
     setFieldValues(null);
   }
 
   return (
     <ScreenBackground>
       <SafeAreaView>
+        <Button onPress={addCard}>Add Card</Button>
         <FlatList
           data={cards.data}
           keyExtractor={card => card.id}
           renderItem={({item: card}) => {
-            if (cardIdToShowDetail === card.id) {
+            if (selectedCardId === card.id) {
               const fieldsToShow = fields.data;
 
               return (
@@ -93,7 +101,7 @@ export default function CardList() {
                       key={field.id}
                       label={field.attributes.name}
                       testID={`text-input-${field.attributes.name}`}
-                      value={fieldValues[field.attributes.name]}
+                      value={fieldValues[field.attributes.name] ?? ''}
                       onChangeText={value =>
                         setFieldValue(field.attributes.name, value)
                       }
