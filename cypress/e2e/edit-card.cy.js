@@ -123,7 +123,7 @@ describe('edit cards', () => {
     cy.get(`[value="${cards[0].attributes['field-values'].Publisher}"]`);
 
     // hide detail
-    cy.contains('Cancel').click();
+    cy.contains('Close').click();
     cy.contains(cards[0].attributes['field-values'].Publisher).should(
       'not.exist',
     );

@@ -88,7 +88,7 @@ export default function CardList() {
                   key={card.id}
                   buttons={
                     <>
-                      <Button onPress={hideDetail}>Cancel</Button>
+                      <Button onPress={hideDetail}>Close</Button>
                       <Button onPress={deleteCard}>Delete</Button>
                       <Button primary onPress={updateCard}>
                         Save
