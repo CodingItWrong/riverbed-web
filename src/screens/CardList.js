@@ -20,7 +20,7 @@ export default function CardList() {
   const refreshCards = () => queryClient.invalidateQueries(['cards']);
 
   const {mutate: addCard} = useMutation({
-    mutationFn: () => api.post('/cards'),
+    mutationFn: () => api.post('/cards', {data: {type: 'cards'}}),
     onSuccess: response => {
       setSelectedCardId(response.data.id);
       // TODO: remove duplication in having to remember to set field values
