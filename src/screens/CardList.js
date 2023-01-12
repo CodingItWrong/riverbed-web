@@ -5,9 +5,9 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import api from '../api';
 import Button from '../components/Button';
 import Card from '../components/Card';
+import ScreenBackground from '../components/ScreenBackground';
 import Text from '../components/Text';
 import TextField from '../components/TextField';
-import ScreenBackground from './ScreenBackground';
 
 export default function CardList() {
   const queryClient = useQueryClient();
