@@ -14,7 +14,9 @@ export default function CardList() {
   const {data: fields} = useQuery(['fields'], () => api.get('/fields'));
   const {data: cards} = useQuery(['cards'], () => api.get('/cards'));
 
-  const {mutate} = useMutation({
+  const refreshCards = () => queryClient.invalidateQueries(['cards']);
+
+  const {mutate: updateCard} = useMutation({
     mutationFn: () => {
       const cardUpdates = {
         type: 'cards',
@@ -23,7 +25,21 @@ export default function CardList() {
       };
       return api.patch(`/cards/${cardIdToShowDetail}`, {data: cardUpdates});
     },
-    onSuccess: () => queryClient.invalidateQueries(['cards']),
+    onSuccess: () => {
+      refreshCards();
+      hideDetail();
+    },
+  });
+
+  const {mutate: deleteCard} = useMutation({
+    mutationFn: () => {
+      console.log('DELETIN');
+      return api.delete(`/cards/${cardIdToShowDetail}`);
+    },
+    onSuccess: () => {
+      refreshCards();
+      hideDetail();
+    },
   });
 
   if (!cards || !fields) {
@@ -44,11 +60,6 @@ export default function CardList() {
   function hideDetail() {
     setCardIdToShowDetail(null);
     setFieldValues(null);
-  }
-
-  async function saveChanges() {
-    await mutate();
-    hideDetail();
   }
 
   return (
@@ -78,7 +89,8 @@ export default function CardList() {
                   </Card.Content>
                   <Card.Actions>
                     <Button onPress={hideDetail}>Cancel</Button>
-                    <Button onPress={saveChanges}>Save</Button>
+                    <Button onPress={deleteCard}>Delete</Button>
+                    <Button onPress={updateCard}>Save</Button>
                   </Card.Actions>
                 </Card>
               );

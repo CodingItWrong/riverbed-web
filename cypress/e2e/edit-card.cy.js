@@ -20,7 +20,7 @@ describe('edit cards', () => {
         },
       },
     ];
-    const updatedCards = [
+    const cardsAfterUpdate = [
       {
         id: '1',
         attributes: {
@@ -36,6 +36,17 @@ describe('edit cards', () => {
           'field-values': {
             Title: 'Castlevania: Symphony of the Night',
             Publisher: 'Konami',
+          },
+        },
+      },
+    ];
+    const cardsAfterDelete = [
+      {
+        id: '1',
+        attributes: {
+          'field-values': {
+            Title: 'Chrono Trigger',
+            Publisher: 'Square Enix',
           },
         },
       },
@@ -59,6 +70,9 @@ describe('edit cards', () => {
     cy.intercept('PATCH', 'http://localhost:3000/cards/1', {success: true}).as(
       'updateCard1',
     );
+    cy.intercept('DELETE', 'http://localhost:3000/cards/2', {success: true}).as(
+      'deleteCard2',
+    );
 
     cy.visit('/');
 
@@ -74,7 +88,7 @@ describe('edit cards', () => {
 
     // edit card
     cy.intercept('http://localhost:3000/cards', {
-      data: updatedCards,
+      data: cardsAfterUpdate,
     });
 
     const newTitle = 'Chrono Trigger';
@@ -82,7 +96,6 @@ describe('edit cards', () => {
     cy.get('[data-testid=text-input-Title]').clear().type(newTitle);
     cy.contains('Save').click();
 
-    // cy.wait('@updateCard1').then(i => console.log(i.request.body));
     cy.wait('@updateCard1')
       .its('request.body')
       .should('deep.equal', {
@@ -100,5 +113,16 @@ describe('edit cards', () => {
       'not.exist',
     );
     cy.contains(newTitle);
+
+    // delete card
+    cy.intercept('http://localhost:3000/cards', {
+      data: cardsAfterDelete,
+    });
+
+    cy.contains(cards[1].attributes['field-values'].Title).click();
+    cy.contains('Delete').click();
+    cy.wait('@deleteCard2');
+    cy.contains('Delete').should('not.exist');
+    cy.contains(cards[1].attributes['field-values'].Title).should('not.exist');
   });
 });

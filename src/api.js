@@ -1,4 +1,3 @@
-import {Platform} from 'react-native';
 import baseUrl from './baseUrl';
 
 function fullUrl(path) {
@@ -16,6 +15,10 @@ const api = {
       body: JSON.stringify(body),
       headers: {'Content-Type': 'application/vnd.api+json'},
     });
+    return response.json();
+  },
+  async delete(path) {
+    const response = await fetch(fullUrl(path), {method: 'DELETE'});
     return response.json();
   },
 };
