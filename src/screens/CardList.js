@@ -1,9 +1,10 @@
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {useState} from 'react';
 import {FlatList} from 'react-native';
-import {Button, Card, Text, TextInput} from 'react-native-paper';
+import {Button, Text, TextInput} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import api from '../api';
+import Card from '../components/Card';
 import ScreenBackground from './ScreenBackground';
 
 export default function CardList() {
@@ -73,25 +74,27 @@ export default function CardList() {
               const fieldsToShow = fields.data;
 
               return (
-                <Card key={card.id}>
-                  <Card.Content>
-                    {fieldsToShow.map(field => (
-                      <TextInput
-                        key={field.id}
-                        label={field.attributes.name}
-                        testID={`text-input-${field.attributes.name}`}
-                        value={fieldValues[field.attributes.name]}
-                        onChangeText={value =>
-                          setFieldValue(field.attributes.name, value)
-                        }
-                      />
-                    ))}
-                  </Card.Content>
-                  <Card.Actions>
-                    <Button onPress={hideDetail}>Cancel</Button>
-                    <Button onPress={deleteCard}>Delete</Button>
-                    <Button onPress={updateCard}>Save</Button>
-                  </Card.Actions>
+                <Card
+                  key={card.id}
+                  buttons={
+                    <>
+                      <Button onPress={hideDetail}>Cancel</Button>
+                      <Button onPress={deleteCard}>Delete</Button>
+                      <Button onPress={updateCard}>Save</Button>
+                    </>
+                  }
+                >
+                  {fieldsToShow.map(field => (
+                    <TextInput
+                      key={field.id}
+                      label={field.attributes.name}
+                      testID={`text-input-${field.attributes.name}`}
+                      value={fieldValues[field.attributes.name]}
+                      onChangeText={value =>
+                        setFieldValue(field.attributes.name, value)
+                      }
+                    />
+                  ))}
                 </Card>
               );
             } else {
@@ -101,13 +104,11 @@ export default function CardList() {
 
               return (
                 <Card key={card.id} onPress={() => showDetail(card.id)}>
-                  <Card.Content>
-                    {fieldsToShow.map(field => (
-                      <Text key={field.id}>
-                        {card.attributes['field-values'][field.attributes.name]}
-                      </Text>
-                    ))}
-                  </Card.Content>
+                  {fieldsToShow.map(field => (
+                    <Text key={field.id}>
+                      {card.attributes['field-values'][field.attributes.name]}
+                    </Text>
+                  ))}
                 </Card>
               );
             }
