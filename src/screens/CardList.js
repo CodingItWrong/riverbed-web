@@ -1,9 +1,10 @@
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {useState} from 'react';
 import {FlatList} from 'react-native';
-import {Button, Text, TextInput} from 'react-native-paper';
+import {Text, TextInput} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import api from '../api';
+import Button from '../components/Button';
 import Card from '../components/Card';
 import ScreenBackground from './ScreenBackground';
 
@@ -80,7 +81,9 @@ export default function CardList() {
                     <>
                       <Button onPress={hideDetail}>Cancel</Button>
                       <Button onPress={deleteCard}>Delete</Button>
-                      <Button onPress={updateCard}>Save</Button>
+                      <Button primary onPress={updateCard}>
+                        Save
+                      </Button>
                     </>
                   }
                 >
