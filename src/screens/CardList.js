@@ -3,6 +3,7 @@ import {useState} from 'react';
 import {Button, Card, Text, TextInput} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import api from '../api';
+import ScreenBackground from './ScreenBackground';
 
 export default function CardList() {
   const queryClient = useQueryClient();
@@ -50,50 +51,52 @@ export default function CardList() {
   }
 
   return (
-    <SafeAreaView>
-      {cards.data.map(card => {
-        if (cardIdToShowDetail === card.id) {
-          const fieldsToShow = fields.data;
+    <ScreenBackground>
+      <SafeAreaView>
+        {cards.data.map(card => {
+          if (cardIdToShowDetail === card.id) {
+            const fieldsToShow = fields.data;
 
-          return (
-            <Card key={card.id}>
-              <Card.Content>
-                {fieldsToShow.map(field => (
-                  <TextInput
-                    key={field.id}
-                    label={field.attributes.name}
-                    testID={`text-input-${field.attributes.name}`}
-                    value={fieldValues[field.attributes.name]}
-                    onChangeText={value =>
-                      setFieldValue(field.attributes.name, value)
-                    }
-                  />
-                ))}
-              </Card.Content>
-              <Card.Actions>
-                <Button onPress={hideDetail}>Cancel</Button>
-                <Button onPress={saveChanges}>Save</Button>
-              </Card.Actions>
-            </Card>
-          );
-        } else {
-          const fieldsToShow = fields.data.filter(
-            field => field.attributes['show-in-summary'],
-          );
+            return (
+              <Card key={card.id}>
+                <Card.Content>
+                  {fieldsToShow.map(field => (
+                    <TextInput
+                      key={field.id}
+                      label={field.attributes.name}
+                      testID={`text-input-${field.attributes.name}`}
+                      value={fieldValues[field.attributes.name]}
+                      onChangeText={value =>
+                        setFieldValue(field.attributes.name, value)
+                      }
+                    />
+                  ))}
+                </Card.Content>
+                <Card.Actions>
+                  <Button onPress={hideDetail}>Cancel</Button>
+                  <Button onPress={saveChanges}>Save</Button>
+                </Card.Actions>
+              </Card>
+            );
+          } else {
+            const fieldsToShow = fields.data.filter(
+              field => field.attributes['show-in-summary'],
+            );
 
-          return (
-            <Card key={card.id} onPress={() => showDetail(card.id)}>
-              <Card.Content>
-                {fieldsToShow.map(field => (
-                  <Text key={field.id}>
-                    {card.attributes['field-values'][field.attributes.name]}
-                  </Text>
-                ))}
-              </Card.Content>
-            </Card>
-          );
-        }
-      })}
-    </SafeAreaView>
+            return (
+              <Card key={card.id} onPress={() => showDetail(card.id)}>
+                <Card.Content>
+                  {fieldsToShow.map(field => (
+                    <Text key={field.id}>
+                      {card.attributes['field-values'][field.attributes.name]}
+                    </Text>
+                  ))}
+                </Card.Content>
+              </Card>
+            );
+          }
+        })}
+      </SafeAreaView>
+    </ScreenBackground>
   );
 }
