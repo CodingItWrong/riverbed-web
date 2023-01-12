@@ -9,6 +9,7 @@
     "web": "expo start --web",
     "test": "jest --watchAll",
     "cypress": "cypress open",
+    "cypress:run": "cypress run",
     "lint": "eslint .",
     "build:web": "expo export:web && cp _redirects web-build",
     "deploy:web": "npm run build:web && netlify deploy --prod"
