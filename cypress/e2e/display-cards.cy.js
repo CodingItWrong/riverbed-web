@@ -21,7 +21,7 @@ describe('display cards', () => {
       },
     ];
 
-    cy.intercept('http://localhost:3000/fields', {
+    cy.intercept('http://cypressapi/fields', {
       data: [
         {
           id: '1',
@@ -33,7 +33,7 @@ describe('display cards', () => {
         },
       ],
     });
-    cy.intercept('http://localhost:3000/cards', {
+    cy.intercept('http://cypressapi/cards', {
       data: cards,
     });
 
