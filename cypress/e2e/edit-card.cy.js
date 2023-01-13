@@ -18,6 +18,11 @@ describe('edit cards', () => {
         'data-type': 'text',
         'show-in-summary': false,
       }),
+      Factory.field({
+        name: 'Released At',
+        'data-type': 'datetime',
+        'show-in-summary': true,
+      }),
     ];
     const card = Factory.card({Title: title, Publisher: publisher});
     cy.intercept('GET', 'http://cypressapi/fields', {
@@ -38,7 +43,10 @@ describe('edit cards', () => {
     cy.contains(publisher).should('not.exist');
 
     cy.log('EDIT CARD');
-    const updatedCard = Factory.card({Title: updatedTitle}, card);
+    const updatedCard = Factory.card(
+      {Title: updatedTitle, 'Released At': '2000-01-01T05:00:00.000Z'},
+      card,
+    );
     cy.intercept('PATCH', `http://cypressapi/cards/${card.id}`, {
       success: true,
     }).as('updateCard1');
@@ -46,6 +54,9 @@ describe('edit cards', () => {
 
     cy.contains(card.attributes['field-values'].Title).click();
     cy.get('[data-testid=text-input-Title]').clear().type(updatedTitle);
+    cy.get('[data-testid="datetime-input-Released At"]')
+      .clear()
+      .type('01/01/2000');
     cy.contains('Save').click();
 
     cy.wait('@updateCard1')
@@ -55,6 +66,7 @@ describe('edit cards', () => {
     cy.contains(card.attributes['field-values'].Title).should('not.exist');
     cy.contains(card.attributes['field-values'].Publisher).should('not.exist');
     cy.contains(updatedTitle);
+    cy.contains('Jan 1, 2000 12:00 am');
 
     cy.log('DELETE CARD');
     cy.intercept('DELETE', `http://cypressapi/cards/${card.id}`, {

@@ -40,7 +40,7 @@ describe('display cards', () => {
     cy.visit('/');
 
     cy.contains(cards[0].attributes['field-values'].Title);
-    cy.contains('Jan 31, 1997 12:00 am');
+    cy.contains('Jan 30, 1997 7:00 pm');
     cy.contains(cards[1].attributes['field-values'].Title);
     cy.contains(cards[0].attributes['field-values'].Publisher).should(
       'not.exist',

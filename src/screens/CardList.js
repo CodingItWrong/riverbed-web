@@ -13,7 +13,6 @@ import Card from '../components/Card';
 import FieldDisplay from '../components/FieldDisplay';
 import FieldInput from '../components/FieldInput';
 import ScreenBackground from '../components/ScreenBackground';
-import TextField from '../components/TextField';
 
 export default function CardList() {
   const queryClient = useQueryClient();
@@ -42,6 +41,7 @@ export default function CardList() {
         id: selectedCardId,
         attributes: {'field-values': fieldValues},
       };
+      console.log({cardUpdates});
       return api.patch(`/cards/${selectedCardId}`, {data: cardUpdates});
     },
     onSuccess: () => {
@@ -70,6 +70,7 @@ export default function CardList() {
   }
 
   function setFieldValue(name, value) {
+    console.log('setFieldValue', {name, value});
     setFieldValues(oldValues => ({...oldValues, [name]: value}));
   }
 

@@ -6,7 +6,6 @@ import TextField from './TextField';
 // TODO: wrap
 
 export default function FieldInput({field, value, setValue}) {
-  console.log('FieldInput', {field, value});
   switch (field.attributes['data-type']) {
     case FIELD_DATA_TYPES.text:
       return (
@@ -23,9 +22,10 @@ export default function FieldInput({field, value, setValue}) {
         <DatePickerInput
           locale="en"
           label={field.attributes.name}
-          value={new Date(value)}
-          onChange={setValue}
+          value={value ? new Date(value) : value}
+          onChange={newDate => setValue(newDate.toISOString())}
           inputMode="start"
+          testID={`datetime-input-${field.attributes.name}`}
         />
       );
     default:
