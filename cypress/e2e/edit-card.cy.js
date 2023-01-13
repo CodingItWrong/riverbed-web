@@ -12,10 +12,10 @@ describe('edit cards', () => {
       Factory.field({name: 'Publisher', 'show-in-summary': false}),
     ];
     const card = Factory.card({Title: title, Publisher: publisher});
-    cy.intercept('GET', 'http://localhost:3000/fields', {
+    cy.intercept('GET', 'http://cypressapi/fields', {
       data: fields,
     });
-    cy.intercept('GET', 'http://localhost:3000/cards', {
+    cy.intercept('GET', 'http://cypressapi/cards', {
       data: [card],
     });
 
@@ -31,10 +31,10 @@ describe('edit cards', () => {
 
     cy.log('EDIT CARD');
     const updatedCard = Factory.card({Title: updatedTitle}, card);
-    cy.intercept('PATCH', `http://localhost:3000/cards/${card.id}`, {
+    cy.intercept('PATCH', `http://cypressapi/cards/${card.id}`, {
       success: true,
     }).as('updateCard1');
-    cy.intercept('GET', 'http://localhost:3000/cards', {data: [updatedCard]});
+    cy.intercept('GET', 'http://cypressapi/cards', {data: [updatedCard]});
 
     cy.contains(card.attributes['field-values'].Title).click();
     cy.get('[data-testid=text-input-Title]').clear().type(updatedTitle);
@@ -49,10 +49,10 @@ describe('edit cards', () => {
     cy.contains(updatedTitle);
 
     cy.log('DELETE CARD');
-    cy.intercept('DELETE', `http://localhost:3000/cards/${card.id}`, {
+    cy.intercept('DELETE', `http://cypressapi/cards/${card.id}`, {
       success: true,
     }).as('deleteCard');
-    cy.intercept('GET', 'http://localhost:3000/cards', {data: []});
+    cy.intercept('GET', 'http://cypressapi/cards', {data: []});
 
     cy.contains(updatedTitle).click();
     cy.contains('Delete').click();
@@ -61,15 +61,15 @@ describe('edit cards', () => {
 
     cy.log('CREATE CARD');
     const newCard = Factory.card({Title: '', Publisher: ''});
-    cy.intercept('POST', 'http://localhost:3000/cards', {data: newCard});
-    cy.intercept('GET', 'http://localhost:3000/cards', {data: [newCard]});
+    cy.intercept('POST', 'http://cypressapi/cards', {data: newCard});
+    cy.intercept('GET', 'http://cypressapi/cards', {data: [newCard]});
     cy.contains('Add Card').click();
     cy.get('[data-testid=text-input-Title]').clear().type(newTitle);
     const updatedNewCard = Factory.card({Title: newTitle}, newCard);
-    cy.intercept('PATCH', `http://localhost:3000/cards/${newCard.id}`, {
+    cy.intercept('PATCH', `http://cypressapi/cards/${newCard.id}`, {
       success: true,
     });
-    cy.intercept('GET', 'http://localhost:3000/cards', {
+    cy.intercept('GET', 'http://cypressapi/cards', {
       data: [updatedNewCard],
     });
 

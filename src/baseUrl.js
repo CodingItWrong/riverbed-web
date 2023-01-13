@@ -9,6 +9,10 @@ function getBaseUrl() {
     return `http://${LOCAL_IP}:3000`;
   }
 
+  if (window.Cypress) {
+    return 'http://cypressapi';
+  }
+
   if (__DEV__) {
     if (Platform.OS === 'android') {
       return 'http://10.0.2.2:3000';
