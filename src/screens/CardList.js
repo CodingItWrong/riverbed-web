@@ -10,8 +10,8 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import api from '../api';
 import Button from '../components/Button';
 import Card from '../components/Card';
+import FieldDisplay from '../components/FieldDisplay';
 import ScreenBackground from '../components/ScreenBackground';
-import Text from '../components/Text';
 import TextField from '../components/TextField';
 
 export default function CardList() {
@@ -126,9 +126,13 @@ export default function CardList() {
                 return (
                   <Card key={card.id} onPress={() => showDetail(card.id)}>
                     {fieldsToShow.map(field => (
-                      <Text key={field.id}>
-                        {card.attributes['field-values'][field.attributes.name]}
-                      </Text>
+                      <FieldDisplay
+                        key={field.id}
+                        field={field}
+                        value={
+                          card.attributes['field-values'][field.attributes.name]
+                        }
+                      />
                     ))}
                   </Card>
                 );
