@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
-import {Text} from 'react-native-paper';
 import FIELD_DATA_TYPES from '../fieldDataTypes';
+import Text from './Text';
 
 export default function FieldDisplay({field, value}) {
   switch (field.attributes['data-type']) {
