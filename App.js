@@ -9,7 +9,10 @@ import utc from 'dayjs/plugin/utc';
 import {useEffect} from 'react';
 import {AppState, Platform, StatusBar} from 'react-native';
 import {Provider as PaperProvider} from 'react-native-paper';
+import {en, registerTranslation} from 'react-native-paper-dates';
 import CardList from './src/screens/CardList';
+
+registerTranslation('en', en);
 
 const queryClient = new QueryClient();
 
