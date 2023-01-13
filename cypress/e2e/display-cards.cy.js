@@ -1,36 +1,22 @@
+import Factory from '../support/Factory';
+
 describe('display cards', () => {
   it('displays cards from the server', () => {
     const cards = [
-      {
-        id: '1',
-        attributes: {
-          'field-values': {
-            title: 'Final Fantasy 7',
-            publisher: 'Square Enix',
-          },
-        },
-      },
-      {
-        id: '2',
-        attributes: {
-          'field-values': {
-            title: 'Castlevania: Symphony of the Night',
-            publisher: 'Konami',
-          },
-        },
-      },
+      Factory.card({
+        Title: 'Final Fantasy 7',
+        Publisher: 'Square Enix',
+      }),
+      Factory.card({
+        Title: 'Castlevania: Symphony of the Night',
+        Publisher: 'Konami',
+      }),
     ];
 
     cy.intercept('http://cypressapi/fields', {
       data: [
-        {
-          id: '1',
-          attributes: {name: 'title', 'show-in-summary': true},
-        },
-        {
-          id: '2',
-          attributes: {name: 'publisher', 'show-in-summary': false},
-        },
+        Factory.field({name: 'Title', 'show-in-summary': true}),
+        Factory.field({name: 'Publisher', 'show-in-summary': false}),
       ],
     });
     cy.intercept('http://cypressapi/cards', {
@@ -39,9 +25,9 @@ describe('display cards', () => {
 
     cy.visit('/');
 
-    cy.contains(cards[0].attributes['field-values'].title);
-    cy.contains(cards[1].attributes['field-values'].title);
-    cy.contains(cards[0].attributes['field-values'].publisher).should(
+    cy.contains(cards[0].attributes['field-values'].Title);
+    cy.contains(cards[1].attributes['field-values'].Title);
+    cy.contains(cards[0].attributes['field-values'].Publisher).should(
       'not.exist',
     );
   });
