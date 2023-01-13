@@ -66,7 +66,7 @@ describe('edit cards', () => {
     cy.contains('Add Card').click();
     cy.get('[data-testid=text-input-Title]').clear().type(newTitle);
     const updatedNewCard = Factory.card({Title: newTitle}, newCard);
-    cy.intercept('PATCH', `http://localhost:3000/cards/${newCard}`, {
+    cy.intercept('PATCH', `http://localhost:3000/cards/${newCard.id}`, {
       success: true,
     });
     cy.intercept('GET', 'http://localhost:3000/cards', {
