@@ -33,7 +33,7 @@ jobs:
         run: yarn global add expo-cli
 
       - name: Install Sharp CLI
-        run: yarn global add sharp-cli
+        run: yarn global add sharp-cli@^2.1.0
 
       - name: Cypress Tests
         uses: cypress-io/github-action@v4
