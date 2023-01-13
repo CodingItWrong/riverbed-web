@@ -8,8 +8,16 @@ describe('edit cards', () => {
 
   it('allows editing cards', () => {
     const fields = [
-      Factory.field({name: 'Title', 'show-in-summary': true}),
-      Factory.field({name: 'Publisher', 'show-in-summary': false}),
+      Factory.field({
+        name: 'Title',
+        'data-type': 'text',
+        'show-in-summary': true,
+      }),
+      Factory.field({
+        name: 'Publisher',
+        'data-type': 'text',
+        'show-in-summary': false,
+      }),
     ];
     const card = Factory.card({Title: title, Publisher: publisher});
     cy.intercept('GET', 'http://cypressapi/fields', {
