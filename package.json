@@ -37,7 +37,7 @@
     "cypress": "^12.3.0",
     "eslint": "^7.0",
     "eslint-plugin-cypress": "^2.12.1",
-    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-import": "^2.27.4",
     "eslint-plugin-testing-library": "^5.9.1",
     "jest": "^26",
     "jest-expo": "^47.0.1",
