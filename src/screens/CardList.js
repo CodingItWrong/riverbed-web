@@ -1,6 +1,11 @@
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {useState} from 'react';
-import {FlatList, KeyboardAvoidingView, Platform} from 'react-native';
+import {
+  FlatList,
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import api from '../api';
 import Button from '../components/Button';
@@ -74,11 +79,11 @@ export default function CardList() {
 
   return (
     <ScreenBackground>
-      <SafeAreaView style={{flex: 1}}>
-        <Button onPress={addCard}>Add Card!!</Button>
+      <SafeAreaView style={styles.fullHeight}>
+        <Button onPress={addCard}>Add Card</Button>
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={{flex: 1}}
+          style={styles.fullHeight}
         >
           <FlatList
             data={cards.data}
@@ -135,3 +140,9 @@ export default function CardList() {
     </ScreenBackground>
   );
 }
+
+const styles = StyleSheet.create({
+  fullHeight: {
+    flex: 1,
+  },
+});
