@@ -1,6 +1,6 @@
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {useState} from 'react';
-import {FlatList} from 'react-native';
+import {FlatList, KeyboardAvoidingView} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import api from '../api';
 import Button from '../components/Button';
@@ -76,56 +76,60 @@ export default function CardList() {
     <ScreenBackground>
       <SafeAreaView>
         <Button onPress={addCard}>Add Card</Button>
-        <FlatList
-          data={cards.data}
-          keyExtractor={card => card.id}
-          renderItem={({item: card}) => {
-            if (selectedCardId === card.id) {
-              const fieldsToShow = fields.data;
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        >
+          <FlatList
+            data={cards.data}
+            keyExtractor={card => card.id}
+            renderItem={({item: card}) => {
+              if (selectedCardId === card.id) {
+                const fieldsToShow = fields.data;
 
-              return (
-                <Card
-                  key={card.id}
-                  buttons={
-                    <>
-                      <Button onPress={hideDetail}>Close</Button>
-                      <Button onPress={deleteCard}>Delete</Button>
-                      <Button primary onPress={updateCard}>
-                        Save
-                      </Button>
-                    </>
-                  }
-                >
-                  {fieldsToShow.map(field => (
-                    <TextField
-                      key={field.id}
-                      label={field.attributes.name}
-                      testID={`text-input-${field.attributes.name}`}
-                      value={fieldValues[field.attributes.name] ?? ''}
-                      onChangeText={value =>
-                        setFieldValue(field.attributes.name, value)
-                      }
-                    />
-                  ))}
-                </Card>
-              );
-            } else {
-              const fieldsToShow = fields.data.filter(
-                field => field.attributes['show-in-summary'],
-              );
+                return (
+                  <Card
+                    key={card.id}
+                    buttons={
+                      <>
+                        <Button onPress={hideDetail}>Close</Button>
+                        <Button onPress={deleteCard}>Delete</Button>
+                        <Button primary onPress={updateCard}>
+                          Save
+                        </Button>
+                      </>
+                    }
+                  >
+                    {fieldsToShow.map(field => (
+                      <TextField
+                        key={field.id}
+                        label={field.attributes.name}
+                        testID={`text-input-${field.attributes.name}`}
+                        value={fieldValues[field.attributes.name] ?? ''}
+                        onChangeText={value =>
+                          setFieldValue(field.attributes.name, value)
+                        }
+                      />
+                    ))}
+                  </Card>
+                );
+              } else {
+                const fieldsToShow = fields.data.filter(
+                  field => field.attributes['show-in-summary'],
+                );
 
-              return (
-                <Card key={card.id} onPress={() => showDetail(card.id)}>
-                  {fieldsToShow.map(field => (
-                    <Text key={field.id}>
-                      {card.attributes['field-values'][field.attributes.name]}
-                    </Text>
-                  ))}
-                </Card>
-              );
-            }
-          }}
-        />
+                return (
+                  <Card key={card.id} onPress={() => showDetail(card.id)}>
+                    {fieldsToShow.map(field => (
+                      <Text key={field.id}>
+                        {card.attributes['field-values'][field.attributes.name]}
+                      </Text>
+                    ))}
+                  </Card>
+                );
+              }
+            }}
+          />
+        </KeyboardAvoidingView>
       </SafeAreaView>
     </ScreenBackground>
   );
