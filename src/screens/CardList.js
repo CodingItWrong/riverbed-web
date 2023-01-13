@@ -11,6 +11,7 @@ import api from '../api';
 import Button from '../components/Button';
 import Card from '../components/Card';
 import FieldDisplay from '../components/FieldDisplay';
+import FieldInput from '../components/FieldInput';
 import ScreenBackground from '../components/ScreenBackground';
 import TextField from '../components/TextField';
 
@@ -106,12 +107,11 @@ export default function CardList() {
                     }
                   >
                     {fieldsToShow.map(field => (
-                      <TextField
+                      <FieldInput
                         key={field.id}
-                        label={field.attributes.name}
-                        testID={`text-input-${field.attributes.name}`}
-                        value={fieldValues[field.attributes.name] ?? ''}
-                        onChangeText={value =>
+                        field={field}
+                        value={fieldValues[field.attributes.name]}
+                        setValue={value =>
                           setFieldValue(field.attributes.name, value)
                         }
                       />
