@@ -75,7 +75,7 @@ export default function CardList() {
   return (
     <ScreenBackground>
       <SafeAreaView>
-        <Button onPress={addCard}>Add Card</Button>
+        <Button onPress={addCard}>Add Card!!</Button>
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
