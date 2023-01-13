@@ -74,10 +74,11 @@ export default function CardList() {
 
   return (
     <ScreenBackground>
-      <SafeAreaView>
+      <SafeAreaView style={{flex: 1}}>
         <Button onPress={addCard}>Add Card!!</Button>
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={{flex: 1}}
         >
           <FlatList
             data={cards.data}
