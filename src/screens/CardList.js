@@ -1,6 +1,6 @@
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {useState} from 'react';
-import {FlatList, KeyboardAvoidingView} from 'react-native';
+import {FlatList, KeyboardAvoidingView, Platform} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import api from '../api';
 import Button from '../components/Button';
