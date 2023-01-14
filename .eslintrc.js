@@ -20,5 +20,11 @@ module.exports = {
       files: ['src/**/*.spec.js'],
       extends: ['plugin:testing-library/react'],
     },
+    {
+      files: ['cypress/**/*.cy.js'],
+      rules: {
+        'jest/valid-expect': 'off',
+      },
+    },
   ],
 };

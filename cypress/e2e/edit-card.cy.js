@@ -36,7 +36,9 @@ describe('edit cards', () => {
 
     cy.log('SHOW DETAIL');
     cy.contains(title).click();
-    cy.get(`[value="${publisher}"]`);
+    cy.get('[data-testid="text-input-Publisher"]')
+      .invoke('val')
+      .then(value => expect(value).to.equal(publisher));
 
     cy.log('HIDE DETAIL');
     cy.contains('Close').click();
