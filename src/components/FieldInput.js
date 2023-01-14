@@ -13,7 +13,7 @@ export default function FieldInput({field, value, setValue}) {
         <TextField
           key={field.id}
           label={field.attributes.name}
-          testID={`text-input-${field.attributes.name}`}
+          testID={`text-input-${field.id}`}
           value={value ?? ''}
           onChangeText={setValue}
         />
@@ -28,7 +28,7 @@ export default function FieldInput({field, value, setValue}) {
             setValue(dateUtils.objectToServerString(newDate))
           }
           inputMode="start"
-          testID={`date-input-${field.attributes.name}`}
+          testID={`date-input-${field.id}`}
         />
       );
     default:

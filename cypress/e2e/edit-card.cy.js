@@ -7,24 +7,27 @@ describe('edit cards', () => {
   const newTitle = 'Earthbound';
 
   it('allows editing cards', () => {
-    const fields = [
-      Factory.field({
-        name: 'Title',
-        'data-type': 'text',
-        'show-in-summary': true,
-      }),
-      Factory.field({
-        name: 'Publisher',
-        'data-type': 'text',
-        'show-in-summary': false,
-      }),
-      Factory.field({
-        name: 'Released At',
-        'data-type': 'date',
-        'show-in-summary': true,
-      }),
-    ];
-    const card = Factory.card({Title: title, Publisher: publisher});
+    const titleField = Factory.field({
+      name: 'Title',
+      'data-type': 'text',
+      'show-in-summary': true,
+    });
+    const publisherField = Factory.field({
+      name: 'Publisher',
+      'data-type': 'text',
+      'show-in-summary': false,
+    });
+    const releasedAtField = Factory.field({
+      name: 'Released At',
+      'data-type': 'date',
+      'show-in-summary': true,
+    });
+
+    const fields = [titleField, publisherField, releasedAtField];
+    const card = Factory.card({
+      [titleField.id]: title,
+      [publisherField.id]: publisher,
+    });
     cy.intercept('GET', 'http://cypressapi/fields?', {
       data: fields,
     });
@@ -36,7 +39,7 @@ describe('edit cards', () => {
 
     cy.log('SHOW DETAIL');
     cy.contains(title).click();
-    cy.get('[data-testid="text-input-Publisher"]')
+    cy.get(`[data-testid="text-input-${publisherField.id}"]`)
       .invoke('val')
       .then(value => expect(value).to.equal(publisher));
 
@@ -46,7 +49,7 @@ describe('edit cards', () => {
 
     cy.log('EDIT CARD');
     const updatedCard = Factory.card(
-      {Title: updatedTitle, 'Released At': '2000-01-01'},
+      {[titleField.id]: updatedTitle, [releasedAtField.id]: '2000-01-01'},
       card,
     );
     console.log('PATCHING', card.id);
@@ -55,17 +58,25 @@ describe('edit cards', () => {
     }).as('updateCard1');
     cy.intercept('GET', 'http://cypressapi/cards?', {data: [updatedCard]});
 
-    cy.contains(card.attributes['field-values'].Title).click();
-    cy.get('[data-testid=text-input-Title]').clear().type(updatedTitle);
-    cy.get('[data-testid="date-input-Released At"]').clear().type('01/01/2000');
+    cy.contains(card.attributes['field-values'][titleField.id]).click();
+    cy.get(`[data-testid=text-input-${titleField.id}]`)
+      .clear()
+      .type(updatedTitle);
+    cy.get(`[data-testid="date-input-${releasedAtField.id}"]`)
+      .clear()
+      .type('01/01/2000');
     cy.contains('Save').click();
 
     cy.wait('@updateCard1')
       .its('request.body')
       .should('deep.equal', {data: updatedCard});
 
-    cy.contains(card.attributes['field-values'].Title).should('not.exist');
-    cy.contains(card.attributes['field-values'].Publisher).should('not.exist');
+    cy.contains(card.attributes['field-values'][titleField.id]).should(
+      'not.exist',
+    );
+    cy.contains(card.attributes['field-values'][publisherField.id]).should(
+      'not.exist',
+    );
     cy.contains(updatedTitle);
     cy.contains('Jan 1, 2000');
 
@@ -81,12 +92,13 @@ describe('edit cards', () => {
     cy.contains(updatedTitle).should('not.exist');
 
     cy.log('CREATE CARD');
-    const newCard = Factory.card({Title: '', Publisher: ''});
+    const newCard = Factory.card();
+    console.log({newCard});
     cy.intercept('POST', 'http://cypressapi/cards?', {data: newCard});
     cy.intercept('GET', 'http://cypressapi/cards?', {data: [newCard]});
     cy.contains('Add Card').click();
-    cy.get('[data-testid=text-input-Title]').clear().type(newTitle);
-    const updatedNewCard = Factory.card({Title: newTitle}, newCard);
+    cy.get(`[data-testid=text-input-${titleField.id}]`).clear().type(newTitle);
+    const updatedNewCard = Factory.card({[titleField.id]: newTitle}, newCard);
     cy.intercept('PATCH', `http://cypressapi/cards/${newCard.id}?`, {
       success: true,
     });

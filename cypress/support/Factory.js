@@ -29,11 +29,7 @@ const Factory = {
       };
     } else {
       id = String(this._ids.card++);
-      fieldValues = {
-        Title: 'Some Title',
-        Publisher: 'Some Publisher',
-        ...fieldValueOverrides,
-      };
+      fieldValues = fieldValueOverrides ?? {};
     }
 
     return {

@@ -112,10 +112,8 @@ export default function CardList() {
                       <FieldInput
                         key={field.id}
                         field={field}
-                        value={fieldValues[field.attributes.name]}
-                        setValue={value =>
-                          setFieldValue(field.attributes.name, value)
-                        }
+                        value={fieldValues[field.id]}
+                        setValue={value => setFieldValue(field.id, value)}
                       />
                     ))}
                   </Card>
@@ -131,9 +129,7 @@ export default function CardList() {
                       <FieldDisplay
                         key={field.id}
                         field={field}
-                        value={
-                          card.attributes['field-values'][field.attributes.name]
-                        }
+                        value={card.attributes['field-values'][field.id]}
                       />
                     ))}
                   </Card>
