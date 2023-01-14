@@ -7,42 +7,44 @@ import {
   StyleSheet,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import api from '../api';
 import Button from '../components/Button';
 import Card from '../components/Card';
 import FieldDisplay from '../components/FieldDisplay';
 import FieldInput from '../components/FieldInput';
 import ScreenBackground from '../components/ScreenBackground';
+import {useCards} from '../data/cards';
+import {useFields} from '../data/fields';
 
 export default function CardList() {
   const queryClient = useQueryClient();
+  const fieldClient = useFields();
+  const cardClient = useCards();
   const [selectedCardId, setSelectedCardId] = useState(null);
   const [fieldValues, setFieldValues] = useState(null);
 
-  const {data: fields} = useQuery(['fields'], () => api.get('/fields'));
-  const {data: cards} = useQuery(['cards'], () => api.get('/cards'));
+  const {data: fields} = useQuery(['fields'], () => fieldClient.all());
+  const {data: cards} = useQuery(['cards'], () => cardClient.all());
 
   const refreshCards = () => queryClient.invalidateQueries(['cards']);
 
   const {mutate: addCard} = useMutation({
-    mutationFn: () => api.post('/cards', {data: {type: 'cards'}}),
-    onSuccess: response => {
-      setSelectedCardId(response.data.id);
+    mutationFn: () => cardClient.create({attributes: {}}),
+    onSuccess: ({data: newCard}) => {
+      setSelectedCardId(newCard.id);
       // TODO: remove duplication in having to remember to set field values
-      setFieldValues(response.data.attributes['field-values']);
+      setFieldValues(newCard.attributes['field-values']);
       refreshCards();
     },
   });
 
   const {mutate: updateCard} = useMutation({
     mutationFn: () => {
-      const cardUpdates = {
+      const updatedCard = {
         type: 'cards',
         id: selectedCardId,
         attributes: {'field-values': fieldValues},
       };
-      console.log({cardUpdates});
-      return api.patch(`/cards/${selectedCardId}`, {data: cardUpdates});
+      return cardClient.update(updatedCard);
     },
     onSuccess: () => {
       refreshCards();
@@ -51,7 +53,7 @@ export default function CardList() {
   });
 
   const {mutate: deleteCard} = useMutation({
-    mutationFn: () => api.delete(`/cards/${selectedCardId}`),
+    mutationFn: () => cardClient.delete({id: selectedCardId}),
     onSuccess: () => {
       refreshCards();
       hideDetail();
@@ -70,7 +72,6 @@ export default function CardList() {
   }
 
   function setFieldValue(name, value) {
-    console.log('setFieldValue', {name, value});
     setFieldValues(oldValues => ({...oldValues, [name]: value}));
   }
 

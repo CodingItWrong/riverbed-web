@@ -25,10 +25,10 @@ describe('edit cards', () => {
       }),
     ];
     const card = Factory.card({Title: title, Publisher: publisher});
-    cy.intercept('GET', 'http://cypressapi/fields', {
+    cy.intercept('GET', 'http://cypressapi/fields?', {
       data: fields,
     });
-    cy.intercept('GET', 'http://cypressapi/cards', {
+    cy.intercept('GET', 'http://cypressapi/cards?', {
       data: [card],
     });
 
@@ -47,10 +47,11 @@ describe('edit cards', () => {
       {Title: updatedTitle, 'Released At': '2000-01-01T05:00:00.000Z'},
       card,
     );
-    cy.intercept('PATCH', `http://cypressapi/cards/${card.id}`, {
+    console.log('PATCHING', card.id);
+    cy.intercept('PATCH', `http://cypressapi/cards/${card.id}?`, {
       success: true,
     }).as('updateCard1');
-    cy.intercept('GET', 'http://cypressapi/cards', {data: [updatedCard]});
+    cy.intercept('GET', 'http://cypressapi/cards?', {data: [updatedCard]});
 
     cy.contains(card.attributes['field-values'].Title).click();
     cy.get('[data-testid=text-input-Title]').clear().type(updatedTitle);
@@ -72,7 +73,7 @@ describe('edit cards', () => {
     cy.intercept('DELETE', `http://cypressapi/cards/${card.id}`, {
       success: true,
     }).as('deleteCard');
-    cy.intercept('GET', 'http://cypressapi/cards', {data: []});
+    cy.intercept('GET', 'http://cypressapi/cards?', {data: []});
 
     cy.contains(updatedTitle).click();
     cy.contains('Delete').click();
@@ -81,15 +82,15 @@ describe('edit cards', () => {
 
     cy.log('CREATE CARD');
     const newCard = Factory.card({Title: '', Publisher: ''});
-    cy.intercept('POST', 'http://cypressapi/cards', {data: newCard});
-    cy.intercept('GET', 'http://cypressapi/cards', {data: [newCard]});
+    cy.intercept('POST', 'http://cypressapi/cards?', {data: newCard});
+    cy.intercept('GET', 'http://cypressapi/cards?', {data: [newCard]});
     cy.contains('Add Card').click();
     cy.get('[data-testid=text-input-Title]').clear().type(newTitle);
     const updatedNewCard = Factory.card({Title: newTitle}, newCard);
-    cy.intercept('PATCH', `http://cypressapi/cards/${newCard.id}`, {
+    cy.intercept('PATCH', `http://cypressapi/cards/${newCard.id}?`, {
       success: true,
     });
-    cy.intercept('GET', 'http://cypressapi/cards', {
+    cy.intercept('GET', 'http://cypressapi/cards?', {
       data: [updatedNewCard],
     });
 

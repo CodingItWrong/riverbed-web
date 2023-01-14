@@ -14,7 +14,7 @@ describe('display cards', () => {
       }),
     ];
 
-    cy.intercept('http://cypressapi/fields', {
+    cy.intercept('http://cypressapi/fields?', {
       data: [
         Factory.field({
           name: 'Title',
@@ -33,7 +33,7 @@ describe('display cards', () => {
         }),
       ],
     });
-    cy.intercept('http://cypressapi/cards', {
+    cy.intercept('http://cypressapi/cards?', {
       data: cards,
     });
 
