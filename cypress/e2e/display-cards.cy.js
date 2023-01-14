@@ -6,7 +6,7 @@ describe('display cards', () => {
       Factory.card({
         Title: 'Final Fantasy 7',
         Publisher: 'Square Enix',
-        'Released At': '1997-01-31T00:00:00.000Z',
+        'Released At': '1997-01-31',
       }),
       Factory.card({
         Title: 'Castlevania: Symphony of the Night',
@@ -28,7 +28,7 @@ describe('display cards', () => {
         }),
         Factory.field({
           name: 'Released At',
-          'data-type': 'datetime',
+          'data-type': 'date',
           'show-in-summary': true,
         }),
       ],
@@ -40,7 +40,7 @@ describe('display cards', () => {
     cy.visit('/');
 
     cy.contains(cards[0].attributes['field-values'].Title);
-    cy.contains('Jan 30, 1997 7:00 pm');
+    cy.contains('Jan 31, 1997');
     cy.contains(cards[1].attributes['field-values'].Title);
     cy.contains(cards[0].attributes['field-values'].Publisher).should(
       'not.exist',

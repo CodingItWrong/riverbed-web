@@ -1,6 +1,6 @@
 const FIELD_DATA_TYPES = {
   text: 'text',
-  datetime: 'datetime',
+  date: 'date',
 };
 
 export default FIELD_DATA_TYPES;
