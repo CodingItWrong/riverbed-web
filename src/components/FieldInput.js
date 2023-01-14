@@ -1,6 +1,6 @@
-import dayjs from 'dayjs';
 import {DatePickerInput} from 'react-native-paper-dates';
 import FIELD_DATA_TYPES from '../fieldDataTypes';
+import dateUtils from '../utils/dateUtils';
 import Text from './Text';
 import TextField from './TextField';
 
@@ -19,14 +19,14 @@ export default function FieldInput({field, value, setValue}) {
         />
       );
     case FIELD_DATA_TYPES.date:
-      const dateObject = value ? dayjs(value).toDate() : value;
-
       return (
         <DatePickerInput
           locale="en"
           label={field.attributes.name}
-          value={dateObject}
-          onChange={newDate => setValue(dayjs(newDate).format('YYYY-MM-DD'))}
+          value={dateUtils.serverStringToObject(value)}
+          onChange={newDate =>
+            setValue(dateUtils.objectToServerString(newDate))
+          }
           inputMode="start"
           testID={`date-input-${field.attributes.name}`}
         />
