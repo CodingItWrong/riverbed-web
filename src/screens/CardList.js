@@ -10,7 +10,9 @@ import {
   useWindowDimensions,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import COMMANDS from '../commands';
 import Button from '../components/Button';
+import ButtonElement from '../components/ButtonElement';
 import Card from '../components/Card';
 import FieldDisplay from '../components/FieldDisplay';
 import FieldInput from '../components/FieldInput';
@@ -19,7 +21,10 @@ import Text from '../components/Text';
 import {useCards} from '../data/cards';
 import {useColumns} from '../data/columns';
 import {useElements} from '../data/elements';
+import ELEMENT_TYPES from '../elementTypes';
 import USER_FUNCTIONS from '../userFunctions';
+import dateUtils from '../utils/dateUtils';
+import VALUES from '../values';
 
 export default function CardList() {
   const queryClient = useQueryClient();
@@ -90,6 +95,27 @@ export default function CardList() {
     setFieldValues(null);
   }
 
+  function handlePerformAction({card, action}) {
+    const {command, field, value} = action;
+
+    switch (command) {
+      case COMMANDS.SET_VALUE:
+        let concreteValue;
+        switch (value) {
+          case VALUES.NOW:
+            concreteValue = dateUtils.objectToServerString(new Date());
+            break;
+          default:
+            console.error(`unknown value: ${value}`);
+            return;
+        }
+        setFieldValue(field, concreteValue);
+        break;
+      default:
+        console.error(`unknown command: ${command}`);
+    }
+  }
+
   const {width: viewportWidth} = useWindowDimensions();
   const largeBreakpoint = 600;
   const responsiveColumnStyle = {
@@ -144,7 +170,7 @@ export default function CardList() {
                       keyExtractor={card => card.id}
                       renderItem={({item: card}) => {
                         if (selectedCardId === card.id) {
-                          const fieldsToShow = elements;
+                          const elementsToShow = elements;
 
                           return (
                             <Card
@@ -174,16 +200,41 @@ export default function CardList() {
                                 </>
                               }
                             >
-                              {fieldsToShow.map(field => (
-                                <FieldInput
-                                  key={field.id}
-                                  field={field}
-                                  value={fieldValues[field.id]}
-                                  setValue={value =>
-                                    setFieldValue(field.id, value)
-                                  }
-                                />
-                              ))}
+                              {elementsToShow.map(element => {
+                                switch (element.attributes['element-type']) {
+                                  case ELEMENT_TYPES.field:
+                                    return (
+                                      <FieldInput
+                                        key={element.id}
+                                        field={element}
+                                        value={fieldValues[element.id]}
+                                        setValue={value =>
+                                          setFieldValue(element.id, value)
+                                        }
+                                      />
+                                    );
+                                  case ELEMENT_TYPES.button:
+                                    return (
+                                      <ButtonElement
+                                        key={element.id}
+                                        element={element}
+                                        onPerformAction={() =>
+                                          handlePerformAction({
+                                            card,
+                                            action: element.attributes.action,
+                                          })
+                                        }
+                                      />
+                                    );
+                                  default:
+                                    return (
+                                      <Text>
+                                        unknown element type:{' '}
+                                        {element.attributes['element-type']}
+                                      </Text>
+                                    );
+                                }
+                              })}
                             </Card>
                           );
                         } else {
