@@ -114,9 +114,9 @@ export default function CardList() {
                 const value = card.attributes['field-values'][filter.field];
                 switch (filter.function) {
                   case USER_FUNCTIONS.IS_EMPTY:
-                    return !!value;
-                  case USER_FUNCTIONS.IS_NOT_EMPTY:
                     return !value;
+                  case USER_FUNCTIONS.IS_NOT_EMPTY:
+                    return !!value;
                   default:
                     console.error(
                       `unrecognized user function for column filter: ${filter.function}`,
