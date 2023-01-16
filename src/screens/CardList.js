@@ -4,6 +4,7 @@ import {
   FlatList,
   KeyboardAvoidingView,
   Platform,
+  ScrollView,
   StyleSheet,
   Text,
   View,
@@ -99,7 +100,7 @@ export default function CardList() {
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={styles.fullHeight}
         >
-          <View style={styles.board}>
+          <ScrollView horizontal>
             {columns.map(column => (
               <View key={column.id}>
                 <Text>{column.attributes.name}</Text>
@@ -154,7 +155,7 @@ export default function CardList() {
                 />
               </View>
             ))}
-          </View>
+          </ScrollView>
         </KeyboardAvoidingView>
       </SafeAreaView>
     </ScreenBackground>
@@ -164,8 +165,5 @@ export default function CardList() {
 const styles = StyleSheet.create({
   fullHeight: {
     flex: 1,
-  },
-  board: {
-    flexDirection: 'row',
   },
 });
