@@ -22,8 +22,12 @@ export default function CardList() {
   const [selectedCardId, setSelectedCardId] = useState(null);
   const [fieldValues, setFieldValues] = useState(null);
 
-  const {data: fields} = useQuery(['fields'], () => fieldClient.all());
-  const {data: cards} = useQuery(['cards'], () => cardClient.all());
+  const {data: fields = []} = useQuery(['fields'], () =>
+    fieldClient.all().then(resp => resp.data),
+  );
+  const {data: cards = []} = useQuery(['cards'], () =>
+    cardClient.all().then(resp => resp.data),
+  );
 
   const refreshCards = () => queryClient.invalidateQueries(['cards']);
 
@@ -67,7 +71,7 @@ export default function CardList() {
   function showDetail(cardId) {
     setSelectedCardId(cardId);
     setFieldValues(
-      cards.data.find(card => card.id === cardId).attributes['field-values'],
+      cards.find(card => card.id === cardId).attributes['field-values'],
     );
   }
 
@@ -89,11 +93,11 @@ export default function CardList() {
           style={styles.fullHeight}
         >
           <FlatList
-            data={cards.data}
+            data={cards}
             keyExtractor={card => card.id}
             renderItem={({item: card}) => {
               if (selectedCardId === card.id) {
-                const fieldsToShow = fields.data;
+                const fieldsToShow = fields;
 
                 return (
                   <Card
@@ -119,7 +123,7 @@ export default function CardList() {
                   </Card>
                 );
               } else {
-                const fieldsToShow = fields.data.filter(
+                const fieldsToShow = fields.filter(
                   field => field.attributes['show-in-summary'],
                 );
 
