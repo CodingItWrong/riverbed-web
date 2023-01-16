@@ -6,7 +6,6 @@ import {
   Platform,
   ScrollView,
   StyleSheet,
-  Text,
   View,
   useWindowDimensions,
 } from 'react-native';
@@ -16,6 +15,7 @@ import Card from '../components/Card';
 import FieldDisplay from '../components/FieldDisplay';
 import FieldInput from '../components/FieldInput';
 import ScreenBackground from '../components/ScreenBackground';
+import Text from '../components/Text';
 import {useCards} from '../data/cards';
 import {useColumns} from '../data/columns';
 import {useFields} from '../data/fields';
