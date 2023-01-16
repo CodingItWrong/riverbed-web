@@ -1,4 +1,5 @@
 const VALUES = {
+  EMPTY: 'EMPTY',
   NOW: 'NOW',
 };
 

@@ -102,6 +102,9 @@ export default function CardList() {
       case COMMANDS.SET_VALUE:
         let concreteValue;
         switch (value) {
+          case VALUES.EMPTY:
+            concreteValue = null;
+            break;
           case VALUES.NOW:
             concreteValue = dateUtils.objectToServerString(new Date());
             break;
