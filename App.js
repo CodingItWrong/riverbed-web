@@ -3,8 +3,9 @@ import {
   QueryClientProvider,
   focusManager,
 } from '@tanstack/react-query';
+import {StatusBar} from 'expo-status-bar';
 import {useEffect} from 'react';
-import {AppState, Platform, StatusBar} from 'react-native';
+import {AppState, Platform} from 'react-native';
 import {Provider as PaperProvider} from 'react-native-paper';
 import {en, registerTranslation} from 'react-native-paper-dates';
 import CardList from './src/screens/CardList';
@@ -28,7 +29,7 @@ export default function App() {
 
   return (
     <>
-      <StatusBar barStyle="dark-content" />
+      <StatusBar />
       <PaperProvider>
         <QueryClientProvider client={queryClient}>
           <CardList />
