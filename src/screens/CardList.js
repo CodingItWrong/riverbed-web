@@ -123,6 +123,7 @@ export default function CardList() {
   const largeBreakpoint = 600;
   const responsiveColumnStyle = {
     width: viewportWidth > largeBreakpoint ? 400 : viewportWidth,
+    padding: 8,
   };
   const responsiveButtonContainerStyle = {
     alignItems: viewportWidth > largeBreakpoint ? 'flex-start' : 'stretch',
