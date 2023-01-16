@@ -1,5 +1,5 @@
 import FIELD_DATA_TYPES from '../../src/fieldDataTypes';
-import USER_FUNCTIONS from '../../src/userFunctions';
+import QUERIES from '../../src/queries';
 import Factory from '../support/Factory';
 
 describe('display cards', () => {
@@ -24,14 +24,14 @@ describe('display cards', () => {
       name: 'Released',
       filter: {
         field: releasedAtField.id,
-        function: USER_FUNCTIONS.IS_NOT_EMPTY,
+        function: QUERIES.IS_NOT_EMPTY,
       },
     });
     const unreleasedColumn = Factory.column({
       name: 'Unreleased',
       filter: {
         field: releasedAtField.id,
-        function: USER_FUNCTIONS.IS_EMPTY,
+        function: QUERIES.IS_EMPTY,
       },
     });
 

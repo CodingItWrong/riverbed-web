@@ -22,7 +22,7 @@ import {useCards} from '../data/cards';
 import {useColumns} from '../data/columns';
 import {useElements} from '../data/elements';
 import ELEMENT_TYPES from '../elementTypes';
-import USER_FUNCTIONS from '../userFunctions';
+import QUERIES from '../queries';
 import dateUtils from '../utils/dateUtils';
 import VALUES from '../values';
 
@@ -146,9 +146,9 @@ export default function CardList() {
               const columnCards = cards.filter(card => {
                 const value = card.attributes['field-values'][filter.field];
                 switch (filter.function) {
-                  case USER_FUNCTIONS.IS_EMPTY:
+                  case QUERIES.IS_EMPTY:
                     return !value;
-                  case USER_FUNCTIONS.IS_NOT_EMPTY:
+                  case QUERIES.IS_NOT_EMPTY:
                     return !!value;
                   default:
                     console.error(
