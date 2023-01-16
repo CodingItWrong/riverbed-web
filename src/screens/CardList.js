@@ -126,7 +126,7 @@ export default function CardList() {
 
               return (
                 <View key={column.id} style={columnStyle}>
-                  <Text>{name}</Text>
+                  <Text variant="titleLarge">{name}</Text>
                   <FlatList
                     data={columnCards}
                     keyExtractor={card => card.id}

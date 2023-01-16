@@ -1,5 +1,6 @@
 import {Text as PaperText} from 'react-native-paper';
 
-export default function Text({children}) {
-  return <PaperText>{children}</PaperText>;
+// TODO: abstract away variant from Paper dependnecy
+export default function Text({children, variant}) {
+  return <PaperText variant={variant}>{children}</PaperText>;
 }
