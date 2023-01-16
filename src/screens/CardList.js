@@ -152,9 +152,23 @@ export default function CardList() {
                               style={styles.card}
                               buttons={
                                 <>
-                                  <Button onPress={hideDetail}>Close</Button>
-                                  <Button onPress={deleteCard}>Delete</Button>
-                                  <Button primary onPress={updateCard}>
+                                  <Button
+                                    onPress={hideDetail}
+                                    style={styles.button}
+                                  >
+                                    Close
+                                  </Button>
+                                  <Button
+                                    onPress={deleteCard}
+                                    style={styles.button}
+                                  >
+                                    Delete
+                                  </Button>
+                                  <Button
+                                    primary
+                                    onPress={updateCard}
+                                    style={styles.button}
+                                  >
                                     Save
                                   </Button>
                                 </>
@@ -222,5 +236,8 @@ const styles = StyleSheet.create({
   card: {
     margin: 4,
     marginTop: 8,
+  },
+  button: {
+    marginLeft: 8,
   },
 });
