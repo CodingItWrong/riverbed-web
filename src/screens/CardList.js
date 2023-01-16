@@ -142,7 +142,7 @@ export default function CardList() {
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={styles.fullHeight}
         >
-          <ScrollView horizontal>
+          <ScrollView horizontal style={styles.fullHeight}>
             {columns.map(column => {
               const {name, filter} = column.attributes;
 
@@ -164,9 +164,9 @@ export default function CardList() {
                 <View
                   key={column.id}
                   testID={`column-${column.id}`}
-                  style={responsiveColumnStyle}
+                  style={[responsiveColumnStyle, styles.fullHeight]}
                 >
-                  <Card mode="contained" style={styles.column} title={name}>
+                  <View mode="contained" style={styles.fullHeight} title={name}>
                     <Text variant="titleLarge">{name}</Text>
                     <FlatList
                       data={columnCards}
@@ -265,7 +265,7 @@ export default function CardList() {
                         }
                       }}
                     />
-                  </Card>
+                  </View>
                 </View>
               );
             })}
