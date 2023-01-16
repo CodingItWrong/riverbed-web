@@ -92,7 +92,7 @@ export default function CardList() {
 
   const {width: viewportWidth} = useWindowDimensions();
   const largeBreakpoint = 600;
-  const columnStyle = {
+  const responsiveColumnStyle = {
     width: viewportWidth > largeBreakpoint ? 400 : viewportWidth,
   };
   const addButtonContainerStyle = {
@@ -135,65 +135,69 @@ export default function CardList() {
                 <View
                   key={column.id}
                   testID={`column-${column.id}`}
-                  style={columnStyle}
+                  style={responsiveColumnStyle}
                 >
-                  <Text variant="titleLarge">{name}</Text>
-                  <FlatList
-                    data={columnCards}
-                    keyExtractor={card => card.id}
-                    renderItem={({item: card}) => {
-                      if (selectedCardId === card.id) {
-                        const fieldsToShow = fields;
+                  <Card mode="contained" style={styles.column}>
+                    <Text variant="titleLarge">{name}</Text>
+                    <FlatList
+                      data={columnCards}
+                      keyExtractor={card => card.id}
+                      renderItem={({item: card}) => {
+                        if (selectedCardId === card.id) {
+                          const fieldsToShow = fields;
 
-                        return (
-                          <Card
-                            key={card.id}
-                            buttons={
-                              <>
-                                <Button onPress={hideDetail}>Close</Button>
-                                <Button onPress={deleteCard}>Delete</Button>
-                                <Button primary onPress={updateCard}>
-                                  Save
-                                </Button>
-                              </>
-                            }
-                          >
-                            {fieldsToShow.map(field => (
-                              <FieldInput
-                                key={field.id}
-                                field={field}
-                                value={fieldValues[field.id]}
-                                setValue={value =>
-                                  setFieldValue(field.id, value)
-                                }
-                              />
-                            ))}
-                          </Card>
-                        );
-                      } else {
-                        const fieldsToShow = fields.filter(
-                          field => field.attributes['show-in-summary'],
-                        );
+                          return (
+                            <Card
+                              key={card.id}
+                              style={styles.card}
+                              buttons={
+                                <>
+                                  <Button onPress={hideDetail}>Close</Button>
+                                  <Button onPress={deleteCard}>Delete</Button>
+                                  <Button primary onPress={updateCard}>
+                                    Save
+                                  </Button>
+                                </>
+                              }
+                            >
+                              {fieldsToShow.map(field => (
+                                <FieldInput
+                                  key={field.id}
+                                  field={field}
+                                  value={fieldValues[field.id]}
+                                  setValue={value =>
+                                    setFieldValue(field.id, value)
+                                  }
+                                />
+                              ))}
+                            </Card>
+                          );
+                        } else {
+                          const fieldsToShow = fields.filter(
+                            field => field.attributes['show-in-summary'],
+                          );
 
-                        return (
-                          <Card
-                            key={card.id}
-                            onPress={() => showDetail(card.id)}
-                          >
-                            {fieldsToShow.map(field => (
-                              <FieldDisplay
-                                key={field.id}
-                                field={field}
-                                value={
-                                  card.attributes['field-values'][field.id]
-                                }
-                              />
-                            ))}
-                          </Card>
-                        );
-                      }
-                    }}
-                  />
+                          return (
+                            <Card
+                              key={card.id}
+                              style={styles.card}
+                              onPress={() => showDetail(card.id)}
+                            >
+                              {fieldsToShow.map(field => (
+                                <FieldDisplay
+                                  key={field.id}
+                                  field={field}
+                                  value={
+                                    card.attributes['field-values'][field.id]
+                                  }
+                                />
+                              ))}
+                            </Card>
+                          );
+                        }
+                      }}
+                    />
+                  </Card>
                 </View>
               );
             })}
@@ -207,5 +211,13 @@ export default function CardList() {
 const styles = StyleSheet.create({
   fullHeight: {
     flex: 1,
+  },
+  column: {
+    marginHorizontal: 8,
+    marginTop: 16,
+  },
+  card: {
+    margin: 4,
+    marginTop: 8,
   },
 });
