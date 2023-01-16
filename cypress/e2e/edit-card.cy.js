@@ -45,7 +45,7 @@ describe('edit cards', () => {
       [titleField.id]: title,
       [publisherField.id]: publisher,
     });
-    cy.intercept('GET', 'http://cypressapi/fields?', {
+    cy.intercept('GET', 'http://cypressapi/elements?', {
       data: fields,
     });
     cy.intercept('http://cypressapi/columns?', {

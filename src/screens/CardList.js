@@ -18,19 +18,19 @@ import ScreenBackground from '../components/ScreenBackground';
 import Text from '../components/Text';
 import {useCards} from '../data/cards';
 import {useColumns} from '../data/columns';
-import {useFields} from '../data/fields';
+import {useElements} from '../data/elements';
 import USER_FUNCTIONS from '../userFunctions';
 
 export default function CardList() {
   const queryClient = useQueryClient();
-  const fieldClient = useFields();
+  const elementClient = useElements();
   const columnClient = useColumns();
   const cardClient = useCards();
   const [selectedCardId, setSelectedCardId] = useState(null);
   const [fieldValues, setFieldValues] = useState(null);
 
-  const {data: fields = []} = useQuery(['fields'], () =>
-    fieldClient.all().then(resp => resp.data),
+  const {data: elements = []} = useQuery(['elements'], () =>
+    elementClient.all().then(resp => resp.data),
   );
   const {data: columns = []} = useQuery(['columns'], () =>
     columnClient.all().then(resp => resp.data),
@@ -99,7 +99,7 @@ export default function CardList() {
     alignItems: viewportWidth > largeBreakpoint ? 'flex-start' : 'stretch',
   };
 
-  if (!cards || !fields) {
+  if (!cards || !elements || !columns) {
     return null;
   }
 
@@ -137,14 +137,14 @@ export default function CardList() {
                   testID={`column-${column.id}`}
                   style={responsiveColumnStyle}
                 >
-                  <Card mode="contained" style={styles.column}>
+                  <Card mode="contained" style={styles.column} title={name}>
                     <Text variant="titleLarge">{name}</Text>
                     <FlatList
                       data={columnCards}
                       keyExtractor={card => card.id}
                       renderItem={({item: card}) => {
                         if (selectedCardId === card.id) {
-                          const fieldsToShow = fields;
+                          const fieldsToShow = elements;
 
                           return (
                             <Card
@@ -187,7 +187,7 @@ export default function CardList() {
                             </Card>
                           );
                         } else {
-                          const fieldsToShow = fields.filter(
+                          const fieldsToShow = elements.filter(
                             field => field.attributes['show-in-summary'],
                           );
 

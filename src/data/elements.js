@@ -1,11 +1,11 @@
 import {ResourceClient} from '@codingitwrong/jsonapi-client';
 import httpClient from './httpClient';
 
-const fieldClient = new ResourceClient({
-  name: 'fields',
+const elementClient = new ResourceClient({
+  name: 'elements',
   httpClient: httpClient(),
 });
 
-export function useFields() {
-  return fieldClient;
+export function useElements() {
+  return elementClient;
 }

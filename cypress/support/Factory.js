@@ -8,11 +8,12 @@ const Factory = {
   field(attributeOverrides) {
     const attributes = {
       name: 'Some Field',
+      'element-type': 'field',
       'show-in-summary': true,
       ...attributeOverrides,
     };
     return {
-      type: 'fields',
+      type: 'elements',
       id: String(this._ids.card++),
       attributes,
     };

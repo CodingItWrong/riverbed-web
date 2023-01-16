@@ -47,7 +47,7 @@ describe('display cards', () => {
       }),
     ];
 
-    cy.intercept('http://cypressapi/fields?', {
+    cy.intercept('http://cypressapi/elements?', {
       data: [titleField, publisherField, releasedAtField],
     });
     cy.intercept('http://cypressapi/columns?', {
