@@ -91,8 +91,13 @@ export default function CardList() {
   }
 
   const {width: viewportWidth} = useWindowDimensions();
-  const columnWidth = viewportWidth > 600 ? 400 : viewportWidth;
-  const columnStyle = {width: columnWidth};
+  const largeBreakpoint = 600;
+  const columnStyle = {
+    width: viewportWidth > largeBreakpoint ? 400 : viewportWidth,
+  };
+  const addButtonContainerStyle = {
+    alignItems: viewportWidth > largeBreakpoint ? 'flex-start' : 'stretch',
+  };
 
   if (!cards || !fields) {
     return null;
@@ -101,7 +106,9 @@ export default function CardList() {
   return (
     <ScreenBackground>
       <SafeAreaView style={styles.fullHeight}>
-        <Button onPress={addCard}>Add Card</Button>
+        <View style={addButtonContainerStyle}>
+          <Button onPress={addCard}>Add Card</Button>
+        </View>
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={styles.fullHeight}
