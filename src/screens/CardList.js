@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Text,
   View,
+  useWindowDimensions,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Button from '../components/Button';
@@ -72,10 +73,6 @@ export default function CardList() {
     },
   });
 
-  if (!cards || !fields) {
-    return null;
-  }
-
   function showDetail(cardId) {
     setSelectedCardId(cardId);
     setFieldValues(
@@ -92,6 +89,14 @@ export default function CardList() {
     setFieldValues(null);
   }
 
+  const {width: viewportWidth} = useWindowDimensions();
+  const columnWidth = viewportWidth > 600 ? 400 : viewportWidth;
+  const columnStyle = {width: columnWidth};
+
+  if (!cards || !fields) {
+    return null;
+  }
+
   return (
     <ScreenBackground>
       <SafeAreaView style={styles.fullHeight}>
@@ -102,7 +107,7 @@ export default function CardList() {
         >
           <ScrollView horizontal>
             {columns.map(column => (
-              <View key={column.id}>
+              <View key={column.id} style={columnStyle}>
                 <Text>{column.attributes.name}</Text>
                 <FlatList
                   data={cards}
