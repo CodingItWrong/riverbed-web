@@ -19,6 +19,7 @@ import ScreenBackground from '../components/ScreenBackground';
 import {useCards} from '../data/cards';
 import {useColumns} from '../data/columns';
 import {useFields} from '../data/fields';
+import USER_FUNCTIONS from '../userFunctions';
 
 export default function CardList() {
   const queryClient = useQueryClient();
@@ -106,60 +107,85 @@ export default function CardList() {
           style={styles.fullHeight}
         >
           <ScrollView horizontal>
-            {columns.map(column => (
-              <View key={column.id} style={columnStyle}>
-                <Text>{column.attributes.name}</Text>
-                <FlatList
-                  data={cards}
-                  keyExtractor={card => card.id}
-                  renderItem={({item: card}) => {
-                    if (selectedCardId === card.id) {
-                      const fieldsToShow = fields;
+            {columns.map(column => {
+              const {name, filter} = column.attributes;
 
-                      return (
-                        <Card
-                          key={card.id}
-                          buttons={
-                            <>
-                              <Button onPress={hideDetail}>Close</Button>
-                              <Button onPress={deleteCard}>Delete</Button>
-                              <Button primary onPress={updateCard}>
-                                Save
-                              </Button>
-                            </>
-                          }
-                        >
-                          {fieldsToShow.map(field => (
-                            <FieldInput
-                              key={field.id}
-                              field={field}
-                              value={fieldValues[field.id]}
-                              setValue={value => setFieldValue(field.id, value)}
-                            />
-                          ))}
-                        </Card>
-                      );
-                    } else {
-                      const fieldsToShow = fields.filter(
-                        field => field.attributes['show-in-summary'],
-                      );
+              const columnCards = cards.filter(card => {
+                const value = card.attributes['field-values'][filter.field];
+                switch (filter.function) {
+                  case USER_FUNCTIONS.IS_EMPTY:
+                    return !!value;
+                  case USER_FUNCTIONS.IS_NOT_EMPTY:
+                    return !value;
+                  default:
+                    console.error(
+                      `unrecognized user function for column filter: ${filter.function}`,
+                    );
+                }
+              });
 
-                      return (
-                        <Card key={card.id} onPress={() => showDetail(card.id)}>
-                          {fieldsToShow.map(field => (
-                            <FieldDisplay
-                              key={field.id}
-                              field={field}
-                              value={card.attributes['field-values'][field.id]}
-                            />
-                          ))}
-                        </Card>
-                      );
-                    }
-                  }}
-                />
-              </View>
-            ))}
+              return (
+                <View key={column.id} style={columnStyle}>
+                  <Text>{name}</Text>
+                  <FlatList
+                    data={columnCards}
+                    keyExtractor={card => card.id}
+                    renderItem={({item: card}) => {
+                      if (selectedCardId === card.id) {
+                        const fieldsToShow = fields;
+
+                        return (
+                          <Card
+                            key={card.id}
+                            buttons={
+                              <>
+                                <Button onPress={hideDetail}>Close</Button>
+                                <Button onPress={deleteCard}>Delete</Button>
+                                <Button primary onPress={updateCard}>
+                                  Save
+                                </Button>
+                              </>
+                            }
+                          >
+                            {fieldsToShow.map(field => (
+                              <FieldInput
+                                key={field.id}
+                                field={field}
+                                value={fieldValues[field.id]}
+                                setValue={value =>
+                                  setFieldValue(field.id, value)
+                                }
+                              />
+                            ))}
+                          </Card>
+                        );
+                      } else {
+                        const fieldsToShow = fields.filter(
+                          field => field.attributes['show-in-summary'],
+                        );
+
+                        return (
+                          <Card
+                            key={card.id}
+                            onPress={() => showDetail(card.id)}
+                          >
+                            {fieldsToShow.map(field => (
+                              <FieldDisplay
+                                key={field.id}
+                                field={field}
+                                value={
+                                  card.attributes['field-values'][field.id]
+                                }
+                              />
+                            ))}
+                          </Card>
+                        );
+                      }
+                    }}
+                  />
+                </View>
+              );
+            })}
           </ScrollView>
         </KeyboardAvoidingView>
       </SafeAreaView>

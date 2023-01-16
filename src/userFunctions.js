@@ -1,0 +1,6 @@
+const USER_FUNCTIONS = {
+  IS_EMPTY: 'IS_EMPTY',
+  IS_NOT_EMPTY: 'IS_NOT_EMPTY',
+};
+
+export default USER_FUNCTIONS;

@@ -1,6 +1,7 @@
 const Factory = {
   _ids: {
     field: 1,
+    column: 1,
     card: 1,
   },
 
@@ -13,6 +14,14 @@ const Factory = {
     return {
       type: 'fields',
       id: String(this._ids.card++),
+      attributes,
+    };
+  },
+
+  column(attributes) {
+    return {
+      type: 'columns',
+      id: String(this._ids.column++),
       attributes,
     };
   },

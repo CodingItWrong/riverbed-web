@@ -1,21 +1,38 @@
+import FIELD_DATA_TYPES from '../../src/fieldDataTypes';
+import USER_FUNCTIONS from '../../src/userFunctions';
 import Factory from '../support/Factory';
 
 describe('display cards', () => {
   it('displays cards from the server', () => {
     const titleField = Factory.field({
       name: 'Title',
-      'data-type': 'text',
+      'data-type': FIELD_DATA_TYPES.text,
       'show-in-summary': true,
     });
     const publisherField = Factory.field({
       name: 'Publisher',
-      'data-type': 'text',
+      'data-type': FIELD_DATA_TYPES.text,
       'show-in-summary': false,
     });
     const releasedAtField = Factory.field({
       name: 'Released At',
-      'data-type': 'date',
+      'data-type': FIELD_DATA_TYPES.date,
       'show-in-summary': true,
+    });
+
+    const releasedColumn = Factory.column({
+      name: 'Released',
+      filter: {
+        field: releasedAtField.id,
+        function: USER_FUNCTIONS.IS_NOT_EMPTY,
+      },
+    });
+    const unreleasedColumn = Factory.column({
+      name: 'Unreleased',
+      filter: {
+        field: releasedAtField.id,
+        function: USER_FUNCTIONS.IS_EMPTY,
+      },
     });
 
     const cards = [
@@ -34,7 +51,7 @@ describe('display cards', () => {
       data: [titleField, publisherField, releasedAtField],
     });
     cy.intercept('http://cypressapi/columns?', {
-      data: [{id: '1', attributes: {name: 'All Cards'}}],
+      data: [releasedColumn, unreleasedColumn],
     });
     cy.intercept('http://cypressapi/cards?', {
       data: cards,
