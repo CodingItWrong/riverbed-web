@@ -33,6 +33,9 @@ describe('display cards', () => {
     cy.intercept('http://cypressapi/fields?', {
       data: [titleField, publisherField, releasedAtField],
     });
+    cy.intercept('http://cypressapi/columns?', {
+      data: [{id: '1', attributes: {name: 'All Cards'}}],
+    });
     cy.intercept('http://cypressapi/cards?', {
       data: cards,
     });

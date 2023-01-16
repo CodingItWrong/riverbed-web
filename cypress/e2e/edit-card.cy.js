@@ -31,6 +31,9 @@ describe('edit cards', () => {
     cy.intercept('GET', 'http://cypressapi/fields?', {
       data: fields,
     });
+    cy.intercept('http://cypressapi/columns?', {
+      data: [{id: '1', attributes: {name: 'All Cards'}}],
+    });
     cy.intercept('GET', 'http://cypressapi/cards?', {
       data: [card],
     });
