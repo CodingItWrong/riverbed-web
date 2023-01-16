@@ -125,7 +125,11 @@ export default function CardList() {
               });
 
               return (
-                <View key={column.id} style={columnStyle}>
+                <View
+                  key={column.id}
+                  testID={`column-${column.id}`}
+                  style={columnStyle}
+                >
                   <Text variant="titleLarge">{name}</Text>
                   <FlatList
                     data={columnCards}

@@ -59,9 +59,13 @@ describe('display cards', () => {
 
     cy.visit('/');
 
-    cy.contains(cards[0].attributes['field-values'][titleField.id]);
+    cy.get(`[data-testid=column-${releasedColumn.id}]`).contains(
+      cards[0].attributes['field-values'][titleField.id],
+    );
     cy.contains('Jan 31, 1997');
-    cy.contains(cards[1].attributes['field-values'][titleField.id]);
+    cy.get(`[data-testid=column-${unreleasedColumn.id}]`).contains(
+      cards[1].attributes['field-values'][titleField.id],
+    );
     cy.contains(cards[0].attributes['field-values'][publisherField.id]).should(
       'not.exist',
     );

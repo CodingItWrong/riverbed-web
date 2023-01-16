@@ -58,7 +58,9 @@ describe('edit cards', () => {
     cy.visit('/');
 
     cy.log('SHOW DETAIL');
-    cy.contains(title).click();
+    cy.get(`[data-testid="column-${unreleasedColumn.id}"]`)
+      .contains(title)
+      .click();
     cy.get(`[data-testid="text-input-${publisherField.id}"]`)
       .invoke('val')
       .then(value => expect(value).to.equal(publisher));
@@ -96,7 +98,7 @@ describe('edit cards', () => {
     cy.contains(card.attributes['field-values'][publisherField.id]).should(
       'not.exist',
     );
-    cy.contains(updatedTitle);
+    cy.get(`[data-testid=column-${releasedColumn.id}]`).contains(updatedTitle);
     cy.contains('Jan 1, 2000');
 
     cy.log('DELETE CARD');
