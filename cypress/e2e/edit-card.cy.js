@@ -52,7 +52,6 @@ describe('edit cards', () => {
       {[titleField.id]: updatedTitle, [releasedAtField.id]: '2000-01-01'},
       card,
     );
-    console.log('PATCHING', card.id);
     cy.intercept('PATCH', `http://cypressapi/cards/${card.id}?`, {
       success: true,
     }).as('updateCard1');
@@ -93,7 +92,6 @@ describe('edit cards', () => {
 
     cy.log('CREATE CARD');
     const newCard = Factory.card();
-    console.log({newCard});
     cy.intercept('POST', 'http://cypressapi/cards?', {data: newCard});
     cy.intercept('GET', 'http://cypressapi/cards?', {data: [newCard]});
     cy.contains('Add Card').click();
