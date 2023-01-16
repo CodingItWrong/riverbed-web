@@ -95,7 +95,7 @@ export default function CardList() {
   const responsiveColumnStyle = {
     width: viewportWidth > largeBreakpoint ? 400 : viewportWidth,
   };
-  const addButtonContainerStyle = {
+  const responsiveButtonContainerStyle = {
     alignItems: viewportWidth > largeBreakpoint ? 'flex-start' : 'stretch',
   };
 
@@ -106,7 +106,7 @@ export default function CardList() {
   return (
     <ScreenBackground>
       <SafeAreaView style={styles.fullHeight}>
-        <View style={addButtonContainerStyle}>
+        <View style={[styles.buttonContainer, responsiveButtonContainerStyle]}>
           <Button onPress={addCard}>Add Card</Button>
         </View>
         <KeyboardAvoidingView
@@ -212,9 +212,12 @@ const styles = StyleSheet.create({
   fullHeight: {
     flex: 1,
   },
+  buttonContainer: {
+    margin: 8,
+  },
   column: {
     marginHorizontal: 8,
-    marginTop: 16,
+    marginBottom: 8,
   },
   card: {
     margin: 4,
