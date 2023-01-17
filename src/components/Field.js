@@ -1,3 +1,4 @@
+import {View} from 'react-native';
 import {DatePickerInput} from 'react-native-paper-dates';
 import FIELD_DATA_TYPES from '../fieldDataTypes';
 import dateUtils from '../utils/dateUtils';
@@ -13,7 +14,11 @@ export default function Field({field, value, readOnly, setValue, style}) {
   switch (dataType) {
     case FIELD_DATA_TYPES.text:
       if (readOnly) {
-        return <Text>{value}</Text>;
+        return (
+          <View style={style}>
+            <Text>{value}</Text>
+          </View>
+        );
       } else {
         return (
           <TextField
@@ -28,7 +33,11 @@ export default function Field({field, value, readOnly, setValue, style}) {
       }
     case FIELD_DATA_TYPES.date:
       if (readOnly) {
-        return <Text>{dateUtils.serverStringToHumanString(value)}</Text>;
+        return (
+          <View style={style}>
+            <Text>{dateUtils.serverStringToHumanString(value)}</Text>
+          </View>
+        );
       } else {
         return (
           <DatePickerInput
