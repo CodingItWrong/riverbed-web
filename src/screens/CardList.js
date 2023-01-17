@@ -50,11 +50,11 @@ export default function CardList() {
   });
 
   const {mutate: updateCard} = useMutation({
-    mutationFn: () => {
+    mutationFn: fieldValueOverrides => {
       const updatedCard = {
         type: 'cards',
         id: selectedCardId,
-        attributes: {'field-values': fieldValues},
+        attributes: {'field-values': {...fieldValues, ...fieldValueOverrides}},
       };
       return cardClient.update(updatedCard);
     },
@@ -79,8 +79,12 @@ export default function CardList() {
     );
   }
 
-  function setFieldValue(name, value) {
-    setFieldValues(oldValues => ({...oldValues, [name]: value}));
+  function setFieldValue(fieldId, value) {
+    setFieldValues(oldValues => ({...oldValues, [fieldId]: value}));
+  }
+
+  function setFieldValueAndSave(fieldId, value) {
+    updateCard({[fieldId]: value});
   }
 
   function hideDetail() {
@@ -105,7 +109,7 @@ export default function CardList() {
             console.error(`unknown value: ${value}`);
             return;
         }
-        setFieldValue(field, concreteValue);
+        setFieldValueAndSave(field, concreteValue);
         break;
       default:
         console.error(`unknown command: ${command}`);
@@ -219,7 +223,7 @@ export default function CardList() {
                           </Button>
                           <Button
                             primary
-                            onPress={updateCard}
+                            onPress={() => updateCard()}
                             style={styles.detailElement}
                           >
                             Save

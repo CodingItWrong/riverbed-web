@@ -62,7 +62,6 @@ describe('edit cards', () => {
     cy.get(`[data-testid="column-${unreleasedColumn.id}"]`)
       .contains(title)
       .click();
-    cy.get(`[data-testid=button-${releaseButton.id}]`).click();
 
     const updatedCard = Factory.card(
       {[releasedAtField.id]: '2023-01-01'},
@@ -73,7 +72,7 @@ describe('edit cards', () => {
     }).as('updateCard');
     cy.intercept('GET', 'http://cypressapi/cards?', {data: [updatedCard]});
 
-    cy.contains('Save').click();
+    cy.get(`[data-testid=button-${releaseButton.id}]`).click();
 
     cy.get(`[data-testid="column-${releasedColumn.id}"]`).contains(title);
   });
