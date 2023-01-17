@@ -167,33 +167,7 @@ export default function CardList() {
                       const elementsToShow = elements;
 
                       return (
-                        <Card
-                          key={card.id}
-                          style={styles.card}
-                          buttons={
-                            <>
-                              <Button
-                                onPress={hideDetail}
-                                style={styles.button}
-                              >
-                                Close
-                              </Button>
-                              <Button
-                                onPress={deleteCard}
-                                style={styles.button}
-                              >
-                                Delete
-                              </Button>
-                              <Button
-                                primary
-                                onPress={updateCard}
-                                style={styles.button}
-                              >
-                                Save
-                              </Button>
-                            </>
-                          }
-                        >
+                        <Card key={card.id} style={styles.card}>
                           {elementsToShow.map(element => {
                             switch (element.attributes['element-type']) {
                               case ELEMENT_TYPES.field:
@@ -231,6 +205,25 @@ export default function CardList() {
                                 );
                             }
                           })}
+                          <Button
+                            onPress={hideDetail}
+                            style={styles.detailElement}
+                          >
+                            Close
+                          </Button>
+                          <Button
+                            onPress={deleteCard}
+                            style={styles.detailElement}
+                          >
+                            Delete
+                          </Button>
+                          <Button
+                            primary
+                            onPress={updateCard}
+                            style={styles.detailElement}
+                          >
+                            Save
+                          </Button>
                         </Card>
                       );
                     } else {
@@ -285,8 +278,5 @@ const styles = StyleSheet.create({
   },
   detailElement: {
     marginTop: 8,
-  },
-  button: {
-    marginLeft: 8,
   },
 });
