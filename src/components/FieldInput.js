@@ -1,8 +1,10 @@
+import {StyleSheet} from 'react-native';
 import {DatePickerInput} from 'react-native-paper-dates';
 import FIELD_DATA_TYPES from '../fieldDataTypes';
 import dateUtils from '../utils/dateUtils';
 import Text from './Text';
 import TextField from './TextField';
+import sharedStyles from './sharedStyles';
 
 // TODO: wrap
 
@@ -30,7 +32,7 @@ export default function FieldInput({field, value, setValue, style}) {
           }
           inputMode="start"
           testID={`date-input-${field.id}`}
-          style={style}
+          style={[sharedStyles.textInput, style]}
         />
       );
     default:

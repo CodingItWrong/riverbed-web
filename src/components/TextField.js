@@ -1,4 +1,5 @@
 import {TextInput as PaperTextInput} from 'react-native-paper';
+import sharedStyles from './sharedStyles';
 
 export default function TextField({label, value, onChangeText, testID, style}) {
   return (
@@ -8,7 +9,7 @@ export default function TextField({label, value, onChangeText, testID, style}) {
       testID={testID}
       value={value}
       onChangeText={onChangeText}
-      style={style}
+      style={[sharedStyles.textInput, style]}
     />
   );
 }
