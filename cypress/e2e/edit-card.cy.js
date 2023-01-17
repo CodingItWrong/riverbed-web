@@ -66,7 +66,7 @@ describe('edit cards', () => {
       .then(value => expect(value).to.equal(publisher));
 
     cy.log('HIDE DETAIL');
-    cy.contains('Close').click();
+    cy.contains('Cancel').click();
     cy.contains(publisher).should('not.exist');
 
     cy.log('EDIT CARD');

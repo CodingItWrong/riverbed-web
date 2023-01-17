@@ -209,7 +209,7 @@ export default function CardList() {
                             onPress={hideDetail}
                             style={styles.detailElement}
                           >
-                            Close
+                            Cancel
                           </Button>
                           <Button
                             onPress={deleteCard}
