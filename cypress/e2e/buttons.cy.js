@@ -24,6 +24,23 @@ describe('edit cards', () => {
         field: releasedAtField.id,
         value: 'NOW',
       },
+      'show-condition': {
+        field: releasedAtField.id,
+        query: QUERIES.IS_EMPTY,
+      },
+    });
+    const unreleaseButton = Factory.button({
+      name: 'Unrelease',
+      'show-in-summary': false,
+      action: {
+        command: 'SET_VALUE',
+        field: releasedAtField.id,
+        value: 'NOW',
+      },
+      'show-condition': {
+        field: releasedAtField.id,
+        query: QUERIES.IS_NOT_EMPTY,
+      },
     });
 
     const releasedColumn = Factory.column({
@@ -41,7 +58,12 @@ describe('edit cards', () => {
       },
     });
 
-    const elements = [titleField, releasedAtField, releaseButton];
+    const elements = [
+      titleField,
+      releasedAtField,
+      releaseButton,
+      unreleaseButton,
+    ];
     const card = Factory.card({
       [titleField.id]: title,
     });
@@ -62,6 +84,7 @@ describe('edit cards', () => {
     cy.get(`[data-testid="column-${unreleasedColumn.id}"]`)
       .contains(title)
       .click();
+    cy.get(`[data-testid=button-${unreleaseButton.id}]`).should('not.exist');
 
     const updatedCard = Factory.card(
       {[releasedAtField.id]: '2023-01-01'},

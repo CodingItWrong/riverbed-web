@@ -141,20 +141,9 @@ export default function CardList() {
             const {name, 'card-inclusion-condition': cardInclusionCondition} =
               column.attributes;
 
-            const columnCards = cards.filter(card => {
-              const value =
-                card.attributes['field-values'][cardInclusionCondition.field];
-              switch (cardInclusionCondition.query) {
-                case QUERIES.IS_EMPTY:
-                  return !value;
-                case QUERIES.IS_NOT_EMPTY:
-                  return !!value;
-                default:
-                  console.error(
-                    `unrecognized query for column card inclusion condition: ${cardInclusionCondition.query}`,
-                  );
-              }
-            });
+            const columnCards = cards.filter(card =>
+              checkCondition({card, condition: cardInclusionCondition}),
+            );
 
             return (
               <View
@@ -169,7 +158,12 @@ export default function CardList() {
                   keyExtractor={card => card.id}
                   renderItem={({item: card}) => {
                     if (selectedCardId === card.id) {
-                      const elementsToShow = elements;
+                      const elementsToShow = elements.filter(element =>
+                        checkCondition({
+                          card,
+                          condition: element.attributes['show-condition'],
+                        }),
+                      );
 
                       return (
                         <Card key={card.id} style={styles.card}>
@@ -263,6 +257,22 @@ export default function CardList() {
       </SafeAreaView>
     </ScreenBackground>
   );
+}
+
+function checkCondition({card, condition}) {
+  if (!condition) {
+    return true;
+  }
+
+  const value = card.attributes['field-values'][condition.field];
+  switch (condition.query) {
+    case QUERIES.IS_EMPTY:
+      return !value;
+    case QUERIES.IS_NOT_EMPTY:
+      return !!value;
+    default:
+      console.error(`unrecognized query for condition: ${condition.query}`);
+  }
 }
 
 // Just guessed a value and it worked. Might be due to Add/title rows
