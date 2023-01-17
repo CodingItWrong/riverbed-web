@@ -1,4 +1,5 @@
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
+import sortBy from 'lodash.sortby';
 import {useState} from 'react';
 import {ScrollView, StyleSheet, View, useWindowDimensions} from 'react-native';
 import {KeyboardAwareFlatList} from 'react-native-keyboard-aware-scroll-view';
@@ -158,11 +159,13 @@ export default function CardList() {
                   keyExtractor={card => card.id}
                   renderItem={({item: card}) => {
                     if (selectedCardId === card.id) {
-                      const elementsToShow = elements.filter(element =>
-                        checkCondition({
-                          card,
-                          condition: element.attributes['show-condition'],
-                        }),
+                      const elementsToShow = sortElements(
+                        elements.filter(element =>
+                          checkCondition({
+                            card,
+                            condition: element.attributes['show-condition'],
+                          }),
+                        ),
                       );
 
                       return (
@@ -231,8 +234,10 @@ export default function CardList() {
                         </Card>
                       );
                     } else {
-                      const fieldsToShow = elements.filter(
-                        field => field.attributes['show-in-summary'],
+                      const fieldsToShow = sortElements(
+                        elements.filter(
+                          field => field.attributes['show-in-summary'],
+                        ),
                       );
 
                       return (
@@ -277,6 +282,10 @@ function checkCondition({card, condition}) {
     default:
       console.error(`unrecognized query for condition: ${condition.query}`);
   }
+}
+
+function sortElements(elements) {
+  return sortBy(elements, ['attributes.display-order']);
 }
 
 // Just guessed a value and it worked. Might be due to Add/title rows
