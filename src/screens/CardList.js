@@ -167,7 +167,7 @@ export default function CardList() {
 
                       return (
                         <Card key={card.id} style={styles.card}>
-                          {elementsToShow.map(element => {
+                          {elementsToShow.map((element, elementIndex) => {
                             switch (element.attributes['element-type']) {
                               case ELEMENT_TYPES.field:
                                 return (
@@ -179,7 +179,9 @@ export default function CardList() {
                                       setFieldValue(element.id, value)
                                     }
                                     readOnly={element.attributes['read-only']}
-                                    style={styles.detailElement}
+                                    style={
+                                      elementIndex > 0 && styles.detailElement
+                                    }
                                   />
                                 );
                               case ELEMENT_TYPES.button:
@@ -193,7 +195,9 @@ export default function CardList() {
                                         action: element.attributes.action,
                                       })
                                     }
-                                    style={styles.detailElement}
+                                    style={
+                                      elementIndex > 0 && styles.detailElement
+                                    }
                                   />
                                 );
                               default:
