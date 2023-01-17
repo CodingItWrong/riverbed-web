@@ -9,6 +9,7 @@ import ButtonElement from '../components/ButtonElement';
 import Card from '../components/Card';
 import FieldDisplay from '../components/FieldDisplay';
 import FieldInput from '../components/FieldInput';
+import LoadingIndicator from '../components/LoadingIndicator';
 import ScreenBackground from '../components/ScreenBackground';
 import Text from '../components/Text';
 import {useCards} from '../data/cards';
@@ -123,7 +124,7 @@ export default function CardList() {
   };
 
   if (!cards || !elements || !columns) {
-    return null;
+    return <LoadingIndicator />;
   }
 
   return (
