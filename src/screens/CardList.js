@@ -138,18 +138,20 @@ export default function CardList() {
         </View>
         <ScrollView horizontal style={styles.fullHeight}>
           {columns.map(column => {
-            const {name, filter} = column.attributes;
+            const {name, 'card-inclusion-condition': cardInclusionCondition} =
+              column.attributes;
 
             const columnCards = cards.filter(card => {
-              const value = card.attributes['field-values'][filter.field];
-              switch (filter.function) {
+              const value =
+                card.attributes['field-values'][cardInclusionCondition.field];
+              switch (cardInclusionCondition.query) {
                 case QUERIES.IS_EMPTY:
                   return !value;
                 case QUERIES.IS_NOT_EMPTY:
                   return !!value;
                 default:
                   console.error(
-                    `unrecognized user function for column filter: ${filter.function}`,
+                    `unrecognized query for column card inclusion condition: ${cardInclusionCondition.query}`,
                   );
               }
             });

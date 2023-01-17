@@ -28,16 +28,16 @@ describe('edit cards', () => {
 
     const releasedColumn = Factory.column({
       name: 'Released',
-      filter: {
+      'card-inclusion-condition': {
         field: releasedAtField.id,
-        function: QUERIES.IS_NOT_EMPTY,
+        query: QUERIES.IS_NOT_EMPTY,
       },
     });
     const unreleasedColumn = Factory.column({
       name: 'Unreleased',
-      filter: {
+      'card-inclusion-condition': {
         field: releasedAtField.id,
-        function: QUERIES.IS_EMPTY,
+        query: QUERIES.IS_EMPTY,
       },
     });
 
