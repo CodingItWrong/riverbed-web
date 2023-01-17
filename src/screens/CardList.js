@@ -1,14 +1,7 @@
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {useState} from 'react';
-import {
-  FlatList,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  View,
-  useWindowDimensions,
-} from 'react-native';
+import {ScrollView, StyleSheet, View, useWindowDimensions} from 'react-native';
+import {KeyboardAwareFlatList} from 'react-native-keyboard-aware-scroll-view';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import COMMANDS from '../commands';
 import Button from '../components/Button';
@@ -139,143 +132,138 @@ export default function CardList() {
         <View style={[styles.buttonContainer, responsiveButtonContainerStyle]}>
           <Button onPress={addCard}>Add Card</Button>
         </View>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={styles.fullHeight}
-        >
-          <ScrollView horizontal style={styles.fullHeight}>
-            {columns.map(column => {
-              const {name, filter} = column.attributes;
+        <ScrollView horizontal style={styles.fullHeight}>
+          {columns.map(column => {
+            const {name, filter} = column.attributes;
 
-              const columnCards = cards.filter(card => {
-                const value = card.attributes['field-values'][filter.field];
-                switch (filter.function) {
-                  case QUERIES.IS_EMPTY:
-                    return !value;
-                  case QUERIES.IS_NOT_EMPTY:
-                    return !!value;
-                  default:
-                    console.error(
-                      `unrecognized user function for column filter: ${filter.function}`,
-                    );
-                }
-              });
+            const columnCards = cards.filter(card => {
+              const value = card.attributes['field-values'][filter.field];
+              switch (filter.function) {
+                case QUERIES.IS_EMPTY:
+                  return !value;
+                case QUERIES.IS_NOT_EMPTY:
+                  return !!value;
+                default:
+                  console.error(
+                    `unrecognized user function for column filter: ${filter.function}`,
+                  );
+              }
+            });
 
-              return (
-                <View
-                  key={column.id}
-                  testID={`column-${column.id}`}
-                  style={[responsiveColumnStyle, styles.fullHeight]}
-                >
-                  <View mode="contained" style={styles.fullHeight} title={name}>
-                    <Text variant="titleLarge">{name}</Text>
-                    <FlatList
-                      data={columnCards}
-                      keyExtractor={card => card.id}
-                      renderItem={({item: card}) => {
-                        if (selectedCardId === card.id) {
-                          const elementsToShow = elements;
+            return (
+              <View
+                key={column.id}
+                testID={`column-${column.id}`}
+                style={[responsiveColumnStyle, styles.fullHeight]}
+              >
+                <Text variant="titleLarge">{name}</Text>
+                <KeyboardAwareFlatList
+                  extraScrollHeight={EXPERIMENTAL_EXTRA_SCROLL_HEIGHT}
+                  data={columnCards}
+                  keyExtractor={card => card.id}
+                  renderItem={({item: card}) => {
+                    if (selectedCardId === card.id) {
+                      const elementsToShow = elements;
 
-                          return (
-                            <Card
-                              key={card.id}
-                              style={styles.card}
-                              buttons={
-                                <>
-                                  <Button
-                                    onPress={hideDetail}
-                                    style={styles.button}
-                                  >
-                                    Close
-                                  </Button>
-                                  <Button
-                                    onPress={deleteCard}
-                                    style={styles.button}
-                                  >
-                                    Delete
-                                  </Button>
-                                  <Button
-                                    primary
-                                    onPress={updateCard}
-                                    style={styles.button}
-                                  >
-                                    Save
-                                  </Button>
-                                </>
-                              }
-                            >
-                              {elementsToShow.map(element => {
-                                switch (element.attributes['element-type']) {
-                                  case ELEMENT_TYPES.field:
-                                    return (
-                                      <FieldInput
-                                        key={element.id}
-                                        field={element}
-                                        value={fieldValues[element.id]}
-                                        setValue={value =>
-                                          setFieldValue(element.id, value)
-                                        }
-                                      />
-                                    );
-                                  case ELEMENT_TYPES.button:
-                                    return (
-                                      <ButtonElement
-                                        key={element.id}
-                                        element={element}
-                                        onPerformAction={() =>
-                                          handlePerformAction({
-                                            card,
-                                            action: element.attributes.action,
-                                          })
-                                        }
-                                      />
-                                    );
-                                  default:
-                                    return (
-                                      <Text>
-                                        unknown element type:{' '}
-                                        {element.attributes['element-type']}
-                                      </Text>
-                                    );
-                                }
-                              })}
-                            </Card>
-                          );
-                        } else {
-                          const fieldsToShow = elements.filter(
-                            field => field.attributes['show-in-summary'],
-                          );
+                      return (
+                        <Card
+                          key={card.id}
+                          style={styles.card}
+                          buttons={
+                            <>
+                              <Button
+                                onPress={hideDetail}
+                                style={styles.button}
+                              >
+                                Close
+                              </Button>
+                              <Button
+                                onPress={deleteCard}
+                                style={styles.button}
+                              >
+                                Delete
+                              </Button>
+                              <Button
+                                primary
+                                onPress={updateCard}
+                                style={styles.button}
+                              >
+                                Save
+                              </Button>
+                            </>
+                          }
+                        >
+                          {elementsToShow.map(element => {
+                            switch (element.attributes['element-type']) {
+                              case ELEMENT_TYPES.field:
+                                return (
+                                  <FieldInput
+                                    key={element.id}
+                                    field={element}
+                                    value={fieldValues[element.id]}
+                                    setValue={value =>
+                                      setFieldValue(element.id, value)
+                                    }
+                                  />
+                                );
+                              case ELEMENT_TYPES.button:
+                                return (
+                                  <ButtonElement
+                                    key={element.id}
+                                    element={element}
+                                    onPerformAction={() =>
+                                      handlePerformAction({
+                                        card,
+                                        action: element.attributes.action,
+                                      })
+                                    }
+                                  />
+                                );
+                              default:
+                                return (
+                                  <Text>
+                                    unknown element type:{' '}
+                                    {element.attributes['element-type']}
+                                  </Text>
+                                );
+                            }
+                          })}
+                        </Card>
+                      );
+                    } else {
+                      const fieldsToShow = elements.filter(
+                        field => field.attributes['show-in-summary'],
+                      );
 
-                          return (
-                            <Card
-                              key={card.id}
-                              style={styles.card}
-                              onPress={() => showDetail(card.id)}
-                            >
-                              {fieldsToShow.map(field => (
-                                <FieldDisplay
-                                  key={field.id}
-                                  field={field}
-                                  value={
-                                    card.attributes['field-values'][field.id]
-                                  }
-                                />
-                              ))}
-                            </Card>
-                          );
-                        }
-                      }}
-                    />
-                  </View>
-                </View>
-              );
-            })}
-          </ScrollView>
-        </KeyboardAvoidingView>
+                      return (
+                        <Card
+                          key={card.id}
+                          style={styles.card}
+                          onPress={() => showDetail(card.id)}
+                        >
+                          {fieldsToShow.map(field => (
+                            <FieldDisplay
+                              key={field.id}
+                              field={field}
+                              value={card.attributes['field-values'][field.id]}
+                            />
+                          ))}
+                        </Card>
+                      );
+                    }
+                  }}
+                />
+              </View>
+            );
+          })}
+        </ScrollView>
       </SafeAreaView>
     </ScreenBackground>
   );
 }
+
+// Just guessed a value and it worked. Might be due to Add/title rows
+const EXPERIMENTAL_EXTRA_SCROLL_HEIGHT = 100;
 
 const styles = StyleSheet.create({
   fullHeight: {
