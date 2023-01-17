@@ -7,8 +7,7 @@ import COMMANDS from '../commands';
 import Button from '../components/Button';
 import ButtonElement from '../components/ButtonElement';
 import Card from '../components/Card';
-import FieldDisplay from '../components/FieldDisplay';
-import FieldInput from '../components/FieldInput';
+import Field from '../components/Field';
 import LoadingIndicator from '../components/LoadingIndicator';
 import ScreenBackground from '../components/ScreenBackground';
 import Text from '../components/Text';
@@ -172,13 +171,14 @@ export default function CardList() {
                             switch (element.attributes['element-type']) {
                               case ELEMENT_TYPES.field:
                                 return (
-                                  <FieldInput
+                                  <Field
                                     key={element.id}
                                     field={element}
                                     value={fieldValues[element.id]}
                                     setValue={value =>
                                       setFieldValue(element.id, value)
                                     }
+                                    readOnly={element.attributes['read-only']}
                                     style={styles.detailElement}
                                   />
                                 );
@@ -238,10 +238,11 @@ export default function CardList() {
                           onPress={() => showDetail(card.id)}
                         >
                           {fieldsToShow.map(field => (
-                            <FieldDisplay
+                            <Field
                               key={field.id}
                               field={field}
                               value={card.attributes['field-values'][field.id]}
+                              readOnly
                             />
                           ))}
                         </Card>
