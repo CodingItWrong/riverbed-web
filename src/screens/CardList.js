@@ -205,6 +205,7 @@ export default function CardList() {
                                     setValue={value =>
                                       setFieldValue(element.id, value)
                                     }
+                                    style={styles.detailElement}
                                   />
                                 );
                               case ELEMENT_TYPES.button:
@@ -218,6 +219,7 @@ export default function CardList() {
                                         action: element.attributes.action,
                                       })
                                     }
+                                    style={styles.detailElement}
                                   />
                                 );
                               default:
@@ -279,6 +281,9 @@ const styles = StyleSheet.create({
   },
   card: {
     margin: 4,
+    marginTop: 8,
+  },
+  detailElement: {
     marginTop: 8,
   },
   button: {

@@ -1,6 +1,6 @@
 import {TextInput as PaperTextInput} from 'react-native-paper';
 
-export default function TextField({label, value, onChangeText, testID}) {
+export default function TextField({label, value, onChangeText, testID, style}) {
   return (
     <PaperTextInput
       multiline
@@ -8,6 +8,7 @@ export default function TextField({label, value, onChangeText, testID}) {
       testID={testID}
       value={value}
       onChangeText={onChangeText}
+      style={style}
     />
   );
 }

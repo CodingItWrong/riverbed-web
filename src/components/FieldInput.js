@@ -6,7 +6,7 @@ import TextField from './TextField';
 
 // TODO: wrap
 
-export default function FieldInput({field, value, setValue}) {
+export default function FieldInput({field, value, setValue, style}) {
   switch (field.attributes['data-type']) {
     case FIELD_DATA_TYPES.text:
       return (
@@ -16,6 +16,7 @@ export default function FieldInput({field, value, setValue}) {
           testID={`text-input-${field.id}`}
           value={value ?? ''}
           onChangeText={setValue}
+          style={style}
         />
       );
     case FIELD_DATA_TYPES.date:
@@ -29,6 +30,7 @@ export default function FieldInput({field, value, setValue}) {
           }
           inputMode="start"
           testID={`date-input-${field.id}`}
+          style={style}
         />
       );
     default:
