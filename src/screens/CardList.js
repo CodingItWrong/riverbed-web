@@ -12,6 +12,7 @@ import Field from '../components/Field';
 import LoadingIndicator from '../components/LoadingIndicator';
 import ScreenBackground from '../components/ScreenBackground';
 import Text from '../components/Text';
+import TextField from '../components/TextField';
 import {useCards} from '../data/cards';
 import {useColumns} from '../data/columns';
 import {useElements} from '../data/elements';
@@ -20,7 +21,45 @@ import QUERIES from '../queries';
 import dateUtils from '../utils/dateUtils';
 import VALUES from '../values';
 
-export default function CardList() {
+export default function AppContainer() {
+  const [editingElements, setEditingElements] = useState(false);
+
+  return (
+    <ScreenBackground>
+      <SafeAreaView style={styles.fullHeight}>
+        {editingElements ? (
+          <Button onPress={() => setEditingElements(false)}>
+            Done Editing Elements
+          </Button>
+        ) : (
+          <Button onPress={() => setEditingElements(true)}>
+            Edit Elements
+          </Button>
+        )}
+      </SafeAreaView>
+      {editingElements ? <ElementList /> : <CardList />}
+    </ScreenBackground>
+  );
+}
+
+function ElementList() {
+  const [newFieldName, setNewFieldName] = useState('');
+
+  return (
+    <View>
+      <Button onPress={() => {}}>Add Field</Button>
+      <TextField
+        label="Field Name"
+        value={newFieldName}
+        onChangeText={setNewFieldName}
+        testID="text-input-field-name"
+      />
+      <Button onPress={() => {}}>Save Field</Button>
+    </View>
+  );
+}
+
+function CardList() {
   const queryClient = useQueryClient();
   const elementClient = useElements();
   const columnClient = useColumns();
@@ -43,6 +82,7 @@ export default function CardList() {
   const {mutate: addCard} = useMutation({
     mutationFn: () => cardClient.create({attributes: {}}),
     onSuccess: ({data: newCard}) => {
+      console.log({newCard});
       setSelectedCardId(newCard.id);
       // TODO: remove duplication in having to remember to set field values
       setFieldValues(newCard.attributes['field-values']);
@@ -136,6 +176,7 @@ export default function CardList() {
       <SafeAreaView style={styles.fullHeight}>
         <View style={[styles.buttonContainer, responsiveButtonContainerStyle]}>
           <Button onPress={addCard}>Add Card</Button>
+          <Button onPress={() => {}}>Edit Elements</Button>
         </View>
         <ScrollView horizontal style={styles.fullHeight}>
           {columns.map(column => {
