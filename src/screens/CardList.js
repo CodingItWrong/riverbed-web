@@ -4,6 +4,7 @@ import {useState} from 'react';
 import {ScrollView, StyleSheet, View, useWindowDimensions} from 'react-native';
 import {KeyboardAwareFlatList} from 'react-native-keyboard-aware-scroll-view';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {FlatList} from 'react-native-web';
 import COMMANDS from '../commands';
 import Button from '../components/Button';
 import ButtonElement from '../components/ButtonElement';
@@ -43,27 +44,76 @@ export default function AppContainer() {
 }
 
 function ElementList() {
-  const [newFieldName, setNewFieldName] = useState('');
   const queryClient = useQueryClient();
   const elementClient = useElements();
+  const [selectedElementId, setSelectedElementId] = useState(null);
+  const [elementAttributes, setElementAttributes] = useState(null);
+
+  const {data: elements = []} = useQuery(['elements'], () =>
+    elementClient.all().then(resp => resp.data),
+  );
+
+  console.log({elements, selectedElementId});
 
   const refreshElements = () => queryClient.invalidateQueries(['elements']);
 
   const {mutate: addField} = useMutation({
-    mutationFn: () => elementClient.create({attributes: {name: newFieldName}}),
-    onSuccess: refreshElements,
+    mutationFn: () => elementClient.create({attributes: {}}),
+    onSuccess: newElement => {
+      setSelectedElementId(newElement.data.id);
+      setElementAttributes(newElement.data.attributes);
+      refreshElements();
+    },
   });
+
+  const {mutate: updateField} = useMutation({
+    mutationFn: () => {
+      const updatedElement = {
+        type: 'elements',
+        id: selectedElementId,
+        attributes: elementAttributes,
+      };
+      return elementClient.update(updatedElement);
+    },
+    onSuccess: () => {
+      setSelectedElementId(null);
+      setElementAttributes(null);
+      refreshElements();
+    },
+  });
+
+  function updateAttribute(name, value) {
+    setElementAttributes(oldAttributes => ({...oldAttributes, name}));
+  }
 
   return (
     <View>
-      <Button onPress={() => {}}>Add Field</Button>
-      <TextField
-        label="Field Name"
-        value={newFieldName}
-        onChangeText={setNewFieldName}
-        testID="text-input-field-name"
+      <Button onPress={addField}>Add Field</Button>
+      <FlatList
+        data={elements}
+        keyExtractor={element => element.id}
+        renderItem={({item: element}) => {
+          if (selectedElementId === element.id) {
+            return (
+              <View>
+                <TextField
+                  label="Field Name"
+                  value={elementAttributes.name ?? ''}
+                  onChangeText={value =>
+                    updateAttribute(elementAttributes.name, value)
+                  }
+                  testID="text-input-field-name"
+                />
+                <Button onPress={updateField}>Save Field</Button>
+              </View>
+            );
+          } else {
+            return (
+              <Button onPress={() => {}}>{element.attributes.name}</Button>
+            );
+          }
+        }}
       />
-      <Button onPress={addField}>Save Field</Button>
     </View>
   );
 }
