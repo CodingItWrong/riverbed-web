@@ -26,13 +26,24 @@ describe('display cards', () => {
 
     cy.visit('/');
 
+    cy.log('ADD FIELD');
+
     cy.contains('Edit Elements').click();
     cy.contains('Add Field').click();
-    cy.get('[data-testid="text-input-field-name"]').type('Greeting');
+    const fieldName = 'Greeting';
+    cy.get('[data-testid="text-input-field-name"]').type(fieldName);
+
+    // TODO: set other element fields: data type etc
+
+    cy.intercept('POST', 'http://cypressapi/elements?', {
+      data: greetingField,
+    }).as('addField');
     cy.intercept('GET', 'http://cypressapi/elements?', {
       data: [greetingField],
     });
     cy.contains('Save Field').click();
+    cy.wait('@addField');
+    cy.contains(fieldName);
     cy.contains('Done Editing Elements').click();
 
     const newCard = Factory.card({});

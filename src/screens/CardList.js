@@ -44,6 +44,15 @@ export default function AppContainer() {
 
 function ElementList() {
   const [newFieldName, setNewFieldName] = useState('');
+  const queryClient = useQueryClient();
+  const elementClient = useElements();
+
+  const refreshElements = () => queryClient.invalidateQueries(['elements']);
+
+  const {mutate: addField} = useMutation({
+    mutationFn: () => elementClient.create({attributes: {name: newFieldName}}),
+    onSuccess: refreshElements,
+  });
 
   return (
     <View>
@@ -54,7 +63,7 @@ function ElementList() {
         onChangeText={setNewFieldName}
         testID="text-input-field-name"
       />
-      <Button onPress={() => {}}>Save Field</Button>
+      <Button onPress={addField}>Save Field</Button>
     </View>
   );
 }
@@ -82,7 +91,6 @@ function CardList() {
   const {mutate: addCard} = useMutation({
     mutationFn: () => cardClient.create({attributes: {}}),
     onSuccess: ({data: newCard}) => {
-      console.log({newCard});
       setSelectedCardId(newCard.id);
       // TODO: remove duplication in having to remember to set field values
       setFieldValues(newCard.attributes['field-values']);
