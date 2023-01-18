@@ -36,7 +36,7 @@ jobs:
         run: yarn global add sharp-cli@^2.1.0
 
       - name: Cypress Tests
-        uses: cypress-io/github-action@v4
+        uses: cypress-io/github-action@v5
         with:
           start: yarn web
           wait-on: 'http://localhost:19006'
