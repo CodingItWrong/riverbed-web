@@ -114,9 +114,12 @@ describe('edit cards', () => {
 
     cy.log('CREATE CARD');
     const newCard = Factory.card();
-    cy.intercept('POST', 'http://cypressapi/cards?', {data: newCard});
+    cy.intercept('POST', 'http://cypressapi/cards?', {data: newCard}).as(
+      'createCard',
+    );
     cy.intercept('GET', 'http://cypressapi/cards?', {data: [newCard]});
     cy.contains('Add Card').click();
+    cy.wait('@createCard');
     cy.get(`[data-testid=text-input-${titleField.id}]`).clear().type(newTitle);
     const updatedNewCard = Factory.card({[titleField.id]: newTitle}, newCard);
     cy.intercept('PATCH', `http://cypressapi/cards/${newCard.id}?`, {
