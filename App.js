@@ -12,7 +12,13 @@ import CardList from './src/screens/CardList';
 
 registerTranslation('en', en);
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: !window.Cypress,
+    },
+  },
+});
 
 function onAppStateChange(status) {
   if (Platform.OS !== 'web') {
