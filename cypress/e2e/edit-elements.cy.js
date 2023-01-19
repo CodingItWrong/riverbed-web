@@ -48,6 +48,8 @@ describe('display cards', () => {
     cy.wait('@addField');
     const fieldName = 'Greeting';
     cy.get('[data-testid="text-input-field-name"]').type(fieldName);
+    cy.contains('Data Type: (choose)').click();
+    cy.contains('Text').click({force: true});
 
     // TODO: set other element fields: data type etc
 

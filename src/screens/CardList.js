@@ -14,6 +14,7 @@ import COMMANDS from '../commands';
 import Button from '../components/Button';
 import ButtonElement from '../components/ButtonElement';
 import Card from '../components/Card';
+import Dropdown from '../components/Dropdown';
 import Field from '../components/Field';
 import LoadingIndicator from '../components/LoadingIndicator';
 import ScreenBackground from '../components/ScreenBackground';
@@ -23,6 +24,7 @@ import {useCards} from '../data/cards';
 import {useColumns} from '../data/columns';
 import {useElements} from '../data/elements';
 import ELEMENT_TYPES from '../elementTypes';
+import FIELD_DATA_TYPES from '../fieldDataTypes';
 import QUERIES from '../queries';
 import dateUtils from '../utils/dateUtils';
 import VALUES from '../values';
@@ -122,6 +124,19 @@ function ElementList() {
                   value={elementAttributes.name ?? ''}
                   onChangeText={value => updateAttribute('name', value)}
                   testID="text-input-field-name"
+                />
+                <Dropdown
+                  fieldLabel="Data Type"
+                  emptyLabel="(choose)"
+                  value={elementAttributes['data-type']}
+                  onValueChange={value => updateAttribute('data-type', value)}
+                  options={[
+                    {label: 'Text', value: FIELD_DATA_TYPES.text},
+                    {label: 'Date', value: FIELD_DATA_TYPES.date},
+                  ]}
+                  keyExtractor={option => option.value}
+                  labelExtractor={option => option.label}
+                  testID="dropdown-data-type"
                 />
                 <Button onPress={hideEditForm}>Cancel</Button>
                 <Button onPress={deleteField}>Delete Field</Button>
