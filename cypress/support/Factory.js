@@ -1,3 +1,5 @@
+import ELEMENT_TYPES from '../../src/elementTypes';
+
 const Factory = {
   _ids: {
     element: 1,
@@ -17,7 +19,10 @@ const Factory = {
       };
     } else {
       id = this._ids.element++;
-      attributes = attributeOverrides ?? {};
+      attributes = {
+        ...attributeOverrides,
+        'element-type': ELEMENT_TYPES.field,
+      };
     }
     return {
       type: 'elements',
@@ -31,7 +36,7 @@ const Factory = {
       name: 'Some Button',
       'show-in-summary': true,
       ...attributeOverrides,
-      'element-type': 'button',
+      'element-type': ELEMENT_TYPES.button,
     };
     return {
       type: 'elements',
