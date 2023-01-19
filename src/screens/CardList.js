@@ -158,6 +158,14 @@ function ElementList() {
                   }
                   testID="checkbox-show-in-summary"
                 />
+                <LabeledCheckbox
+                  label="Read-Only"
+                  checked={elementAttributes['read-only']}
+                  onChangeChecked={newChecked =>
+                    updateAttribute('read-only', newChecked)
+                  }
+                  testID="checkbox-read-only"
+                />
                 <Button onPress={hideEditForm}>Cancel</Button>
                 <Button onPress={deleteField}>Delete Field</Button>
                 <Button onPress={updateField}>Save Field</Button>

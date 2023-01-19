@@ -10,12 +10,12 @@ export default function LabeledCheckbox({
   const status = checked ? 'checked' : 'unchecked';
   return (
     <View style={styles.row}>
-      <Text>{label}</Text>
       <Checkbox
         status={status}
         onPress={() => onChangeChecked(!checked)}
         testID={testID}
       />
+      <Text>{label}</Text>
     </View>
   );
 }
