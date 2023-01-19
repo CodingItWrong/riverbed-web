@@ -104,12 +104,24 @@ describe('display cards', () => {
       {name: updatedFieldName},
       greetingField,
     );
-    console.log({greetingField, updatedGreetingField});
     cy.intercept('GET', 'http://cypressapi/elements?', {
       data: [updatedGreetingField],
     });
     cy.contains('Save Field').click();
     cy.wait('@updateField');
     cy.contains(updatedFieldName);
+
+    cy.log('DELETE FIELD');
+
+    cy.contains(updatedFieldName).click();
+    cy.intercept('DELETE', `http://cypressapi/elements/${greetingField.id}`, {
+      success: true,
+    }).as('deleteField');
+    cy.intercept('GET', 'http://cypressapi/elements?', {
+      data: [],
+    });
+    cy.contains('Delete Field').click();
+    cy.wait('@deleteField');
+    cy.contains(updatedFieldName).should('not.exist');
   });
 });

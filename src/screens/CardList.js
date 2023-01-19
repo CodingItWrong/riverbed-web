@@ -53,8 +53,6 @@ function ElementList() {
     elementClient.all().then(resp => resp.data),
   );
 
-  console.log({elements, selectedElementId});
-
   const refreshElements = () => queryClient.invalidateQueries(['elements']);
 
   const {mutate: addField} = useMutation({
@@ -79,6 +77,14 @@ function ElementList() {
     onSuccess: () => {
       hideEditForm();
       refreshElements();
+    },
+  });
+
+  const {mutate: deleteField} = useMutation({
+    mutationFn: () => elementClient.delete({id: selectedElementId}),
+    onSuccess: () => {
+      refreshElements();
+      hideEditForm();
     },
   });
 
@@ -113,6 +119,7 @@ function ElementList() {
                   testID="text-input-field-name"
                 />
                 <Button onPress={hideEditForm}>Cancel</Button>
+                <Button onPress={deleteField}>Delete Field</Button>
                 <Button onPress={updateField}>Save Field</Button>
               </View>
             );
