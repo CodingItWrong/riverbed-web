@@ -47,13 +47,13 @@ describe('display cards', () => {
     cy.contains('Add Field').click();
     cy.wait('@addField');
     const fieldName = 'Greeting';
-    cy.get('[data-testid="text-input-field-name"]').type(fieldName);
+    cy.get('[data-testid="text-input-element-name"]').type(fieldName);
     cy.contains('Data Type: (choose)').click();
     cy.contains('Text').click({force: true});
     cy.contains('Data Type: Text');
     cy.get('[data-testid="checkbox-show-in-summary"]').click();
 
-    // TODO: set other element fields: read only, show condition, etc
+    // TODO: set other element fields: show condition, etc
 
     cy.intercept('PATCH', `http://cypressapi/elements/${newField.id}?`, {
       success: true,
@@ -61,7 +61,7 @@ describe('display cards', () => {
     cy.intercept('GET', 'http://cypressapi/elements?', {
       data: [greetingField],
     });
-    cy.contains('Save Field').click();
+    cy.contains('Save Element').click();
     cy.wait('@updateField')
       .its('request.body')
       .should('deep.equal', {data: greetingField});
@@ -94,16 +94,16 @@ describe('display cards', () => {
 
     cy.contains('Edit Elements').click();
     cy.contains(fieldName).click();
-    cy.get('[data-testid="text-input-field-name"]')
+    cy.get('[data-testid="text-input-element-name"]')
       .invoke('val')
       .then(value => expect(value).to.equal(fieldName));
 
     cy.contains('Cancel').click();
-    cy.get('[data-testid="text-input-field-name"]').should('not.exist');
+    cy.get('[data-testid="text-input-element-name"]').should('not.exist');
     cy.contains(fieldName).click();
 
     const updatedFieldName = 'Salutation';
-    cy.get('[data-testid="text-input-field-name"]')
+    cy.get('[data-testid="text-input-element-name"]')
       .clear()
       .type(updatedFieldName);
     const updatedGreetingField = Factory.field(
@@ -113,7 +113,7 @@ describe('display cards', () => {
     cy.intercept('GET', 'http://cypressapi/elements?', {
       data: [updatedGreetingField],
     });
-    cy.contains('Save Field').click();
+    cy.contains('Save Element').click();
     cy.wait('@updateField');
     cy.contains(updatedFieldName);
 
@@ -126,7 +126,7 @@ describe('display cards', () => {
     cy.intercept('GET', 'http://cypressapi/elements?', {
       data: [],
     });
-    cy.contains('Delete Field').click();
+    cy.contains('Delete Element').click();
     cy.wait('@deleteField');
     cy.contains(updatedFieldName).should('not.exist');
   });

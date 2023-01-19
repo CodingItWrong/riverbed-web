@@ -134,41 +134,45 @@ function ElementList() {
                   label="Field Name"
                   value={elementAttributes.name ?? ''}
                   onChangeText={value => updateAttribute('name', value)}
-                  testID="text-input-field-name"
+                  testID="text-input-element-name"
                 />
-                <Dropdown
-                  fieldLabel="Data Type"
-                  emptyLabel="(choose)"
-                  value={dataTypeOptions.find(
-                    o => o.value === elementAttributes['data-type'],
-                  )}
-                  onValueChange={option =>
-                    updateAttribute('data-type', option.value)
-                  }
-                  options={dataTypeOptions}
-                  keyExtractor={option => option.value}
-                  labelExtractor={option => option.label}
-                  testID="dropdown-data-type"
-                />
-                <LabeledCheckbox
-                  label="Show in Summary"
-                  checked={elementAttributes['show-in-summary']}
-                  onChangeChecked={newChecked =>
-                    updateAttribute('show-in-summary', newChecked)
-                  }
-                  testID="checkbox-show-in-summary"
-                />
-                <LabeledCheckbox
-                  label="Read-Only"
-                  checked={elementAttributes['read-only']}
-                  onChangeChecked={newChecked =>
-                    updateAttribute('read-only', newChecked)
-                  }
-                  testID="checkbox-read-only"
-                />
+                {elementAttributes['element-type'] === ELEMENT_TYPES.field && (
+                  <>
+                    <Dropdown
+                      fieldLabel="Data Type"
+                      emptyLabel="(choose)"
+                      value={dataTypeOptions.find(
+                        o => o.value === elementAttributes['data-type'],
+                      )}
+                      onValueChange={option =>
+                        updateAttribute('data-type', option.value)
+                      }
+                      options={dataTypeOptions}
+                      keyExtractor={option => option.value}
+                      labelExtractor={option => option.label}
+                      testID="dropdown-data-type"
+                    />
+                    <LabeledCheckbox
+                      label="Show in Summary"
+                      checked={elementAttributes['show-in-summary']}
+                      onChangeChecked={newChecked =>
+                        updateAttribute('show-in-summary', newChecked)
+                      }
+                      testID="checkbox-show-in-summary"
+                    />
+                    <LabeledCheckbox
+                      label="Read-Only"
+                      checked={elementAttributes['read-only']}
+                      onChangeChecked={newChecked =>
+                        updateAttribute('read-only', newChecked)
+                      }
+                      testID="checkbox-read-only"
+                    />
+                  </>
+                )}
                 <Button onPress={hideEditForm}>Cancel</Button>
-                <Button onPress={deleteField}>Delete Field</Button>
-                <Button onPress={updateField}>Save Field</Button>
+                <Button onPress={deleteField}>Delete Element</Button>
+                <Button onPress={updateField}>Save Element</Button>
               </View>
             );
           } else {

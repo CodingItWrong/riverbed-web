@@ -31,16 +31,26 @@ const Factory = {
     };
   },
 
-  button(attributeOverrides) {
-    const attributes = {
-      name: 'Some Button',
-      'show-in-summary': true,
-      ...attributeOverrides,
-      'element-type': ELEMENT_TYPES.button,
-    };
+  button(attributeOverrides, baseButton) {
+    let id;
+    let attributes;
+
+    if (baseButton) {
+      id = baseButton.id;
+      attributes = {
+        ...baseButton.attributes,
+        ...attributeOverrides,
+      };
+    } else {
+      id = String(this._ids.element++);
+      attributes = {
+        ...attributeOverrides,
+        'element-type': ELEMENT_TYPES.button,
+      };
+    }
     return {
       type: 'elements',
-      id: String(this._ids.element++),
+      id,
       attributes,
     };
   },
