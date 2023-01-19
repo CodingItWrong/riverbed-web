@@ -65,7 +65,12 @@ function ElementList() {
 
   const {mutate: addField} = useMutation({
     mutationFn: () =>
-      elementClient.create({attributes: {'element-type': ELEMENT_TYPES.field}}),
+      elementClient.create({
+        attributes: {
+          'element-type': ELEMENT_TYPES.field,
+          'data-type': FIELD_DATA_TYPES.text,
+        },
+      }),
     onSuccess: newElement => {
       setSelectedElementId(newElement.data.id);
       setElementAttributes(newElement.data.attributes);
@@ -110,6 +115,11 @@ function ElementList() {
     setElementAttributes(oldAttributes => ({...oldAttributes, [name]: value}));
   }
 
+  const dataTypeOptions = [
+    {label: 'Text', value: FIELD_DATA_TYPES.text},
+    {label: 'Date', value: FIELD_DATA_TYPES.date},
+  ];
+
   return (
     <View style={styles.fullHeight}>
       <Button onPress={addField}>Add Field</Button>
@@ -129,14 +139,13 @@ function ElementList() {
                 <Dropdown
                   fieldLabel="Data Type"
                   emptyLabel="(choose)"
-                  value={elementAttributes['data-type']}
+                  value={dataTypeOptions.find(
+                    o => o.value === elementAttributes['data-type'],
+                  )}
                   onValueChange={option =>
                     updateAttribute('data-type', option.value)
                   }
-                  options={[
-                    {label: 'Text', value: FIELD_DATA_TYPES.text},
-                    {label: 'Date', value: FIELD_DATA_TYPES.date},
-                  ]}
+                  options={dataTypeOptions}
                   keyExtractor={option => option.value}
                   labelExtractor={option => option.label}
                   testID="dropdown-data-type"

@@ -50,6 +50,7 @@ describe('display cards', () => {
     cy.get('[data-testid="text-input-field-name"]').type(fieldName);
     cy.contains('Data Type: (choose)').click();
     cy.contains('Text').click({force: true});
+    cy.contains('Data Type: Text');
     cy.get('[data-testid="checkbox-show-in-summary"]').click();
 
     // TODO: set other element fields: read only, show condition, etc
