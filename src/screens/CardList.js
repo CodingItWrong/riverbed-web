@@ -16,6 +16,7 @@ import ButtonElement from '../components/ButtonElement';
 import Card from '../components/Card';
 import Dropdown from '../components/Dropdown';
 import Field from '../components/Field';
+import LabeledCheckbox from '../components/LabeledCheckbox';
 import LoadingIndicator from '../components/LoadingIndicator';
 import ScreenBackground from '../components/ScreenBackground';
 import Text from '../components/Text';
@@ -129,7 +130,9 @@ function ElementList() {
                   fieldLabel="Data Type"
                   emptyLabel="(choose)"
                   value={elementAttributes['data-type']}
-                  onValueChange={value => updateAttribute('data-type', value)}
+                  onValueChange={option =>
+                    updateAttribute('data-type', option.value)
+                  }
                   options={[
                     {label: 'Text', value: FIELD_DATA_TYPES.text},
                     {label: 'Date', value: FIELD_DATA_TYPES.date},
@@ -137,6 +140,14 @@ function ElementList() {
                   keyExtractor={option => option.value}
                   labelExtractor={option => option.label}
                   testID="dropdown-data-type"
+                />
+                <LabeledCheckbox
+                  label="Show in Summary"
+                  checked={elementAttributes['show-in-summary']}
+                  onChangeChecked={newChecked =>
+                    updateAttribute('show-in-summary', newChecked)
+                  }
+                  testID="checkbox-show-in-summary"
                 />
                 <Button onPress={hideEditForm}>Cancel</Button>
                 <Button onPress={deleteField}>Delete Field</Button>

@@ -50,8 +50,9 @@ describe('display cards', () => {
     cy.get('[data-testid="text-input-field-name"]').type(fieldName);
     cy.contains('Data Type: (choose)').click();
     cy.contains('Text').click({force: true});
+    cy.get('[data-testid="checkbox-show-in-summary"]').click();
 
-    // TODO: set other element fields: data type etc
+    // TODO: set other element fields: read only, show condition, etc
 
     cy.intercept('PATCH', `http://cypressapi/elements/${newField.id}?`, {
       success: true,
@@ -60,7 +61,9 @@ describe('display cards', () => {
       data: [greetingField],
     });
     cy.contains('Save Field').click();
-    cy.wait('@updateField');
+    cy.wait('@updateField')
+      .its('request.body')
+      .should('deep.equal', {data: greetingField});
     cy.contains(fieldName);
     cy.contains('Done Editing Elements').click();
 
