@@ -1,10 +1,10 @@
-# My Project
+# List App Expo
 
-Describe your project here.
+An app for creating CRUD apps with interactivity with no programming.
 
 ## Requirements
 
-- [Node](https://nodejs.org)
+- [Node 16.x](https://nodejs.org) (newer not yet supported by a react-native-web dependency)
 - [Yarn 1.x](https://classic.yarnpkg.com/lang/en/)
 
 Optional:
@@ -22,10 +22,6 @@ Dependencies are locked with `yarn.lock`; please use `yarn` rather than `npm` fo
 ## Running
 
 - Run `yarn start`
-
-## Unit Tests
-
-- Run `yarn test`
 
 ## E2E Tests
 
