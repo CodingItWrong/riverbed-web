@@ -1,9 +1,13 @@
+import ELEMENT_TYPES from '../../src/elementTypes';
 import FIELD_DATA_TYPES from '../../src/fieldDataTypes';
 import Factory from '../support/Factory';
 
 describe('display cards', () => {
   it('displays cards from the server', () => {
-    const newField = Factory.field({name: ''});
+    const newField = Factory.field({
+      'element-type': ELEMENT_TYPES.field,
+      name: '',
+    });
     const greetingField = Factory.field(
       {
         name: 'Greeting',
@@ -79,5 +83,33 @@ describe('display cards', () => {
     cy.contains('Save').click();
     cy.wait('@updateField');
     cy.contains(greeting);
+
+    cy.log('EDIT FIELD');
+
+    cy.contains('Edit Elements').click();
+    cy.contains(fieldName).click();
+    cy.get('[data-testid="text-input-field-name"]')
+      .invoke('val')
+      .then(value => expect(value).to.equal(fieldName));
+
+    cy.contains('Cancel').click();
+    cy.get('[data-testid="text-input-field-name"]').should('not.exist');
+    cy.contains(fieldName).click();
+
+    const updatedFieldName = 'Salutation';
+    cy.get('[data-testid="text-input-field-name"]')
+      .clear()
+      .type(updatedFieldName);
+    const updatedGreetingField = Factory.field(
+      {name: updatedFieldName},
+      greetingField,
+    );
+    console.log({greetingField, updatedGreetingField});
+    cy.intercept('GET', 'http://cypressapi/elements?', {
+      data: [updatedGreetingField],
+    });
+    cy.contains('Save Field').click();
+    cy.wait('@updateField');
+    cy.contains(updatedFieldName);
   });
 });

@@ -5,16 +5,23 @@ const Factory = {
     card: 1,
   },
 
-  field(attributeOverrides) {
-    const attributes = {
-      name: 'Some Field',
-      'element-type': 'field',
-      'show-in-summary': true,
-      ...attributeOverrides,
-    };
+  field(attributeOverrides, baseField) {
+    let id;
+    let attributes;
+
+    if (baseField) {
+      id = baseField.id;
+      attributes = {
+        ...baseField.attributes,
+        ...attributeOverrides,
+      };
+    } else {
+      id = this._ids.element++;
+      attributes = attributeOverrides ?? {};
+    }
     return {
       type: 'elements',
-      id: String(this._ids.element++),
+      id: String(id),
       attributes,
     };
   },

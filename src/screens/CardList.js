@@ -37,8 +37,8 @@ export default function AppContainer() {
             Edit Elements
           </Button>
         )}
+        {editingElements ? <ElementList /> : <CardList />}
       </SafeAreaView>
-      {editingElements ? <ElementList /> : <CardList />}
     </ScreenBackground>
   );
 }
@@ -58,7 +58,8 @@ function ElementList() {
   const refreshElements = () => queryClient.invalidateQueries(['elements']);
 
   const {mutate: addField} = useMutation({
-    mutationFn: () => elementClient.create({attributes: {}}),
+    mutationFn: () =>
+      elementClient.create({attributes: {'element-type': ELEMENT_TYPES.field}}),
     onSuccess: newElement => {
       setSelectedElementId(newElement.data.id);
       setElementAttributes(newElement.data.attributes);
@@ -76,18 +77,27 @@ function ElementList() {
       return elementClient.update(updatedElement);
     },
     onSuccess: () => {
-      setSelectedElementId(null);
-      setElementAttributes(null);
+      hideEditForm();
       refreshElements();
     },
   });
 
+  function editElement(element) {
+    setSelectedElementId(element.id);
+    setElementAttributes(element.attributes);
+  }
+
+  function hideEditForm() {
+    setSelectedElementId(null);
+    setElementAttributes(null);
+  }
+
   function updateAttribute(name, value) {
-    setElementAttributes(oldAttributes => ({...oldAttributes, name}));
+    setElementAttributes(oldAttributes => ({...oldAttributes, [name]: value}));
   }
 
   return (
-    <View>
+    <View style={styles.fullHeight}>
       <Button onPress={addField}>Add Field</Button>
       <FlatList
         data={elements}
@@ -99,17 +109,18 @@ function ElementList() {
                 <TextField
                   label="Field Name"
                   value={elementAttributes.name ?? ''}
-                  onChangeText={value =>
-                    updateAttribute(elementAttributes.name, value)
-                  }
+                  onChangeText={value => updateAttribute('name', value)}
                   testID="text-input-field-name"
                 />
+                <Button onPress={hideEditForm}>Cancel</Button>
                 <Button onPress={updateField}>Save Field</Button>
               </View>
             );
           } else {
             return (
-              <Button onPress={() => {}}>{element.attributes.name}</Button>
+              <Button onPress={() => editElement(element)}>
+                {element.attributes.name}
+              </Button>
             );
           }
         }}
@@ -230,140 +241,137 @@ function CardList() {
   }
 
   return (
-    <ScreenBackground>
-      <SafeAreaView style={styles.fullHeight}>
-        <View style={[styles.buttonContainer, responsiveButtonContainerStyle]}>
-          <Button onPress={addCard}>Add Card</Button>
-          <Button onPress={() => {}}>Edit Elements</Button>
-        </View>
-        <ScrollView horizontal style={styles.fullHeight}>
-          {columns.map(column => {
-            const {name, 'card-inclusion-condition': cardInclusionCondition} =
-              column.attributes;
+    <View style={styles.fullHeight}>
+      <View style={[styles.buttonContainer, responsiveButtonContainerStyle]}>
+        <Button onPress={addCard}>Add Card</Button>
+      </View>
+      <ScrollView horizontal style={styles.fullHeight}>
+        {columns.map(column => {
+          const {name, 'card-inclusion-condition': cardInclusionCondition} =
+            column.attributes;
 
-            const columnCards = cards.filter(card =>
-              checkCondition({card, condition: cardInclusionCondition}),
-            );
+          const columnCards = cards.filter(card =>
+            checkCondition({card, condition: cardInclusionCondition}),
+          );
 
-            return (
-              <View
-                key={column.id}
-                testID={`column-${column.id}`}
-                style={[responsiveColumnStyle, styles.fullHeight]}
-              >
-                <Text variant="titleLarge">{name}</Text>
-                <KeyboardAwareFlatList
-                  extraScrollHeight={EXPERIMENTAL_EXTRA_SCROLL_HEIGHT}
-                  data={columnCards}
-                  keyExtractor={card => card.id}
-                  renderItem={({item: card}) => {
-                    if (selectedCardId === card.id) {
-                      const elementsToShow = sortElements(
-                        elements.filter(element =>
-                          checkCondition({
-                            card,
-                            condition: element.attributes['show-condition'],
-                          }),
-                        ),
-                      );
+          return (
+            <View
+              key={column.id}
+              testID={`column-${column.id}`}
+              style={[responsiveColumnStyle, styles.fullHeight]}
+            >
+              <Text variant="titleLarge">{name}</Text>
+              <KeyboardAwareFlatList
+                extraScrollHeight={EXPERIMENTAL_EXTRA_SCROLL_HEIGHT}
+                data={columnCards}
+                keyExtractor={card => card.id}
+                renderItem={({item: card}) => {
+                  if (selectedCardId === card.id) {
+                    const elementsToShow = sortElements(
+                      elements.filter(element =>
+                        checkCondition({
+                          card,
+                          condition: element.attributes['show-condition'],
+                        }),
+                      ),
+                    );
 
-                      return (
-                        <Card key={card.id} style={styles.card}>
-                          {elementsToShow.map((element, elementIndex) => {
-                            switch (element.attributes['element-type']) {
-                              case ELEMENT_TYPES.field:
-                                return (
-                                  <Field
-                                    key={element.id}
-                                    field={element}
-                                    value={fieldValues[element.id]}
-                                    setValue={value =>
-                                      setFieldValue(element.id, value)
-                                    }
-                                    readOnly={element.attributes['read-only']}
-                                    style={
-                                      elementIndex > 0 && styles.detailElement
-                                    }
-                                  />
-                                );
-                              case ELEMENT_TYPES.button:
-                                return (
-                                  <ButtonElement
-                                    key={element.id}
-                                    element={element}
-                                    onPerformAction={() =>
-                                      handlePerformAction({
-                                        card,
-                                        action: element.attributes.action,
-                                      })
-                                    }
-                                    style={
-                                      elementIndex > 0 && styles.detailElement
-                                    }
-                                  />
-                                );
-                              default:
-                                return (
-                                  <Text>
-                                    unknown element type:{' '}
-                                    {element.attributes['element-type']}
-                                  </Text>
-                                );
-                            }
-                          })}
-                          <Button
-                            onPress={hideDetail}
-                            style={styles.detailElement}
-                          >
-                            Cancel
-                          </Button>
-                          <Button
-                            onPress={deleteCard}
-                            style={styles.detailElement}
-                          >
-                            Delete
-                          </Button>
-                          <Button
-                            primary
-                            onPress={() => updateCard()}
-                            style={styles.detailElement}
-                          >
-                            Save
-                          </Button>
-                        </Card>
-                      );
-                    } else {
-                      const fieldsToShow = sortElements(
-                        elements.filter(
-                          field => field.attributes['show-in-summary'],
-                        ),
-                      );
-
-                      return (
-                        <Card
-                          key={card.id}
-                          style={styles.card}
-                          onPress={() => showDetail(card.id)}
+                    return (
+                      <Card key={card.id} style={styles.card}>
+                        {elementsToShow.map((element, elementIndex) => {
+                          switch (element.attributes['element-type']) {
+                            case ELEMENT_TYPES.field:
+                              return (
+                                <Field
+                                  key={element.id}
+                                  field={element}
+                                  value={fieldValues[element.id]}
+                                  setValue={value =>
+                                    setFieldValue(element.id, value)
+                                  }
+                                  readOnly={element.attributes['read-only']}
+                                  style={
+                                    elementIndex > 0 && styles.detailElement
+                                  }
+                                />
+                              );
+                            case ELEMENT_TYPES.button:
+                              return (
+                                <ButtonElement
+                                  key={element.id}
+                                  element={element}
+                                  onPerformAction={() =>
+                                    handlePerformAction({
+                                      card,
+                                      action: element.attributes.action,
+                                    })
+                                  }
+                                  style={
+                                    elementIndex > 0 && styles.detailElement
+                                  }
+                                />
+                              );
+                            default:
+                              return (
+                                <Text>
+                                  unknown element type:{' '}
+                                  {element.attributes['element-type']}
+                                </Text>
+                              );
+                          }
+                        })}
+                        <Button
+                          onPress={hideDetail}
+                          style={styles.detailElement}
                         >
-                          {fieldsToShow.map(field => (
-                            <Field
-                              key={field.id}
-                              field={field}
-                              value={card.attributes['field-values'][field.id]}
-                              readOnly
-                            />
-                          ))}
-                        </Card>
-                      );
-                    }
-                  }}
-                />
-              </View>
-            );
-          })}
-        </ScrollView>
-      </SafeAreaView>
-    </ScreenBackground>
+                          Cancel
+                        </Button>
+                        <Button
+                          onPress={deleteCard}
+                          style={styles.detailElement}
+                        >
+                          Delete
+                        </Button>
+                        <Button
+                          primary
+                          onPress={() => updateCard()}
+                          style={styles.detailElement}
+                        >
+                          Save
+                        </Button>
+                      </Card>
+                    );
+                  } else {
+                    const fieldsToShow = sortElements(
+                      elements.filter(
+                        field => field.attributes['show-in-summary'],
+                      ),
+                    );
+
+                    return (
+                      <Card
+                        key={card.id}
+                        style={styles.card}
+                        onPress={() => showDetail(card.id)}
+                      >
+                        {fieldsToShow.map(field => (
+                          <Field
+                            key={field.id}
+                            field={field}
+                            value={card.attributes['field-values'][field.id]}
+                            readOnly
+                          />
+                        ))}
+                      </Card>
+                    );
+                  }
+                }}
+              />
+            </View>
+          );
+        })}
+      </ScrollView>
+    </View>
   );
 }
 
