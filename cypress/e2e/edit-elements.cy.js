@@ -218,5 +218,47 @@ describe('edit elements', () => {
       .its('request.body')
       .should('deep.equal', {data: quietedCard});
     cy.contains(greetingText).should('not.exist');
+
+    cy.log('EDIT BUTTON');
+
+    cy.contains('Edit Elements').click();
+    cy.contains(buttonName).click();
+
+    const updatedButtonName = 'Shoosh';
+    cy.get('[data-testid="text-input-element-name"]')
+      .clear()
+      .type(updatedButtonName);
+
+    const renamedButton = Factory.button(
+      {name: updatedButtonName},
+      greetButton,
+    );
+    cy.intercept('PATCH', `http://cypressapi/elements/${newButton.id}?`, {
+      success: true,
+    }).as('updateField');
+    cy.intercept('GET', 'http://cypressapi/elements?', {
+      data: [greetingField, renamedButton],
+    });
+
+    cy.contains('Save Element').click();
+    cy.wait('@updateField')
+      .its('request.body')
+      .should('deep.equal', {data: renamedButton});
+    cy.contains(updatedButtonName);
+
+    cy.log('DELETE BUTTON');
+
+    cy.contains(updatedButtonName).click();
+
+    cy.intercept('GET', 'http://cypressapi/elements?', {
+      data: [greetingField],
+    });
+    cy.intercept('DELETE', `http://cypressapi/elements/${renamedButton.id}`, {
+      success: true,
+    }).as('deleteButton');
+    cy.contains('Delete Element').click();
+    cy.wait('@deleteButton');
+
+    cy.contains(updatedButtonName).should('not.exist');
   });
 });

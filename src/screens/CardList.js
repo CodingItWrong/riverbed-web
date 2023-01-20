@@ -110,7 +110,7 @@ function ElementList() {
     },
   });
 
-  const {mutate: deleteField} = useMutation({
+  const {mutate: deleteElement} = useMutation({
     mutationFn: () => elementClient.delete({id: selectedElementId}),
     onSuccess: () => {
       refreshElements();
@@ -239,7 +239,7 @@ function ElementList() {
                   </>
                 )}
                 <Button onPress={hideEditForm}>Cancel</Button>
-                <Button onPress={deleteField}>Delete Element</Button>
+                <Button onPress={deleteElement}>Delete Element</Button>
                 <Button onPress={updateField}>Save Element</Button>
               </View>
             );
