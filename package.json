@@ -22,6 +22,7 @@
     "expo": "~47.0.13",
     "expo-status-bar": "~1.4.2",
     "expo-updates": "~0.15.6",
+    "lodash.set": "^4.3.2",
     "lodash.sortby": "^4.7.0",
     "react": "18.1.0",
     "react-dom": "18.1.0",
