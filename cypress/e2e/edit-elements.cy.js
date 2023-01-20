@@ -48,8 +48,7 @@ describe('display cards', () => {
     cy.wait('@addField');
     const fieldName = 'Greeting';
     cy.get('[data-testid="text-input-element-name"]').type(fieldName);
-    cy.contains('Data Type: (choose)').click();
-    cy.contains('Text').click({force: true});
+    cy.contains('Data Type: (choose)').paperSelect('Text');
     cy.contains('Data Type: Text');
     cy.get('[data-testid="checkbox-show-in-summary"]').click();
 
