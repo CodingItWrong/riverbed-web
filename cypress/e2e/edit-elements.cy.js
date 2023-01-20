@@ -1,6 +1,7 @@
 import COMMANDS from '../../src/commands';
 import ELEMENT_TYPES from '../../src/elementTypes';
 import FIELD_DATA_TYPES from '../../src/fieldDataTypes';
+import QUERIES from '../../src/queries';
 import Factory from '../support/Factory';
 
 describe('edit elements', () => {
@@ -148,6 +149,10 @@ describe('edit elements', () => {
           field: greetingField.id,
           value: 'EMPTY',
         },
+        'show-condition': {
+          query: QUERIES.IS_NOT_EMPTY,
+          field: greetingField.id,
+        },
       },
       newButton,
     );
@@ -186,10 +191,16 @@ describe('edit elements', () => {
     cy.wait('@addButton');
 
     cy.get('[data-testid="text-input-element-name"]').type(buttonName);
+
+    // action
     cy.contains('Command: (choose)').paperSelect('Set Value');
     // TODO: make this reliable to select when it's just the field name shown, not conflicting with other things on the page
-    cy.contains('Field: (choose)').paperSelect('In Greeting');
+    cy.contains('Action Field: (choose)').paperSelect('In Greeting');
     cy.contains('Value: (choose)').paperSelect('Empty');
+
+    // show condition
+    cy.contains('Show Query: (choose)').paperSelect('Not Empty');
+    cy.contains('Query Field: (choose)').paperSelect('Check Greeting');
 
     cy.intercept('PATCH', `http://cypressapi/elements/${newButton.id}?`, {
       success: true,
@@ -218,6 +229,9 @@ describe('edit elements', () => {
       .its('request.body')
       .should('deep.equal', {data: quietedCard});
     cy.contains(greetingText).should('not.exist');
+
+    cy.get(`[data-testid="card-${quietedCard.id}"]`).click();
+    cy.contains(buttonName).should('not.exist');
 
     cy.log('EDIT BUTTON');
 

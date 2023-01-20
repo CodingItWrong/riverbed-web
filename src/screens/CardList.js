@@ -67,14 +67,8 @@ function ElementList() {
 
   const refreshElements = () => queryClient.invalidateQueries(['elements']);
 
-  const {mutate: addField} = useMutation({
-    mutationFn: () =>
-      elementClient.create({
-        attributes: {
-          'element-type': ELEMENT_TYPES.field,
-          'data-type': FIELD_DATA_TYPES.text,
-        },
-      }),
+  const {mutate: addElement} = useMutation({
+    mutationFn: attributes => elementClient.create({attributes}),
     onSuccess: newElement => {
       setSelectedElementId(newElement.data.id);
       setElementAttributes(newElement.data.attributes);
@@ -82,18 +76,13 @@ function ElementList() {
     },
   });
 
-  // TODO: remove duplication between addField and addButton: just pass element type
-  const {mutate: addButton} = useMutation({
-    mutationFn: () =>
-      elementClient.create({
-        attributes: {'element-type': ELEMENT_TYPES.button},
-      }),
-    onSuccess: newElement => {
-      setSelectedElementId(newElement.data.id);
-      setElementAttributes(newElement.data.attributes);
-      refreshElements();
-    },
-  });
+  const addField = () =>
+    addElement({
+      'element-type': ELEMENT_TYPES.field,
+      'data-type': FIELD_DATA_TYPES.text,
+    });
+
+  const addButton = () => addElement({'element-type': ELEMENT_TYPES.button});
 
   const {mutate: updateElement} = useMutation({
     mutationFn: () => {
@@ -144,6 +133,7 @@ function ElementList() {
 
   const commandOptions = [{label: 'Set Value', value: COMMANDS.SET_VALUE}];
   const valueOptions = [{label: 'Empty', value: VALUES.EMPTY}];
+  const queryOptions = [{label: 'Not Empty', value: QUERIES.IS_NOT_EMPTY}];
 
   return (
     <View style={styles.fullHeight}>
@@ -198,6 +188,36 @@ function ElementList() {
                 {elementAttributes['element-type'] === ELEMENT_TYPES.button && (
                   <>
                     <Dropdown
+                      fieldLabel="Show Query"
+                      emptyLabel="(choose)"
+                      options={queryOptions}
+                      value={queryOptions.find(
+                        o =>
+                          o.value ===
+                          elementAttributes['show-condition;']?.query,
+                      )}
+                      onValueChange={option =>
+                        updateAttribute('show-condition.query', option.value)
+                      }
+                      keyExtractor={option => option.value}
+                      labelExtractor={option => option.label}
+                    />
+                    <Dropdown
+                      fieldLabel="Query Field"
+                      emptyLabel="(choose)"
+                      options={fields}
+                      value={fields.find(
+                        f =>
+                          f.id === elementAttributes['show-condition']?.field,
+                      )}
+                      onValueChange={field =>
+                        updateAttribute('show-condition.field', field.id)
+                      }
+                      keyExtractor={field => field.id}
+                      labelExtractor={field => `Check ${field.attributes.name}`}
+                    />
+
+                    <Dropdown
                       fieldLabel="Command"
                       emptyLabel="(choose)"
                       options={commandOptions}
@@ -211,7 +231,7 @@ function ElementList() {
                       labelExtractor={option => option.label}
                     />
                     <Dropdown
-                      fieldLabel="Field"
+                      fieldLabel="Action Field"
                       emptyLabel="(choose)"
                       options={fields}
                       value={fields.find(
@@ -480,6 +500,7 @@ function CardList() {
                         key={card.id}
                         style={styles.card}
                         onPress={() => showDetail(card.id)}
+                        testID={`card-${card.id}`}
                       >
                         {fieldsToShow.map(field => (
                           <Field
