@@ -95,7 +95,7 @@ function ElementList() {
     },
   });
 
-  const {mutate: updateField} = useMutation({
+  const {mutate: updateElement} = useMutation({
     mutationFn: () => {
       const updatedElement = {
         type: 'elements',
@@ -240,7 +240,7 @@ function ElementList() {
                 )}
                 <Button onPress={hideEditForm}>Cancel</Button>
                 <Button onPress={deleteElement}>Delete Element</Button>
-                <Button onPress={updateField}>Save Element</Button>
+                <Button onPress={updateElement}>Save Element</Button>
               </View>
             );
           } else {
