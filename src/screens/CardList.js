@@ -1,4 +1,5 @@
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
+import set from 'lodash.set';
 import sortBy from 'lodash.sortby';
 import {useState} from 'react';
 import {
@@ -60,6 +61,9 @@ function ElementList() {
   const {data: elements = []} = useQuery(['elements'], () =>
     elementClient.all().then(resp => resp.data),
   );
+  const fields = elements.filter(
+    e => e.attributes['element-type'] === ELEMENT_TYPES.field,
+  );
 
   const refreshElements = () => queryClient.invalidateQueries(['elements']);
 
@@ -70,6 +74,19 @@ function ElementList() {
           'element-type': ELEMENT_TYPES.field,
           'data-type': FIELD_DATA_TYPES.text,
         },
+      }),
+    onSuccess: newElement => {
+      setSelectedElementId(newElement.data.id);
+      setElementAttributes(newElement.data.attributes);
+      refreshElements();
+    },
+  });
+
+  // TODO: remove duplication between addField and addButton: just pass element type
+  const {mutate: addButton} = useMutation({
+    mutationFn: () =>
+      elementClient.create({
+        attributes: {'element-type': ELEMENT_TYPES.button},
       }),
     onSuccess: newElement => {
       setSelectedElementId(newElement.data.id);
@@ -111,18 +128,27 @@ function ElementList() {
     setElementAttributes(null);
   }
 
-  function updateAttribute(name, value) {
-    setElementAttributes(oldAttributes => ({...oldAttributes, [name]: value}));
+  function updateAttribute(path, value) {
+    setElementAttributes(oldAttributes => {
+      const newAttributes = {...oldAttributes};
+      set(newAttributes, path, value);
+      return newAttributes;
+    });
   }
 
+  // TODO: move display labels to the central config for these
   const dataTypeOptions = [
     {label: 'Text', value: FIELD_DATA_TYPES.text},
     {label: 'Date', value: FIELD_DATA_TYPES.date},
   ];
 
+  const commandOptions = [{label: 'Set Value', value: COMMANDS.SET_VALUE}];
+  const valueOptions = [{label: 'Empty', value: VALUES.EMPTY}];
+
   return (
     <View style={styles.fullHeight}>
       <Button onPress={addField}>Add Field</Button>
+      <Button onPress={addButton}>Add Button</Button>
       <FlatList
         data={elements}
         keyExtractor={element => element.id}
@@ -150,7 +176,6 @@ function ElementList() {
                       options={dataTypeOptions}
                       keyExtractor={option => option.value}
                       labelExtractor={option => option.label}
-                      testID="dropdown-data-type"
                     />
                     <LabeledCheckbox
                       label="Show in Summary"
@@ -167,6 +192,49 @@ function ElementList() {
                         updateAttribute('read-only', newChecked)
                       }
                       testID="checkbox-read-only"
+                    />
+                  </>
+                )}
+                {elementAttributes['element-type'] === ELEMENT_TYPES.button && (
+                  <>
+                    <Dropdown
+                      fieldLabel="Command"
+                      emptyLabel="(choose)"
+                      options={commandOptions}
+                      value={commandOptions.find(
+                        o => o.value === elementAttributes.action?.command,
+                      )}
+                      onValueChange={option =>
+                        updateAttribute('action.command', option.value)
+                      }
+                      keyExtractor={option => option.value}
+                      labelExtractor={option => option.label}
+                    />
+                    <Dropdown
+                      fieldLabel="Field"
+                      emptyLabel="(choose)"
+                      options={fields}
+                      value={fields.find(
+                        f => f.id === elementAttributes.action?.field,
+                      )}
+                      onValueChange={field =>
+                        updateAttribute('action.field', field.id)
+                      }
+                      keyExtractor={field => field.id}
+                      labelExtractor={field => `In ${field.attributes.name}`}
+                    />
+                    <Dropdown
+                      fieldLabel="Value"
+                      emptyLabel="(choose)"
+                      options={valueOptions}
+                      value={commandOptions.find(
+                        o => o.value === elementAttributes.action?.value,
+                      )}
+                      onValueChange={option =>
+                        updateAttribute('action.value', option.value)
+                      }
+                      keyExtractor={option => option.value}
+                      labelExtractor={option => option.label}
                     />
                   </>
                 )}

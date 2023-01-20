@@ -1,9 +1,10 @@
+import COMMANDS from '../../src/commands';
 import ELEMENT_TYPES from '../../src/elementTypes';
 import FIELD_DATA_TYPES from '../../src/fieldDataTypes';
 import Factory from '../support/Factory';
 
-describe('display cards', () => {
-  it('displays cards from the server', () => {
+describe('edit elements', () => {
+  it('allows creating, updating, and deleting fields', () => {
     const newField = Factory.field({
       'element-type': ELEMENT_TYPES.field,
       name: '',
@@ -128,5 +129,94 @@ describe('display cards', () => {
     cy.contains('Delete Element').click();
     cy.wait('@deleteField');
     cy.contains(updatedFieldName).should('not.exist');
+  });
+
+  it('allows creating, updating, and deleting buttons', () => {
+    const greetingField = Factory.field({
+      name: 'Greeting',
+      'data-type': FIELD_DATA_TYPES.text,
+      'show-in-summary': true,
+    });
+
+    const newButton = Factory.button({});
+    const buttonName = 'Quiet Down';
+    const greetButton = Factory.button(
+      {
+        name: buttonName,
+        action: {
+          command: COMMANDS.SET_VALUE,
+          field: greetingField.id,
+          value: 'EMPTY',
+        },
+      },
+      newButton,
+    );
+
+    const allColumn = Factory.column({
+      name: 'All',
+      'card-inclusion-condition': null,
+    });
+
+    const greetingText = 'Hello, world!';
+    const card = Factory.card({[greetingField.id]: greetingText});
+
+    cy.intercept('GET', 'http://cypressapi/elements?', {
+      data: [greetingField],
+    });
+    cy.intercept('GET', 'http://cypressapi/columns?', {
+      data: [allColumn],
+    });
+    cy.intercept('GET', 'http://cypressapi/cards?', {
+      data: [card],
+    });
+
+    cy.visit('/');
+
+    cy.log('ADD BUTTON');
+
+    cy.contains('Edit Elements').click();
+
+    cy.intercept('POST', 'http://cypressapi/elements?', {
+      data: newButton,
+    }).as('addButton');
+    cy.intercept('GET', 'http://cypressapi/elements?', {
+      data: [greetingField, newButton],
+    });
+    cy.contains('Add Button').click();
+    cy.wait('@addButton');
+
+    cy.get('[data-testid="text-input-element-name"]').type(buttonName);
+    cy.contains('Command: (choose)').paperSelect('Set Value');
+    // TODO: make this reliable to select when it's just the field name shown, not conflicting with other things on the page
+    cy.contains('Field: (choose)').paperSelect('In Greeting');
+    cy.contains('Value: (choose)').paperSelect('Empty');
+
+    cy.intercept('PATCH', `http://cypressapi/elements/${newButton.id}?`, {
+      success: true,
+    }).as('updateField');
+    cy.intercept('GET', 'http://cypressapi/elements?', {
+      data: [greetingField, greetButton],
+    });
+    cy.contains('Save Element').click();
+    cy.wait('@updateField')
+      .its('request.body')
+      .should('deep.equal', {data: greetButton});
+    cy.contains(buttonName);
+    cy.contains('Done Editing Elements').click();
+
+    cy.contains(greetingText).click();
+
+    const quietedCard = Factory.card({[greetingField.id]: null}, card);
+    cy.intercept('PATCH', `http://cypressapi/cards/${card.id}?`, {
+      success: true,
+    }).as('updateCard');
+    cy.intercept('GET', 'http://cypressapi/cards?', {
+      data: [quietedCard],
+    });
+    cy.contains(buttonName).click();
+    cy.wait('@updateCard')
+      .its('request.body')
+      .should('deep.equal', {data: quietedCard});
+    cy.contains(greetingText).should('not.exist');
   });
 });
