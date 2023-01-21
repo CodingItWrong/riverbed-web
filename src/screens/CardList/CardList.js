@@ -19,7 +19,6 @@ export default function CardList() {
   const columnClient = useColumns();
   const cardClient = useCards();
   const [selectedCardId, setSelectedCardId] = useState(null);
-  const [fieldValues, setFieldValues] = useState(null);
 
   const {data: elements = []} = useQuery(['elements'], () =>
     elementClient.all().then(resp => resp.data),
@@ -37,18 +36,16 @@ export default function CardList() {
     mutationFn: () => cardClient.create({attributes: {}}),
     onSuccess: ({data: newCard}) => {
       setSelectedCardId(newCard.id);
-      // TODO: remove duplication in having to remember to set field values
-      setFieldValues(newCard.attributes['field-values']);
       refreshCards();
     },
   });
 
   const {mutate: updateCard} = useMutation({
-    mutationFn: fieldValueOverrides => {
+    mutationFn: fieldValues => {
       const updatedCard = {
         type: 'cards',
         id: selectedCardId,
-        attributes: {'field-values': {...fieldValues, ...fieldValueOverrides}},
+        attributes: {'field-values': fieldValues},
       };
       return cardClient.update(updatedCard);
     },
@@ -68,14 +65,10 @@ export default function CardList() {
 
   function showDetail(cardId) {
     setSelectedCardId(cardId);
-    setFieldValues(
-      cards.find(card => card.id === cardId).attributes['field-values'],
-    );
   }
 
   function hideDetail() {
     setSelectedCardId(null);
-    setFieldValues(null);
   }
 
   const {width: viewportWidth} = useWindowDimensions();

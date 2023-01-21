@@ -11,7 +11,6 @@ import COMMANDS from '../../enums/commands';
 import ELEMENT_TYPES from '../../enums/elementTypes';
 import VALUES from '../../enums/values';
 import checkCondition from '../../utils/checkCondition';
-import dateUtils from '../../utils/dateUtils';
 import sortElements from '../../utils/sortElements';
 
 export default function CardDetail({card, onUpdate, onCancel, onDelete}) {
@@ -53,7 +52,7 @@ export default function CardDetail({card, onUpdate, onCancel, onDelete}) {
       case COMMANDS.SET_VALUE.key:
         if (valueObject) {
           const concreteValue = valueObject.call();
-          onUpdate({[field]: concreteValue});
+          onUpdate({...fieldValues, [field]: concreteValue});
         } else {
           console.error(`unknown value: ${value}`);
           return;
