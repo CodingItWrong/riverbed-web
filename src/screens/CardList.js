@@ -132,8 +132,14 @@ function ElementList() {
   ];
 
   const commandOptions = [{label: 'Set Value', value: COMMANDS.SET_VALUE}];
-  const valueOptions = [{label: 'Empty', value: VALUES.EMPTY}];
-  const queryOptions = [{label: 'Not Empty', value: QUERIES.IS_NOT_EMPTY}];
+  const valueOptions = [
+    {label: 'Empty', value: VALUES.EMPTY},
+    {label: 'Now', value: VALUES.NOW},
+  ];
+  const queryOptions = [
+    {label: 'Empty', value: QUERIES.IS_EMPTY},
+    {label: 'Not Empty', value: QUERIES.IS_NOT_EMPTY},
+  ];
 
   return (
     <View style={styles.fullHeight}>
