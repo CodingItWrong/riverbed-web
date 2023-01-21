@@ -1,10 +1,12 @@
 import {useQuery} from '@tanstack/react-query';
 import set from 'lodash.set';
 import {useEffect, useState} from 'react';
-import {View} from 'react-native';
+import {StyleSheet} from 'react-native';
 import Button from '../../components/Button';
+import Card from '../../components/Card';
 import Dropdown from '../../components/Dropdown';
 import LabeledCheckbox from '../../components/LabeledCheckbox';
+import Text from '../../components/Text';
 import TextField from '../../components/TextField';
 import {useElements} from '../../data/elements';
 import COMMANDS from '../../enums/commands';
@@ -49,7 +51,7 @@ export default function EditElementForm({element, onSave, onDelete, onCancel}) {
   }
 
   return (
-    <View>
+    <Card>
       <TextField
         label="Field Name"
         value={elementAttributes.name ?? ''}
@@ -66,6 +68,7 @@ export default function EditElementForm({element, onSave, onDelete, onCancel}) {
             )}
             onValueChange={option => updateAttribute('data-type', option.key)}
             options={dataTypeOptions}
+            style={styles.field}
           />
           <LabeledCheckbox
             label="Show in Summary"
@@ -73,6 +76,7 @@ export default function EditElementForm({element, onSave, onDelete, onCancel}) {
             onChangeChecked={newChecked =>
               updateAttribute('show-in-summary', newChecked)
             }
+            style={styles.field}
             testID="checkbox-show-in-summary"
           />
           <LabeledCheckbox
@@ -81,6 +85,7 @@ export default function EditElementForm({element, onSave, onDelete, onCancel}) {
             onChangeChecked={newChecked =>
               updateAttribute('read-only', newChecked)
             }
+            style={styles.field}
             testID="checkbox-read-only"
           />
         </>
@@ -97,10 +102,16 @@ export default function EditElementForm({element, onSave, onDelete, onCancel}) {
         updateAttribute={updateAttribute}
         fields={fields}
       />
-      <Button onPress={onCancel}>Cancel</Button>
-      <Button onPress={onDelete}>Delete Element</Button>
-      <Button onPress={handleSave}>Save Element</Button>
-    </View>
+      <Button onPress={onCancel} style={styles.button}>
+        Cancel
+      </Button>
+      <Button onPress={onDelete} style={styles.button}>
+        Delete Element
+      </Button>
+      <Button onPress={handleSave} style={styles.button}>
+        Save Element
+      </Button>
+    </Card>
   );
 }
 
@@ -109,7 +120,8 @@ function ActionInputs({elementAttributes, updateAttribute, fields}) {
   const valueOptions = Object.values(VALUES);
 
   return (
-    <>
+    <Card>
+      <Text>Click Action</Text>
       <Dropdown
         fieldLabel="Command"
         emptyLabel="(choose)"
@@ -118,6 +130,7 @@ function ActionInputs({elementAttributes, updateAttribute, fields}) {
         onValueChange={command =>
           updateAttribute('action.command', command.key)
         }
+        style={styles.field}
       />
       <Dropdown
         fieldLabel="Action Field"
@@ -127,6 +140,7 @@ function ActionInputs({elementAttributes, updateAttribute, fields}) {
         onValueChange={field => updateAttribute('action.field', field.id)}
         keyExtractor={field => field.id}
         labelExtractor={field => `In ${field.attributes.name}`}
+        style={styles.field}
       />
       <Dropdown
         fieldLabel="Value"
@@ -136,8 +150,9 @@ function ActionInputs({elementAttributes, updateAttribute, fields}) {
           o => o.key === elementAttributes.action?.value,
         )}
         onValueChange={option => updateAttribute('action.value', option.key)}
+        style={styles.field}
       />
-    </>
+    </Card>
   );
 }
 
@@ -145,7 +160,8 @@ function ShowConditionInputs({elementAttributes, updateAttribute, fields}) {
   const queryOptions = Object.values(QUERIES);
 
   return (
-    <>
+    <Card>
+      <Text>Show Condition</Text>
       <Dropdown
         fieldLabel="Show Query"
         emptyLabel="(choose)"
@@ -158,6 +174,7 @@ function ShowConditionInputs({elementAttributes, updateAttribute, fields}) {
         }
         keyExtractor={query => query.key}
         labelExtractor={query => query.label}
+        style={styles.field}
       />
       <Dropdown
         fieldLabel="Query Field"
@@ -171,7 +188,17 @@ function ShowConditionInputs({elementAttributes, updateAttribute, fields}) {
         }
         keyExtractor={field => field.id}
         labelExtractor={field => `Check ${field.attributes.name}`}
+        style={styles.field}
       />
-    </>
+    </Card>
   );
 }
+
+const styles = StyleSheet.create({
+  field: {
+    marginTop: 8,
+  },
+  button: {
+    marginTop: 8,
+  },
+});

@@ -2,6 +2,8 @@ import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {useState} from 'react';
 import {FlatList, View} from 'react-native';
 import Button from '../../components/Button';
+import Card from '../../components/Card';
+import Text from '../../components/Text';
 import sharedStyles from '../../components/sharedStyles';
 import {useElements} from '../../data/elements';
 import ELEMENT_TYPES from '../../enums/elementTypes';
@@ -78,9 +80,9 @@ export default function ElementList() {
               onCancel={hideEditForm}
             />
           ) : (
-            <Button onPress={() => setSelectedElementId(element.id)}>
-              {element.attributes.name}
-            </Button>
+            <Card onPress={() => setSelectedElementId(element.id)}>
+              <Text>{element.attributes.name}</Text>
+            </Card>
           )
         }
       />
