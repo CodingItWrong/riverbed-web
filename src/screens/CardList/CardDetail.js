@@ -49,13 +49,13 @@ export default function CardDetail({card, onUpdate, onCancel, onDelete}) {
     const {command, field, value} = action;
 
     switch (command) {
-      case COMMANDS.SET_VALUE:
+      case COMMANDS.SET_VALUE.key:
         let concreteValue;
         switch (value) {
-          case VALUES.EMPTY:
+          case VALUES.EMPTY.key:
             concreteValue = null;
             break;
-          case VALUES.NOW:
+          case VALUES.NOW.key:
             concreteValue = dateUtils.objectToServerString(new Date());
             break;
           default:
@@ -77,7 +77,7 @@ export default function CardDetail({card, onUpdate, onCancel, onDelete}) {
     <Card key={card.id} style={styles.card}>
       {elementsToShow.map((element, elementIndex) => {
         switch (element.attributes['element-type']) {
-          case ELEMENT_TYPES.field:
+          case ELEMENT_TYPES.FIELD.key:
             return (
               <Field
                 key={element.id}
@@ -88,7 +88,7 @@ export default function CardDetail({card, onUpdate, onCancel, onDelete}) {
                 style={elementIndex > 0 && styles.detailElement}
               />
             );
-          case ELEMENT_TYPES.button:
+          case ELEMENT_TYPES.BUTTON.key:
             return (
               <ButtonElement
                 key={element.id}

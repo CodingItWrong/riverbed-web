@@ -11,17 +11,17 @@ describe('edit cards', () => {
   it('allows editing cards', () => {
     const titleField = Factory.field({
       name: 'Title',
-      'data-type': FIELD_DATA_TYPES.text,
+      'data-type': FIELD_DATA_TYPES.TEXT.key,
       'show-in-summary': true,
     });
     const publisherField = Factory.field({
       name: 'Publisher',
-      'data-type': FIELD_DATA_TYPES.text,
+      'data-type': FIELD_DATA_TYPES.TEXT.key,
       'show-in-summary': false,
     });
     const releasedAtField = Factory.field({
       name: 'Released At',
-      'data-type': FIELD_DATA_TYPES.date,
+      'data-type': FIELD_DATA_TYPES.DATE.key,
       'show-in-summary': true,
     });
 
@@ -29,14 +29,14 @@ describe('edit cards', () => {
       name: 'Released',
       'card-inclusion-condition': {
         field: releasedAtField.id,
-        query: QUERIES.IS_NOT_EMPTY,
+        query: QUERIES.IS_NOT_EMPTY.key,
       },
     });
     const unreleasedColumn = Factory.column({
       name: 'Unreleased',
       'card-inclusion-condition': {
         field: releasedAtField.id,
-        query: QUERIES.IS_EMPTY,
+        query: QUERIES.IS_EMPTY.key,
       },
     });
 

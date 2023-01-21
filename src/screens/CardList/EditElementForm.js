@@ -19,7 +19,7 @@ export default function EditElementForm({element, onSave, onDelete, onCancel}) {
     elementClient.all().then(resp => resp.data),
   );
   const fields = elements.filter(
-    e => e.attributes['element-type'] === ELEMENT_TYPES.field,
+    e => e.attributes['element-type'] === ELEMENT_TYPES.FIELD.key,
   );
 
   const [currentElementId, setCurrentElementId] = useState(null);
@@ -42,11 +42,7 @@ export default function EditElementForm({element, onSave, onDelete, onCancel}) {
     });
   }
 
-  // TODO: move display labels to the central config for these
-  const dataTypeOptions = [
-    {label: 'Text', value: FIELD_DATA_TYPES.text},
-    {label: 'Date', value: FIELD_DATA_TYPES.date},
-  ];
+  const dataTypeOptions = Object.values(FIELD_DATA_TYPES);
 
   function handleSave() {
     onSave(elementAttributes);
@@ -60,17 +56,17 @@ export default function EditElementForm({element, onSave, onDelete, onCancel}) {
         onChangeText={value => updateAttribute('name', value)}
         testID="text-input-element-name"
       />
-      {elementAttributes['element-type'] === ELEMENT_TYPES.field && (
+      {elementAttributes['element-type'] === ELEMENT_TYPES.FIELD.key && (
         <>
           <Dropdown
             fieldLabel="Data Type"
             emptyLabel="(choose)"
             value={dataTypeOptions.find(
-              o => o.value === elementAttributes['data-type'],
+              o => o.key === elementAttributes['data-type'],
             )}
-            onValueChange={option => updateAttribute('data-type', option.value)}
+            onValueChange={option => updateAttribute('data-type', option.key)}
             options={dataTypeOptions}
-            keyExtractor={option => option.value}
+            keyExtractor={option => option.key}
             labelExtractor={option => option.label}
           />
           <LabeledCheckbox
@@ -91,7 +87,7 @@ export default function EditElementForm({element, onSave, onDelete, onCancel}) {
           />
         </>
       )}
-      {elementAttributes['element-type'] === ELEMENT_TYPES.button && (
+      {elementAttributes['element-type'] === ELEMENT_TYPES.BUTTON.key && (
         <ActionInputs
           elementAttributes={elementAttributes}
           updateAttribute={updateAttribute}
@@ -111,26 +107,21 @@ export default function EditElementForm({element, onSave, onDelete, onCancel}) {
 }
 
 function ActionInputs({elementAttributes, updateAttribute, fields}) {
-  const commandOptions = [{label: 'Set Value', value: COMMANDS.SET_VALUE}];
-  const valueOptions = [
-    {label: 'Empty', value: VALUES.EMPTY},
-    {label: 'Now', value: VALUES.NOW},
-  ];
+  const commands = Object.values(COMMANDS);
+  const valueOptions = Object.values(VALUES);
 
   return (
     <>
       <Dropdown
         fieldLabel="Command"
         emptyLabel="(choose)"
-        options={commandOptions}
-        value={commandOptions.find(
-          o => o.value === elementAttributes.action?.command,
-        )}
-        onValueChange={option =>
-          updateAttribute('action.command', option.value)
+        options={commands}
+        value={commands.find(c => c.key === elementAttributes.action?.command)}
+        onValueChange={command =>
+          updateAttribute('action.command', command.key)
         }
-        keyExtractor={option => option.value}
-        labelExtractor={option => option.label}
+        keyExtractor={command => command.key}
+        labelExtractor={command => command.label}
       />
       <Dropdown
         fieldLabel="Action Field"
@@ -146,10 +137,10 @@ function ActionInputs({elementAttributes, updateAttribute, fields}) {
         emptyLabel="(choose)"
         options={valueOptions}
         value={valueOptions.find(
-          o => o.value === elementAttributes.action?.value,
+          o => o.key === elementAttributes.action?.value,
         )}
-        onValueChange={option => updateAttribute('action.value', option.value)}
-        keyExtractor={option => option.value}
+        onValueChange={option => updateAttribute('action.value', option.key)}
+        keyExtractor={option => option.key}
         labelExtractor={option => option.label}
       />
     </>
@@ -157,10 +148,7 @@ function ActionInputs({elementAttributes, updateAttribute, fields}) {
 }
 
 function ShowConditionInputs({elementAttributes, updateAttribute, fields}) {
-  const queryOptions = [
-    {label: 'Empty', value: QUERIES.IS_EMPTY},
-    {label: 'Not Empty', value: QUERIES.IS_NOT_EMPTY},
-  ];
+  const queryOptions = Object.values(QUERIES);
 
   return (
     <>
@@ -169,13 +157,13 @@ function ShowConditionInputs({elementAttributes, updateAttribute, fields}) {
         emptyLabel="(choose)"
         options={queryOptions}
         value={queryOptions.find(
-          o => o.value === elementAttributes['show-condition']?.query,
+          query => query.key === elementAttributes['show-condition']?.query,
         )}
-        onValueChange={option =>
-          updateAttribute('show-condition.query', option.value)
+        onValueChange={query =>
+          updateAttribute('show-condition.query', query.key)
         }
-        keyExtractor={option => option.value}
-        labelExtractor={option => option.label}
+        keyExtractor={query => query.key}
+        labelExtractor={query => query.label}
       />
       <Dropdown
         fieldLabel="Query Field"

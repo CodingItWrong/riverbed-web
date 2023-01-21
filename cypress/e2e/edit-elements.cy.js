@@ -7,13 +7,13 @@ import Factory from '../support/Factory';
 describe('edit elements', () => {
   it('allows creating, updating, and deleting fields', () => {
     const newField = Factory.field({
-      'element-type': ELEMENT_TYPES.field,
+      'element-type': ELEMENT_TYPES.FIELD.key,
       name: '',
     });
     const greetingField = Factory.field(
       {
         name: 'Greeting',
-        'data-type': FIELD_DATA_TYPES.text,
+        'data-type': FIELD_DATA_TYPES.TEXT.key,
         'show-in-summary': true,
       },
       newField,
@@ -135,7 +135,7 @@ describe('edit elements', () => {
   it('allows creating, updating, and deleting buttons', () => {
     const greetingField = Factory.field({
       name: 'Greeting',
-      'data-type': FIELD_DATA_TYPES.text,
+      'data-type': FIELD_DATA_TYPES.TEXT.key,
       'show-in-summary': true,
     });
 
@@ -145,12 +145,12 @@ describe('edit elements', () => {
       {
         name: buttonName,
         action: {
-          command: COMMANDS.SET_VALUE,
+          command: COMMANDS.SET_VALUE.key,
           field: greetingField.id,
           value: 'EMPTY',
         },
         'show-condition': {
-          query: QUERIES.IS_NOT_EMPTY,
+          query: QUERIES.IS_NOT_EMPTY.key,
           field: greetingField.id,
         },
       },

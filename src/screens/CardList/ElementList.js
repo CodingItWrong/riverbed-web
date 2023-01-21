@@ -29,8 +29,8 @@ export default function ElementList() {
 
   const addField = () =>
     addElement({
-      'element-type': ELEMENT_TYPES.field,
-      'data-type': FIELD_DATA_TYPES.text,
+      'element-type': ELEMENT_TYPES.FIELD.key,
+      'data-type': FIELD_DATA_TYPES.TEXT.key,
     });
 
   const addButton = () => addElement({'element-type': ELEMENT_TYPES.button});

@@ -21,7 +21,7 @@ const Factory = {
       id = this._ids.element++;
       attributes = {
         ...attributeOverrides,
-        'element-type': ELEMENT_TYPES.field,
+        'element-type': ELEMENT_TYPES.FIELD.key,
       };
     }
     return {
@@ -45,7 +45,7 @@ const Factory = {
       id = String(this._ids.element++);
       attributes = {
         ...attributeOverrides,
-        'element-type': ELEMENT_TYPES.button,
+        'element-type': ELEMENT_TYPES.BUTTON.key,
       };
     }
     return {

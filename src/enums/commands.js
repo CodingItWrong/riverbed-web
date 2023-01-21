@@ -1,5 +1,8 @@
 const COMMANDS = {
-  SET_VALUE: 'SET_VALUE',
+  SET_VALUE: {
+    key: 'SET_VALUE',
+    label: 'Set Value',
+  },
 };
 
 export default COMMANDS;

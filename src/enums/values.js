@@ -1,6 +1,6 @@
 const VALUES = {
-  EMPTY: 'EMPTY',
-  NOW: 'NOW',
+  EMPTY: {key: 'EMPTY', label: 'Empty'},
+  NOW: {key: 'NOW', label: 'Now'},
 };
 
 export default VALUES;

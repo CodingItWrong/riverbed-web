@@ -12,7 +12,7 @@ export default function Field({field, value, readOnly, setValue, style}) {
   const {name, 'data-type': dataType} = field.attributes;
 
   switch (dataType) {
-    case FIELD_DATA_TYPES.text:
+    case FIELD_DATA_TYPES.TEXT.key:
       if (readOnly) {
         return (
           <View style={style}>
@@ -31,7 +31,7 @@ export default function Field({field, value, readOnly, setValue, style}) {
           />
         );
       }
-    case FIELD_DATA_TYPES.date:
+    case FIELD_DATA_TYPES.DATE.key:
       if (readOnly) {
         return (
           <View style={style}>
