@@ -1,5 +1,4 @@
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
-import sortBy from 'lodash.sortby';
 import {useState} from 'react';
 import {
   FlatList,
@@ -23,8 +22,9 @@ import {useColumns} from '../../data/columns';
 import {useElements} from '../../data/elements';
 import ELEMENT_TYPES from '../../elementTypes';
 import FIELD_DATA_TYPES from '../../fieldDataTypes';
-import QUERIES from '../../queries';
+import checkCondition from '../../utils/checkCondition';
 import dateUtils from '../../utils/dateUtils';
+import sortElements from '../../utils/sortElements';
 import VALUES from '../../values';
 import EditElementForm from './EditElementForm';
 
@@ -378,26 +378,6 @@ function CardList() {
       </ScrollView>
     </View>
   );
-}
-
-function checkCondition({card, condition}) {
-  if (!condition) {
-    return true;
-  }
-
-  const value = card.attributes['field-values'][condition.field];
-  switch (condition.query) {
-    case QUERIES.IS_EMPTY:
-      return !value;
-    case QUERIES.IS_NOT_EMPTY:
-      return !!value;
-    default:
-      console.error(`unrecognized query for condition: ${condition.query}`);
-  }
-}
-
-function sortElements(elements) {
-  return sortBy(elements, ['attributes.display-order']);
 }
 
 // Just guessed a value and it worked. Might be due to Add/title rows
