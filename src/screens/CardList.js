@@ -200,7 +200,7 @@ function ElementList() {
                       value={queryOptions.find(
                         o =>
                           o.value ===
-                          elementAttributes['show-condition;']?.query,
+                          elementAttributes['show-condition']?.query,
                       )}
                       onValueChange={option =>
                         updateAttribute('show-condition.query', option.value)
@@ -253,7 +253,7 @@ function ElementList() {
                       fieldLabel="Value"
                       emptyLabel="(choose)"
                       options={valueOptions}
-                      value={commandOptions.find(
+                      value={valueOptions.find(
                         o => o.value === elementAttributes.action?.value,
                       )}
                       onValueChange={option =>
