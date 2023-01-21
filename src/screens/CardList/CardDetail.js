@@ -1,15 +1,20 @@
 import {useQuery} from '@tanstack/react-query';
 import {useEffect, useState} from 'react';
+import {StyleSheet} from 'react-native';
+import COMMANDS from '../../commands';
 import Button from '../../components/Button';
 import ButtonElement from '../../components/ButtonElement';
 import Card from '../../components/Card';
 import Field from '../../components/Field';
+import Text from '../../components/Text';
 import {useElements} from '../../data/elements';
 import ELEMENT_TYPES from '../../elementTypes';
 import checkCondition from '../../utils/checkCondition';
+import dateUtils from '../../utils/dateUtils';
 import sortElements from '../../utils/sortElements';
+import VALUES from '../../values';
 
-export default function EditCardForm({card}) {
+export default function CardDetail({card, onUpdate, onCancel, onDelete}) {
   const [currentCardId, setCurrentCardId] = useState(null);
   const [fieldValues, setFieldValues] = useState(
     card.attributes['field-values'],
@@ -40,6 +45,34 @@ export default function EditCardForm({card}) {
     setFieldValues(oldValues => ({...oldValues, [fieldId]: value}));
   }
 
+  function handlePerformAction(action) {
+    const {command, field, value} = action;
+
+    switch (command) {
+      case COMMANDS.SET_VALUE:
+        let concreteValue;
+        switch (value) {
+          case VALUES.EMPTY:
+            concreteValue = null;
+            break;
+          case VALUES.NOW:
+            concreteValue = dateUtils.objectToServerString(new Date());
+            break;
+          default:
+            console.error(`unknown value: ${value}`);
+            return;
+        }
+        onUpdate({[field]: concreteValue});
+        break;
+      default:
+        console.error(`unknown command: ${command}`);
+    }
+  }
+
+  function handleSave() {
+    onUpdate(fieldValues);
+  }
+
   return (
     <Card key={card.id} style={styles.card}>
       {elementsToShow.map((element, elementIndex) => {
@@ -61,10 +94,7 @@ export default function EditCardForm({card}) {
                 key={element.id}
                 element={element}
                 onPerformAction={() =>
-                  handlePerformAction({
-                    card,
-                    action: element.attributes.action,
-                  })
+                  handlePerformAction(element.attributes.action)
                 }
                 style={elementIndex > 0 && styles.detailElement}
               />
@@ -77,13 +107,13 @@ export default function EditCardForm({card}) {
             );
         }
       })}
-      <Button onPress={hideDetail} style={styles.detailElement}>
+      <Button onPress={onCancel} style={styles.detailElement}>
         Cancel
       </Button>
-      <Button onPress={deleteCard} style={styles.detailElement}>
+      <Button onPress={onDelete} style={styles.detailElement}>
         Delete
       </Button>
-      <Button primary onPress={() => updateCard()} style={styles.detailElement}>
+      <Button primary onPress={handleSave} style={styles.detailElement}>
         Save
       </Button>
     </Card>
