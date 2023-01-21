@@ -48,11 +48,6 @@ export default function EditElementForm({element, onSave, onDelete, onCancel}) {
     {label: 'Date', value: FIELD_DATA_TYPES.date},
   ];
 
-  const commandOptions = [{label: 'Set Value', value: COMMANDS.SET_VALUE}];
-  const valueOptions = [
-    {label: 'Empty', value: VALUES.EMPTY},
-    {label: 'Now', value: VALUES.NOW},
-  ];
   const queryOptions = [
     {label: 'Empty', value: QUERIES.IS_EMPTY},
     {label: 'Not Empty', value: QUERIES.IS_NOT_EMPTY},
@@ -102,43 +97,11 @@ export default function EditElementForm({element, onSave, onDelete, onCancel}) {
         </>
       )}
       {elementAttributes['element-type'] === ELEMENT_TYPES.button && (
-        <>
-          <Dropdown
-            fieldLabel="Command"
-            emptyLabel="(choose)"
-            options={commandOptions}
-            value={commandOptions.find(
-              o => o.value === elementAttributes.action?.command,
-            )}
-            onValueChange={option =>
-              updateAttribute('action.command', option.value)
-            }
-            keyExtractor={option => option.value}
-            labelExtractor={option => option.label}
-          />
-          <Dropdown
-            fieldLabel="Action Field"
-            emptyLabel="(choose)"
-            options={fields}
-            value={fields.find(f => f.id === elementAttributes.action?.field)}
-            onValueChange={field => updateAttribute('action.field', field.id)}
-            keyExtractor={field => field.id}
-            labelExtractor={field => `In ${field.attributes.name}`}
-          />
-          <Dropdown
-            fieldLabel="Value"
-            emptyLabel="(choose)"
-            options={valueOptions}
-            value={valueOptions.find(
-              o => o.value === elementAttributes.action?.value,
-            )}
-            onValueChange={option =>
-              updateAttribute('action.value', option.value)
-            }
-            keyExtractor={option => option.value}
-            labelExtractor={option => option.label}
-          />
-        </>
+        <ActionInputs
+          elementAttributes={elementAttributes}
+          updateAttribute={updateAttribute}
+          fields={fields}
+        />
       )}
       <Dropdown
         fieldLabel="Show Query"
@@ -170,5 +133,51 @@ export default function EditElementForm({element, onSave, onDelete, onCancel}) {
       <Button onPress={onDelete}>Delete Element</Button>
       <Button onPress={handleSave}>Save Element</Button>
     </View>
+  );
+}
+
+function ActionInputs({elementAttributes, updateAttribute, fields}) {
+  const commandOptions = [{label: 'Set Value', value: COMMANDS.SET_VALUE}];
+  const valueOptions = [
+    {label: 'Empty', value: VALUES.EMPTY},
+    {label: 'Now', value: VALUES.NOW},
+  ];
+
+  return (
+    <>
+      <Dropdown
+        fieldLabel="Command"
+        emptyLabel="(choose)"
+        options={commandOptions}
+        value={commandOptions.find(
+          o => o.value === elementAttributes.action?.command,
+        )}
+        onValueChange={option =>
+          updateAttribute('action.command', option.value)
+        }
+        keyExtractor={option => option.value}
+        labelExtractor={option => option.label}
+      />
+      <Dropdown
+        fieldLabel="Action Field"
+        emptyLabel="(choose)"
+        options={fields}
+        value={fields.find(f => f.id === elementAttributes.action?.field)}
+        onValueChange={field => updateAttribute('action.field', field.id)}
+        keyExtractor={field => field.id}
+        labelExtractor={field => `In ${field.attributes.name}`}
+      />
+      <Dropdown
+        fieldLabel="Value"
+        emptyLabel="(choose)"
+        options={valueOptions}
+        value={valueOptions.find(
+          o => o.value === elementAttributes.action?.value,
+        )}
+        onValueChange={option => updateAttribute('action.value', option.value)}
+        keyExtractor={option => option.value}
+        labelExtractor={option => option.label}
+      />
+    </>
   );
 }
