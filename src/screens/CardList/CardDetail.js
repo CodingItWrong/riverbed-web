@@ -47,22 +47,17 @@ export default function CardDetail({card, onUpdate, onCancel, onDelete}) {
 
   function handlePerformAction(action) {
     const {command, field, value} = action;
+    const valueObject = VALUES[value];
 
     switch (command) {
       case COMMANDS.SET_VALUE.key:
-        let concreteValue;
-        switch (value) {
-          case VALUES.EMPTY.key:
-            concreteValue = null;
-            break;
-          case VALUES.NOW.key:
-            concreteValue = dateUtils.objectToServerString(new Date());
-            break;
-          default:
-            console.error(`unknown value: ${value}`);
-            return;
+        if (valueObject) {
+          const concreteValue = valueObject.call();
+          onUpdate({[field]: concreteValue});
+        } else {
+          console.error(`unknown value: ${value}`);
+          return;
         }
-        onUpdate({[field]: concreteValue});
         break;
       default:
         console.error(`unknown command: ${command}`);
