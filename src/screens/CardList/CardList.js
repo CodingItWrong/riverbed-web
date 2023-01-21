@@ -10,8 +10,6 @@ import {
 import {KeyboardAwareFlatList} from 'react-native-keyboard-aware-scroll-view';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Button from '../../components/Button';
-import Card from '../../components/Card';
-import Field from '../../components/Field';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import ScreenBackground from '../../components/ScreenBackground';
 import Text from '../../components/Text';
@@ -21,8 +19,8 @@ import {useElements} from '../../data/elements';
 import ELEMENT_TYPES from '../../elementTypes';
 import FIELD_DATA_TYPES from '../../fieldDataTypes';
 import checkCondition from '../../utils/checkCondition';
-import sortElements from '../../utils/sortElements';
 import CardDetail from './CardDetail';
+import CardSummary from './CardSummary';
 import EditElementForm from './EditElementForm';
 
 export default function AppContainer() {
@@ -107,24 +105,20 @@ function ElementList() {
       <FlatList
         data={elements}
         keyExtractor={element => element.id}
-        renderItem={({item: element}) => {
-          if (selectedElementId === element.id) {
-            return (
-              <EditElementForm
-                element={element}
-                onSave={updateElement}
-                onDelete={deleteElement}
-                onCancel={hideEditForm}
-              />
-            );
-          } else {
-            return (
-              <Button onPress={() => setSelectedElementId(element.id)}>
-                {element.attributes.name}
-              </Button>
-            );
-          }
-        }}
+        renderItem={({item: element}) =>
+          selectedElementId === element.id ? (
+            <EditElementForm
+              element={element}
+              onSave={updateElement}
+              onDelete={deleteElement}
+              onCancel={hideEditForm}
+            />
+          ) : (
+            <Button onPress={() => setSelectedElementId(element.id)}>
+              {element.attributes.name}
+            </Button>
+          )
+        }
       />
     </View>
   );
@@ -245,28 +239,11 @@ function CardList() {
                       />
                     );
                   } else {
-                    const fieldsToShow = sortElements(
-                      elements.filter(
-                        field => field.attributes['show-in-summary'],
-                      ),
-                    );
-
                     return (
-                      <Card
-                        key={card.id}
-                        style={styles.card}
+                      <CardSummary
+                        card={card}
                         onPress={() => showDetail(card.id)}
-                        testID={`card-${card.id}`}
-                      >
-                        {fieldsToShow.map(field => (
-                          <Field
-                            key={field.id}
-                            field={field}
-                            value={card.attributes['field-values'][field.id]}
-                            readOnly
-                          />
-                        ))}
-                      </Card>
+                      />
                     );
                   }
                 }}
@@ -288,16 +265,5 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     margin: 8,
-  },
-  column: {
-    marginHorizontal: 8,
-    marginBottom: 8,
-  },
-  card: {
-    margin: 4,
-    marginTop: 8,
-  },
-  detailElement: {
-    marginTop: 8,
   },
 });

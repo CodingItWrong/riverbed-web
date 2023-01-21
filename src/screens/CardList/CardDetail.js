@@ -125,4 +125,7 @@ const styles = StyleSheet.create({
     margin: 4,
     marginTop: 8,
   },
+  detailElement: {
+    marginTop: 8,
+  },
 });
