@@ -8,8 +8,8 @@ export default function Dropdown({
   onValueChange,
   options,
   style,
-  keyExtractor,
-  labelExtractor,
+  keyExtractor = option => option.key,
+  labelExtractor = option => option.label,
   testID,
 }) {
   const [isMenuShown, setIsMenuShown] = useState(false);

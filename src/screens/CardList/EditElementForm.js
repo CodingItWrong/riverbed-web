@@ -66,8 +66,6 @@ export default function EditElementForm({element, onSave, onDelete, onCancel}) {
             )}
             onValueChange={option => updateAttribute('data-type', option.key)}
             options={dataTypeOptions}
-            keyExtractor={option => option.key}
-            labelExtractor={option => option.label}
           />
           <LabeledCheckbox
             label="Show in Summary"
@@ -120,8 +118,6 @@ function ActionInputs({elementAttributes, updateAttribute, fields}) {
         onValueChange={command =>
           updateAttribute('action.command', command.key)
         }
-        keyExtractor={command => command.key}
-        labelExtractor={command => command.label}
       />
       <Dropdown
         fieldLabel="Action Field"
@@ -140,8 +136,6 @@ function ActionInputs({elementAttributes, updateAttribute, fields}) {
           o => o.key === elementAttributes.action?.value,
         )}
         onValueChange={option => updateAttribute('action.value', option.key)}
-        keyExtractor={option => option.key}
-        labelExtractor={option => option.label}
       />
     </>
   );
