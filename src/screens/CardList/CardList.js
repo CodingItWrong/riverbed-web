@@ -5,6 +5,7 @@ import {KeyboardAwareFlatList} from 'react-native-keyboard-aware-scroll-view';
 import Button from '../../components/Button';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import Text from '../../components/Text';
+import sharedStyles from '../../components/sharedStyles';
 import {useCards} from '../../data/cards';
 import {useColumns} from '../../data/columns';
 import {useElements} from '../../data/elements';
@@ -92,11 +93,11 @@ export default function CardList() {
   }
 
   return (
-    <View style={styles.fullHeight}>
+    <View style={sharedStyles.fullHeight}>
       <View style={[styles.buttonContainer, responsiveButtonContainerStyle]}>
         <Button onPress={addCard}>Add Card</Button>
       </View>
-      <ScrollView horizontal style={styles.fullHeight}>
+      <ScrollView horizontal style={sharedStyles.fullHeight}>
         {columns.map(column => {
           const {name, 'card-inclusion-condition': cardInclusionCondition} =
             column.attributes;
@@ -109,7 +110,7 @@ export default function CardList() {
             <View
               key={column.id}
               testID={`column-${column.id}`}
-              style={[responsiveColumnStyle, styles.fullHeight]}
+              style={[responsiveColumnStyle, sharedStyles.fullHeight]}
             >
               <Text variant="titleLarge">{name}</Text>
               <KeyboardAwareFlatList
@@ -148,9 +149,6 @@ export default function CardList() {
 const EXPERIMENTAL_EXTRA_SCROLL_HEIGHT = 100;
 
 const styles = StyleSheet.create({
-  fullHeight: {
-    flex: 1,
-  },
   buttonContainer: {
     margin: 8,
   },

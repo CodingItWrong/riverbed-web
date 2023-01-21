@@ -1,7 +1,8 @@
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {useState} from 'react';
-import {FlatList, StyleSheet, View} from 'react-native';
+import {FlatList, View} from 'react-native';
 import Button from '../../components/Button';
+import sharedStyles from '../../components/sharedStyles';
 import {useElements} from '../../data/elements';
 import ELEMENT_TYPES from '../../elementTypes';
 import FIELD_DATA_TYPES from '../../fieldDataTypes';
@@ -62,7 +63,7 @@ export default function ElementList() {
   }
 
   return (
-    <View style={styles.fullHeight}>
+    <View style={sharedStyles.fullHeight}>
       <Button onPress={addField}>Add Field</Button>
       <Button onPress={addButton}>Add Button</Button>
       <FlatList
@@ -86,9 +87,3 @@ export default function ElementList() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  fullHeight: {
-    flex: 1,
-  },
-});

@@ -1,8 +1,8 @@
 import {useState} from 'react';
-import {StyleSheet} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Button from '../../components/Button';
 import ScreenBackground from '../../components/ScreenBackground';
+import sharedStyles from '../../components/sharedStyles';
 import CardList from './CardList';
 import ElementList from './ElementList';
 
@@ -11,7 +11,7 @@ export default function AppContainer() {
 
   return (
     <ScreenBackground>
-      <SafeAreaView style={styles.fullHeight}>
+      <SafeAreaView style={sharedStyles.fullHeight}>
         {editingElements ? (
           <Button onPress={() => setEditingElements(false)}>
             Done Editing Elements
@@ -26,9 +26,3 @@ export default function AppContainer() {
     </ScreenBackground>
   );
 }
-
-const styles = StyleSheet.create({
-  fullHeight: {
-    flex: 1,
-  },
-});
