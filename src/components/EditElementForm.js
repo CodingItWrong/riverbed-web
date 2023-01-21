@@ -48,11 +48,6 @@ export default function EditElementForm({element, onSave, onDelete, onCancel}) {
     {label: 'Date', value: FIELD_DATA_TYPES.date},
   ];
 
-  const queryOptions = [
-    {label: 'Empty', value: QUERIES.IS_EMPTY},
-    {label: 'Not Empty', value: QUERIES.IS_NOT_EMPTY},
-  ];
-
   function handleSave() {
     onSave(elementAttributes);
   }
@@ -103,31 +98,10 @@ export default function EditElementForm({element, onSave, onDelete, onCancel}) {
           fields={fields}
         />
       )}
-      <Dropdown
-        fieldLabel="Show Query"
-        emptyLabel="(choose)"
-        options={queryOptions}
-        value={queryOptions.find(
-          o => o.value === elementAttributes['show-condition']?.query,
-        )}
-        onValueChange={option =>
-          updateAttribute('show-condition.query', option.value)
-        }
-        keyExtractor={option => option.value}
-        labelExtractor={option => option.label}
-      />
-      <Dropdown
-        fieldLabel="Query Field"
-        emptyLabel="(choose)"
-        options={fields}
-        value={fields.find(
-          f => f.id === elementAttributes['show-condition']?.field,
-        )}
-        onValueChange={field =>
-          updateAttribute('show-condition.field', field.id)
-        }
-        keyExtractor={field => field.id}
-        labelExtractor={field => `Check ${field.attributes.name}`}
+      <ShowConditionInputs
+        elementAttributes={elementAttributes}
+        updateAttribute={updateAttribute}
+        fields={fields}
       />
       <Button onPress={onCancel}>Cancel</Button>
       <Button onPress={onDelete}>Delete Element</Button>
@@ -177,6 +151,44 @@ function ActionInputs({elementAttributes, updateAttribute, fields}) {
         onValueChange={option => updateAttribute('action.value', option.value)}
         keyExtractor={option => option.value}
         labelExtractor={option => option.label}
+      />
+    </>
+  );
+}
+
+function ShowConditionInputs({elementAttributes, updateAttribute, fields}) {
+  const queryOptions = [
+    {label: 'Empty', value: QUERIES.IS_EMPTY},
+    {label: 'Not Empty', value: QUERIES.IS_NOT_EMPTY},
+  ];
+
+  return (
+    <>
+      <Dropdown
+        fieldLabel="Show Query"
+        emptyLabel="(choose)"
+        options={queryOptions}
+        value={queryOptions.find(
+          o => o.value === elementAttributes['show-condition']?.query,
+        )}
+        onValueChange={option =>
+          updateAttribute('show-condition.query', option.value)
+        }
+        keyExtractor={option => option.value}
+        labelExtractor={option => option.label}
+      />
+      <Dropdown
+        fieldLabel="Query Field"
+        emptyLabel="(choose)"
+        options={fields}
+        value={fields.find(
+          f => f.id === elementAttributes['show-condition']?.field,
+        )}
+        onValueChange={field =>
+          updateAttribute('show-condition.field', field.id)
+        }
+        keyExtractor={field => field.id}
+        labelExtractor={field => `Check ${field.attributes.name}`}
       />
     </>
   );
