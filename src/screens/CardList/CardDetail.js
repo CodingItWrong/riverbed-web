@@ -1,18 +1,18 @@
 import {useQuery} from '@tanstack/react-query';
 import {useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
-import COMMANDS from '../../commands';
 import Button from '../../components/Button';
 import ButtonElement from '../../components/ButtonElement';
 import Card from '../../components/Card';
 import Field from '../../components/Field';
 import Text from '../../components/Text';
 import {useElements} from '../../data/elements';
-import ELEMENT_TYPES from '../../elementTypes';
+import COMMANDS from '../../enums/commands';
+import ELEMENT_TYPES from '../../enums/elementTypes';
+import VALUES from '../../enums/values';
 import checkCondition from '../../utils/checkCondition';
 import dateUtils from '../../utils/dateUtils';
 import sortElements from '../../utils/sortElements';
-import VALUES from '../../values';
 
 export default function CardDetail({card, onUpdate, onCancel, onDelete}) {
   const [currentCardId, setCurrentCardId] = useState(null);

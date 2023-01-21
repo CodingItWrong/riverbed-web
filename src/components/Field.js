@@ -1,6 +1,6 @@
 import {View} from 'react-native';
 import {DatePickerInput} from 'react-native-paper-dates';
-import FIELD_DATA_TYPES from '../fieldDataTypes';
+import FIELD_DATA_TYPES from '../enums/fieldDataTypes';
 import dateUtils from '../utils/dateUtils';
 import Text from './Text';
 import TextField from './TextField';

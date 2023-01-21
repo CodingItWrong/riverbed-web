@@ -1,5 +1,5 @@
-import FIELD_DATA_TYPES from '../../src/fieldDataTypes';
-import QUERIES from '../../src/queries';
+import FIELD_DATA_TYPES from '../../src/enums/fieldDataTypes';
+import QUERIES from '../../src/enums/queries';
 import Factory from '../support/Factory';
 
 describe('display cards', () => {

@@ -1,4 +1,4 @@
-import ELEMENT_TYPES from '../../src/elementTypes';
+import ELEMENT_TYPES from '../../src/enums/elementTypes';
 
 const Factory = {
   _ids: {

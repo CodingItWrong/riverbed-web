@@ -1,4 +1,4 @@
-import QUERIES from '../queries';
+import QUERIES from '../enums/queries';
 
 export default function checkCondition({card, condition}) {
   if (!condition) {

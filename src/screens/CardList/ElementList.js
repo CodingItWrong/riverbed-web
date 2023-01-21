@@ -4,8 +4,8 @@ import {FlatList, View} from 'react-native';
 import Button from '../../components/Button';
 import sharedStyles from '../../components/sharedStyles';
 import {useElements} from '../../data/elements';
-import ELEMENT_TYPES from '../../elementTypes';
-import FIELD_DATA_TYPES from '../../fieldDataTypes';
+import ELEMENT_TYPES from '../../enums/elementTypes';
+import FIELD_DATA_TYPES from '../../enums/fieldDataTypes';
 import EditElementForm from './EditElementForm';
 
 export default function ElementList() {
