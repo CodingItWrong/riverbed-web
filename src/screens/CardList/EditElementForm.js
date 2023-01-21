@@ -2,16 +2,16 @@ import {useQuery} from '@tanstack/react-query';
 import set from 'lodash.set';
 import {useEffect, useState} from 'react';
 import {View} from 'react-native';
-import COMMANDS from '../commands';
-import {useElements} from '../data/elements';
-import ELEMENT_TYPES from '../elementTypes';
-import FIELD_DATA_TYPES from '../fieldDataTypes';
-import QUERIES from '../queries';
-import VALUES from '../values';
-import Button from './Button';
-import Dropdown from './Dropdown';
-import LabeledCheckbox from './LabeledCheckbox';
-import TextField from './TextField';
+import COMMANDS from '../../commands';
+import Button from '../../components/Button';
+import Dropdown from '../../components/Dropdown';
+import LabeledCheckbox from '../../components/LabeledCheckbox';
+import TextField from '../../components/TextField';
+import {useElements} from '../../data/elements';
+import ELEMENT_TYPES from '../../elementTypes';
+import FIELD_DATA_TYPES from '../../fieldDataTypes';
+import QUERIES from '../../queries';
+import VALUES from '../../values';
 
 export default function EditElementForm({element, onSave, onDelete, onCancel}) {
   const elementClient = useElements();
