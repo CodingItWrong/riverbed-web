@@ -194,36 +194,6 @@ function ElementList() {
                 {elementAttributes['element-type'] === ELEMENT_TYPES.button && (
                   <>
                     <Dropdown
-                      fieldLabel="Show Query"
-                      emptyLabel="(choose)"
-                      options={queryOptions}
-                      value={queryOptions.find(
-                        o =>
-                          o.value ===
-                          elementAttributes['show-condition']?.query,
-                      )}
-                      onValueChange={option =>
-                        updateAttribute('show-condition.query', option.value)
-                      }
-                      keyExtractor={option => option.value}
-                      labelExtractor={option => option.label}
-                    />
-                    <Dropdown
-                      fieldLabel="Query Field"
-                      emptyLabel="(choose)"
-                      options={fields}
-                      value={fields.find(
-                        f =>
-                          f.id === elementAttributes['show-condition']?.field,
-                      )}
-                      onValueChange={field =>
-                        updateAttribute('show-condition.field', field.id)
-                      }
-                      keyExtractor={field => field.id}
-                      labelExtractor={field => `Check ${field.attributes.name}`}
-                    />
-
-                    <Dropdown
                       fieldLabel="Command"
                       emptyLabel="(choose)"
                       options={commandOptions}
@@ -264,6 +234,32 @@ function ElementList() {
                     />
                   </>
                 )}
+                <Dropdown
+                  fieldLabel="Show Query"
+                  emptyLabel="(choose)"
+                  options={queryOptions}
+                  value={queryOptions.find(
+                    o => o.value === elementAttributes['show-condition']?.query,
+                  )}
+                  onValueChange={option =>
+                    updateAttribute('show-condition.query', option.value)
+                  }
+                  keyExtractor={option => option.value}
+                  labelExtractor={option => option.label}
+                />
+                <Dropdown
+                  fieldLabel="Query Field"
+                  emptyLabel="(choose)"
+                  options={fields}
+                  value={fields.find(
+                    f => f.id === elementAttributes['show-condition']?.field,
+                  )}
+                  onValueChange={field =>
+                    updateAttribute('show-condition.field', field.id)
+                  }
+                  keyExtractor={field => field.id}
+                  labelExtractor={field => `Check ${field.attributes.name}`}
+                />
                 <Button onPress={hideEditForm}>Cancel</Button>
                 <Button onPress={deleteElement}>Delete Element</Button>
                 <Button onPress={updateElement}>Save Element</Button>
