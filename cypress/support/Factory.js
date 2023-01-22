@@ -1,106 +1,59 @@
+import merge from 'lodash.merge';
 import ELEMENT_TYPES from '../../src/enums/elementTypes';
 
+const IDS = {};
+
+function createOrUpdate({
+  type,
+  attributeOverrides,
+  baseRecord,
+  newRecordAttributes,
+}) {
+  let id;
+  let attributes;
+
+  if (baseRecord) {
+    id = baseRecord.id;
+    attributes = merge({}, baseRecord.attributes, attributeOverrides);
+  } else {
+    IDS[type] ??= 0;
+    id = String(IDS[type]++);
+    attributes = merge({}, newRecordAttributes, attributeOverrides);
+  }
+  return {type, id, attributes};
+}
+
 const Factory = {
-  _ids: {
-    element: 1,
-    column: 1,
-    card: 1,
-  },
-
-  field(attributeOverrides, baseField) {
-    let id;
-    let attributes;
-
-    if (baseField) {
-      id = baseField.id;
-      attributes = {
-        ...baseField.attributes,
-        ...attributeOverrides,
-      };
-    } else {
-      id = this._ids.element++;
-      attributes = {
-        ...attributeOverrides,
-        'element-type': ELEMENT_TYPES.FIELD.key,
-      };
-    }
-    return {
+  field: (attributeOverrides, baseRecord) =>
+    createOrUpdate({
       type: 'elements',
-      id: String(id),
-      attributes,
-    };
-  },
+      attributeOverrides,
+      baseRecord,
+      newRecordAttributes: {'element-type': ELEMENT_TYPES.FIELD.key},
+    }),
 
-  button(attributeOverrides, baseButton) {
-    let id;
-    let attributes;
-
-    if (baseButton) {
-      id = baseButton.id;
-      attributes = {
-        ...baseButton.attributes,
-        ...attributeOverrides,
-      };
-    } else {
-      id = String(this._ids.element++);
-      attributes = {
-        ...attributeOverrides,
-        'element-type': ELEMENT_TYPES.BUTTON.key,
-      };
-    }
-    return {
+  button: (attributeOverrides, baseRecord) =>
+    createOrUpdate({
       type: 'elements',
-      id,
-      attributes,
-    };
-  },
+      attributeOverrides,
+      baseRecord,
+      newRecordAttributes: {'element-type': ELEMENT_TYPES.BUTTON.key},
+    }),
 
-  column(attributeOverrides, baseColumn) {
-    let id;
-    let attributes;
-
-    // TODO: remove duplication in factories
-    if (baseColumn) {
-      id = baseColumn.id;
-      attributes = {
-        ...baseColumn.attributes,
-        ...attributeOverrides,
-      };
-    } else {
-      id = String(this._ids.column++);
-      attributes = attributeOverrides ?? {};
-    }
-
-    return {
+  column: (attributeOverrides, baseRecord) =>
+    createOrUpdate({
       type: 'columns',
-      id,
-      attributes,
-    };
-  },
+      attributeOverrides,
+      baseRecord,
+    }),
 
-  card(fieldValueOverrides, baseCard) {
-    let id;
-    let fieldValues;
-
-    if (baseCard) {
-      id = baseCard.id;
-      fieldValues = {
-        ...baseCard.attributes['field-values'],
-        ...fieldValueOverrides,
-      };
-    } else {
-      id = String(this._ids.card++);
-      fieldValues = fieldValueOverrides ?? {};
-    }
-
-    return {
+  card: (fieldValueOverrides, baseRecord) =>
+    createOrUpdate({
       type: 'cards',
-      id,
-      attributes: {
-        'field-values': fieldValues,
-      },
-    };
-  },
+      attributeOverrides: {'field-values': fieldValueOverrides},
+      baseRecord,
+      newRecordAttributes: {'field-values': {}},
+    }),
 };
 
 module.exports = Factory;
