@@ -1,5 +1,5 @@
 import {useQuery} from '@tanstack/react-query';
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import {StyleSheet} from 'react-native';
 import Button from '../../components/Button';
 import ButtonElement from '../../components/ButtonElement';
@@ -14,17 +14,9 @@ import checkCondition from '../../utils/checkCondition';
 import sortElements from '../../utils/sortElements';
 
 export default function CardDetail({card, onUpdate, onCancel, onDelete}) {
-  const [currentCardId, setCurrentCardId] = useState(null);
   const [fieldValues, setFieldValues] = useState(
     card.attributes['field-values'],
   );
-
-  useEffect(() => {
-    if (card.id !== currentCardId) {
-      setCurrentCardId(card.id);
-      setFieldValues(card.attributes['field-values']);
-    }
-  }, [currentCardId, card.id, card.attributes]);
 
   const elementClient = useElements();
   const {data: elements = []} = useQuery(['elements'], () =>

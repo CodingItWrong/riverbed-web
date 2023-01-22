@@ -1,6 +1,6 @@
 import {useQuery} from '@tanstack/react-query';
 import set from 'lodash.set';
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import {StyleSheet} from 'react-native';
 import Button from '../../components/Button';
 import Card from '../../components/Card';
@@ -24,17 +24,9 @@ export default function EditElementForm({element, onSave, onDelete, onCancel}) {
     e => e.attributes['element-type'] === ELEMENT_TYPES.FIELD.key,
   );
 
-  const [currentElementId, setCurrentElementId] = useState(null);
   const [elementAttributes, setElementAttributes] = useState(
     element.attributes,
   );
-
-  useEffect(() => {
-    if (element.id !== currentElementId) {
-      setCurrentElementId(element.id);
-      setElementAttributes(element.attributes);
-    }
-  }, [currentElementId, element.id, element.attributes]);
 
   function updateAttribute(path, value) {
     setElementAttributes(oldAttributes => {
