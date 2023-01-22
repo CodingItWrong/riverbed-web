@@ -66,7 +66,6 @@ describe('edit columns', () => {
     cy.contains('Query: (choose)').paperSelect('Empty');
     cy.contains('Field: (choose)').paperSelect('Title');
 
-    // TODO: find out why ID 0
     const updatedColumn = Factory.column(
       {
         'card-inclusion-condition': {

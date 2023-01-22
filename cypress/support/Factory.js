@@ -16,7 +16,7 @@ function createOrUpdate({
     id = baseRecord.id;
     attributes = merge({}, baseRecord.attributes, attributeOverrides);
   } else {
-    IDS[type] ??= 0;
+    IDS[type] ??= 1;
     id = String(IDS[type]++);
     attributes = merge({}, newRecordAttributes, attributeOverrides);
   }
