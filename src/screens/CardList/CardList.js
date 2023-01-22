@@ -143,7 +143,12 @@ export default function CardList() {
                 testID={`column-${column.id}`}
                 style={[responsiveColumnStyle, sharedStyles.fullHeight]}
               >
-                <Text variant="titleLarge">{name}</Text>
+                <View style={styles.columnTitleRow}>
+                  <Text variant="titleLarge">{name}</Text>
+                  <Button onPress={() => setSelectedColumnId(column.id)}>
+                    Edit Column
+                  </Button>
+                </View>
                 <KeyboardAwareFlatList
                   extraScrollHeight={EXPERIMENTAL_EXTRA_SCROLL_HEIGHT}
                   data={columnCards}
@@ -184,6 +189,10 @@ export default function CardList() {
 const EXPERIMENTAL_EXTRA_SCROLL_HEIGHT = 100;
 
 const styles = StyleSheet.create({
+  columnTitleRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   buttonContainer: {
     margin: 8,
   },

@@ -1,9 +1,15 @@
+import {useQuery} from '@tanstack/react-query';
 import set from 'lodash.set';
 import {useState} from 'react';
 import {StyleSheet} from 'react-native';
 import Button from '../../components/Button';
 import Card from '../../components/Card';
+import Dropdown from '../../components/Dropdown';
+import Text from '../../components/Text';
 import TextField from '../../components/TextField';
+import {useElements} from '../../data/elements';
+import ELEMENT_TYPES from '../../enums/elementTypes';
+import QUERIES from '../../enums/queries';
 
 export default function EditColumnForm({column, onSave, onDelete, onCancel}) {
   const [attributes, setAttributes] = useState(column.attributes);
@@ -28,6 +34,10 @@ export default function EditColumnForm({column, onSave, onDelete, onCancel}) {
         onChangeText={value => updateAttribute('name', value)}
         testID="text-input-column-name"
       />
+      <CardInclusionCondition
+        attributes={attributes}
+        updateAttribute={updateAttribute}
+      />
       <Button onPress={onCancel} style={styles.button}>
         Cancel
       </Button>
@@ -41,6 +51,52 @@ export default function EditColumnForm({column, onSave, onDelete, onCancel}) {
   );
 }
 
+function CardInclusionCondition({attributes, updateAttribute}) {
+  // TODO: extract custom hook
+  const elementClient = useElements();
+  const {data: elements = []} = useQuery(['elements'], () =>
+    elementClient.all().then(resp => resp.data),
+  );
+  const fields = elements.filter(
+    e => e.attributes['element-type'] === ELEMENT_TYPES.FIELD.key,
+  );
+
+  const queryOptions = Object.values(QUERIES);
+
+  return (
+    <Card>
+      <Text>Cards to Include</Text>
+      <Dropdown
+        fieldLabel="Show Query"
+        emptyLabel="(choose)"
+        options={queryOptions}
+        value={queryOptions.find(
+          query => query.key === attributes['card-inclusion-condition']?.query,
+        )}
+        onValueChange={query =>
+          updateAttribute('card-inclusion-condition.query', query.key)
+        }
+        keyExtractor={query => query.key}
+        labelExtractor={query => query.label}
+        style={styles.field}
+      />
+      <Dropdown
+        fieldLabel="Query Field"
+        emptyLabel="(choose)"
+        options={fields}
+        value={fields.find(
+          f => f.id === attributes['card-inclusion-condition']?.field,
+        )}
+        onValueChange={field =>
+          updateAttribute('card-inclusion-condition.field', field.id)
+        }
+        keyExtractor={field => field.id}
+        labelExtractor={field => field.attributes.name}
+        style={styles.field}
+      />
+    </Card>
+  );
+}
 const styles = StyleSheet.create({
   button: {
     marginTop: 8,

@@ -1,4 +1,5 @@
 import FIELD_DATA_TYPES from '../../src/enums/fieldDataTypes';
+import QUERIES from '../../src/enums/queries';
 import Factory from '../support/Factory';
 
 describe('edit columns', () => {
@@ -57,5 +58,36 @@ describe('edit columns', () => {
 
     // should show all cards
     cy.contains(cardTitle);
+
+    cy.log('EDIT COLUMN');
+
+    cy.contains('Edit Column').click();
+
+    cy.contains('Query: (choose)').paperSelect('Empty');
+    cy.contains('Field: (choose)').paperSelect('Title');
+
+    // TODO: find out why ID 0
+    const updatedColumn = Factory.column(
+      {
+        'card-inclusion-condition': {
+          query: QUERIES.IS_EMPTY.key,
+          field: titleField.id,
+        },
+      },
+      allColumn,
+    );
+    cy.intercept('PATCH', `http://cypressapi/columns/${newColumn.id}?`, {
+      success: true,
+    }).as('updateColumn');
+    cy.intercept('GET', 'http://cypressapi/columns?', {
+      data: [updatedColumn],
+    });
+    cy.contains('Save Column').click();
+    cy.wait('@updateColumn')
+      .its('request.body')
+      .should('deep.equal', {data: updatedColumn});
+
+    cy.contains('Save Column').should('not.exist'); // wait for save to complete
+    cy.contains(cardTitle).should('not.exist');
   });
 });
