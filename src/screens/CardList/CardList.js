@@ -12,13 +12,16 @@ import {useElements} from '../../data/elements';
 import checkCondition from '../../utils/checkCondition';
 import CardDetail from './CardDetail';
 import CardSummary from './CardSummary';
+import EditColumnForm from './EditColumnForm';
 
 export default function CardList() {
   const queryClient = useQueryClient();
   const elementClient = useElements();
   const columnClient = useColumns();
   const cardClient = useCards();
+
   const [selectedCardId, setSelectedCardId] = useState(null);
+  const [selectedColumnId, setSelectedColumnId] = useState(null);
 
   const {data: elements = []} = useQuery(['elements'], () =>
     elementClient.all().then(resp => resp.data),
@@ -31,6 +34,30 @@ export default function CardList() {
   );
 
   const refreshCards = () => queryClient.invalidateQueries(['cards']);
+  const refreshColumns = () => queryClient.invalidateQueries(['columns']);
+
+  const {mutate: addColumn} = useMutation({
+    mutationFn: () => columnClient.create({attributes: {}}),
+    onSuccess: ({data: column}) => {
+      setSelectedColumnId(column.id);
+      refreshColumns();
+    },
+  });
+
+  const {mutate: updateColumn} = useMutation({
+    mutationFn: attributes => {
+      const updatedColumn = {
+        type: 'columns',
+        id: selectedColumnId,
+        attributes,
+      };
+      return columnClient.update(updatedColumn);
+    },
+    onSuccess: () => {
+      refreshColumns();
+      setSelectedColumnId(null);
+    },
+  });
 
   const {mutate: addCard} = useMutation({
     mutationFn: () => cardClient.create({attributes: {}}),
@@ -92,47 +119,62 @@ export default function CardList() {
       </View>
       <ScrollView horizontal style={sharedStyles.fullHeight}>
         {columns.map(column => {
-          const {name, 'card-inclusion-condition': cardInclusionCondition} =
-            column.attributes;
-
-          const columnCards = cards.filter(card =>
-            checkCondition({card, condition: cardInclusionCondition}),
-          );
-
-          return (
-            <View
-              key={column.id}
-              testID={`column-${column.id}`}
-              style={[responsiveColumnStyle, sharedStyles.fullHeight]}
-            >
-              <Text variant="titleLarge">{name}</Text>
-              <KeyboardAwareFlatList
-                extraScrollHeight={EXPERIMENTAL_EXTRA_SCROLL_HEIGHT}
-                data={columnCards}
-                keyExtractor={card => card.id}
-                renderItem={({item: card}) => {
-                  if (selectedCardId === card.id) {
-                    return (
-                      <CardDetail
-                        card={card}
-                        onUpdate={updateCard}
-                        onDelete={deleteCard}
-                        onCancel={hideDetail}
-                      />
-                    );
-                  } else {
-                    return (
-                      <CardSummary
-                        card={card}
-                        onPress={() => showDetail(card.id)}
-                      />
-                    );
-                  }
-                }}
+          if (selectedColumnId === column.id) {
+            return (
+              <EditColumnForm
+                key={column.id}
+                column={column}
+                onSave={updateColumn}
+                onDelete={() => {}}
+                onCancel={() => setSelectedColumnId(null)}
               />
-            </View>
-          );
+            );
+          } else {
+            const {name, 'card-inclusion-condition': cardInclusionCondition} =
+              column.attributes;
+
+            const columnCards = cards.filter(card =>
+              checkCondition({card, condition: cardInclusionCondition}),
+            );
+
+            return (
+              <View
+                key={column.id}
+                testID={`column-${column.id}`}
+                style={[responsiveColumnStyle, sharedStyles.fullHeight]}
+              >
+                <Text variant="titleLarge">{name}</Text>
+                <KeyboardAwareFlatList
+                  extraScrollHeight={EXPERIMENTAL_EXTRA_SCROLL_HEIGHT}
+                  data={columnCards}
+                  keyExtractor={card => card.id}
+                  renderItem={({item: card}) => {
+                    if (selectedCardId === card.id) {
+                      return (
+                        <CardDetail
+                          card={card}
+                          onUpdate={updateCard}
+                          onDelete={deleteCard}
+                          onCancel={hideDetail}
+                        />
+                      );
+                    } else {
+                      return (
+                        <CardSummary
+                          card={card}
+                          onPress={() => showDetail(card.id)}
+                        />
+                      );
+                    }
+                  }}
+                />
+              </View>
+            );
+          }
         })}
+        <View>
+          <Button onPress={addColumn}>Add Column</Button>
+        </View>
       </ScrollView>
     </View>
   );

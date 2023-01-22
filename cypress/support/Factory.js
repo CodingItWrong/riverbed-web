@@ -55,10 +55,25 @@ const Factory = {
     };
   },
 
-  column(attributes) {
+  column(attributeOverrides, baseColumn) {
+    let id;
+    let attributes;
+
+    // TODO: remove duplication in factories
+    if (baseColumn) {
+      id = baseColumn.id;
+      attributes = {
+        ...baseColumn.attributes,
+        ...attributeOverrides,
+      };
+    } else {
+      id = String(this._ids.column++);
+      attributes = attributeOverrides ?? {};
+    }
+
     return {
       type: 'columns',
-      id: String(this._ids.column++),
+      id,
       attributes,
     };
   },
