@@ -59,6 +59,14 @@ export default function CardList() {
     },
   });
 
+  const {mutate: deleteColumn} = useMutation({
+    mutationFn: () => columnClient.delete({id: selectedColumnId}),
+    onSuccess: () => {
+      refreshColumns();
+      setSelectedColumnId(null);
+    },
+  });
+
   const {mutate: addCard} = useMutation({
     mutationFn: () => cardClient.create({attributes: {}}),
     onSuccess: ({data: newCard}) => {
@@ -125,7 +133,7 @@ export default function CardList() {
                 key={column.id}
                 column={column}
                 onSave={updateColumn}
-                onDelete={() => {}}
+                onDelete={deleteColumn}
                 onCancel={() => setSelectedColumnId(null)}
               />
             );

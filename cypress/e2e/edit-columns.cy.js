@@ -88,5 +88,20 @@ describe('edit columns', () => {
 
     cy.contains('Save Column').should('not.exist'); // wait for save to complete
     cy.contains(cardTitle).should('not.exist');
+
+    cy.log('DELETE COLUMN');
+
+    cy.intercept('DELETE', `http://cypressapi/columns/${newColumn.id}`, {
+      success: true,
+    }).as('deleteColumn');
+    cy.intercept('GET', 'http://cypressapi/columns?', {
+      data: [],
+    });
+    cy.contains('Edit Column').click();
+    cy.contains('Delete Column').click();
+    cy.wait('@deleteColumn');
+
+    cy.contains('Delete Column').should('not.exist');
+    cy.contains('Edit Column').should('not.exist');
   });
 });
