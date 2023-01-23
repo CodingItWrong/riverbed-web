@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
 nvm use
+
+# deploy to web
 yarn deploy:web
+
+# deploy to expo go
 expo publish
