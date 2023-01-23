@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+nvm use
+yarn deploy:web
+expo publish
