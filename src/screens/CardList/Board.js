@@ -14,7 +14,7 @@ import CardDetail from './CardDetail';
 import CardSummary from './CardSummary';
 import EditColumnForm from './EditColumnForm';
 
-export default function CardList() {
+export default function Board() {
   const queryClient = useQueryClient();
   const elementClient = useElements();
   const columnClient = useColumns();
