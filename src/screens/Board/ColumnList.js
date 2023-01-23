@@ -14,7 +14,7 @@ import CardDetail from './CardDetail';
 import CardSummary from './CardSummary';
 import EditColumnForm from './EditColumnForm';
 
-export default function ColumnList() {
+export default function ColumnList({board}) {
   const queryClient = useQueryClient();
   const elementClient = useElements();
   const columnClient = useColumns();
@@ -23,20 +23,19 @@ export default function ColumnList() {
   const [selectedCardId, setSelectedCardId] = useState(null);
   const [selectedColumnId, setSelectedColumnId] = useState(null);
 
-  // TODO: make board ID dynamic
-  const parent = {type: 'boards', id: '1'};
-  const {data: elements = []} = useQuery(['elements'], () =>
-    elementClient.related({parent}).then(resp => resp.data),
+  const {data: elements = []} = useQuery(['elements', board.id], () =>
+    elementClient.related({parent: board}).then(resp => resp.data),
   );
-  const {data: columns = []} = useQuery(['columns'], () =>
-    columnClient.related({parent}).then(resp => resp.data),
+  const {data: columns = []} = useQuery(['columns', board.id], () =>
+    columnClient.related({parent: board}).then(resp => resp.data),
   );
-  const {data: cards = []} = useQuery(['cards'], () =>
-    cardClient.related({parent}).then(resp => resp.data),
+  const {data: cards = []} = useQuery(['cards', board.id], () =>
+    cardClient.related({parent: board}).then(resp => resp.data),
   );
 
-  const refreshCards = () => queryClient.invalidateQueries(['cards']);
-  const refreshColumns = () => queryClient.invalidateQueries(['columns']);
+  const refreshCards = () => queryClient.invalidateQueries(['cards', board.id]);
+  const refreshColumns = () =>
+    queryClient.invalidateQueries(['columns', board.id]);
 
   const {mutate: addColumn} = useMutation({
     mutationFn: () => columnClient.create({attributes: {}}),
@@ -134,6 +133,7 @@ export default function ColumnList() {
               <EditColumnForm
                 key={column.id}
                 column={column}
+                board={board}
                 onSave={updateColumn}
                 onDelete={deleteColumn}
                 onCancel={() => setSelectedColumnId(null)}
@@ -168,6 +168,7 @@ export default function ColumnList() {
                       return (
                         <CardDetail
                           card={card}
+                          board={board}
                           onUpdate={updateCard}
                           onDelete={deleteCard}
                           onCancel={hideDetail}
@@ -177,6 +178,7 @@ export default function ColumnList() {
                       return (
                         <CardSummary
                           card={card}
+                          board={board}
                           onPress={() => showDetail(card.id)}
                         />
                       );

@@ -13,15 +13,20 @@ import VALUES from '../../enums/values';
 import checkCondition from '../../utils/checkCondition';
 import sortElements from '../../utils/sortElements';
 
-export default function CardDetail({card, onUpdate, onCancel, onDelete}) {
+export default function CardDetail({
+  card,
+  board,
+  onUpdate,
+  onCancel,
+  onDelete,
+}) {
   const [fieldValues, setFieldValues] = useState(
     card.attributes['field-values'],
   );
 
   const elementClient = useElements();
-  const parent = {type: 'boards', id: '1'};
-  const {data: elements = []} = useQuery(['elements'], () =>
-    elementClient.related({parent}).then(resp => resp.data),
+  const {data: elements = []} = useQuery(['elements', board.id], () =>
+    elementClient.related({parent: board}).then(resp => resp.data),
   );
 
   const elementsToShow = sortElements(

@@ -5,12 +5,11 @@ import Field from '../../components/Field';
 import {useElements} from '../../data/elements';
 import sortElements from '../../utils/sortElements';
 
-export default function CardSummary({card, onPress}) {
+export default function CardSummary({card, board, onPress}) {
   const elementClient = useElements();
 
-  const parent = {type: 'boards', id: '1'};
-  const {data: elements = []} = useQuery(['elements'], () =>
-    elementClient.related({parent}).then(resp => resp.data),
+  const {data: elements = []} = useQuery(['elements', board.id], () =>
+    elementClient.related({parent: board}).then(resp => resp.data),
   );
 
   const fieldsToShow = sortElements(

@@ -23,7 +23,11 @@ export default function Board({board}) {
             Edit Elements
           </Button>
         )}
-        {editingElements ? <ElementList /> : <ColumnList />}
+        {editingElements ? (
+          <ElementList board={board} />
+        ) : (
+          <ColumnList board={board} />
+        )}
       </SafeAreaView>
     </ScreenBackground>
   );

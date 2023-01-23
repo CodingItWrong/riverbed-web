@@ -11,7 +11,13 @@ import {useElements} from '../../data/elements';
 import ELEMENT_TYPES from '../../enums/elementTypes';
 import QUERIES from '../../enums/queries';
 
-export default function EditColumnForm({column, onSave, onDelete, onCancel}) {
+export default function EditColumnForm({
+  column,
+  board,
+  onSave,
+  onDelete,
+  onCancel,
+}) {
   const [attributes, setAttributes] = useState(column.attributes);
 
   function updateAttribute(path, value) {
@@ -35,6 +41,7 @@ export default function EditColumnForm({column, onSave, onDelete, onCancel}) {
         testID="text-input-column-name"
       />
       <CardInclusionCondition
+        board={board}
         attributes={attributes}
         updateAttribute={updateAttribute}
       />
@@ -51,13 +58,11 @@ export default function EditColumnForm({column, onSave, onDelete, onCancel}) {
   );
 }
 
-function CardInclusionCondition({attributes, updateAttribute}) {
+function CardInclusionCondition({board, attributes, updateAttribute}) {
   // TODO: extract custom hook
   const elementClient = useElements();
-  // TEMP: changed query key to make sure this query gets updated, otherwise the cache masks that it's the wrong query
-  const parent = {type: 'boards', id: '1'};
-  const {data: elements = []} = useQuery(['elements'], () =>
-    elementClient.related({parent}).then(resp => resp.data),
+  const {data: elements = []} = useQuery(['elements', board.id], () =>
+    elementClient.related({parent: board}).then(resp => resp.data),
   );
   const fields = elements.filter(
     e => e.attributes['element-type'] === ELEMENT_TYPES.FIELD.key,

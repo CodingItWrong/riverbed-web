@@ -10,17 +10,17 @@ import ELEMENT_TYPES from '../../enums/elementTypes';
 import FIELD_DATA_TYPES from '../../enums/fieldDataTypes';
 import EditElementForm from './EditElementForm';
 
-export default function ElementList() {
+export default function ElementList({board}) {
   const queryClient = useQueryClient();
   const elementClient = useElements();
   const [selectedElementId, setSelectedElementId] = useState(null);
 
-  const parent = {type: 'boards', id: '1'};
-  const {data: elements = []} = useQuery(['elements'], () =>
-    elementClient.related({parent}).then(resp => resp.data),
+  const {data: elements = []} = useQuery(['elements', board.id], () =>
+    elementClient.related({parent: board}).then(resp => resp.data),
   );
 
-  const refreshElements = () => queryClient.invalidateQueries(['elements']);
+  const refreshElements = () =>
+    queryClient.invalidateQueries(['elements', board.id]);
 
   const {mutate: addElement} = useMutation({
     mutationFn: attributes => elementClient.create({attributes}),
@@ -76,6 +76,7 @@ export default function ElementList() {
           selectedElementId === element.id ? (
             <EditElementForm
               element={element}
+              board={board}
               onSave={updateElement}
               onDelete={deleteElement}
               onCancel={hideEditForm}
