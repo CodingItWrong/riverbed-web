@@ -5,7 +5,7 @@ import QUERIES from '../../src/enums/queries';
 import Factory from '../support/Factory';
 
 describe('edit elements', () => {
-  it.only('allows creating, updating, and deleting fields', () => {
+  it('allows creating, updating, and deleting fields', () => {
     const board = Factory.board({
       name: 'Video Games',
     });
@@ -191,6 +191,7 @@ describe('edit elements', () => {
     });
 
     cy.visit('/');
+    cy.contains('Video Games').click();
 
     cy.log('ADD BUTTON');
 
