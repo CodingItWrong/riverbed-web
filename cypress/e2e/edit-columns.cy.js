@@ -62,6 +62,7 @@ describe('edit columns', () => {
       .its('request.body')
       .should('deep.equal', {data: allColumn});
 
+    cy.contains('Save Column').should('not.exist');
     cy.contains(columnName);
 
     // should show all cards
