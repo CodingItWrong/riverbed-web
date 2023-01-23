@@ -24,6 +24,13 @@ function createOrUpdate({
 }
 
 const Factory = {
+  board: (attributeOverrides, baseRecord) =>
+    createOrUpdate({
+      type: 'boards',
+      attributeOverrides,
+      baseRecord,
+    }),
+
   field: (attributeOverrides, baseRecord) =>
     createOrUpdate({
       type: 'elements',

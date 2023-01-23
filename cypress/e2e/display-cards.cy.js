@@ -4,6 +4,10 @@ import Factory from '../support/Factory';
 
 describe('display cards', () => {
   it('displays cards from the server', () => {
+    const board = Factory.board({
+      name: 'Video Games',
+    });
+
     const titleField = Factory.field({
       name: 'Title',
       'data-type': FIELD_DATA_TYPES.TEXT.key,
@@ -47,6 +51,9 @@ describe('display cards', () => {
       }),
     ];
 
+    cy.intercept('GET', 'http://cypressapi/boards?', {
+      data: [board],
+    });
     cy.intercept('GET', 'http://cypressapi/elements?', {
       data: [titleField, publisherField, releasedAtField],
     });
@@ -58,6 +65,7 @@ describe('display cards', () => {
     });
 
     cy.visit('/');
+    cy.contains('Video Games').click();
 
     cy.get(`[data-testid=column-${releasedColumn.id}]`).contains(
       cards[0].attributes['field-values'][titleField.id],

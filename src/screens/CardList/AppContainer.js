@@ -3,7 +3,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import Button from '../../components/Button';
 import ScreenBackground from '../../components/ScreenBackground';
 import sharedStyles from '../../components/sharedStyles';
-import Board from './Board';
+import BoardList from './BoardList';
 import ElementList from './ElementList';
 
 export default function AppContainer() {
@@ -21,7 +21,7 @@ export default function AppContainer() {
             Edit Elements
           </Button>
         )}
-        {editingElements ? <ElementList /> : <Board />}
+        {editingElements ? <ElementList /> : <BoardList />}
       </SafeAreaView>
     </ScreenBackground>
   );
