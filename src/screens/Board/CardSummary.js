@@ -8,8 +8,9 @@ import sortElements from '../../utils/sortElements';
 export default function CardSummary({card, onPress}) {
   const elementClient = useElements();
 
+  const parent = {type: 'boards', id: '1'};
   const {data: elements = []} = useQuery(['elements'], () =>
-    elementClient.all().then(resp => resp.data),
+    elementClient.related({parent}).then(resp => resp.data),
   );
 
   const fieldsToShow = sortElements(

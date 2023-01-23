@@ -6,6 +6,10 @@ describe('edit cards', () => {
   const title = 'Final Fantasy 7';
 
   it('allows clicking buttons to perform actions', () => {
+    const board = Factory.board({
+      name: 'Video Games',
+    });
+
     const titleField = Factory.field({
       name: 'Title',
       'data-type': FIELD_DATA_TYPES.TEXT.key,
@@ -67,17 +71,22 @@ describe('edit cards', () => {
     const card = Factory.card({
       [titleField.id]: title,
     });
-    cy.intercept('GET', 'http://cypressapi/elements?', {
+
+    cy.intercept('GET', 'http://cypressapi/boards?', {
+      data: [board],
+    });
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
       data: elements,
     });
-    cy.intercept('http://cypressapi/columns?', {
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/columns?`, {
       data: [releasedColumn, unreleasedColumn],
     });
-    cy.intercept('GET', 'http://cypressapi/cards?', {
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
       data: [card],
     });
 
     cy.visit('/');
+    cy.contains('Video Games').click();
 
     cy.log('SET VALUE TO NOW');
 
@@ -93,7 +102,9 @@ describe('edit cards', () => {
     cy.intercept('PATCH', `http://cypressapi/cards/${card.id}?`, {
       success: true,
     }).as('updateCard');
-    cy.intercept('GET', 'http://cypressapi/cards?', {data: [updatedCard]});
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
+      data: [updatedCard],
+    });
 
     cy.get(`[data-testid=button-${releaseButton.id}]`).click();
 

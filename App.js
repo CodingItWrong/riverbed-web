@@ -8,7 +8,7 @@ import {useEffect} from 'react';
 import {AppState, Platform} from 'react-native';
 import {Provider as PaperProvider} from 'react-native-paper';
 import {en, registerTranslation} from 'react-native-paper-dates';
-import CardList from './src/screens/CardList';
+import Navigation from './src/screens/Navigation';
 
 registerTranslation('en', en);
 
@@ -38,7 +38,7 @@ export default function App() {
       <StatusBar />
       <PaperProvider>
         <QueryClientProvider client={queryClient}>
-          <CardList />
+          <Navigation />
         </QueryClientProvider>
       </PaperProvider>
     </>

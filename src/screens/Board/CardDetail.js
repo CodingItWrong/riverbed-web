@@ -19,8 +19,9 @@ export default function CardDetail({card, onUpdate, onCancel, onDelete}) {
   );
 
   const elementClient = useElements();
+  const parent = {type: 'boards', id: '1'};
   const {data: elements = []} = useQuery(['elements'], () =>
-    elementClient.all().then(resp => resp.data),
+    elementClient.related({parent}).then(resp => resp.data),
   );
 
   const elementsToShow = sortElements(

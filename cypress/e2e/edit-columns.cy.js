@@ -4,6 +4,10 @@ import Factory from '../support/Factory';
 
 describe('edit columns', () => {
   it('allows creating, editing, and deleting columns', () => {
+    const board = Factory.board({
+      name: 'Video Games',
+    });
+
     const titleField = Factory.field({
       name: 'Title',
       'data-type': FIELD_DATA_TYPES.TEXT.key,
@@ -15,24 +19,28 @@ describe('edit columns', () => {
     });
     const newColumn = Factory.column({});
 
-    cy.intercept('GET', 'http://cypressapi/elements?', {
+    cy.intercept('GET', 'http://cypressapi/boards?', {
+      data: [board],
+    });
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
       data: [titleField],
     });
-    cy.intercept('GET', 'http://cypressapi/columns?', {
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/columns?`, {
       data: [],
     });
-    cy.intercept('GET', 'http://cypressapi/cards?', {
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
       data: [card],
     });
 
     cy.visit('/');
+    cy.contains('Video Games').click();
 
     cy.log('CREATE COLUMN');
 
     cy.intercept('POST', 'http://cypressapi/columns?', {
       data: newColumn,
     }).as('addColumn');
-    cy.intercept('GET', 'http://cypressapi/columns?', {
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/columns?`, {
       data: [newColumn],
     });
 
@@ -46,7 +54,7 @@ describe('edit columns', () => {
     cy.intercept('PATCH', `http://cypressapi/columns/${newColumn.id}?`, {
       success: true,
     }).as('updateColumn');
-    cy.intercept('GET', 'http://cypressapi/columns?', {
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/columns?`, {
       data: [allColumn],
     });
     cy.contains('Save Column').click();
@@ -78,7 +86,7 @@ describe('edit columns', () => {
     cy.intercept('PATCH', `http://cypressapi/columns/${newColumn.id}?`, {
       success: true,
     }).as('updateColumn');
-    cy.intercept('GET', 'http://cypressapi/columns?', {
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/columns?`, {
       data: [updatedColumn],
     });
     cy.contains('Save Column').click();
@@ -94,7 +102,7 @@ describe('edit columns', () => {
     cy.intercept('DELETE', `http://cypressapi/columns/${newColumn.id}`, {
       success: true,
     }).as('deleteColumn');
-    cy.intercept('GET', 'http://cypressapi/columns?', {
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/columns?`, {
       data: [],
     });
     cy.contains('Edit Column').click();

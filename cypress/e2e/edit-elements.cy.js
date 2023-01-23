@@ -5,7 +5,11 @@ import QUERIES from '../../src/enums/queries';
 import Factory from '../support/Factory';
 
 describe('edit elements', () => {
-  it('allows creating, updating, and deleting fields', () => {
+  it.only('allows creating, updating, and deleting fields', () => {
+    const board = Factory.board({
+      name: 'Video Games',
+    });
+
     const newField = Factory.field({
       'element-type': ELEMENT_TYPES.FIELD.key,
       name: '',
@@ -24,17 +28,21 @@ describe('edit elements', () => {
       'card-inclusion-condition': null,
     });
 
-    cy.intercept('GET', 'http://cypressapi/elements?', {
+    cy.intercept('http://cypressapi/boards?', {
+      data: [board],
+    });
+    cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
       data: [],
     });
-    cy.intercept('GET', 'http://cypressapi/columns?', {
+    cy.intercept(`http://cypressapi/boards/${board.id}/columns?`, {
       data: [allColumn],
     });
-    cy.intercept('GET', 'http://cypressapi/cards?', {
+    cy.intercept(`http://cypressapi/boards/${board.id}/cards?`, {
       data: [],
     });
 
     cy.visit('/');
+    cy.contains('Video Games').click();
 
     cy.log('ADD FIELD');
 
@@ -43,7 +51,7 @@ describe('edit elements', () => {
     cy.intercept('POST', 'http://cypressapi/elements?', {
       data: newField,
     }).as('addField');
-    cy.intercept('GET', 'http://cypressapi/elements?', {
+    cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
       data: [newField],
     });
     cy.contains('Add Field').click();
@@ -59,7 +67,7 @@ describe('edit elements', () => {
     cy.intercept('PATCH', `http://cypressapi/elements/${newField.id}?`, {
       success: true,
     }).as('updateField');
-    cy.intercept('GET', 'http://cypressapi/elements?', {
+    cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
       data: [greetingField],
     });
     cy.contains('Save Element').click();
@@ -73,7 +81,7 @@ describe('edit elements', () => {
     cy.intercept('POST', 'http://cypressapi/cards?', {
       data: newCard,
     });
-    cy.intercept('GET', 'http://cypressapi/cards?', {
+    cy.intercept(`http://cypressapi/boards/${board.id}/cards?`, {
       data: [newCard],
     });
     cy.contains('Add Card').click();
@@ -84,7 +92,7 @@ describe('edit elements', () => {
     cy.intercept('PATCH', `http://cypressapi/cards/${newCard.id}?`, {
       success: true,
     }).as('updateField');
-    cy.intercept('GET', 'http://cypressapi/cards?', {
+    cy.intercept(`http://cypressapi/boards/${board.id}/cards?`, {
       data: [Factory.card({[greetingField.id]: greeting})],
     });
     cy.contains('Save').click();
@@ -111,7 +119,7 @@ describe('edit elements', () => {
       {name: updatedFieldName},
       greetingField,
     );
-    cy.intercept('GET', 'http://cypressapi/elements?', {
+    cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
       data: [updatedGreetingField],
     });
     cy.contains('Save Element').click();
@@ -124,7 +132,7 @@ describe('edit elements', () => {
     cy.intercept('DELETE', `http://cypressapi/elements/${greetingField.id}`, {
       success: true,
     }).as('deleteField');
-    cy.intercept('GET', 'http://cypressapi/elements?', {
+    cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
       data: [],
     });
     cy.contains('Delete Element').click();
@@ -133,6 +141,10 @@ describe('edit elements', () => {
   });
 
   it('allows creating, updating, and deleting buttons', () => {
+    const board = Factory.board({
+      name: 'Video Games',
+    });
+
     const greetingField = Factory.field({
       name: 'Greeting',
       'data-type': FIELD_DATA_TYPES.TEXT.key,
@@ -165,13 +177,16 @@ describe('edit elements', () => {
     const greetingText = 'Hello, world!';
     const card = Factory.card({[greetingField.id]: greetingText});
 
-    cy.intercept('GET', 'http://cypressapi/elements?', {
+    cy.intercept('http://cypressapi/boards?', {
+      data: [board],
+    });
+    cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
       data: [greetingField],
     });
-    cy.intercept('GET', 'http://cypressapi/columns?', {
+    cy.intercept(`http://cypressapi/boards/${board.id}/columns?`, {
       data: [allColumn],
     });
-    cy.intercept('GET', 'http://cypressapi/cards?', {
+    cy.intercept(`http://cypressapi/boards/${board.id}/cards?`, {
       data: [card],
     });
 
@@ -184,7 +199,7 @@ describe('edit elements', () => {
     cy.intercept('POST', 'http://cypressapi/elements?', {
       data: newButton,
     }).as('addButton');
-    cy.intercept('GET', 'http://cypressapi/elements?', {
+    cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
       data: [greetingField, newButton],
     });
     cy.contains('Add Button').click();
@@ -205,7 +220,7 @@ describe('edit elements', () => {
     cy.intercept('PATCH', `http://cypressapi/elements/${newButton.id}?`, {
       success: true,
     }).as('updateField');
-    cy.intercept('GET', 'http://cypressapi/elements?', {
+    cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
       data: [greetingField, greetButton],
     });
     cy.contains('Save Element').click();
@@ -221,7 +236,7 @@ describe('edit elements', () => {
     cy.intercept('PATCH', `http://cypressapi/cards/${card.id}?`, {
       success: true,
     }).as('updateCard');
-    cy.intercept('GET', 'http://cypressapi/cards?', {
+    cy.intercept(`http://cypressapi/boards/${board.id}/cards?`, {
       data: [quietedCard],
     });
     cy.contains(buttonName).click();
@@ -250,7 +265,7 @@ describe('edit elements', () => {
     cy.intercept('PATCH', `http://cypressapi/elements/${newButton.id}?`, {
       success: true,
     }).as('updateField');
-    cy.intercept('GET', 'http://cypressapi/elements?', {
+    cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
       data: [greetingField, renamedButton],
     });
 
@@ -264,7 +279,7 @@ describe('edit elements', () => {
 
     cy.contains(updatedButtonName).click();
 
-    cy.intercept('GET', 'http://cypressapi/elements?', {
+    cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
       data: [greetingField],
     });
     cy.intercept('DELETE', `http://cypressapi/elements/${renamedButton.id}`, {

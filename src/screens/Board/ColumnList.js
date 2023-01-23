@@ -14,7 +14,7 @@ import CardDetail from './CardDetail';
 import CardSummary from './CardSummary';
 import EditColumnForm from './EditColumnForm';
 
-export default function Board() {
+export default function ColumnList() {
   const queryClient = useQueryClient();
   const elementClient = useElements();
   const columnClient = useColumns();
@@ -23,14 +23,16 @@ export default function Board() {
   const [selectedCardId, setSelectedCardId] = useState(null);
   const [selectedColumnId, setSelectedColumnId] = useState(null);
 
+  // TODO: make board ID dynamic
+  const parent = {type: 'boards', id: '1'};
   const {data: elements = []} = useQuery(['elements'], () =>
-    elementClient.all().then(resp => resp.data),
+    elementClient.related({parent}).then(resp => resp.data),
   );
   const {data: columns = []} = useQuery(['columns'], () =>
-    columnClient.all().then(resp => resp.data),
+    columnClient.related({parent}).then(resp => resp.data),
   );
   const {data: cards = []} = useQuery(['cards'], () =>
-    cardClient.all().then(resp => resp.data),
+    cardClient.related({parent}).then(resp => resp.data),
   );
 
   const refreshCards = () => queryClient.invalidateQueries(['cards']);

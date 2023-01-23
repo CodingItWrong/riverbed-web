@@ -9,6 +9,10 @@ describe('edit cards', () => {
   const newTitle = 'Earthbound';
 
   it('allows editing cards', () => {
+    const board = Factory.board({
+      name: 'Video Games',
+    });
+
     const titleField = Factory.field({
       name: 'Title',
       'data-type': FIELD_DATA_TYPES.TEXT.key,
@@ -45,17 +49,22 @@ describe('edit cards', () => {
       [titleField.id]: title,
       [publisherField.id]: publisher,
     });
-    cy.intercept('GET', 'http://cypressapi/elements?', {
+
+    cy.intercept('GET', 'http://cypressapi/boards?', {
+      data: [board],
+    });
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
       data: fields,
     });
-    cy.intercept('http://cypressapi/columns?', {
+    cy.intercept(`http://cypressapi/boards/${board.id}/columns?`, {
       data: [releasedColumn, unreleasedColumn],
     });
-    cy.intercept('GET', 'http://cypressapi/cards?', {
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
       data: [card],
     });
 
     cy.visit('/');
+    cy.contains('Video Games').click();
 
     cy.log('SHOW DETAIL');
     cy.get(`[data-testid="column-${unreleasedColumn.id}"]`)
@@ -77,7 +86,9 @@ describe('edit cards', () => {
     cy.intercept('PATCH', `http://cypressapi/cards/${card.id}?`, {
       success: true,
     }).as('updateCard1');
-    cy.intercept('GET', 'http://cypressapi/cards?', {data: [updatedCard]});
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
+      data: [updatedCard],
+    });
 
     cy.contains(card.attributes['field-values'][titleField.id]).click();
     cy.get(`[data-testid=text-input-${titleField.id}]`)
@@ -105,7 +116,9 @@ describe('edit cards', () => {
     cy.intercept('DELETE', `http://cypressapi/cards/${card.id}`, {
       success: true,
     }).as('deleteCard');
-    cy.intercept('GET', 'http://cypressapi/cards?', {data: []});
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
+      data: [],
+    });
 
     cy.contains(updatedTitle).click();
     cy.contains('Delete').click();
@@ -117,7 +130,9 @@ describe('edit cards', () => {
     cy.intercept('POST', 'http://cypressapi/cards?', {data: newCard}).as(
       'createCard',
     );
-    cy.intercept('GET', 'http://cypressapi/cards?', {data: [newCard]});
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
+      data: [newCard],
+    });
     cy.contains('Add Card').click();
     cy.wait('@createCard');
     cy.get(`[data-testid=text-input-${titleField.id}]`).clear().type(newTitle);
@@ -125,7 +140,7 @@ describe('edit cards', () => {
     cy.intercept('PATCH', `http://cypressapi/cards/${newCard.id}?`, {
       success: true,
     });
-    cy.intercept('GET', 'http://cypressapi/cards?', {
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
       data: [updatedNewCard],
     });
 

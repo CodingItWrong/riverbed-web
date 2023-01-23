@@ -17,8 +17,9 @@ import VALUES from '../../enums/values';
 
 export default function EditElementForm({element, onSave, onDelete, onCancel}) {
   const elementClient = useElements();
+  const parent = {type: 'boards', id: '1'};
   const {data: elements = []} = useQuery(['elements'], () =>
-    elementClient.all().then(resp => resp.data),
+    elementClient.related({parent}).then(resp => resp.data),
   );
   const fields = elements.filter(
     e => e.attributes['element-type'] === ELEMENT_TYPES.FIELD.key,

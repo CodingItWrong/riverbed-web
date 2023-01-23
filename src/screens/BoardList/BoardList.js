@@ -4,23 +4,25 @@ import {FlatList, View} from 'react-native';
 import Button from '../../components/Button';
 import Text from '../../components/Text';
 import {useBoards} from '../../data/boards';
-import Board from './Board';
+import Board from '../Board';
 
 export default function BoardList() {
   const [selectedBoardId, setSelectedBoardId] = useState(null);
   const boardClient = useBoards();
 
-  const {data: boards = []} = useQuery(['elements'], () =>
+  const {data: boards = []} = useQuery(['boards'], () =>
     boardClient.all().then(resp => resp.data),
   );
 
   if (selectedBoardId) {
+    const board = boards.find(b => b.id === selectedBoardId);
+
     return (
       <View>
         <Button onPress={() => setSelectedBoardId(null)}>
           Back to Board List
         </Button>
-        <Board />
+        <Board board={board} />
       </View>
     );
   } else {

@@ -15,8 +15,9 @@ export default function ElementList() {
   const elementClient = useElements();
   const [selectedElementId, setSelectedElementId] = useState(null);
 
+  const parent = {type: 'boards', id: '1'};
   const {data: elements = []} = useQuery(['elements'], () =>
-    elementClient.all().then(resp => resp.data),
+    elementClient.related({parent}).then(resp => resp.data),
   );
 
   const refreshElements = () => queryClient.invalidateQueries(['elements']);

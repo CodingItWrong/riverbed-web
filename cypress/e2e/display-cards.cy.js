@@ -54,13 +54,13 @@ describe('display cards', () => {
     cy.intercept('GET', 'http://cypressapi/boards?', {
       data: [board],
     });
-    cy.intercept('GET', 'http://cypressapi/elements?', {
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
       data: [titleField, publisherField, releasedAtField],
     });
-    cy.intercept('GET', 'http://cypressapi/columns?', {
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/columns?`, {
       data: [releasedColumn, unreleasedColumn],
     });
-    cy.intercept('GET', 'http://cypressapi/cards?', {
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
       data: cards,
     });
 

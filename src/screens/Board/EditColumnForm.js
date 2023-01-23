@@ -54,8 +54,10 @@ export default function EditColumnForm({column, onSave, onDelete, onCancel}) {
 function CardInclusionCondition({attributes, updateAttribute}) {
   // TODO: extract custom hook
   const elementClient = useElements();
+  // TEMP: changed query key to make sure this query gets updated, otherwise the cache masks that it's the wrong query
+  const parent = {type: 'boards', id: '1'};
   const {data: elements = []} = useQuery(['elements'], () =>
-    elementClient.all().then(resp => resp.data),
+    elementClient.related({parent}).then(resp => resp.data),
   );
   const fields = elements.filter(
     e => e.attributes['element-type'] === ELEMENT_TYPES.FIELD.key,
