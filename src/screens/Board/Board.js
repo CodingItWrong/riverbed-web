@@ -1,7 +1,6 @@
 import {useState} from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {View} from 'react-native';
 import Button from '../../components/Button';
-import ScreenBackground from '../../components/ScreenBackground';
 import Text from '../../components/Text';
 import sharedStyles from '../../components/sharedStyles';
 import ColumnList from './ColumnList';
@@ -52,12 +51,10 @@ export default function Board({board, onDelete}) {
   }
 
   return (
-    <ScreenBackground>
-      <SafeAreaView style={sharedStyles.fullHeight}>
-        <Text>{board.attributes.name}</Text>
-        {renderButton()}
-        {renderContents()}
-      </SafeAreaView>
-    </ScreenBackground>
+    <View style={sharedStyles.fullHeight}>
+      <Text>{board.attributes.name}</Text>
+      {renderButton()}
+      {renderContents()}
+    </View>
   );
 }
