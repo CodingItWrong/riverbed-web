@@ -58,6 +58,10 @@ class HttpClient {
   }
 
   #fullUrl(url) {
+    if (url.match(/^https?:\/\//)) {
+      return url;
+    }
+
     return `${this.baseUrl}/${url}`;
   }
 }
