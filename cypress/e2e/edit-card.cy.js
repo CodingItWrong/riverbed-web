@@ -56,7 +56,7 @@ describe('edit cards', () => {
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
       data: fields,
     });
-    cy.intercept(`http://cypressapi/boards/${board.id}/columns?`, {
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/columns?`, {
       data: [releasedColumn, unreleasedColumn],
     });
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
