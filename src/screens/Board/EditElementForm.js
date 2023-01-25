@@ -27,7 +27,7 @@ export default function EditElementForm({
     elementClient.related({parent: board}).then(resp => resp.data),
   );
   const fields = elements.filter(
-    e => e.attributes['element-type'] === ELEMENT_TYPES.FIELD.key,
+    e => e.attributes['element-type'] === ELEMENT_TYPES.FIELD,
   );
 
   const [elementAttributes, setElementAttributes] = useState(
@@ -56,7 +56,7 @@ export default function EditElementForm({
         onChangeText={value => updateAttribute('name', value)}
         testID="text-input-element-name"
       />
-      {elementAttributes['element-type'] === ELEMENT_TYPES.FIELD.key && (
+      {elementAttributes['element-type'] === ELEMENT_TYPES.FIELD && (
         <>
           <Dropdown
             fieldLabel="Data Type"
@@ -88,7 +88,7 @@ export default function EditElementForm({
           />
         </>
       )}
-      {elementAttributes['element-type'] === ELEMENT_TYPES.BUTTON.key && (
+      {elementAttributes['element-type'] === ELEMENT_TYPES.BUTTON && (
         <ActionInputs
           elementAttributes={elementAttributes}
           updateAttribute={updateAttribute}

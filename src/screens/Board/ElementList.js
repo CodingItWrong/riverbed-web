@@ -36,11 +36,11 @@ export default function ElementList({board}) {
 
   const addField = () =>
     addElement({
-      'element-type': ELEMENT_TYPES.FIELD.key,
+      'element-type': ELEMENT_TYPES.FIELD,
       'data-type': FIELD_DATA_TYPES.TEXT.key,
     });
 
-  const addButton = () => addElement({'element-type': ELEMENT_TYPES.button});
+  const addButton = () => addElement({'element-type': ELEMENT_TYPES.BUTTON});
 
   const {mutate: updateElement} = useMutation({
     mutationFn: elementAttributes => {

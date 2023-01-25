@@ -69,7 +69,7 @@ export default function CardDetail({
     <Card key={card.id} style={styles.card}>
       {elementsToShow.map((element, elementIndex) => {
         switch (element.attributes['element-type']) {
-          case ELEMENT_TYPES.FIELD.key:
+          case ELEMENT_TYPES.FIELD:
             return (
               <Field
                 key={element.id}
@@ -80,7 +80,7 @@ export default function CardDetail({
                 style={elementIndex > 0 && styles.detailElement}
               />
             );
-          case ELEMENT_TYPES.BUTTON.key:
+          case ELEMENT_TYPES.BUTTON:
             return (
               <ButtonElement
                 key={element.id}

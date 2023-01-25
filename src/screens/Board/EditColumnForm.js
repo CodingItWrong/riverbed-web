@@ -65,7 +65,7 @@ function CardInclusionCondition({board, attributes, updateAttribute}) {
     elementClient.related({parent: board}).then(resp => resp.data),
   );
   const fields = elements.filter(
-    e => e.attributes['element-type'] === ELEMENT_TYPES.FIELD.key,
+    e => e.attributes['element-type'] === ELEMENT_TYPES.FIELD,
   );
 
   const queryOptions = Object.values(QUERIES);
