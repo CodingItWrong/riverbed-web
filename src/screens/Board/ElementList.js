@@ -23,7 +23,11 @@ export default function ElementList({board}) {
     queryClient.invalidateQueries(['elements', board.id]);
 
   const {mutate: addElement} = useMutation({
-    mutationFn: attributes => elementClient.create({attributes}),
+    mutationFn: attributes =>
+      elementClient.create({
+        relationships: {board: {data: {type: 'boards', id: board.id}}},
+        attributes,
+      }),
     onSuccess: newElement => {
       setSelectedElementId(newElement.data.id);
       refreshElements();

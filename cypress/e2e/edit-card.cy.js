@@ -134,7 +134,17 @@ describe('edit cards', () => {
       data: [newCard],
     });
     cy.contains('Add Card').click();
-    cy.wait('@createCard');
+    cy.wait('@createCard')
+      .its('request.body')
+      .should('deep.equal', {
+        data: {
+          type: 'cards',
+          relationships: {
+            board: {data: {type: 'boards', id: String(board.id)}},
+          },
+          attributes: {},
+        },
+      });
     cy.get(`[data-testid=text-input-${titleField.id}]`).clear().type(newTitle);
     const updatedNewCard = Factory.card({[titleField.id]: newTitle}, newCard);
     cy.intercept('PATCH', `http://cypressapi/cards/${newCard.id}?`, {

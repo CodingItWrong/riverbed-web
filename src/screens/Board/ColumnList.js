@@ -38,7 +38,11 @@ export default function ColumnList({board}) {
     queryClient.invalidateQueries(['columns', board.id]);
 
   const {mutate: addColumn} = useMutation({
-    mutationFn: () => columnClient.create({attributes: {}}),
+    mutationFn: () =>
+      columnClient.create({
+        relationships: {board: {data: {type: 'boards', id: board.id}}},
+        attributes: {},
+      }),
     onSuccess: ({data: column}) => {
       setSelectedColumnId(column.id);
       refreshColumns();
@@ -69,7 +73,11 @@ export default function ColumnList({board}) {
   });
 
   const {mutate: addCard} = useMutation({
-    mutationFn: () => cardClient.create({attributes: {}}),
+    mutationFn: () =>
+      cardClient.create({
+        relationships: {board: {data: {type: 'boards', id: board.id}}},
+        attributes: {},
+      }),
     onSuccess: ({data: newCard}) => {
       setSelectedCardId(newCard.id);
       refreshCards();

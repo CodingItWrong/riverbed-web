@@ -204,7 +204,17 @@ describe('edit elements', () => {
       data: [greetingField, newButton],
     });
     cy.contains('Add Button').click();
-    cy.wait('@addButton');
+    cy.wait('@addButton')
+      .its('request.body')
+      .should('deep.equal', {
+        data: {
+          type: 'elements',
+          relationships: {
+            board: {data: {type: 'boards', id: String(board.id)}},
+          },
+          attributes: {},
+        },
+      });
 
     cy.get('[data-testid="text-input-element-name"]').type(buttonName);
 

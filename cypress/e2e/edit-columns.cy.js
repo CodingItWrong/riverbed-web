@@ -45,7 +45,17 @@ describe('edit columns', () => {
     });
 
     cy.contains('Add Column').click();
-    cy.wait('@addColumn');
+    cy.wait('@addColumn')
+      .its('request.body')
+      .should('deep.equal', {
+        data: {
+          type: 'columns',
+          relationships: {
+            board: {data: {type: 'boards', id: String(board.id)}},
+          },
+          attributes: {},
+        },
+      });
 
     const columnName = 'All';
     cy.get('[data-testid="text-input-column-name"]').type(columnName);
