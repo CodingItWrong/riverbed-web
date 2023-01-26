@@ -13,10 +13,12 @@ describe('edit columns', () => {
       'data-type': FIELD_DATA_TYPES.TEXT.key,
       'show-in-summary': true,
     });
-    const cardTitle = 'Final Fantasy 7';
-    const card = Factory.card({
-      [titleField.id]: cardTitle,
-    });
+
+    const firstCardTitle = 'Final Fantasy 7';
+    const secondCardTitle = 'Danganronpoa';
+
+    const firstCard = Factory.card({[titleField.id]: firstCardTitle});
+    const secondCard = Factory.card({[titleField.id]: secondCardTitle});
     const newColumn = Factory.column({});
 
     cy.intercept('GET', 'http://cypressapi/boards?', {
@@ -29,7 +31,7 @@ describe('edit columns', () => {
       data: [],
     });
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
-      data: [card],
+      data: [firstCard, secondCard],
     });
 
     cy.visit('/');
@@ -106,7 +108,7 @@ describe('edit columns', () => {
       .should('deep.equal', {data: updatedColumn});
 
     cy.contains('Save Column').should('not.exist'); // wait for save to complete
-    cy.contains(cardTitle).should('not.exist');
+    cy.contains(firstCardTitle).should('not.exist');
 
     cy.log('DELETE COLUMN');
 
@@ -123,4 +125,8 @@ describe('edit columns', () => {
     cy.contains('Delete Column').should('not.exist');
     cy.contains('Edit Column').should('not.exist');
   });
+
+  function getInnerTexts($el) {
+    return Cypress._.map($el, element => element.innerText);
+  }
 });

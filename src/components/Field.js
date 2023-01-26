@@ -15,7 +15,7 @@ export default function Field({field, value, readOnly, setValue, style}) {
     case FIELD_DATA_TYPES.TEXT.key:
       if (readOnly) {
         return (
-          <View style={style}>
+          <View style={style} testID={`field-${field.id}`}>
             <Text>{value}</Text>
           </View>
         );
