@@ -129,8 +129,8 @@ function ColumnSortOrder({board, attributes, updateAttribute}) {
         fieldLabel="Sort Field"
         emptyLabel="(choose)"
         options={fields}
-        value={fields.find(f => f.id === attributes.sort?.field)}
-        onValueChange={field => updateAttribute('sort.field', field.id)}
+        value={fields.find(f => f.id === attributes['sort-order']?.field)}
+        onValueChange={field => updateAttribute('sort-order.field', field.id)}
         keyExtractor={field => field.id}
         labelExtractor={field => `By ${field.attributes.name}`}
         style={styles.field}
@@ -140,10 +140,10 @@ function ColumnSortOrder({board, attributes, updateAttribute}) {
         emptyLabel="(choose)"
         options={sortDirectionOptions}
         value={sortDirectionOptions.find(
-          direction => direction.key === attributes.sort?.direction,
+          direction => direction.key === attributes['sort-order']?.direction,
         )}
         onValueChange={direction =>
-          updateAttribute('sort.direction', direction.key)
+          updateAttribute('sort-order.direction', direction.key)
         }
         keyExtractor={direction => direction.key}
         labelExtractor={direction => direction.label}
