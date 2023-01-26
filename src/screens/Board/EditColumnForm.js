@@ -10,6 +10,7 @@ import TextField from '../../components/TextField';
 import {useElements} from '../../data/elements';
 import ELEMENT_TYPES from '../../enums/elementTypes';
 import QUERIES from '../../enums/queries';
+import SORT_DIRECTIONS from '../../enums/sortDirections';
 
 export default function EditColumnForm({
   column,
@@ -41,6 +42,11 @@ export default function EditColumnForm({
         testID="text-input-column-name"
       />
       <CardInclusionCondition
+        board={board}
+        attributes={attributes}
+        updateAttribute={updateAttribute}
+      />
+      <ColumnSortOrder
         board={board}
         attributes={attributes}
         updateAttribute={updateAttribute}
@@ -104,6 +110,49 @@ function CardInclusionCondition({board, attributes, updateAttribute}) {
     </Card>
   );
 }
+
+function ColumnSortOrder({board, attributes, updateAttribute}) {
+  const elementClient = useElements();
+  const {data: elements = []} = useQuery(['elements', board.id], () =>
+    elementClient.related({parent: board}).then(resp => resp.data),
+  );
+  const fields = elements.filter(
+    e => e.attributes['element-type'] === ELEMENT_TYPES.FIELD,
+  );
+
+  const sortDirectionOptions = Object.values(SORT_DIRECTIONS);
+
+  return (
+    <Card>
+      <Text>Sort Order</Text>
+      <Dropdown
+        fieldLabel="Sort Field"
+        emptyLabel="(choose)"
+        options={fields}
+        value={fields.find(f => f.id === attributes.sort?.field)}
+        onValueChange={field => updateAttribute('sort.field', field.id)}
+        keyExtractor={field => field.id}
+        labelExtractor={field => `By ${field.attributes.name}`}
+        style={styles.field}
+      />
+      <Dropdown
+        fieldLabel="Sort Direction"
+        emptyLabel="(choose)"
+        options={sortDirectionOptions}
+        value={sortDirectionOptions.find(
+          direction => direction.key === attributes.sort?.direction,
+        )}
+        onValueChange={direction =>
+          updateAttribute('sort.direction', direction.key)
+        }
+        keyExtractor={direction => direction.key}
+        labelExtractor={direction => direction.label}
+        style={styles.field}
+      />
+    </Card>
+  );
+}
+
 const styles = StyleSheet.create({
   button: {
     marginTop: 8,

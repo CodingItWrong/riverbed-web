@@ -1,5 +1,6 @@
 import FIELD_DATA_TYPES from '../../src/enums/fieldDataTypes';
 import QUERIES from '../../src/enums/queries';
+import SORT_DIRECTIONS from '../../src/enums/sortDirections';
 import Factory from '../support/Factory';
 
 describe('edit columns', () => {
@@ -14,8 +15,8 @@ describe('edit columns', () => {
       'show-in-summary': true,
     });
 
-    const firstCardTitle = 'Final Fantasy 7';
-    const secondCardTitle = 'Danganronpoa';
+    const firstCardTitle = 'Danganronpoa';
+    const secondCardTitle = 'Final Fantasy 7';
 
     const firstCard = Factory.card({[titleField.id]: firstCardTitle});
     const secondCard = Factory.card({[titleField.id]: secondCardTitle});
@@ -78,20 +79,24 @@ describe('edit columns', () => {
     cy.contains(columnName);
 
     // should show all cards
-    cy.contains(cardTitle);
+    assertContentsOrder(`[data-testid=field-${titleField.id}]`, [
+      firstCardTitle,
+      secondCardTitle,
+    ]);
 
-    cy.log('EDIT COLUMN');
+    cy.log('EDIT COLUMN - SORT');
 
     cy.contains('Edit Column').click();
 
-    cy.contains('Query: (choose)').paperSelect('Empty');
-    cy.contains('Field: (choose)').paperSelect('Title');
+    // TODO: remove qualifier
+    cy.contains('Sort Field: (choose)').paperSelect('By Title');
+    cy.contains('Sort Direction: (choose)').paperSelect('Descending');
 
     const updatedColumn = Factory.column(
       {
-        'card-inclusion-condition': {
-          query: QUERIES.IS_EMPTY.key,
+        sort: {
           field: titleField.id,
+          direction: SORT_DIRECTIONS.DESCENDING.key,
         },
       },
       allColumn,
@@ -108,7 +113,44 @@ describe('edit columns', () => {
       .should('deep.equal', {data: updatedColumn});
 
     cy.contains('Save Column').should('not.exist'); // wait for save to complete
+    assertContentsOrder(`[data-testid=field-${titleField.id}]`, [
+      secondCardTitle,
+      firstCardTitle,
+    ]);
+    cy.log('EDIT COLUMN - FILTER');
+
+    cy.contains('Edit Column').click();
+
+    cy.contains('Query: (choose)').paperSelect('Empty');
+    cy.contains('Query Field: (choose)').paperSelect('Title');
+
+    const updatedColumn2 = Factory.column(
+      {
+        'card-inclusion-condition': {
+          query: QUERIES.IS_EMPTY.key,
+          field: titleField.id,
+        },
+        sort: {
+          field: titleField.id,
+          direction: SORT_DIRECTIONS.DESCENDING.key,
+        },
+      },
+      allColumn,
+    );
+    cy.intercept('PATCH', `http://cypressapi/columns/${newColumn.id}?`, {
+      success: true,
+    }).as('updateColumn');
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/columns?`, {
+      data: [updatedColumn2],
+    });
+    cy.contains('Save Column').click();
+    cy.wait('@updateColumn')
+      .its('request.body')
+      .should('deep.equal', {data: updatedColumn2});
+
+    cy.contains('Save Column').should('not.exist'); // wait for save to complete
     cy.contains(firstCardTitle).should('not.exist');
+    cy.contains(secondCardTitle).should('not.exist');
 
     cy.log('DELETE COLUMN');
 
@@ -126,7 +168,9 @@ describe('edit columns', () => {
     cy.contains('Edit Column').should('not.exist');
   });
 
-  function getInnerTexts($el) {
-    return Cypress._.map($el, element => element.innerText);
+  function assertContentsOrder(selector, values) {
+    values.forEach((value, i) => {
+      cy.get(selector).eq(i).contains(value);
+    });
   }
 });

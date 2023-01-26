@@ -1,4 +1,5 @@
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
+import sortBy from 'lodash.sortby';
 import {useState} from 'react';
 import {ScrollView, StyleSheet, View, useWindowDimensions} from 'react-native';
 import {KeyboardAwareFlatList} from 'react-native-keyboard-aware-scroll-view';
@@ -9,6 +10,7 @@ import sharedStyles from '../../components/sharedStyles';
 import {useCards} from '../../data/cards';
 import {useColumns} from '../../data/columns';
 import {useElements} from '../../data/elements';
+import SORT_DIRECTIONS from '../../enums/sortDirections';
 import checkCondition from '../../utils/checkCondition';
 import CardDetail from './CardDetail';
 import CardSummary from './CardSummary';
@@ -148,12 +150,27 @@ export default function ColumnList({board}) {
               />
             );
           } else {
-            const {name, 'card-inclusion-condition': cardInclusionCondition} =
-              column.attributes;
+            const {
+              name,
+              sort,
+              'card-inclusion-condition': cardInclusionCondition,
+            } = column.attributes;
 
-            const columnCards = cards.filter(card =>
+            const filteredCards = cards.filter(card =>
               checkCondition({card, condition: cardInclusionCondition}),
             );
+            let columnCards;
+
+            if (sort?.field && sort?.direction) {
+              columnCards = sortBy(filteredCards, [
+                `attributes.field-values.${sort.field}`,
+              ]);
+              if (sort?.direction === SORT_DIRECTIONS.DESCENDING.key) {
+                columnCards.reverse();
+              }
+            } else {
+              columnCards = filteredCards;
+            }
 
             return (
               <View

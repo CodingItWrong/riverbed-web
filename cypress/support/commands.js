@@ -5,6 +5,8 @@ Cypress.Commands.add(
   {prevSubject: true},
   (subject, optionLabel) => {
     subject.click();
-    cy.contains(optionLabel).click({force: true});
+    cy.get('[data-testid=paper-dropdown-option]')
+      .contains(optionLabel)
+      .click({force: true});
   },
 );
