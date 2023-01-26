@@ -172,6 +172,13 @@ export default function ColumnList({board}) {
               columnCards = filteredCards;
             }
 
+            console.log({
+              sortField: sort?.field,
+              sortDirection: sort?.direction,
+              filteredCards,
+              sortedCards: columnCards,
+            });
+
             return (
               <View
                 key={column.id}
