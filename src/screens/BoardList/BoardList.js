@@ -1,9 +1,10 @@
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import sortBy from 'lodash.sortby';
 import {useState} from 'react';
-import {FlatList, View} from 'react-native';
+import {FlatList} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Button from '../../components/Button';
+import Card from '../../components/Card';
 import ScreenBackground from '../../components/ScreenBackground';
 import Text from '../../components/Text';
 import sharedStyles from '../../components/sharedStyles';
@@ -52,16 +53,16 @@ export default function BoardList() {
     return (
       <ScreenBackground>
         <SafeAreaView style={sharedStyles.fullHeight}>
-          <Text>My Boards</Text>
-          <Button onPress={addBoard}>Add Board</Button>
+          <Text variant="titleLarge">My Boards</Text>
           <FlatList
             data={sortedBoards}
             keyExtractor={board => board.id}
             renderItem={({item: board}) => (
-              <Button onPress={() => setSelectedBoardId(board.id)}>
-                {board.attributes.name}
-              </Button>
+              <Card onPress={() => setSelectedBoardId(board.id)}>
+                <Text>{board.attributes.name}</Text>
+              </Card>
             )}
+            ListFooterComponent={<Button onPress={addBoard}>Add Board</Button>}
           />
         </SafeAreaView>
       </ScreenBackground>
