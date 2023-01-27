@@ -49,7 +49,7 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
     <Card>
       <TextField
         label="Name"
-        value={attributes.name}
+        value={attributes.name ?? ''}
         onChangeText={value => updateAttribute('name', value)}
         testID="text-input-board-name"
       />
