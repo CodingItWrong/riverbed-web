@@ -7,6 +7,7 @@ import Card from '../../components/Card';
 import Dropdown from '../../components/DropdownField';
 import Text from '../../components/Text';
 import TextField from '../../components/TextField';
+import sharedStyles from '../../components/sharedStyles';
 import {useElements} from '../../data/elements';
 import ELEMENT_TYPES from '../../enums/elementTypes';
 import QUERIES from '../../enums/queries';
@@ -51,13 +52,13 @@ export default function EditColumnForm({
         attributes={attributes}
         updateAttribute={updateAttribute}
       />
-      <Button onPress={onCancel} style={styles.button}>
+      <Button onPress={onCancel} style={sharedStyles.mt}>
         Cancel
       </Button>
-      <Button onPress={onDelete} style={styles.button}>
+      <Button onPress={onDelete} style={sharedStyles.mt}>
         Delete Column
       </Button>
-      <Button onPress={handleSave} style={styles.button}>
+      <Button onPress={handleSave} style={sharedStyles.mt}>
         Save Column
       </Button>
     </Card>
@@ -77,7 +78,7 @@ function CardInclusionCondition({board, attributes, updateAttribute}) {
   const queryOptions = Object.values(QUERIES);
 
   return (
-    <Card>
+    <Card style={sharedStyles.mt}>
       <Text>Cards to Include</Text>
       <Dropdown
         fieldLabel="Show Query"
@@ -91,7 +92,7 @@ function CardInclusionCondition({board, attributes, updateAttribute}) {
         }
         keyExtractor={query => query.key}
         labelExtractor={query => query.label}
-        style={styles.field}
+        style={sharedStyles.mt}
       />
       <Dropdown
         fieldLabel="Query Field"
@@ -105,7 +106,7 @@ function CardInclusionCondition({board, attributes, updateAttribute}) {
         }
         keyExtractor={field => field.id}
         labelExtractor={field => field.attributes.name}
-        style={styles.field}
+        style={sharedStyles.mt}
       />
     </Card>
   );
@@ -123,7 +124,7 @@ function ColumnSortOrder({board, attributes, updateAttribute}) {
   const sortDirectionOptions = Object.values(SORT_DIRECTIONS);
 
   return (
-    <Card>
+    <Card style={sharedStyles.mt}>
       <Text>Sort Order</Text>
       <Dropdown
         fieldLabel="Sort Field"
@@ -135,7 +136,7 @@ function ColumnSortOrder({board, attributes, updateAttribute}) {
         }
         keyExtractor={field => field.id}
         labelExtractor={field => `By ${field.attributes.name}`}
-        style={styles.field}
+        style={sharedStyles.mt}
       />
       <Dropdown
         fieldLabel="Sort Direction"
@@ -150,14 +151,8 @@ function ColumnSortOrder({board, attributes, updateAttribute}) {
         }
         keyExtractor={direction => direction.key}
         labelExtractor={direction => direction.label}
-        style={styles.field}
+        style={sharedStyles.mt}
       />
     </Card>
   );
 }
-
-const styles = StyleSheet.create({
-  button: {
-    marginTop: 8,
-  },
-});
