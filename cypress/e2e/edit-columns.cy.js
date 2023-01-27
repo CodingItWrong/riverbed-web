@@ -86,7 +86,7 @@ describe('edit columns', () => {
 
     cy.log('EDIT COLUMN - SORT');
 
-    cy.contains('Edit Column').click();
+    cy.get('[aria-label="Edit Column"]').click();
 
     // TODO: remove qualifier
     cy.contains('Sort Field: (choose)').paperSelect('By Title');
@@ -119,7 +119,7 @@ describe('edit columns', () => {
     ]);
     cy.log('EDIT COLUMN - FILTER');
 
-    cy.contains('Edit Column').click();
+    cy.get('[aria-label="Edit Column"]').click();
 
     cy.contains('Query: (choose)').paperSelect('Empty');
     cy.contains('Query Field: (choose)').paperSelect('Title');
@@ -160,12 +160,12 @@ describe('edit columns', () => {
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/columns?`, {
       data: [],
     });
-    cy.contains('Edit Column').click();
+    cy.get('[aria-label="Edit Column"]').click();
     cy.contains('Delete Column').click();
     cy.wait('@deleteColumn');
 
     cy.contains('Delete Column').should('not.exist');
-    cy.contains('Edit Column').should('not.exist');
+    cy.get('[aria-label="Edit Column"]').should('not.exist');
   });
 
   function assertContentsOrder(selector, values) {

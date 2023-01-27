@@ -4,6 +4,7 @@ import {useState} from 'react';
 import {ScrollView, StyleSheet, View, useWindowDimensions} from 'react-native';
 import {KeyboardAwareFlatList} from 'react-native-keyboard-aware-scroll-view';
 import Button from '../../components/Button';
+import IconButton from '../../components/IconButton';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import Text from '../../components/Text';
 import sharedStyles from '../../components/sharedStyles';
@@ -185,11 +186,13 @@ export default function ColumnList({board}) {
                 testID={`column-${column.id}`}
                 style={[responsiveColumnStyle, sharedStyles.fullHeight]}
               >
-                <View style={styles.columnTitleRow}>
+                <View style={sharedStyles.row}>
                   <Text variant="titleLarge">{name}</Text>
-                  <Button onPress={() => setSelectedColumnId(column.id)}>
-                    Edit Column
-                  </Button>
+                  <IconButton
+                    icon="pencil"
+                    onPress={() => setSelectedColumnId(column.id)}
+                    accessibilityLabel="Edit Column"
+                  />
                 </View>
                 <KeyboardAwareFlatList
                   extraScrollHeight={EXPERIMENTAL_EXTRA_SCROLL_HEIGHT}
@@ -233,10 +236,6 @@ export default function ColumnList({board}) {
 const EXPERIMENTAL_EXTRA_SCROLL_HEIGHT = 100;
 
 const styles = StyleSheet.create({
-  columnTitleRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
   buttonContainer: {
     margin: 8,
   },

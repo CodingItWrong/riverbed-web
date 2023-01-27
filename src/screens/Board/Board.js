@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {View} from 'react-native';
 import Button from '../../components/Button';
 import IconButton from '../../components/IconButton';
 import Text from '../../components/Text';
@@ -53,7 +53,7 @@ export default function Board({board, onDelete, onGoBack}) {
 
   return (
     <View style={sharedStyles.fullHeight}>
-      <View style={styles.titleRow}>
+      <View style={sharedStyles.row}>
         <IconButton
           icon="arrow-left"
           onPress={onGoBack}
@@ -66,10 +66,3 @@ export default function Board({board, onDelete, onGoBack}) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  titleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-});

@@ -4,6 +4,10 @@ const sharedStyles = StyleSheet.create({
   fullHeight: {
     flex: 1,
   },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   textInput: {
     backgroundColor: 'transparent',
     paddingHorizontal: 0,
