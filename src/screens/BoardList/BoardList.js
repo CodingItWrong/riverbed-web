@@ -40,10 +40,11 @@ export default function BoardList() {
     return (
       <ScreenBackground>
         <SafeAreaView style={sharedStyles.fullHeight}>
-          <Button onPress={() => setSelectedBoardId(null)}>
-            Back to Board List
-          </Button>
-          <Board board={board} onDelete={() => setSelectedBoardId(null)} />
+          <Board
+            board={board}
+            onDelete={() => setSelectedBoardId(null)}
+            onGoBack={() => setSelectedBoardId(null)}
+          />
         </SafeAreaView>
       </ScreenBackground>
     );

@@ -1,13 +1,14 @@
 import {useState} from 'react';
-import {View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import Button from '../../components/Button';
+import IconButton from '../../components/IconButton';
 import Text from '../../components/Text';
 import sharedStyles from '../../components/sharedStyles';
 import ColumnList from './ColumnList';
 import EditBoardForm from './EditBoardForm';
 import ElementList from './ElementList';
 
-export default function Board({board, onDelete}) {
+export default function Board({board, onDelete, onGoBack}) {
   // TODO: make these an enum
   const [editingBoard, setEditingBoard] = useState(false);
   const [editingElements, setEditingElements] = useState(false);
@@ -52,9 +53,23 @@ export default function Board({board, onDelete}) {
 
   return (
     <View style={sharedStyles.fullHeight}>
-      <Text variant="titleLarge">{board.attributes.name}</Text>
+      <View style={styles.titleRow}>
+        <IconButton
+          icon="arrow-left"
+          onPress={onGoBack}
+          accessibilityLabel="Back to Board List"
+        />
+        <Text variant="titleLarge">{board.attributes.name}</Text>
+      </View>
       {renderButton()}
       {renderContents()}
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  titleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+});

@@ -45,7 +45,7 @@ describe('edit boards', () => {
     cy.contains(boardName).click();
     cy.contains('Edit Elements');
 
-    cy.contains('Back to Board List').click();
+    cy.get('[aria-label="Back to Board List"]').click();
     cy.contains('Edit Elements').should('not.exist');
 
     cy.log('DELETE BOARD');
