@@ -59,7 +59,7 @@ export default function BoardList() {
             keyExtractor={board => board.id}
             renderItem={({item: board}) => (
               <Card onPress={() => setSelectedBoardId(board.id)}>
-                <Text>{board.attributes.name}</Text>
+                <Text>{board.attributes.name ?? '(unnamed board)'}</Text>
               </Card>
             )}
             ListFooterComponent={<Button onPress={addBoard}>Add Board</Button>}

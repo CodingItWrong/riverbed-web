@@ -180,7 +180,7 @@ export default function ColumnList({board}) {
                 style={[responsiveColumnStyle, sharedStyles.fullHeight]}
               >
                 <View style={sharedStyles.row}>
-                  <Text variant="titleLarge">{name}</Text>
+                  <Text variant="titleLarge">{name ?? '(unnamed column)'}</Text>
                   <IconButton
                     icon="pencil"
                     onPress={() => setSelectedColumnId(column.id)}
