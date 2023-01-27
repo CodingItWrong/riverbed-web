@@ -9,7 +9,7 @@
     "web": "expo start --web",
     "cypress": "cypress open",
     "cypress:run": "cypress run",
-    "lint": "eslint .",
+    "lint": "eslint src cypress/e2e",
     "build:web": "expo export:web && cp _redirects web-build",
     "deploy:web": "npm run build:web && netlify deploy --prod"
   },
