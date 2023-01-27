@@ -152,7 +152,7 @@ export default function ColumnList({board}) {
           } else {
             const {
               name,
-              'sort-order': sortOrder,
+              'card-sort-order': cardSortOrder,
               'card-inclusion-condition': cardInclusionCondition,
             } = column.attributes;
 
@@ -161,11 +161,11 @@ export default function ColumnList({board}) {
             );
             let columnCards;
 
-            if (sortOrder?.field && sortOrder?.direction) {
+            if (cardSortOrder?.field && cardSortOrder?.direction) {
               columnCards = sortBy(filteredCards, [
-                `attributes.field-values.${sortOrder.field}`,
+                `attributes.field-values.${cardSortOrder.field}`,
               ]);
-              if (sortOrder?.direction === SORT_DIRECTIONS.DESCENDING.key) {
+              if (cardSortOrder?.direction === SORT_DIRECTIONS.DESCENDING.key) {
                 columnCards.reverse();
               }
             } else {
@@ -173,8 +173,8 @@ export default function ColumnList({board}) {
             }
 
             console.log({
-              sortField: sortOrder?.field,
-              sortDirection: sortOrder?.direction,
+              sortField: cardSortOrder?.field,
+              sortDirection: cardSortOrder?.direction,
               filteredCards,
               sortedCards: columnCards,
             });

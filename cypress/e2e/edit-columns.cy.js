@@ -94,7 +94,7 @@ describe('edit columns', () => {
 
     const updatedColumn = Factory.column(
       {
-        'sort-order': {
+        'card-sort-order': {
           field: titleField.id,
           direction: SORT_DIRECTIONS.DESCENDING.key,
         },
@@ -130,7 +130,7 @@ describe('edit columns', () => {
           query: QUERIES.IS_EMPTY.key,
           field: titleField.id,
         },
-        'sort-order': {
+        'card-sort-order': {
           field: titleField.id,
           direction: SORT_DIRECTIONS.DESCENDING.key,
         },
