@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import {Button, Menu} from 'react-native-paper';
 
-export default function Dropdown({
+export default function DropdownField({
   fieldLabel,
   emptyLabel,
   value,

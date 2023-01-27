@@ -1,6 +1,6 @@
 import {useState} from 'react';
-import {View} from 'react-native';
-import Button from '../../components/Button';
+import {StyleSheet, View} from 'react-native';
+import DropdownMenu from '../../components/DropdownMenu';
 import IconButton from '../../components/IconButton';
 import Text from '../../components/Text';
 import sharedStyles from '../../components/sharedStyles';
@@ -13,24 +13,14 @@ export default function Board({board, onDelete, onGoBack}) {
   const [editingBoard, setEditingBoard] = useState(false);
   const [editingElements, setEditingElements] = useState(false);
 
-  function renderButton() {
-    if (editingBoard) {
-      return null;
-    } else if (editingElements) {
-      return (
-        <Button onPress={() => setEditingElements(false)}>
-          Done Editing Elements
-        </Button>
-      );
+  function menuItems() {
+    if (editingBoard || editingElements) {
+      return [];
     } else {
-      return (
-        <>
-          <Button onPress={() => setEditingBoard(true)}>Edit Board</Button>
-          <Button onPress={() => setEditingElements(true)}>
-            Edit Elements
-          </Button>
-        </>
-      );
+      return [
+        {title: 'Edit Board', onPress: () => setEditingBoard(true)},
+        {title: 'Edit Elements', onPress: () => setEditingElements(true)},
+      ];
     }
   }
 
@@ -45,7 +35,9 @@ export default function Board({board, onDelete, onGoBack}) {
         />
       );
     } else if (editingElements) {
-      return <ElementList board={board} />;
+      return (
+        <ElementList board={board} onClose={() => setEditingElements(false)} />
+      );
     } else {
       return <ColumnList board={board} />;
     }
@@ -60,9 +52,25 @@ export default function Board({board, onDelete, onGoBack}) {
           accessibilityLabel="Back to Board List"
         />
         <Text variant="titleLarge">{board.attributes.name}</Text>
+        <View style={styles.spacer} />
+        <DropdownMenu
+          menuItems={menuItems()}
+          menuButton={props => (
+            <IconButton
+              icon="dots-vertical"
+              accessibilityLabel="Board Menu"
+              {...props}
+            />
+          )}
+        />
       </View>
-      {renderButton()}
       {renderContents()}
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  spacer: {
+    flex: 1,
+  },
+});

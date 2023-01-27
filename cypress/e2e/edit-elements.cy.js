@@ -46,7 +46,8 @@ describe('edit elements', () => {
 
     cy.log('ADD FIELD');
 
-    cy.contains('Edit Elements').click();
+    cy.get('[aria-label="Board Menu"]').click();
+    cy.contains('Edit Elements').click({force: true});
 
     cy.intercept('POST', 'http://cypressapi/elements?', {
       data: newField,
@@ -101,7 +102,9 @@ describe('edit elements', () => {
 
     cy.log('EDIT FIELD');
 
-    cy.contains('Edit Elements').click();
+    cy.get('[aria-label="Board Menu"]').click();
+    cy.contains('Edit Elements').click({force: true});
+
     cy.contains(fieldName).click();
     cy.get('[data-testid="text-input-element-name"]')
       .invoke('val')
@@ -195,7 +198,8 @@ describe('edit elements', () => {
 
     cy.log('ADD BUTTON');
 
-    cy.contains('Edit Elements').click();
+    cy.get('[aria-label="Board Menu"]').click();
+    cy.contains('Edit Elements').click({force: true});
 
     cy.intercept('POST', 'http://cypressapi/elements?', {
       data: newButton,
@@ -261,7 +265,8 @@ describe('edit elements', () => {
 
     cy.log('EDIT BUTTON');
 
-    cy.contains('Edit Elements').click();
+    cy.get('[aria-label="Board Menu"]').click();
+    cy.contains('Edit Elements').click({force: true});
     cy.contains(buttonName).click();
 
     const updatedButtonName = 'Shoosh';

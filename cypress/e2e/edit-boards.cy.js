@@ -25,7 +25,9 @@ describe('edit boards', () => {
 
     cy.log('EDIT BOARD');
 
-    cy.contains('Edit Board').click();
+    cy.get('[aria-label="Board Menu"]').click();
+    cy.contains('Edit Board').click({force: true});
+
     const boardName = 'Video Games';
     cy.get('[data-testid="text-input-board-name"]').type(boardName);
 
@@ -43,15 +45,18 @@ describe('edit boards', () => {
 
     cy.get('[data-testid="text-input-board-name"]').should('not.exist');
     cy.contains(boardName).click();
-    cy.contains('Edit Elements');
+    cy.get('[aria-label="Board Menu"]').should('exist');
 
     cy.get('[aria-label="Back to Board List"]').click();
-    cy.contains('Edit Elements').should('not.exist');
+    cy.get('[aria-label="Board Menu"]').should('not.exist');
 
     cy.log('DELETE BOARD');
 
     cy.contains(boardName).click();
-    cy.contains('Edit Board').click();
+
+    cy.get('[aria-label="Board Menu"]').click();
+    cy.contains('Edit Board').click({force: true});
+
     cy.contains('Delete Board').click();
 
     cy.intercept('DELETE', `http://cypressapi/boards/${updatedBoard.id}`, {

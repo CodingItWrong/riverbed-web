@@ -4,7 +4,7 @@ import {useState} from 'react';
 import {StyleSheet} from 'react-native';
 import Button from '../../components/Button';
 import Card from '../../components/Card';
-import Dropdown from '../../components/Dropdown';
+import Dropdown from '../../components/DropdownField';
 import Text from '../../components/Text';
 import TextField from '../../components/TextField';
 import {useElements} from '../../data/elements';

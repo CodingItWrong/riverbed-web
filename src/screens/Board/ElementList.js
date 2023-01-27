@@ -10,7 +10,7 @@ import ELEMENT_TYPES from '../../enums/elementTypes';
 import FIELD_DATA_TYPES from '../../enums/fieldDataTypes';
 import EditElementForm from './EditElementForm';
 
-export default function ElementList({board}) {
+export default function ElementList({board, onClose}) {
   const queryClient = useQueryClient();
   const elementClient = useElements();
   const [selectedElementId, setSelectedElementId] = useState(null);
@@ -71,6 +71,7 @@ export default function ElementList({board}) {
 
   return (
     <View style={sharedStyles.fullHeight}>
+      <Button onPress={onClose}>Done Editing Elements</Button>
       <Button onPress={addField}>Add Field</Button>
       <Button onPress={addButton}>Add Button</Button>
       <FlatList
