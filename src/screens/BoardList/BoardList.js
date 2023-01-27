@@ -1,4 +1,5 @@
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
+import sortBy from 'lodash.sortby';
 import {useState} from 'react';
 import {FlatList, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -17,6 +18,7 @@ export default function BoardList() {
   const {data: boards = []} = useQuery(['boards'], () =>
     boardClient.all().then(resp => resp.data),
   );
+  const sortedBoards = sortBy(boards, ['attributes.name']);
 
   const refreshBoards = () => queryClient.invalidateQueries(['boards']);
 
@@ -52,7 +54,7 @@ export default function BoardList() {
           <Text>My Boards</Text>
           <Button onPress={addBoard}>Add Board</Button>
           <FlatList
-            data={boards}
+            data={sortedBoards}
             keyExtractor={board => board.id}
             renderItem={({item: board}) => (
               <Button onPress={() => setSelectedBoardId(board.id)}>
