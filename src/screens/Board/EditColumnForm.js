@@ -1,7 +1,6 @@
 import {useQuery} from '@tanstack/react-query';
 import set from 'lodash.set';
 import {useState} from 'react';
-import {StyleSheet} from 'react-native';
 import Button from '../../components/Button';
 import Card from '../../components/Card';
 import Dropdown from '../../components/DropdownField';

@@ -9,7 +9,7 @@
     "web": "expo start --web",
     "cypress": "cypress open",
     "cypress:run": "cypress run",
-    "lint": "eslint .",
+    "lint": "eslint src cypress/e2e",
     "build:web": "expo export:web && cp _redirects web-build",
     "deploy:web": "npm run build:web && netlify deploy --prod"
   },
@@ -39,7 +39,7 @@
     "@babel/plugin-proposal-private-methods": "^7.18.6",
     "@react-native-community/eslint-config": "^3.2.0",
     "cypress": "^12.4.1",
-    "eslint": "^7.0",
+    "eslint": "^8.32",
     "eslint-plugin-cypress": "^2.12.1",
     "eslint-plugin-import": "^2.27.5",
     "prettier": "^2.8.3",
