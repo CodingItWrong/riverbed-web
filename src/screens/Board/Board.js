@@ -52,7 +52,7 @@ export default function Board({board, onDelete}) {
 
   return (
     <View style={sharedStyles.fullHeight}>
-      <Text>{board.attributes.name}</Text>
+      <Text variant="titleLarge">{board.attributes.name}</Text>
       {renderButton()}
       {renderContents()}
     </View>
