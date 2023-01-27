@@ -51,7 +51,9 @@ export default function Board({board, onDelete, onGoBack}) {
           onPress={onGoBack}
           accessibilityLabel="Back to Board List"
         />
-        <Text variant="titleLarge">{board.attributes.name}</Text>
+        <Text variant="titleLarge">
+          {board.attributes.name ?? '(unnamed board)'}
+        </Text>
         <View style={styles.spacer} />
         <DropdownMenu
           menuItems={menuItems()}
