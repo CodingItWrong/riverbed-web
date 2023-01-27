@@ -173,13 +173,6 @@ export default function ColumnList({board}) {
               columnCards = filteredCards;
             }
 
-            console.log({
-              sortField: cardSortOrder?.field,
-              sortDirection: cardSortOrder?.direction,
-              filteredCards,
-              sortedCards: columnCards,
-            });
-
             return (
               <View
                 key={column.id}
