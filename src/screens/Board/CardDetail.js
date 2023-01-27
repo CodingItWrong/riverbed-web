@@ -6,6 +6,7 @@ import ButtonElement from '../../components/ButtonElement';
 import Card from '../../components/Card';
 import Field from '../../components/Field';
 import Text from '../../components/Text';
+import sharedStyles from '../../components/sharedStyles';
 import {useElements} from '../../data/elements';
 import COMMANDS from '../../enums/commands';
 import ELEMENT_TYPES from '../../enums/elementTypes';
@@ -19,6 +20,7 @@ export default function CardDetail({
   onUpdate,
   onCancel,
   onDelete,
+  style,
 }) {
   const [fieldValues, setFieldValues] = useState(
     card.attributes['field-values'],
@@ -66,7 +68,7 @@ export default function CardDetail({
   }
 
   return (
-    <Card key={card.id} style={styles.card}>
+    <Card key={card.id} style={[styles.card, style]}>
       {elementsToShow.map((element, elementIndex) => {
         switch (element.attributes['element-type']) {
           case ELEMENT_TYPES.FIELD:
@@ -77,7 +79,7 @@ export default function CardDetail({
                 value={fieldValues[element.id]}
                 setValue={value => setFieldValue(element.id, value)}
                 readOnly={element.attributes['read-only']}
-                style={elementIndex > 0 && styles.detailElement}
+                style={elementIndex > 0 && sharedStyles.mt}
               />
             );
           case ELEMENT_TYPES.BUTTON:
@@ -88,7 +90,7 @@ export default function CardDetail({
                 onPerformAction={() =>
                   handlePerformAction(element.attributes.action)
                 }
-                style={elementIndex > 0 && styles.detailElement}
+                style={elementIndex > 0 && sharedStyles.mt}
               />
             );
           default:
@@ -99,13 +101,13 @@ export default function CardDetail({
             );
         }
       })}
-      <Button onPress={onCancel} style={styles.detailElement}>
+      <Button onPress={onCancel} style={sharedStyles.mt}>
         Cancel
       </Button>
-      <Button onPress={onDelete} style={styles.detailElement}>
+      <Button onPress={onDelete} style={sharedStyles.mt}>
         Delete
       </Button>
-      <Button primary onPress={handleSave} style={styles.detailElement}>
+      <Button primary onPress={handleSave} style={sharedStyles.mt}>
         Save
       </Button>
     </Card>
@@ -115,9 +117,5 @@ export default function CardDetail({
 const styles = StyleSheet.create({
   card: {
     margin: 4,
-    marginTop: 8,
-  },
-  detailElement: {
-    marginTop: 8,
   },
 });

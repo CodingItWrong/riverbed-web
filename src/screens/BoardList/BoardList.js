@@ -58,11 +58,18 @@ export default function BoardList() {
             data={sortedBoards}
             keyExtractor={board => board.id}
             renderItem={({item: board}) => (
-              <Card onPress={() => setSelectedBoardId(board.id)}>
+              <Card
+                onPress={() => setSelectedBoardId(board.id)}
+                style={sharedStyles.mt}
+              >
                 <Text>{board.attributes.name ?? '(unnamed board)'}</Text>
               </Card>
             )}
-            ListFooterComponent={<Button onPress={addBoard}>Add Board</Button>}
+            ListFooterComponent={
+              <Button onPress={addBoard} style={sharedStyles.mt}>
+                Add Board
+              </Button>
+            }
           />
         </SafeAreaView>
       </ScreenBackground>

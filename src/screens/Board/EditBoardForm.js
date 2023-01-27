@@ -4,6 +4,7 @@ import {useState} from 'react';
 import Button from '../../components/Button';
 import Card from '../../components/Card';
 import TextField from '../../components/TextField';
+import sharedStyles from '../../components/sharedStyles';
 import {useBoards} from '../../data/boards';
 
 export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
@@ -52,14 +53,26 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
         value={attributes.name ?? ''}
         onChangeText={value => updateAttribute('name', value)}
         testID="text-input-board-name"
+        style={sharedStyles.mt}
       />
-      <Button onPress={onCancel}>Cancel</Button>
+      <Button onPress={onCancel} style={sharedStyles.mt}>
+        Cancel
+      </Button>
       {confirmingDelete ? (
-        <Button onPress={deleteBoard}>Confirm Delete Board</Button>
+        <Button onPress={deleteBoard} style={sharedStyles.mt}>
+          Confirm Delete Board
+        </Button>
       ) : (
-        <Button onPress={() => setConfirmingDelete(true)}>Delete Board</Button>
+        <Button
+          onPress={() => setConfirmingDelete(true)}
+          style={sharedStyles.mt}
+        >
+          Delete Board
+        </Button>
       )}
-      <Button onPress={updateBoard}>Save Board</Button>
+      <Button onPress={updateBoard} style={sharedStyles.mt}>
+        Save Board
+      </Button>
     </Card>
   );
 }

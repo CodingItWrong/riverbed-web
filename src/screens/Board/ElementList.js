@@ -71,9 +71,15 @@ export default function ElementList({board, onClose}) {
 
   return (
     <View style={sharedStyles.fullHeight}>
-      <Button onPress={onClose}>Done Editing Elements</Button>
-      <Button onPress={addField}>Add Field</Button>
-      <Button onPress={addButton}>Add Button</Button>
+      <Button onPress={onClose} style={sharedStyles.mt}>
+        Done Editing Elements
+      </Button>
+      <Button onPress={addField} style={sharedStyles.mt}>
+        Add Field
+      </Button>
+      <Button onPress={addButton} style={sharedStyles.mt}>
+        Add Button
+      </Button>
       <FlatList
         data={elements}
         keyExtractor={element => element.id}
@@ -85,9 +91,13 @@ export default function ElementList({board, onClose}) {
               onSave={updateElement}
               onDelete={deleteElement}
               onCancel={hideEditForm}
+              style={sharedStyles.mt}
             />
           ) : (
-            <Card onPress={() => setSelectedElementId(element.id)}>
+            <Card
+              onPress={() => setSelectedElementId(element.id)}
+              style={sharedStyles.mt}
+            >
               <Text>{element.attributes.name}</Text>
             </Card>
           )

@@ -5,7 +5,7 @@ import Field from '../../components/Field';
 import {useElements} from '../../data/elements';
 import sortElements from '../../utils/sortElements';
 
-export default function CardSummary({card, board, onPress}) {
+export default function CardSummary({card, board, onPress, style}) {
   const elementClient = useElements();
 
   const {data: elements = []} = useQuery(['elements', board.id], () =>
@@ -19,7 +19,7 @@ export default function CardSummary({card, board, onPress}) {
   return (
     <Card
       key={card.id}
-      style={styles.card}
+      style={[styles.card, style]}
       onPress={onPress}
       testID={`card-${card.id}`}
     >
@@ -38,6 +38,5 @@ export default function CardSummary({card, board, onPress}) {
 const styles = StyleSheet.create({
   card: {
     margin: 4,
-    marginTop: 8,
   },
 });

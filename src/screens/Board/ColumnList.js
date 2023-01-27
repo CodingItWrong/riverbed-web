@@ -200,6 +200,7 @@ export default function ColumnList({board}) {
                           onUpdate={updateCard}
                           onDelete={deleteCard}
                           onCancel={hideDetail}
+                          style={sharedStyles.mt}
                         />
                       );
                     } else {
@@ -208,6 +209,7 @@ export default function ColumnList({board}) {
                           card={card}
                           board={board}
                           onPress={() => showDetail(card.id)}
+                          style={sharedStyles.mt}
                         />
                       );
                     }

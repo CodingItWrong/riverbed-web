@@ -1,13 +1,13 @@
 import {useQuery} from '@tanstack/react-query';
 import set from 'lodash.set';
 import {useState} from 'react';
-import {StyleSheet} from 'react-native';
 import Button from '../../components/Button';
 import Card from '../../components/Card';
 import Dropdown from '../../components/DropdownField';
 import LabeledCheckbox from '../../components/LabeledCheckbox';
 import Text from '../../components/Text';
 import TextField from '../../components/TextField';
+import sharedStyles from '../../components/sharedStyles';
 import {useElements} from '../../data/elements';
 import COMMANDS from '../../enums/commands';
 import ELEMENT_TYPES from '../../enums/elementTypes';
@@ -21,6 +21,7 @@ export default function EditElementForm({
   onSave,
   onDelete,
   onCancel,
+  style,
 }) {
   const elementClient = useElements();
   const {data: elements = []} = useQuery(['elements', board.id], () =>
@@ -49,7 +50,7 @@ export default function EditElementForm({
   }
 
   return (
-    <Card>
+    <Card style={style}>
       <TextField
         label="Field Name"
         value={elementAttributes.name ?? ''}
@@ -66,7 +67,7 @@ export default function EditElementForm({
             )}
             onValueChange={option => updateAttribute('data-type', option.key)}
             options={dataTypeOptions}
-            style={styles.field}
+            style={sharedStyles.mt}
           />
           <LabeledCheckbox
             label="Show in Summary"
@@ -74,7 +75,7 @@ export default function EditElementForm({
             onChangeChecked={newChecked =>
               updateAttribute('show-in-summary', newChecked)
             }
-            style={styles.field}
+            style={sharedStyles.mt}
             testID="checkbox-show-in-summary"
           />
           <LabeledCheckbox
@@ -83,7 +84,7 @@ export default function EditElementForm({
             onChangeChecked={newChecked =>
               updateAttribute('read-only', newChecked)
             }
-            style={styles.field}
+            style={sharedStyles.mt}
             testID="checkbox-read-only"
           />
         </>
@@ -100,13 +101,13 @@ export default function EditElementForm({
         updateAttribute={updateAttribute}
         fields={fields}
       />
-      <Button onPress={onCancel} style={styles.button}>
+      <Button onPress={onCancel} style={sharedStyles.mt}>
         Cancel
       </Button>
-      <Button onPress={onDelete} style={styles.button}>
+      <Button onPress={onDelete} style={sharedStyles.mt}>
         Delete Element
       </Button>
-      <Button onPress={handleSave} style={styles.button}>
+      <Button onPress={handleSave} style={sharedStyles.mt}>
         Save Element
       </Button>
     </Card>
@@ -128,7 +129,7 @@ function ActionInputs({elementAttributes, updateAttribute, fields}) {
         onValueChange={command =>
           updateAttribute('action.command', command.key)
         }
-        style={styles.field}
+        style={sharedStyles.mt}
       />
       <Dropdown
         fieldLabel="Action Field"
@@ -138,7 +139,7 @@ function ActionInputs({elementAttributes, updateAttribute, fields}) {
         onValueChange={field => updateAttribute('action.field', field.id)}
         keyExtractor={field => field.id}
         labelExtractor={field => `In ${field.attributes.name}`}
-        style={styles.field}
+        style={sharedStyles.mt}
       />
       <Dropdown
         fieldLabel="Value"
@@ -148,7 +149,7 @@ function ActionInputs({elementAttributes, updateAttribute, fields}) {
           o => o.key === elementAttributes.action?.value,
         )}
         onValueChange={option => updateAttribute('action.value', option.key)}
-        style={styles.field}
+        style={sharedStyles.mt}
       />
     </Card>
   );
@@ -172,7 +173,7 @@ function ShowConditionInputs({elementAttributes, updateAttribute, fields}) {
         }
         keyExtractor={query => query.key}
         labelExtractor={query => query.label}
-        style={styles.field}
+        style={sharedStyles.mt}
       />
       <Dropdown
         fieldLabel="Query Field"
@@ -186,17 +187,8 @@ function ShowConditionInputs({elementAttributes, updateAttribute, fields}) {
         }
         keyExtractor={field => field.id}
         labelExtractor={field => `Check ${field.attributes.name}`}
-        style={styles.field}
+        style={sharedStyles.mt}
       />
     </Card>
   );
 }
-
-const styles = StyleSheet.create({
-  field: {
-    marginTop: 8,
-  },
-  button: {
-    marginTop: 8,
-  },
-});
