@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-nvm use
-
 # deploy to web
 yarn deploy:web
 
