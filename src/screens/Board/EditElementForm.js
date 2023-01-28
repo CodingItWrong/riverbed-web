@@ -119,7 +119,7 @@ function ActionInputs({elementAttributes, updateAttribute, fields}) {
   const valueOptions = Object.values(VALUES);
 
   return (
-    <Card>
+    <Card style={sharedStyles.mt}>
       <Text>Click Action</Text>
       <Dropdown
         fieldLabel="Command"
@@ -159,7 +159,7 @@ function ShowConditionInputs({elementAttributes, updateAttribute, fields}) {
   const queryOptions = Object.values(QUERIES);
 
   return (
-    <Card>
+    <Card style={sharedStyles.mt}>
       <Text>Show Condition</Text>
       <Dropdown
         fieldLabel="Show Query"
