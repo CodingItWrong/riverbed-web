@@ -1,5 +1,4 @@
-import {StyleSheet, View} from 'react-native';
-import {Checkbox, Text} from 'react-native-paper';
+import {Checkbox} from 'react-native-paper';
 
 export default function LabeledCheckbox({
   label,
@@ -9,20 +8,12 @@ export default function LabeledCheckbox({
 }) {
   const status = checked ? 'checked' : 'unchecked';
   return (
-    <View style={styles.row}>
-      <Checkbox.Android
-        status={status}
-        onPress={() => onChangeChecked(!checked)}
-        testID={testID}
-      />
-      <Text>{label}</Text>
-    </View>
+    <Checkbox.Item
+      mode="android"
+      label={label}
+      status={status}
+      onPress={() => onChangeChecked(!checked)}
+      testID={testID}
+    />
   );
 }
-
-const styles = StyleSheet.create({
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-});
