@@ -2,6 +2,7 @@ import {View} from 'react-native';
 import {DatePickerInput} from 'react-native-paper-dates';
 import FIELD_DATA_TYPES from '../enums/fieldDataTypes';
 import dateUtils from '../utils/dateUtils';
+import NumberField from './NumberField';
 import Text from './Text';
 import TextField from './TextField';
 import sharedStyles from './sharedStyles';
@@ -42,25 +43,15 @@ export default function Field({field, value, readOnly, setValue, style}) {
           </View>
         );
       } else {
-        function setValueStringAsNumber(valueString) {
-          // TODO: this fails when adding a single decimal; need to use react-number-format
-          const valueNumber = parseInt(valueString, 10);
-          if (!isNaN(valueNumber)) {
-            setValue(valueNumber);
-          }
-        }
         return (
-          <>
-            <TextField
-              keyboardType="decimal-pad"
-              key={field.id}
-              label={name}
-              testID={`number-input-${field.id}`}
-              value={value ?? ''}
-              onChangeText={setValueStringAsNumber}
-              style={style}
-            />
-          </>
+          <NumberField
+            key={field.id}
+            label={name}
+            testID={`number-input-${field.id}`}
+            value={value ?? ''}
+            onChangeText={setValue}
+            style={style}
+          />
         );
       }
     case FIELD_DATA_TYPES.TEXT.key:
