@@ -228,7 +228,7 @@ export default function ColumnList({board}) {
 }
 
 // Just guessed a value and it worked. Might be due to Add/title rows
-const EXPERIMENTAL_EXTRA_SCROLL_HEIGHT = 100;
+const EXPERIMENTAL_EXTRA_SCROLL_HEIGHT = 180;
 
 const styles = StyleSheet.create({
   buttonContainer: {
