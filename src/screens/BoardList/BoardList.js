@@ -5,6 +5,7 @@ import {FlatList, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Button from '../../components/Button';
 import Card from '../../components/Card';
+import LoadingIndicator from '../../components/LoadingIndicator';
 import ScreenBackground from '../../components/ScreenBackground';
 import Text from '../../components/Text';
 import sharedStyles, {useColumnStyle} from '../../components/sharedStyles';
@@ -16,7 +17,7 @@ export default function BoardList() {
   const [selectedBoardId, setSelectedBoardId] = useState(null);
   const boardClient = useBoards();
 
-  const {data: boards = []} = useQuery(['boards'], () =>
+  const {data: boards = [], isLoading} = useQuery(['boards'], () =>
     boardClient.all().then(resp => resp.data),
   );
   const sortedBoards = sortBy(boards, ['attributes.name']);
@@ -57,23 +58,27 @@ export default function BoardList() {
         <SafeAreaView style={sharedStyles.fullHeight}>
           <View style={columnStyle}>
             <Text variant="titleLarge">My Boards</Text>
-            <FlatList
-              data={sortedBoards}
-              keyExtractor={board => board.id}
-              renderItem={({item: board}) => (
-                <Card
-                  onPress={() => setSelectedBoardId(board.id)}
-                  style={sharedStyles.mt}
-                >
-                  <Text>{board.attributes.name ?? '(unnamed board)'}</Text>
-                </Card>
-              )}
-              ListFooterComponent={
-                <Button onPress={addBoard} style={sharedStyles.mt}>
-                  Add Board
-                </Button>
-              }
-            />
+            {isLoading ? (
+              <LoadingIndicator />
+            ) : (
+              <FlatList
+                data={sortedBoards}
+                keyExtractor={board => board.id}
+                renderItem={({item: board}) => (
+                  <Card
+                    onPress={() => setSelectedBoardId(board.id)}
+                    style={sharedStyles.mt}
+                  >
+                    <Text>{board.attributes.name ?? '(unnamed board)'}</Text>
+                  </Card>
+                )}
+                ListFooterComponent={
+                  <Button onPress={addBoard} style={sharedStyles.mt}>
+                    Add Board
+                  </Button>
+                }
+              />
+            )}
           </View>
         </SafeAreaView>
       </ScreenBackground>
