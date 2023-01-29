@@ -52,28 +52,10 @@ export default function ColumnList({board}) {
     },
   });
 
-  const {mutate: updateColumn} = useMutation({
-    mutationFn: attributes => {
-      const updatedColumn = {
-        type: 'columns',
-        id: selectedColumnId,
-        attributes,
-      };
-      return columnClient.update(updatedColumn);
-    },
-    onSuccess: () => {
-      refreshColumns();
-      setSelectedColumnId(null);
-    },
-  });
-
-  const {mutate: deleteColumn} = useMutation({
-    mutationFn: () => columnClient.delete({id: selectedColumnId}),
-    onSuccess: () => {
-      refreshColumns();
-      setSelectedColumnId(null);
-    },
-  });
+  function onChangeColumn() {
+    refreshColumns();
+    setSelectedColumnId(null);
+  }
 
   const {mutate: addCard} = useMutation({
     mutationFn: () =>
@@ -145,8 +127,7 @@ export default function ColumnList({board}) {
                 key={column.id}
                 column={column}
                 board={board}
-                onSave={updateColumn}
-                onDelete={deleteColumn}
+                onChange={onChangeColumn}
                 onCancel={() => setSelectedColumnId(null)}
               />
             );

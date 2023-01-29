@@ -1,4 +1,4 @@
-import {useQuery} from '@tanstack/react-query';
+import {useMutation, useQuery} from '@tanstack/react-query';
 import set from 'lodash.set';
 import {useState} from 'react';
 import Button from '../../components/Button';
@@ -7,18 +7,14 @@ import Dropdown from '../../components/DropdownField';
 import Text from '../../components/Text';
 import TextField from '../../components/TextField';
 import sharedStyles from '../../components/sharedStyles';
+import {useColumns} from '../../data/columns';
 import {useElements} from '../../data/elements';
 import ELEMENT_TYPES from '../../enums/elementTypes';
 import QUERIES from '../../enums/queries';
 import SORT_DIRECTIONS from '../../enums/sortDirections';
 
-export default function EditColumnForm({
-  column,
-  board,
-  onSave,
-  onDelete,
-  onCancel,
-}) {
+export default function EditColumnForm({column, board, onChange, onCancel}) {
+  const columnClient = useColumns();
   const [attributes, setAttributes] = useState(column.attributes);
 
   function updateAttribute(path, value) {
@@ -29,9 +25,22 @@ export default function EditColumnForm({
     });
   }
 
-  function handleSave() {
-    onSave(attributes);
-  }
+  const {mutate: updateColumn} = useMutation({
+    mutationFn: () => {
+      const updatedColumn = {
+        type: 'columns',
+        id: column.id,
+        attributes,
+      };
+      return columnClient.update(updatedColumn);
+    },
+    onSuccess: onChange,
+  });
+
+  const {mutate: deleteColumn} = useMutation({
+    mutationFn: () => columnClient.delete({id: column.id}),
+    onSuccess: onChange,
+  });
 
   return (
     <Card>
@@ -54,10 +63,10 @@ export default function EditColumnForm({
       <Button onPress={onCancel} style={sharedStyles.mt}>
         Cancel
       </Button>
-      <Button onPress={onDelete} style={sharedStyles.mt}>
+      <Button onPress={deleteColumn} style={sharedStyles.mt}>
         Delete Column
       </Button>
-      <Button primary onPress={handleSave} style={sharedStyles.mt}>
+      <Button primary onPress={updateColumn} style={sharedStyles.mt}>
         Save Column
       </Button>
     </Card>
