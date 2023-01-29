@@ -1,4 +1,4 @@
-import {useQuery} from '@tanstack/react-query';
+import {useMutation, useQuery} from '@tanstack/react-query';
 import {useState} from 'react';
 import {StyleSheet} from 'react-native';
 import Button from '../../components/Button';
@@ -7,6 +7,7 @@ import Card from '../../components/Card';
 import Field from '../../components/Field';
 import Text from '../../components/Text';
 import sharedStyles from '../../components/sharedStyles';
+import {useCards} from '../../data/cards';
 import {useElements} from '../../data/elements';
 import COMMANDS from '../../enums/commands';
 import ELEMENT_TYPES from '../../enums/elementTypes';
@@ -14,14 +15,8 @@ import VALUES from '../../enums/values';
 import checkCondition from '../../utils/checkCondition';
 import sortElements from '../../utils/sortElements';
 
-export default function CardDetail({
-  card,
-  board,
-  onUpdate,
-  onCancel,
-  onDelete,
-  style,
-}) {
+export default function CardDetail({card, board, onChange, onCancel, style}) {
+  const cardClient = useCards();
   const [fieldValues, setFieldValues] = useState(
     card.attributes['field-values'],
   );
@@ -52,7 +47,7 @@ export default function CardDetail({
       case COMMANDS.SET_VALUE.key:
         if (valueObject) {
           const concreteValue = valueObject.call();
-          onUpdate({...fieldValues, [field]: concreteValue});
+          updateCard({[field]: concreteValue});
         } else {
           console.error(`unknown value: ${value}`);
           return;
@@ -63,9 +58,23 @@ export default function CardDetail({
     }
   }
 
-  function handleSave() {
-    onUpdate(fieldValues);
-  }
+  const {mutate: updateCard} = useMutation({
+    mutationFn: fieldOverrides => {
+      const fieldValuesToUse = {...fieldValues, ...fieldOverrides};
+      const updatedCard = {
+        type: 'cards',
+        id: card.id,
+        attributes: {'field-values': fieldValuesToUse},
+      };
+      return cardClient.update(updatedCard);
+    },
+    onSuccess: onChange,
+  });
+
+  const {mutate: deleteCard} = useMutation({
+    mutationFn: () => cardClient.delete({id: card.id}),
+    onSuccess: onChange,
+  });
 
   return (
     <Card key={card.id} style={[styles.card, style]}>
@@ -104,10 +113,10 @@ export default function CardDetail({
       <Button onPress={onCancel} style={sharedStyles.mt}>
         Cancel
       </Button>
-      <Button onPress={onDelete} style={sharedStyles.mt}>
+      <Button onPress={deleteCard} style={sharedStyles.mt}>
         Delete
       </Button>
-      <Button primary onPress={handleSave} style={sharedStyles.mt}>
+      <Button primary onPress={() => updateCard()} style={sharedStyles.mt}>
         Save
       </Button>
     </Card>

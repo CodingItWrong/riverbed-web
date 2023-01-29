@@ -69,28 +69,10 @@ export default function ColumnList({board}) {
     },
   });
 
-  const {mutate: updateCard} = useMutation({
-    mutationFn: fieldValues => {
-      const updatedCard = {
-        type: 'cards',
-        id: selectedCardId,
-        attributes: {'field-values': fieldValues},
-      };
-      return cardClient.update(updatedCard);
-    },
-    onSuccess: () => {
-      refreshCards();
-      hideDetail();
-    },
-  });
-
-  const {mutate: deleteCard} = useMutation({
-    mutationFn: () => cardClient.delete({id: selectedCardId}),
-    onSuccess: () => {
-      refreshCards();
-      hideDetail();
-    },
-  });
+  function onChangeCard() {
+    refreshCards();
+    hideDetail();
+  }
 
   function showDetail(cardId) {
     setSelectedCardId(cardId);
@@ -192,8 +174,7 @@ export default function ColumnList({board}) {
                         <CardDetail
                           card={card}
                           board={board}
-                          onUpdate={updateCard}
-                          onDelete={deleteCard}
+                          onChange={onChangeCard}
                           onCancel={hideDetail}
                           style={sharedStyles.mt}
                         />
