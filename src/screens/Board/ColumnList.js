@@ -3,11 +3,12 @@ import sortBy from 'lodash.sortby';
 import {useState} from 'react';
 import {ScrollView, StyleSheet, View, useWindowDimensions} from 'react-native';
 import {KeyboardAwareFlatList} from 'react-native-keyboard-aware-scroll-view';
+import {large, useBreakpoint} from '../../breakpoints';
 import Button from '../../components/Button';
 import IconButton from '../../components/IconButton';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import Text from '../../components/Text';
-import sharedStyles from '../../components/sharedStyles';
+import sharedStyles, {useColumnStyle} from '../../components/sharedStyles';
 import {useCards} from '../../data/cards';
 import {useColumns} from '../../data/columns';
 import {useElements} from '../../data/elements';
@@ -82,15 +83,11 @@ export default function ColumnList({board}) {
     setSelectedCardId(null);
   }
 
-  const {width: viewportWidth} = useWindowDimensions();
-  const largeBreakpoint = 600;
-  const responsiveColumnStyle = {
-    width: viewportWidth > largeBreakpoint ? 400 : viewportWidth,
-    padding: 8,
-  };
+  const breakpoint = useBreakpoint();
   const responsiveButtonContainerStyle = {
-    alignItems: viewportWidth > largeBreakpoint ? 'flex-start' : 'stretch',
+    alignItems: breakpoint === large ? 'flex-start' : 'stretch',
   };
+  const columnStyle = useColumnStyle();
 
   if (!cards || !elements || !columns) {
     return <LoadingIndicator />;
@@ -111,7 +108,7 @@ export default function ColumnList({board}) {
                 board={board}
                 onChange={onChangeColumn}
                 onCancel={() => setSelectedColumnId(null)}
-                style={responsiveColumnStyle}
+                style={columnStyle}
               />
             );
           } else {
@@ -143,7 +140,7 @@ export default function ColumnList({board}) {
               <View
                 key={column.id}
                 testID={`column-${column.id}`}
-                style={[responsiveColumnStyle, sharedStyles.fullHeight]}
+                style={[columnStyle, sharedStyles.fullHeight]}
               >
                 <View style={sharedStyles.row}>
                   <Text variant="titleLarge">
