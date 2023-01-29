@@ -4,7 +4,7 @@ import {useState} from 'react';
 import Button from '../../components/Button';
 import Card from '../../components/Card';
 import TextField from '../../components/TextField';
-import sharedStyles from '../../components/sharedStyles';
+import sharedStyles, {useColumnStyle} from '../../components/sharedStyles';
 import {useBoards} from '../../data/boards';
 
 export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
@@ -48,8 +48,10 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
 
   const isLoading = isSaving || isDeleting;
 
+  const columnStyle = useColumnStyle();
+
   return (
-    <Card>
+    <Card style={columnStyle}>
       <TextField
         label="Name"
         value={attributes.name ?? ''}
