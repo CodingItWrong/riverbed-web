@@ -1,6 +1,7 @@
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {useState} from 'react';
-import {FlatList, View} from 'react-native';
+import {View} from 'react-native';
+import {KeyboardAwareFlatList} from 'react-native-keyboard-aware-scroll-view';
 import Button from '../../components/Button';
 import Card from '../../components/Card';
 import DropdownMenu from '../../components/DropdownMenu';
@@ -59,7 +60,8 @@ export default function ElementList({board, onClose}) {
       <Button onPress={onClose} style={sharedStyles.mt}>
         Done Editing Elements
       </Button>
-      <FlatList
+      <KeyboardAwareFlatList
+        extraScrollHeight={EXPERIMENTAL_EXTRA_SCROLL_HEIGHT}
         data={elements}
         keyExtractor={element => element.id}
         renderItem={({item: element}) =>
@@ -98,3 +100,5 @@ export default function ElementList({board, onClose}) {
     </View>
   );
 }
+
+const EXPERIMENTAL_EXTRA_SCROLL_HEIGHT = 120;
