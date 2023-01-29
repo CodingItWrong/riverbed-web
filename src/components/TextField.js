@@ -11,7 +11,8 @@ export default function TextField({
 }) {
   return (
     <PaperTextInput
-      multiline
+      // TODO: see if removing "multiline" helps with scrolling
+      // multiline
       label={label}
       testID={testID}
       value={value}
