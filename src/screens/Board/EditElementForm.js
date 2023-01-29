@@ -45,7 +45,7 @@ export default function EditElementForm({
 
   const dataTypeOptions = Object.values(FIELD_DATA_TYPES);
 
-  const {mutate: updateElement} = useMutation({
+  const {mutate: updateElement, isLoading: isSaving} = useMutation({
     mutationFn: () => {
       const updatedElement = {
         type: 'elements',
@@ -57,10 +57,12 @@ export default function EditElementForm({
     onSuccess: onSave,
   });
 
-  const {mutate: deleteElement} = useMutation({
+  const {mutate: deleteElement, isLoading: isDeleting} = useMutation({
     mutationFn: () => elementClient.delete({id: element.id}),
     onSuccess: onDelete,
   });
+
+  const isLoading = isSaving || isDeleting;
 
   return (
     <Card style={style}>
@@ -114,13 +116,22 @@ export default function EditElementForm({
         updateAttribute={updateAttribute}
         fields={fields}
       />
-      <Button onPress={onCancel} style={sharedStyles.mt}>
+      <Button onPress={onCancel} disabled={isLoading} style={sharedStyles.mt}>
         Cancel
       </Button>
-      <Button onPress={deleteElement} style={sharedStyles.mt}>
+      <Button
+        onPress={deleteElement}
+        disabled={isLoading}
+        style={sharedStyles.mt}
+      >
         Delete Element
       </Button>
-      <Button primary onPress={updateElement} style={sharedStyles.mt}>
+      <Button
+        primary
+        onPress={updateElement}
+        disabled={isLoading}
+        style={sharedStyles.mt}
+      >
         Save Element
       </Button>
     </Card>
