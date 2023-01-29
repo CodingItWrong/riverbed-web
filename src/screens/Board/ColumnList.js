@@ -1,7 +1,7 @@
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import sortBy from 'lodash.sortby';
 import {useState} from 'react';
-import {ScrollView, StyleSheet, View, useWindowDimensions} from 'react-native';
+import {ScrollView, StyleSheet, View} from 'react-native';
 import {KeyboardAwareFlatList} from 'react-native-keyboard-aware-scroll-view';
 import {large, useBreakpoint} from '../../breakpoints';
 import Button from '../../components/Button';
@@ -11,7 +11,6 @@ import Text from '../../components/Text';
 import sharedStyles, {useColumnStyle} from '../../components/sharedStyles';
 import {useCards} from '../../data/cards';
 import {useColumns} from '../../data/columns';
-import {useElements} from '../../data/elements';
 import SORT_DIRECTIONS from '../../enums/sortDirections';
 import checkCondition from '../../utils/checkCondition';
 import CardDetail from './CardDetail';
@@ -20,17 +19,12 @@ import EditColumnForm from './EditColumnForm';
 
 export default function ColumnList({board}) {
   const queryClient = useQueryClient();
-  const elementClient = useElements();
   const columnClient = useColumns();
   const cardClient = useCards();
 
   const [selectedCardId, setSelectedCardId] = useState(null);
   const [selectedColumnId, setSelectedColumnId] = useState(null);
 
-  const {data: elements = [], isLoading: isLoadingElements} = useQuery(
-    ['elements', board.id],
-    () => elementClient.related({parent: board}).then(resp => resp.data),
-  );
   const {data: columns = [], isLoading: isLoadingColumns} = useQuery(
     ['columns', board.id],
     () => columnClient.related({parent: board}).then(resp => resp.data),
@@ -92,7 +86,7 @@ export default function ColumnList({board}) {
   };
   const columnStyle = useColumnStyle();
 
-  const isLoading = isLoadingCards || isLoadingColumns || isLoadingElements;
+  const isLoading = isLoadingCards || isLoadingColumns;
   if (isLoading) {
     return (
       <View style={columnStyle}>
