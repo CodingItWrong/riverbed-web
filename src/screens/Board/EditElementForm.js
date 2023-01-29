@@ -107,7 +107,7 @@ export default function EditElementForm({
       <Button onPress={onDelete} style={sharedStyles.mt}>
         Delete Element
       </Button>
-      <Button onPress={handleSave} style={sharedStyles.mt}>
+      <Button primary onPress={handleSave} style={sharedStyles.mt}>
         Save Element
       </Button>
     </Card>

@@ -57,7 +57,7 @@ export default function EditColumnForm({
       <Button onPress={onDelete} style={sharedStyles.mt}>
         Delete Column
       </Button>
-      <Button onPress={handleSave} style={sharedStyles.mt}>
+      <Button primary onPress={handleSave} style={sharedStyles.mt}>
         Save Column
       </Button>
     </Card>

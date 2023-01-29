@@ -70,7 +70,7 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
           Delete Board
         </Button>
       )}
-      <Button onPress={updateBoard} style={sharedStyles.mt}>
+      <Button primary onPress={updateBoard} style={sharedStyles.mt}>
         Save Board
       </Button>
     </Card>
