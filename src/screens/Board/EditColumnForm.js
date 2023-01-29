@@ -13,7 +13,13 @@ import ELEMENT_TYPES from '../../enums/elementTypes';
 import QUERIES from '../../enums/queries';
 import SORT_DIRECTIONS from '../../enums/sortDirections';
 
-export default function EditColumnForm({column, board, onChange, onCancel}) {
+export default function EditColumnForm({
+  column,
+  board,
+  onChange,
+  onCancel,
+  style,
+}) {
   const columnClient = useColumns();
   const [attributes, setAttributes] = useState(column.attributes);
 
@@ -45,7 +51,7 @@ export default function EditColumnForm({column, board, onChange, onCancel}) {
   const isLoading = isSaving || isDeleting;
 
   return (
-    <Card>
+    <Card style={style}>
       <TextField
         label="Column Name"
         value={attributes.name ?? ''}

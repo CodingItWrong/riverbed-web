@@ -111,6 +111,7 @@ export default function ColumnList({board}) {
                 board={board}
                 onChange={onChangeColumn}
                 onCancel={() => setSelectedColumnId(null)}
+                style={responsiveColumnStyle}
               />
             );
           } else {
