@@ -56,7 +56,7 @@ export default function BoardList() {
     return (
       <ScreenBackground>
         <SafeAreaView style={sharedStyles.fullHeight}>
-          <View style={columnStyle}>
+          <View style={[columnStyle, sharedStyles.fullHeight]}>
             <Text variant="titleLarge">My Boards</Text>
             {isLoading ? (
               <LoadingIndicator />
