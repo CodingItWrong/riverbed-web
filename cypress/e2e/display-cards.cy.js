@@ -67,6 +67,9 @@ describe('display cards', () => {
     cy.visit('/');
     cy.contains('Video Games').click();
 
+    cy.contains('Released (1)');
+    cy.contains('Unreleased (1)');
+
     cy.get(`[data-testid=column-${releasedColumn.id}]`).contains(
       cards[0].attributes['field-values'][titleField.id],
     );
