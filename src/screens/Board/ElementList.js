@@ -3,6 +3,7 @@ import {useState} from 'react';
 import {FlatList, View} from 'react-native';
 import Button from '../../components/Button';
 import Card from '../../components/Card';
+import DropdownMenu from '../../components/DropdownMenu';
 import Text from '../../components/Text';
 import sharedStyles from '../../components/sharedStyles';
 import {useElements} from '../../data/elements';
@@ -74,12 +75,17 @@ export default function ElementList({board, onClose}) {
       <Button onPress={onClose} style={sharedStyles.mt}>
         Done Editing Elements
       </Button>
-      <Button onPress={addField} style={sharedStyles.mt}>
-        Add Field
-      </Button>
-      <Button onPress={addButton} style={sharedStyles.mt}>
-        Add Button
-      </Button>
+      <DropdownMenu
+        menuButton={props => (
+          <Button style={sharedStyles.mt} {...props}>
+            Add
+          </Button>
+        )}
+        menuItems={[
+          {title: 'Field', onPress: addField},
+          {title: 'Button', onPress: addButton},
+        ]}
+      />
       <FlatList
         data={elements}
         keyExtractor={element => element.id}

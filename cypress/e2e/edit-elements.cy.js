@@ -55,7 +55,10 @@ describe('edit elements', () => {
     cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
       data: [newField],
     });
-    cy.contains('Add Field').click();
+
+    cy.contains(/^Add$/).click();
+    cy.contains(/^Field$/).click({force: true});
+
     cy.wait('@addField');
     const fieldName = 'Greeting';
     cy.get('[data-testid="text-input-element-name"]').type(fieldName);
@@ -207,7 +210,10 @@ describe('edit elements', () => {
     cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
       data: [greetingField, newButton],
     });
-    cy.contains('Add Button').click();
+
+    cy.contains(/^Add$/).click();
+    cy.contains(/^Button$/).click({force: true});
+
     cy.wait('@addButton')
       .its('request.body')
       .should('deep.equal', {
