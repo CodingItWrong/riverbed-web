@@ -1,6 +1,7 @@
 import {View} from 'react-native';
 import {DatePickerInput} from 'react-native-paper-dates';
 import FIELD_DATA_TYPES from '../enums/fieldDataTypes';
+import dateTimeUtils from '../utils/dateTimeUtils';
 import dateUtils from '../utils/dateUtils';
 import NumberField from './NumberField';
 import Text from './Text';
@@ -35,6 +36,13 @@ export default function Field({field, value, readOnly, setValue, style}) {
           />
         );
       }
+    case FIELD_DATA_TYPES.DATETIME.key:
+      // TODO: implement writable
+      return (
+        <View style={style}>
+          <Text>{dateTimeUtils.serverStringToHumanString(value)}</Text>
+        </View>
+      );
     case FIELD_DATA_TYPES.NUMBER.key:
       if (readOnly) {
         return (

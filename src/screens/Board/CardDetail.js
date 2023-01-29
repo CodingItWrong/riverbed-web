@@ -43,10 +43,14 @@ export default function CardDetail({card, board, onChange, onCancel, style}) {
     const {command, field, value} = action;
     const valueObject = VALUES[value];
 
+    const fieldObject = elements.find(element => element.id === field);
+
     switch (command) {
       case COMMANDS.SET_VALUE.key:
         if (valueObject) {
-          const concreteValue = valueObject.call();
+          const concreteValue = valueObject.call(
+            fieldObject.attributes['data-type'],
+          );
           updateCard({[field]: concreteValue});
         } else {
           console.error(`unknown value: ${value}`);
