@@ -25,7 +25,7 @@ export default function EditColumnForm({column, board, onChange, onCancel}) {
     });
   }
 
-  const {mutate: updateColumn} = useMutation({
+  const {mutate: updateColumn, isLoading: isSaving} = useMutation({
     mutationFn: () => {
       const updatedColumn = {
         type: 'columns',
@@ -37,10 +37,12 @@ export default function EditColumnForm({column, board, onChange, onCancel}) {
     onSuccess: onChange,
   });
 
-  const {mutate: deleteColumn} = useMutation({
+  const {mutate: deleteColumn, isLoading: isDeleting} = useMutation({
     mutationFn: () => columnClient.delete({id: column.id}),
     onSuccess: onChange,
   });
+
+  const isLoading = isSaving || isDeleting;
 
   return (
     <Card>
@@ -60,13 +62,22 @@ export default function EditColumnForm({column, board, onChange, onCancel}) {
         attributes={attributes}
         updateAttribute={updateAttribute}
       />
-      <Button onPress={onCancel} style={sharedStyles.mt}>
+      <Button onPress={onCancel} disabled={isLoading} style={sharedStyles.mt}>
         Cancel
       </Button>
-      <Button onPress={deleteColumn} style={sharedStyles.mt}>
+      <Button
+        onPress={deleteColumn}
+        disabled={isLoading}
+        style={sharedStyles.mt}
+      >
         Delete Column
       </Button>
-      <Button primary onPress={updateColumn} style={sharedStyles.mt}>
+      <Button
+        primary
+        onPress={updateColumn}
+        disabled={isLoading}
+        style={sharedStyles.mt}
+      >
         Save Column
       </Button>
     </Card>
