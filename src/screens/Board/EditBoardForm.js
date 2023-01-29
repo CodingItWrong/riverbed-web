@@ -15,7 +15,7 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
 
   const refreshBoards = () => queryClient.invalidateQueries(['boards']);
 
-  const {mutate: updateBoard} = useMutation({
+  const {mutate: updateBoard, isLoading: isSaving} = useMutation({
     mutationFn: () => {
       const updatedBoard = {
         type: 'boards',
@@ -30,7 +30,7 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
     },
   });
 
-  const {mutate: deleteBoard} = useMutation({
+  const {mutate: deleteBoard, isLoading: isDeleting} = useMutation({
     mutationFn: () => boardClient.delete({id: board.id}),
     onSuccess: () => {
       refreshBoards();
@@ -46,6 +46,8 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
     });
   }
 
+  const isLoading = isSaving || isDeleting;
+
   return (
     <Card>
       <TextField
@@ -55,22 +57,32 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
         testID="text-input-board-name"
         style={sharedStyles.mt}
       />
-      <Button onPress={onCancel} style={sharedStyles.mt}>
+      <Button onPress={onCancel} disabled={isLoading} style={sharedStyles.mt}>
         Cancel
       </Button>
       {confirmingDelete ? (
-        <Button onPress={deleteBoard} style={sharedStyles.mt}>
+        <Button
+          onPress={deleteBoard}
+          disabled={isLoading}
+          style={sharedStyles.mt}
+        >
           Confirm Delete Board
         </Button>
       ) : (
         <Button
           onPress={() => setConfirmingDelete(true)}
+          disabled={isLoading}
           style={sharedStyles.mt}
         >
           Delete Board
         </Button>
       )}
-      <Button primary onPress={updateBoard} style={sharedStyles.mt}>
+      <Button
+        primary
+        onPress={updateBoard}
+        disabled={isLoading}
+        style={sharedStyles.mt}
+      >
         Save Board
       </Button>
     </Card>
