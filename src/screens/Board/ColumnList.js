@@ -27,14 +27,17 @@ export default function ColumnList({board}) {
   const [selectedCardId, setSelectedCardId] = useState(null);
   const [selectedColumnId, setSelectedColumnId] = useState(null);
 
-  const {data: elements = []} = useQuery(['elements', board.id], () =>
-    elementClient.related({parent: board}).then(resp => resp.data),
+  const {data: elements = [], isLoading: isLoadingElements} = useQuery(
+    ['elements', board.id],
+    () => elementClient.related({parent: board}).then(resp => resp.data),
   );
-  const {data: columns = []} = useQuery(['columns', board.id], () =>
-    columnClient.related({parent: board}).then(resp => resp.data),
+  const {data: columns = [], isLoading: isLoadingColumns} = useQuery(
+    ['columns', board.id],
+    () => columnClient.related({parent: board}).then(resp => resp.data),
   );
-  const {data: cards = []} = useQuery(['cards', board.id], () =>
-    cardClient.related({parent: board}).then(resp => resp.data),
+  const {data: cards = [], isLoading: isLoadingCards} = useQuery(
+    ['cards', board.id],
+    () => cardClient.related({parent: board}).then(resp => resp.data),
   );
 
   const refreshCards = () => queryClient.invalidateQueries(['cards', board.id]);
@@ -89,8 +92,13 @@ export default function ColumnList({board}) {
   };
   const columnStyle = useColumnStyle();
 
-  if (!cards || !elements || !columns) {
-    return <LoadingIndicator />;
+  const isLoading = isLoadingCards || isLoadingColumns || isLoadingElements;
+  if (isLoading) {
+    return (
+      <View style={columnStyle}>
+        <LoadingIndicator />
+      </View>
+    );
   }
 
   return (
