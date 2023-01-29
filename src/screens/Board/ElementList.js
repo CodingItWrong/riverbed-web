@@ -57,17 +57,6 @@ export default function ElementList({board, onClose}) {
       <Button onPress={onClose} style={sharedStyles.mt}>
         Done Editing Elements
       </Button>
-      <DropdownMenu
-        menuButton={props => (
-          <Button style={sharedStyles.mt} {...props}>
-            Add
-          </Button>
-        )}
-        menuItems={[
-          {title: 'Field', onPress: addField},
-          {title: 'Button', onPress: addButton},
-        ]}
-      />
       <FlatList
         data={elements}
         keyExtractor={element => element.id}
@@ -89,6 +78,19 @@ export default function ElementList({board, onClose}) {
               <Text>{element.attributes.name}</Text>
             </Card>
           )
+        }
+        ListFooterComponent={
+          <DropdownMenu
+            menuButton={props => (
+              <Button style={sharedStyles.mt} {...props}>
+                Add
+              </Button>
+            )}
+            menuItems={[
+              {title: 'Field', onPress: addField},
+              {title: 'Button', onPress: addButton},
+            ]}
+          />
         }
       />
     </View>
