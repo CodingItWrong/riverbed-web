@@ -5,7 +5,7 @@ import Button from '../../components/Button';
 import Card from '../../components/Card';
 import DropdownMenu from '../../components/DropdownMenu';
 import Text from '../../components/Text';
-import sharedStyles from '../../components/sharedStyles';
+import sharedStyles, {useColumnStyle} from '../../components/sharedStyles';
 import {useElements} from '../../data/elements';
 import ELEMENT_TYPES from '../../enums/elementTypes';
 import FIELD_DATA_TYPES from '../../enums/fieldDataTypes';
@@ -52,8 +52,10 @@ export default function ElementList({board, onClose}) {
     setSelectedElementId(null);
   }
 
+  const columnStyle = useColumnStyle();
+
   return (
-    <View style={sharedStyles.fullHeight}>
+    <View style={[columnStyle, sharedStyles.fullHeight]}>
       <Button onPress={onClose} style={sharedStyles.mt}>
         Done Editing Elements
       </Button>
