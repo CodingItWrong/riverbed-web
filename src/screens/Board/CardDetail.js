@@ -58,7 +58,7 @@ export default function CardDetail({card, board, onChange, onCancel, style}) {
     }
   }
 
-  const {mutate: updateCard} = useMutation({
+  const {mutate: updateCard, isLoading: isUpdating} = useMutation({
     mutationFn: fieldOverrides => {
       const fieldValuesToUse = {...fieldValues, ...fieldOverrides};
       const updatedCard = {
@@ -71,10 +71,12 @@ export default function CardDetail({card, board, onChange, onCancel, style}) {
     onSuccess: onChange,
   });
 
-  const {mutate: deleteCard} = useMutation({
+  const {mutate: deleteCard, isLoading: isDeleting} = useMutation({
     mutationFn: () => cardClient.delete({id: card.id}),
     onSuccess: onChange,
   });
+
+  const isLoading = isUpdating || isDeleting;
 
   return (
     <Card key={card.id} style={[styles.card, style]}>
@@ -99,6 +101,7 @@ export default function CardDetail({card, board, onChange, onCancel, style}) {
                 onPerformAction={() =>
                   handlePerformAction(element.attributes.action)
                 }
+                disabled={isLoading}
                 style={elementIndex > 0 && sharedStyles.mt}
               />
             );
@@ -110,13 +113,18 @@ export default function CardDetail({card, board, onChange, onCancel, style}) {
             );
         }
       })}
-      <Button onPress={onCancel} style={sharedStyles.mt}>
+      <Button onPress={onCancel} disabled={isLoading} style={sharedStyles.mt}>
         Cancel
       </Button>
-      <Button onPress={deleteCard} style={sharedStyles.mt}>
+      <Button onPress={deleteCard} disabled={isLoading} style={sharedStyles.mt}>
         Delete
       </Button>
-      <Button primary onPress={() => updateCard()} style={sharedStyles.mt}>
+      <Button
+        primary
+        onPress={() => updateCard()}
+        disabled={isLoading}
+        style={sharedStyles.mt}
+      >
         Save
       </Button>
     </Card>
