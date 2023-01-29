@@ -11,6 +11,7 @@ import Text from '../../components/Text';
 import sharedStyles, {useColumnStyle} from '../../components/sharedStyles';
 import {useCards} from '../../data/cards';
 import {useColumns} from '../../data/columns';
+import {useElements} from '../../data/elements';
 import SORT_DIRECTIONS from '../../enums/sortDirections';
 import checkCondition from '../../utils/checkCondition';
 import CardDetail from './CardDetail';
@@ -19,12 +20,16 @@ import EditColumnForm from './EditColumnForm';
 
 export default function ColumnList({board}) {
   const queryClient = useQueryClient();
+  const elementClient = useElements();
   const columnClient = useColumns();
   const cardClient = useCards();
 
   const [selectedCardId, setSelectedCardId] = useState(null);
   const [selectedColumnId, setSelectedColumnId] = useState(null);
 
+  const {isLoading: isLoadingElements} = useQuery(['elements', board.id], () =>
+    elementClient.related({parent: board}).then(resp => resp.data),
+  );
   const {data: columns = [], isLoading: isLoadingColumns} = useQuery(
     ['columns', board.id],
     () => columnClient.related({parent: board}).then(resp => resp.data),
@@ -86,7 +91,7 @@ export default function ColumnList({board}) {
   };
   const columnStyle = useColumnStyle();
 
-  const isLoading = isLoadingCards || isLoadingColumns;
+  const isLoading = isLoadingCards || isLoadingColumns || isLoadingElements;
   if (isLoading) {
     return (
       <View style={columnStyle}>
