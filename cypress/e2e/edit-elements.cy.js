@@ -130,6 +130,7 @@ describe('edit elements', () => {
     });
     cy.contains('Save Element').click();
     cy.wait('@updateField');
+    cy.contains('Save Element').should('not.exist');
     cy.contains(updatedFieldName);
 
     cy.log('DELETE FIELD');
