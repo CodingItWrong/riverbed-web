@@ -43,28 +43,10 @@ export default function ElementList({board, onClose}) {
 
   const addButton = () => addElement({'element-type': ELEMENT_TYPES.BUTTON});
 
-  const {mutate: updateElement} = useMutation({
-    mutationFn: elementAttributes => {
-      const updatedElement = {
-        type: 'elements',
-        id: selectedElementId,
-        attributes: elementAttributes,
-      };
-      return elementClient.update(updatedElement);
-    },
-    onSuccess: () => {
-      hideEditForm();
-      refreshElements();
-    },
-  });
-
-  const {mutate: deleteElement} = useMutation({
-    mutationFn: () => elementClient.delete({id: selectedElementId}),
-    onSuccess: () => {
-      refreshElements();
-      hideEditForm();
-    },
-  });
+  function onChange() {
+    hideEditForm();
+    refreshElements();
+  }
 
   function hideEditForm() {
     setSelectedElementId(null);
@@ -94,8 +76,8 @@ export default function ElementList({board, onClose}) {
             <EditElementForm
               element={element}
               board={board}
-              onSave={updateElement}
-              onDelete={deleteElement}
+              onSave={onChange}
+              onDelete={onChange}
               onCancel={hideEditForm}
               style={sharedStyles.mt}
             />

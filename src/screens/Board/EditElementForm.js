@@ -1,4 +1,4 @@
-import {useQuery} from '@tanstack/react-query';
+import {useMutation, useQuery} from '@tanstack/react-query';
 import set from 'lodash.set';
 import {useState} from 'react';
 import Button from '../../components/Button';
@@ -45,9 +45,22 @@ export default function EditElementForm({
 
   const dataTypeOptions = Object.values(FIELD_DATA_TYPES);
 
-  function handleSave() {
-    onSave(elementAttributes);
-  }
+  const {mutate: updateElement} = useMutation({
+    mutationFn: () => {
+      const updatedElement = {
+        type: 'elements',
+        id: element.id,
+        attributes: elementAttributes,
+      };
+      return elementClient.update(updatedElement);
+    },
+    onSuccess: onSave,
+  });
+
+  const {mutate: deleteElement} = useMutation({
+    mutationFn: () => elementClient.delete({id: element.id}),
+    onSuccess: onDelete,
+  });
 
   return (
     <Card style={style}>
@@ -104,10 +117,10 @@ export default function EditElementForm({
       <Button onPress={onCancel} style={sharedStyles.mt}>
         Cancel
       </Button>
-      <Button onPress={onDelete} style={sharedStyles.mt}>
+      <Button onPress={deleteElement} style={sharedStyles.mt}>
         Delete Element
       </Button>
-      <Button primary onPress={handleSave} style={sharedStyles.mt}>
+      <Button primary onPress={updateElement} style={sharedStyles.mt}>
         Save Element
       </Button>
     </Card>
