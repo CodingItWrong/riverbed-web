@@ -137,7 +137,7 @@ export default function ColumnList({board}) {
       <View style={[styles.buttonContainer, responsiveButtonContainerStyle]}>
         <Button onPress={addCard}>Add Card</Button>
       </View>
-      <ScrollView horizontal style={sharedStyles.fullHeight}>
+      <ScrollView horizontal pagingEnabled style={sharedStyles.fullHeight}>
         {columns.map((column, columnIndex) => {
           if (selectedColumnId === column.id) {
             return (
