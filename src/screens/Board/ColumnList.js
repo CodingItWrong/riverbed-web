@@ -138,7 +138,7 @@ export default function ColumnList({board}) {
         <Button onPress={addCard}>Add Card</Button>
       </View>
       <ScrollView horizontal style={sharedStyles.fullHeight}>
-        {columns.map(column => {
+        {columns.map((column, columnIndex) => {
           if (selectedColumnId === column.id) {
             return (
               <EditColumnForm
@@ -173,6 +173,8 @@ export default function ColumnList({board}) {
               columnCards = filteredCards;
             }
 
+            const isLastColumn = columnIndex === columns.length - 1;
+
             return (
               <View
                 key={column.id}
@@ -188,6 +190,16 @@ export default function ColumnList({board}) {
                     onPress={() => setSelectedColumnId(column.id)}
                     accessibilityLabel="Edit Column"
                   />
+                  {isLastColumn && (
+                    <>
+                      <View style={styles.spacer} />
+                      <IconButton
+                        icon="plus"
+                        accessibilityLabel="Add Column"
+                        onPress={addColumn}
+                      />
+                    </>
+                  )}
                 </View>
                 <KeyboardAwareFlatList
                   extraScrollHeight={EXPERIMENTAL_EXTRA_SCROLL_HEIGHT}
@@ -221,9 +233,13 @@ export default function ColumnList({board}) {
             );
           }
         })}
-        <View>
-          <Button onPress={addColumn}>Add Column</Button>
-        </View>
+        {columns.length === 0 && (
+          <IconButton
+            icon="plus"
+            accessibilityLabel="Add Column"
+            onPress={addColumn}
+          />
+        )}
       </ScrollView>
     </View>
   );
@@ -235,5 +251,8 @@ const EXPERIMENTAL_EXTRA_SCROLL_HEIGHT = 180;
 const styles = StyleSheet.create({
   buttonContainer: {
     margin: 8,
+  },
+  spacer: {
+    flex: 1,
   },
 });
