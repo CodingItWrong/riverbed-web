@@ -24,7 +24,7 @@ export default function BoardList() {
 
   const refreshBoards = () => queryClient.invalidateQueries(['boards']);
 
-  const {mutate: addBoard} = useMutation({
+  const {mutate: addBoard, isLoading: isAdding} = useMutation({
     mutationFn: () => boardClient.create({attributes: {}}),
     onSuccess: ({data: column}) => {
       setSelectedBoardId(column.id);
@@ -73,7 +73,11 @@ export default function BoardList() {
                   </Card>
                 )}
                 ListFooterComponent={
-                  <Button onPress={addBoard} style={sharedStyles.mt}>
+                  <Button
+                    onPress={addBoard}
+                    disabled={isAdding}
+                    style={sharedStyles.mt}
+                  >
                     Add Board
                   </Button>
                 }

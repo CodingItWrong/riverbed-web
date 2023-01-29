@@ -24,7 +24,7 @@ export default function ElementList({board, onClose}) {
   const refreshElements = () =>
     queryClient.invalidateQueries(['elements', board.id]);
 
-  const {mutate: addElement} = useMutation({
+  const {mutate: addElement, isLoading: isAdding} = useMutation({
     mutationFn: attributes =>
       elementClient.create({
         relationships: {board: {data: {type: 'boards', id: board.id}}},
@@ -86,7 +86,7 @@ export default function ElementList({board, onClose}) {
         ListFooterComponent={
           <DropdownMenu
             menuButton={props => (
-              <Button style={sharedStyles.mt} {...props}>
+              <Button disabled={isAdding} style={sharedStyles.mt} {...props}>
                 Add
               </Button>
             )}

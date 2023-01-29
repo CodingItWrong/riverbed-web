@@ -44,7 +44,7 @@ export default function ColumnList({board}) {
   const refreshColumns = () =>
     queryClient.invalidateQueries(['columns', board.id]);
 
-  const {mutate: addColumn} = useMutation({
+  const {mutate: addColumn, isLoading: isAddingColumn} = useMutation({
     mutationFn: () =>
       columnClient.create({
         relationships: {board: {data: {type: 'boards', id: board.id}}},
@@ -61,7 +61,7 @@ export default function ColumnList({board}) {
     setSelectedColumnId(null);
   }
 
-  const {mutate: addCard} = useMutation({
+  const {mutate: addCard, isLoading: isAddingCard} = useMutation({
     mutationFn: () =>
       cardClient.create({
         relationships: {board: {data: {type: 'boards', id: board.id}}},
@@ -104,7 +104,9 @@ export default function ColumnList({board}) {
   return (
     <View style={sharedStyles.fullHeight}>
       <View style={[styles.buttonContainer, responsiveButtonContainerStyle]}>
-        <Button onPress={addCard}>Add Card</Button>
+        <Button onPress={addCard} disabled={isAddingCard}>
+          Add Card
+        </Button>
       </View>
       <ScrollView horizontal pagingEnabled style={sharedStyles.fullHeight}>
         {columns.map((column, columnIndex) => {
@@ -165,6 +167,7 @@ export default function ColumnList({board}) {
                       <IconButton
                         icon="plus"
                         accessibilityLabel="Add Column"
+                        disabled={isAddingColumn}
                         onPress={addColumn}
                       />
                     </>
@@ -206,6 +209,7 @@ export default function ColumnList({board}) {
             icon="plus"
             accessibilityLabel="Add Column"
             onPress={addColumn}
+            disabled={isAddingColumn}
           />
         )}
       </ScrollView>
