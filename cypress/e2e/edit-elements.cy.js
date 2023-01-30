@@ -237,7 +237,7 @@ describe('edit elements', () => {
 
     // show condition
     cy.contains('Show Query: (choose)').paperSelect('Not Empty');
-    cy.contains('Query Field: (choose)').paperSelect('Check Greeting');
+    cy.contains('Query Field: (choose)').paperSelect('Greeting');
 
     cy.intercept('PATCH', `http://cypressapi/elements/${newButton.id}?`, {
       success: true,

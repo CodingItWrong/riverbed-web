@@ -210,7 +210,7 @@ function ShowConditionInputs({elementAttributes, updateAttribute, fields}) {
           updateAttribute('show-condition.field', field.id)
         }
         keyExtractor={field => field.id}
-        labelExtractor={field => `Check ${field.attributes.name}`}
+        labelExtractor={field => field.attributes.name}
         style={sharedStyles.mt}
       />
     </Card>
