@@ -76,12 +76,10 @@ export default function ElementList({board, onClose}) {
                 style={sharedStyles.mt}
               />
             ) : (
-              <Card
+              <ElementButton
+                element={element}
                 onPress={() => setSelectedElementId(element.id)}
-                style={sharedStyles.mt}
-              >
-                <Text>{element.attributes.name}</Text>
-              </Card>
+              />
             )
           }
           ListFooterComponent={
@@ -110,3 +108,11 @@ export default function ElementList({board, onClose}) {
 }
 
 const EXPERIMENTAL_EXTRA_SCROLL_HEIGHT = 120;
+
+function ElementButton({element, onPress}) {
+  return (
+    <Card onPress={onPress} style={sharedStyles.mt}>
+      <Text>{element.attributes.name}</Text>
+    </Card>
+  );
+}
