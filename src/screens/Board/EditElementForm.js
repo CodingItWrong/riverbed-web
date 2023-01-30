@@ -162,7 +162,7 @@ function ActionInputs({elementAttributes, updateAttribute, fields}) {
         value={fields.find(f => f.id === elementAttributes.action?.field)}
         onValueChange={field => updateAttribute('action.field', field.id)}
         keyExtractor={field => field.id}
-        labelExtractor={field => `In ${field.attributes.name}`}
+        labelExtractor={field => field.attributes.name}
         style={sharedStyles.mt}
       />
       <Dropdown

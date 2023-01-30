@@ -232,7 +232,7 @@ describe('edit elements', () => {
     // action
     cy.contains('Command: (choose)').paperSelect('Set Value');
     // TODO: make this reliable to select when it's just the field name shown, not conflicting with other things on the page
-    cy.contains('Action Field: (choose)').paperSelect('In Greeting');
+    cy.contains('Action Field: (choose)').paperSelect('Greeting');
     cy.contains('Value: (choose)').paperSelect('Empty');
 
     // show condition
