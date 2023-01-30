@@ -6,7 +6,6 @@ Cypress.Commands.add(
   (subject, optionLabel) => {
     subject.click();
 
-    // cy.get('[data-testid=paper-dropdown-option]')
     cy.get('[role=menuitem]')
       .contains(optionLabel)
       .should('be.visible') // wait until it's visible before clicking
