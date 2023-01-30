@@ -1,6 +1,7 @@
 import {Button as PaperButton} from 'react-native-paper';
 
 export default function Button({
+  icon,
   onPress,
   disabled,
   children,
@@ -11,6 +12,7 @@ export default function Button({
   const paperMode = MODE_MAP[mode];
   return (
     <PaperButton
+      icon={icon}
       mode={paperMode}
       onPress={onPress}
       disabled={disabled}

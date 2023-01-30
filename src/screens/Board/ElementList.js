@@ -60,43 +60,51 @@ export default function ElementList({board, onClose}) {
       <Button onPress={onClose} style={sharedStyles.mt}>
         Done Editing Elements
       </Button>
-      <KeyboardAwareFlatList
-        extraScrollHeight={EXPERIMENTAL_EXTRA_SCROLL_HEIGHT}
-        data={elements}
-        keyExtractor={element => element.id}
-        renderItem={({item: element}) =>
-          selectedElementId === element.id ? (
-            <EditElementForm
-              element={element}
-              board={board}
-              onSave={onChange}
-              onDelete={onChange}
-              onCancel={hideEditForm}
-              style={sharedStyles.mt}
+      <Card>
+        <KeyboardAwareFlatList
+          extraScrollHeight={EXPERIMENTAL_EXTRA_SCROLL_HEIGHT}
+          data={elements}
+          keyExtractor={element => element.id}
+          renderItem={({item: element}) =>
+            selectedElementId === element.id ? (
+              <EditElementForm
+                element={element}
+                board={board}
+                onSave={onChange}
+                onDelete={onChange}
+                onCancel={hideEditForm}
+                style={sharedStyles.mt}
+              />
+            ) : (
+              <Card
+                onPress={() => setSelectedElementId(element.id)}
+                style={sharedStyles.mt}
+              >
+                <Text>{element.attributes.name}</Text>
+              </Card>
+            )
+          }
+          ListFooterComponent={
+            <DropdownMenu
+              menuButton={props => (
+                <Button
+                  icon="plus"
+                  mode="link"
+                  disabled={isAdding}
+                  style={sharedStyles.mt}
+                  {...props}
+                >
+                  Add
+                </Button>
+              )}
+              menuItems={[
+                {title: 'Field', onPress: addField},
+                {title: 'Button', onPress: addButton},
+              ]}
             />
-          ) : (
-            <Card
-              onPress={() => setSelectedElementId(element.id)}
-              style={sharedStyles.mt}
-            >
-              <Text>{element.attributes.name}</Text>
-            </Card>
-          )
-        }
-        ListFooterComponent={
-          <DropdownMenu
-            menuButton={props => (
-              <Button disabled={isAdding} style={sharedStyles.mt} {...props}>
-                Add
-              </Button>
-            )}
-            menuItems={[
-              {title: 'Field', onPress: addField},
-              {title: 'Button', onPress: addButton},
-            ]}
-          />
-        }
-      />
+          }
+        />
+      </Card>
     </View>
   );
 }
