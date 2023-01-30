@@ -4,14 +4,14 @@ export default function Button({
   onPress,
   disabled,
   children,
-  primary = false,
+  mode = 'default',
   style,
   testID,
 }) {
-  const mode = primary ? 'contained' : 'outlined';
+  const paperMode = MODE_MAP[mode];
   return (
     <PaperButton
-      mode={mode}
+      mode={paperMode}
       onPress={onPress}
       disabled={disabled}
       style={style}
@@ -21,3 +21,9 @@ export default function Button({
     </PaperButton>
   );
 }
+
+const MODE_MAP = {
+  primary: 'contained',
+  link: 'text',
+  default: 'outlined',
+};

@@ -79,7 +79,7 @@ export default function EditColumnForm({
         Delete Column
       </Button>
       <Button
-        primary
+        mode="primary"
         onPress={updateColumn}
         disabled={isLoading}
         style={sharedStyles.mt}

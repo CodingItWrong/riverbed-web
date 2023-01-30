@@ -127,7 +127,7 @@ export default function EditElementForm({
         Delete Element
       </Button>
       <Button
-        primary
+        mode="primary"
         onPress={updateElement}
         disabled={isLoading}
         style={sharedStyles.mt}

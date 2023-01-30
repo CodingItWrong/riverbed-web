@@ -124,7 +124,7 @@ export default function CardDetail({card, board, onChange, onCancel, style}) {
         Delete
       </Button>
       <Button
-        primary
+        mode="primary"
         onPress={() => updateCard()}
         disabled={isLoading}
         style={sharedStyles.mt}

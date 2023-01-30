@@ -80,7 +80,7 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
         </Button>
       )}
       <Button
-        primary
+        mode="primary"
         onPress={updateBoard}
         disabled={isLoading}
         style={sharedStyles.mt}
