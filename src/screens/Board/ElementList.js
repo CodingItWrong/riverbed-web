@@ -5,6 +5,8 @@ import {KeyboardAwareFlatList} from 'react-native-keyboard-aware-scroll-view';
 import Button from '../../components/Button';
 import Card from '../../components/Card';
 import DropdownMenu from '../../components/DropdownMenu';
+import Field from '../../components/Field';
+import IconButton from '../../components/IconButton';
 import Text from '../../components/Text';
 import sharedStyles, {useColumnStyle} from '../../components/sharedStyles';
 import {useElements} from '../../data/elements';
@@ -76,9 +78,9 @@ export default function ElementList({board, onClose}) {
                 style={sharedStyles.mt}
               />
             ) : (
-              <ElementButton
+              <EditableElement
                 element={element}
-                onPress={() => setSelectedElementId(element.id)}
+                onEdit={() => setSelectedElementId(element.id)}
               />
             )
           }
@@ -109,10 +111,32 @@ export default function ElementList({board, onClose}) {
 
 const EXPERIMENTAL_EXTRA_SCROLL_HEIGHT = 120;
 
-function ElementButton({element, onPress}) {
+function EditableElement({element, onEdit}) {
+  const {name, 'element-type': elementType} = element.attributes;
+
+  function disabledElement() {
+    switch (elementType) {
+      case ELEMENT_TYPES.BUTTON: {
+        return <Button disabled>{name}</Button>;
+      }
+      case ELEMENT_TYPES.FIELD: {
+        return <Field field={element} disabled />;
+      }
+      default:
+        return <Text>Unknown element type: {elementType}</Text>;
+    }
+  }
+
+  // TODO: don't assume label and key are the same
+
   return (
-    <Card onPress={onPress} style={sharedStyles.mt}>
-      <Text>{element.attributes.name}</Text>
-    </Card>
+    <View style={[sharedStyles.row, sharedStyles.mt]}>
+      <View style={sharedStyles.fill}>{disabledElement()}</View>
+      <IconButton
+        icon="pencil"
+        accessibilityLabel={`Edit ${name} ${elementType}`}
+        onPress={onEdit}
+      />
+    </View>
   );
 }

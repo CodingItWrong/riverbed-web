@@ -2,6 +2,9 @@ import {StyleSheet, useWindowDimensions} from 'react-native';
 import {large, useBreakpoint} from '../breakpoints';
 
 const sharedStyles = StyleSheet.create({
+  fill: {
+    flex: 1,
+  },
   fullHeight: {
     flex: 1,
   },

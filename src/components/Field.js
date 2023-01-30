@@ -10,7 +10,14 @@ import sharedStyles from './sharedStyles';
 
 // TODO: wrap
 
-export default function Field({field, value, readOnly, setValue, style}) {
+export default function Field({
+  field,
+  value,
+  readOnly,
+  disabled,
+  setValue,
+  style,
+}) {
   const {name, 'data-type': dataType} = field.attributes;
 
   switch (dataType) {
@@ -30,6 +37,7 @@ export default function Field({field, value, readOnly, setValue, style}) {
             onChange={newDate =>
               setValue(dateUtils.objectToServerString(newDate))
             }
+            disabled={disabled}
             inputMode="start"
             testID={`date-input-${field.id}`}
             style={[sharedStyles.textInput, style]}
@@ -38,9 +46,12 @@ export default function Field({field, value, readOnly, setValue, style}) {
       }
     case FIELD_DATA_TYPES.DATETIME.key:
       // TODO: implement writable
+      const valueToShow = disabled
+        ? '(datetime)'
+        : dateTimeUtils.serverStringToHumanString(value);
       return (
         <View style={style}>
-          <Text>{dateTimeUtils.serverStringToHumanString(value)}</Text>
+          <Text>{valueToShow}</Text>
         </View>
       );
     case FIELD_DATA_TYPES.NUMBER.key:
@@ -58,6 +69,7 @@ export default function Field({field, value, readOnly, setValue, style}) {
             testID={`number-input-${field.id}`}
             value={value ?? ''}
             onChangeText={setValue}
+            disabled={disabled}
             style={style}
           />
         );
@@ -77,6 +89,7 @@ export default function Field({field, value, readOnly, setValue, style}) {
             testID={`text-input-${field.id}`}
             value={value ?? ''}
             onChangeText={setValue}
+            disabled={disabled}
             style={style}
           />
         );

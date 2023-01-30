@@ -108,14 +108,14 @@ describe('edit elements', () => {
     cy.get('[aria-label="Board Menu"]').click();
     cy.contains('Edit Elements').click({force: true});
 
-    cy.contains(fieldName).click();
+    cy.get(`[aria-label="Edit ${fieldName} field"]`).click();
     cy.get('[data-testid="text-input-element-name"]')
       .invoke('val')
       .then(value => expect(value).to.equal(fieldName));
 
     cy.contains('Cancel').click();
     cy.get('[data-testid="text-input-element-name"]').should('not.exist');
-    cy.contains(fieldName).click();
+    cy.get(`[aria-label="Edit ${fieldName} field"]`).click();
 
     const updatedFieldName = 'Salutation';
     cy.get('[data-testid="text-input-element-name"]')
@@ -135,7 +135,7 @@ describe('edit elements', () => {
 
     cy.log('DELETE FIELD');
 
-    cy.contains(updatedFieldName).click();
+    cy.get(`[aria-label="Edit ${updatedFieldName} field"]`).click();
     cy.intercept('DELETE', `http://cypressapi/elements/${greetingField.id}`, {
       success: true,
     }).as('deleteField');
@@ -274,7 +274,8 @@ describe('edit elements', () => {
 
     cy.get('[aria-label="Board Menu"]').click();
     cy.contains('Edit Elements').click({force: true});
-    cy.contains(buttonName).click();
+
+    cy.get(`[aria-label="Edit ${buttonName} button"]`).click();
 
     const updatedButtonName = 'Shoosh';
     cy.get('[data-testid="text-input-element-name"]')
@@ -300,7 +301,7 @@ describe('edit elements', () => {
 
     cy.log('DELETE BUTTON');
 
-    cy.contains(updatedButtonName).click();
+    cy.get(`[aria-label="Edit ${updatedButtonName} button"]`).click();
 
     cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
       data: [greetingField],
