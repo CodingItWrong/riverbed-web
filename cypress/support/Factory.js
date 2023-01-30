@@ -36,7 +36,7 @@ const Factory = {
       type: 'elements',
       attributeOverrides,
       baseRecord,
-      newRecordAttributes: {'element-type': ELEMENT_TYPES.FIELD},
+      newRecordAttributes: {'element-type': ELEMENT_TYPES.FIELD.key},
     }),
 
   button: (attributeOverrides, baseRecord) =>
@@ -44,7 +44,7 @@ const Factory = {
       type: 'elements',
       attributeOverrides,
       baseRecord,
-      newRecordAttributes: {'element-type': ELEMENT_TYPES.BUTTON},
+      newRecordAttributes: {'element-type': ELEMENT_TYPES.BUTTON.key},
     }),
 
   column: (attributeOverrides, baseRecord) =>

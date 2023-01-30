@@ -86,7 +86,7 @@ export default function CardDetail({card, board, onChange, onCancel, style}) {
     <Card key={card.id} style={[styles.card, style]}>
       {elementsToShow.map((element, elementIndex) => {
         switch (element.attributes['element-type']) {
-          case ELEMENT_TYPES.FIELD:
+          case ELEMENT_TYPES.FIELD.key:
             return (
               <Field
                 key={element.id}
@@ -97,7 +97,7 @@ export default function CardDetail({card, board, onChange, onCancel, style}) {
                 style={elementIndex > 0 && sharedStyles.mt}
               />
             );
-          case ELEMENT_TYPES.BUTTON:
+          case ELEMENT_TYPES.BUTTON.key:
             return (
               <ButtonElement
                 key={element.id}

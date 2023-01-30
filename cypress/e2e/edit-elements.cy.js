@@ -11,7 +11,7 @@ describe('edit elements', () => {
     });
 
     const newField = Factory.field({
-      'element-type': ELEMENT_TYPES.FIELD,
+      'element-type': ELEMENT_TYPES.FIELD.key,
       name: '',
     });
     const greetingField = Factory.field(
@@ -223,7 +223,7 @@ describe('edit elements', () => {
           relationships: {
             board: {data: {type: 'boards', id: String(board.id)}},
           },
-          attributes: {'element-type': ELEMENT_TYPES.BUTTON},
+          attributes: {'element-type': ELEMENT_TYPES.BUTTON.key},
         },
       });
 

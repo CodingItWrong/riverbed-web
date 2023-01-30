@@ -97,7 +97,7 @@ function CardInclusionCondition({board, attributes, updateAttribute}) {
     elementClient.related({parent: board}).then(resp => resp.data),
   );
   const fields = elements.filter(
-    e => e.attributes['element-type'] === ELEMENT_TYPES.FIELD,
+    e => e.attributes['element-type'] === ELEMENT_TYPES.FIELD.key,
   );
 
   const queryOptions = Object.values(QUERIES);
@@ -143,7 +143,7 @@ function ColumnSortOrder({board, attributes, updateAttribute}) {
     elementClient.related({parent: board}).then(resp => resp.data),
   );
   const fields = elements.filter(
-    e => e.attributes['element-type'] === ELEMENT_TYPES.FIELD,
+    e => e.attributes['element-type'] === ELEMENT_TYPES.FIELD.key,
   );
 
   const sortDirectionOptions = Object.values(SORT_DIRECTIONS);

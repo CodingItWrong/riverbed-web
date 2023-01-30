@@ -40,11 +40,12 @@ export default function ElementList({board, onClose}) {
 
   const addField = () =>
     addElement({
-      'element-type': ELEMENT_TYPES.FIELD,
+      'element-type': ELEMENT_TYPES.FIELD.key,
       'data-type': FIELD_DATA_TYPES.TEXT.key,
     });
 
-  const addButton = () => addElement({'element-type': ELEMENT_TYPES.BUTTON});
+  const addButton = () =>
+    addElement({'element-type': ELEMENT_TYPES.BUTTON.key});
 
   function onChange() {
     hideEditForm();
@@ -113,13 +114,16 @@ const EXPERIMENTAL_EXTRA_SCROLL_HEIGHT = 120;
 
 function EditableElement({element, onEdit}) {
   const {name, 'element-type': elementType} = element.attributes;
+  const elementTypeObject = Object.values(ELEMENT_TYPES).find(
+    et => et.key === elementType,
+  );
 
   function disabledElement() {
     switch (elementType) {
-      case ELEMENT_TYPES.BUTTON: {
+      case ELEMENT_TYPES.BUTTON.key: {
         return <Button disabled>{name}</Button>;
       }
-      case ELEMENT_TYPES.FIELD: {
+      case ELEMENT_TYPES.FIELD.key: {
         return <Field field={element} disabled />;
       }
       default:
@@ -134,7 +138,7 @@ function EditableElement({element, onEdit}) {
       <View style={sharedStyles.fill}>{disabledElement()}</View>
       <IconButton
         icon="pencil"
-        accessibilityLabel={`Edit ${name} ${elementType}`}
+        accessibilityLabel={`Edit ${name} ${elementTypeObject.label}`}
         onPress={onEdit}
       />
     </View>
