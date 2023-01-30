@@ -47,7 +47,6 @@ export default function DropdownField({
           title={labelExtractor(option)}
           accessibilityRole="button"
           onPress={() => handleChoose(option)}
-          testID="paper-dropdown-option"
         />
       ))}
     </Menu>
