@@ -88,8 +88,7 @@ describe('edit columns', () => {
 
     cy.get('[aria-label="Edit Column"]').click();
 
-    // TODO: remove qualifier
-    cy.contains('Sort Field: (choose)').paperSelect('By Title');
+    cy.contains('Sort Field: (choose)').paperSelect('Title');
     cy.contains('Sort Direction: (choose)').paperSelect('Descending');
 
     const updatedColumn = Factory.column(

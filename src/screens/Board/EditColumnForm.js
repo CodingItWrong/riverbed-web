@@ -160,7 +160,7 @@ function ColumnSortOrder({board, attributes, updateAttribute}) {
           updateAttribute('card-sort-order.field', field.id)
         }
         keyExtractor={field => field.id}
-        labelExtractor={field => `By ${field.attributes.name}`}
+        labelExtractor={field => field.attributes.name}
         style={sharedStyles.mt}
       />
       <Dropdown
