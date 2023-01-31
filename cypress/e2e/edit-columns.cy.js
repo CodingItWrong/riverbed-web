@@ -4,46 +4,59 @@ import SORT_DIRECTIONS from '../../src/enums/sortDirections';
 import Factory from '../support/Factory';
 
 describe('edit columns', () => {
+  const apiUrl = 'http://cypressapi';
+  const successJson = {success: true}; // needed to prevent parse errors
+  const board = Factory.board({
+    name: 'Video Games',
+  });
+
+  const titleField = Factory.field({
+    name: 'Title',
+    'data-type': FIELD_DATA_TYPES.TEXT.key,
+    'show-in-summary': true,
+  });
+
+  const firstCardTitle = 'Danganronpoa';
+  const secondCardTitle = 'Final Fantasy 7';
+
+  const firstCard = Factory.card({[titleField.id]: firstCardTitle});
+  const secondCard = Factory.card({[titleField.id]: secondCardTitle});
+  const newColumn = Factory.column({});
+  const columnName = 'All';
+  const allColumn = Factory.column({name: columnName}, newColumn);
+
   it('allows creating, editing, and deleting columns', () => {
-    const board = Factory.board({
-      name: 'Video Games',
-    });
-
-    const titleField = Factory.field({
-      name: 'Title',
-      'data-type': FIELD_DATA_TYPES.TEXT.key,
-      'show-in-summary': true,
-    });
-
-    const firstCardTitle = 'Danganronpoa';
-    const secondCardTitle = 'Final Fantasy 7';
-
-    const firstCard = Factory.card({[titleField.id]: firstCardTitle});
-    const secondCard = Factory.card({[titleField.id]: secondCardTitle});
-    const newColumn = Factory.column({});
-
-    cy.intercept('GET', 'http://cypressapi/boards?', {
+    cy.intercept('GET', `${apiUrl}/boards?`, {
       data: [board],
     });
-    cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
+    cy.intercept('GET', `${apiUrl}/boards/${board.id}/elements?`, {
       data: [titleField],
     });
-    cy.intercept('GET', `http://cypressapi/boards/${board.id}/columns?`, {
+    cy.intercept('GET', `${apiUrl}/boards/${board.id}/columns?`, {
       data: [],
     });
-    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
+    cy.intercept('GET', `${apiUrl}/boards/${board.id}/cards?`, {
       data: [firstCard, secondCard],
     });
 
+    // go to Video Games board
     cy.visit('/');
     cy.contains('Video Games').click();
 
+    createColumn();
+    editColumnSort();
+    editColumnFilter();
+    deleteColumn();
+  });
+
+  function createColumn() {
     cy.log('CREATE COLUMN');
 
-    cy.intercept('POST', 'http://cypressapi/columns?', {
+    // add column
+    cy.intercept('POST', `${apiUrl}/columns?`, {
       data: newColumn,
     }).as('addColumn');
-    cy.intercept('GET', `http://cypressapi/boards/${board.id}/columns?`, {
+    cy.intercept('GET', `${apiUrl}/boards/${board.id}/columns?`, {
       data: [newColumn],
     });
 
@@ -60,14 +73,13 @@ describe('edit columns', () => {
         },
       });
 
-    const columnName = 'All';
+    // set column name
     cy.get('[data-testid="text-input-column-name"]').type(columnName);
 
-    const allColumn = Factory.column({name: columnName}, newColumn);
-    cy.intercept('PATCH', `http://cypressapi/columns/${newColumn.id}?`, {
-      success: true,
-    }).as('updateColumn');
-    cy.intercept('GET', `http://cypressapi/boards/${board.id}/columns?`, {
+    cy.intercept('PATCH', `${apiUrl}/columns/${newColumn.id}?`, successJson).as(
+      'updateColumn',
+    );
+    cy.intercept('GET', `${apiUrl}/boards/${board.id}/columns?`, {
       data: [allColumn],
     });
     cy.contains('Save Column').click();
@@ -76,22 +88,27 @@ describe('edit columns', () => {
       .should('deep.equal', {data: allColumn});
 
     cy.contains('Save Column').should('not.exist');
-    cy.contains(columnName);
 
-    // should show all cards
-    assertContentsOrder(`[data-testid=field-${titleField.id}]`, [
+    // confirm column name shows
+    cy.contains(columnName).should('exist');
+  }
+
+  function editColumnSort() {
+    cy.log('EDIT COLUMN - SORT');
+
+    // confirm default sort order
+    cy.assertContentsOrder(`[data-testid=field-${titleField.id}]`, [
       firstCardTitle,
       secondCardTitle,
     ]);
 
-    cy.log('EDIT COLUMN - SORT');
-
+    // set sort
     cy.get('[aria-label="Edit Column"]').click();
 
     cy.contains('Sort Field: (choose)').paperSelect('Title');
     cy.contains('Sort Direction: (choose)').paperSelect('Descending');
 
-    const updatedColumn = Factory.column(
+    const sortedColumn = Factory.column(
       {
         'card-sort-order': {
           field: titleField.id,
@@ -100,30 +117,35 @@ describe('edit columns', () => {
       },
       allColumn,
     );
-    cy.intercept('PATCH', `http://cypressapi/columns/${newColumn.id}?`, {
-      success: true,
-    }).as('updateColumn');
-    cy.intercept('GET', `http://cypressapi/boards/${board.id}/columns?`, {
-      data: [updatedColumn],
+    cy.intercept('PATCH', `${apiUrl}/columns/${newColumn.id}?`, successJson).as(
+      'updateColumn',
+    );
+    cy.intercept('GET', `${apiUrl}/boards/${board.id}/columns?`, {
+      data: [sortedColumn],
     });
     cy.contains('Save Column').click();
     cy.wait('@updateColumn')
       .its('request.body')
-      .should('deep.equal', {data: updatedColumn});
+      .should('deep.equal', {data: sortedColumn});
+    cy.contains('Save Column').should('not.exist');
 
-    cy.contains('Save Column').should('not.exist'); // wait for save to complete
-    assertContentsOrder(`[data-testid=field-${titleField.id}]`, [
+    // confirm sort order has reversed
+    cy.assertContentsOrder(`[data-testid=field-${titleField.id}]`, [
       secondCardTitle,
       firstCardTitle,
     ]);
+  }
+
+  function editColumnFilter() {
     cy.log('EDIT COLUMN - FILTER');
 
+    // set filter
     cy.get('[aria-label="Edit Column"]').click();
 
     cy.contains('Query: (choose)').paperSelect('Empty');
     cy.contains('Query Field: (choose)').paperSelect('Title');
 
-    const updatedColumn2 = Factory.column(
+    const filteredColumn = Factory.column(
       {
         'card-inclusion-condition': {
           query: QUERIES.IS_EMPTY.key,
@@ -136,40 +158,40 @@ describe('edit columns', () => {
       },
       allColumn,
     );
-    cy.intercept('PATCH', `http://cypressapi/columns/${newColumn.id}?`, {
-      success: true,
-    }).as('updateColumn');
-    cy.intercept('GET', `http://cypressapi/boards/${board.id}/columns?`, {
-      data: [updatedColumn2],
+    cy.intercept('PATCH', `${apiUrl}/columns/${newColumn.id}?`, successJson).as(
+      'updateColumn',
+    );
+    cy.intercept('GET', `${apiUrl}/boards/${board.id}/columns?`, {
+      data: [filteredColumn],
     });
     cy.contains('Save Column').click();
     cy.wait('@updateColumn')
       .its('request.body')
-      .should('deep.equal', {data: updatedColumn2});
+      .should('deep.equal', {data: filteredColumn});
+    cy.contains('Save Column').should('not.exist');
 
-    cy.contains('Save Column').should('not.exist'); // wait for save to complete
+    // confirm all cards filtered out
     cy.contains(firstCardTitle).should('not.exist');
     cy.contains(secondCardTitle).should('not.exist');
+  }
 
+  function deleteColumn() {
     cy.log('DELETE COLUMN');
 
-    cy.intercept('DELETE', `http://cypressapi/columns/${newColumn.id}`, {
-      success: true,
-    }).as('deleteColumn');
-    cy.intercept('GET', `http://cypressapi/boards/${board.id}/columns?`, {
+    cy.get('[aria-label="Edit Column"]').click();
+
+    // perform the delete
+    cy.intercept('DELETE', `${apiUrl}/columns/${newColumn.id}`, successJson).as(
+      'deleteColumn',
+    );
+    cy.intercept('GET', `${apiUrl}/boards/${board.id}/columns?`, {
       data: [],
     });
-    cy.get('[aria-label="Edit Column"]').click();
     cy.contains('Delete Column').click();
     cy.wait('@deleteColumn');
-
     cy.contains('Delete Column').should('not.exist');
-    cy.get('[aria-label="Edit Column"]').should('not.exist');
-  });
 
-  function assertContentsOrder(selector, values) {
-    values.forEach((value, i) => {
-      cy.get(selector).eq(i).contains(value);
-    });
+    // confirm the column is gone
+    cy.contains(columnName).should('not.exist');
   }
 });

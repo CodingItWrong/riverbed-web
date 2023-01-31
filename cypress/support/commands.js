@@ -12,3 +12,9 @@ Cypress.Commands.add(
       .click({force: true}); // still click with force: true because of a parent pointer-events: none
   },
 );
+
+Cypress.Commands.add('assertContentsOrder', (selector, values) => {
+  values.forEach((value, i) => {
+    cy.get(selector).eq(i).contains(value);
+  });
+});
