@@ -18,9 +18,15 @@ describe('edit columns', () => {
     'data-type': FIELD_DATA_TYPES.DATE.key,
     'show-in-summary': false,
   });
+  const completeDate = Factory.field({
+    name: 'Complete Date',
+    'data-type': FIELD_DATA_TYPES.DATE.key,
+    'show-in-summary': false,
+  });
 
   const firstCardTitle = 'Danganronpoa';
   const secondCardTitle = 'Final Fantasy 7';
+  const thirdCardTitle = 'Disco Elysium';
 
   const firstCard = Factory.card({
     [titleField.id]: firstCardTitle,
@@ -29,6 +35,11 @@ describe('edit columns', () => {
   const secondCard = Factory.card({
     [titleField.id]: secondCardTitle,
     [purchaseDate.id]: '1998-01-01',
+    [completeDate.id]: '1999-01-01',
+  });
+  const thirdCard = Factory.card({
+    [titleField.id]: thirdCardTitle,
+    [purchaseDate.id]: '2023-01-01',
   });
   const newColumn = Factory.column({});
   const columnName = 'All';
@@ -42,13 +53,13 @@ describe('edit columns', () => {
       data: board,
     });
     cy.intercept('GET', `${apiUrl}/boards/${board.id}/elements?`, {
-      data: [titleField, purchaseDate],
+      data: [titleField, purchaseDate, completeDate],
     });
     cy.intercept('GET', `${apiUrl}/boards/${board.id}/columns?`, {
       data: [],
     });
     cy.intercept('GET', `${apiUrl}/boards/${board.id}/cards?`, {
-      data: [firstCard, secondCard],
+      data: [firstCard, secondCard, thirdCard],
     });
 
     // go to Video Games board
@@ -144,6 +155,7 @@ describe('edit columns', () => {
     // confirm sort order has reversed
     cy.assertContentsOrder(`[data-testid=field-${titleField.id}]`, [
       secondCardTitle,
+      thirdCardTitle,
       firstCardTitle,
     ]);
   }
@@ -187,6 +199,7 @@ describe('edit columns', () => {
     // confirm correct cards filtered out
     cy.contains(firstCardTitle).should('not.exist');
     cy.contains(secondCardTitle).should('exist');
+    cy.contains(thirdCardTitle).should('exist');
   }
 
   function deleteColumn() {
