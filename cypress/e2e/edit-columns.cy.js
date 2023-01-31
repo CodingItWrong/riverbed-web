@@ -6,9 +6,7 @@ import Factory from '../support/Factory';
 describe('edit columns', () => {
   const apiUrl = 'http://cypressapi';
   const successJson = {success: true}; // needed to prevent parse errors
-  const board = Factory.board({
-    name: 'Video Games',
-  });
+  const board = Factory.board({name: 'Video Games'});
 
   const titleField = Factory.field({
     name: 'Title',
