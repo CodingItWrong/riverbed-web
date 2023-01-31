@@ -105,6 +105,7 @@ function CardInclusionCondition({board, attributes, updateAttribute}) {
   return (
     <Card style={sharedStyles.mt}>
       <Text>Cards to Include</Text>
+      <Button onPress={() => {}}>Add Filter</Button>
       <Dropdown
         fieldLabel="Show Query"
         emptyLabel="(choose)"
