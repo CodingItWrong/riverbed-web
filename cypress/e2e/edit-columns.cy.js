@@ -152,7 +152,7 @@ describe('edit columns', () => {
     cy.get('[aria-label="Edit Column"]').click();
 
     cy.get('[data-testid="text-input-column-name"]').clear().type('Purchased');
-    cy.contains('Query: (choose)').paperSelect('Not Empty');
+    cy.contains('Show Query: (choose)').paperSelect('Not Empty');
     cy.contains('Query Field: (choose)').paperSelect('Purchase Date');
 
     const filteredColumn = Factory.column(
