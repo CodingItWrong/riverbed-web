@@ -107,6 +107,11 @@ function CardInclusionCondition({board, attributes, updateAttribute}) {
     updateAttribute('card-inclusion-conditions', [...conditions, {}]);
   }
 
+  // TODO:
+  // - key warning
+  // - pass test
+  // - test removing a filter?
+  // - refactor visuals incl field names?
   return (
     <Card style={sharedStyles.mt}>
       <Text>Cards to Include</Text>
