@@ -18,7 +18,7 @@ export default function Field({
   setValue,
   style,
 }) {
-  const {name, 'data-type': dataType} = field.attributes;
+  const {name, 'data-type': dataType, options} = field.attributes;
 
   switch (dataType) {
     case FIELD_DATA_TYPES.DATE.key:
@@ -90,6 +90,7 @@ export default function Field({
             value={value ?? ''}
             onChangeText={setValue}
             disabled={disabled}
+            multiline={options.multiline}
             style={style}
           />
         );

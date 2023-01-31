@@ -6,6 +6,7 @@ export default function TextField({
   value,
   onChangeText,
   disabled,
+  multiline,
   keyboardType,
   testID,
   style,
@@ -19,6 +20,7 @@ export default function TextField({
       value={value}
       onChangeText={onChangeText}
       disabled={disabled}
+      multiline={multiline}
       keyboardType={keyboardType}
       style={[sharedStyles.textInput, style]}
     />

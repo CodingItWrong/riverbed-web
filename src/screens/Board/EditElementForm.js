@@ -102,6 +102,16 @@ export default function EditElementForm({
             style={sharedStyles.mt}
             testID="checkbox-read-only"
           />
+          {elementAttributes['data-type'] === FIELD_DATA_TYPES.TEXT.key && (
+            <LabeledCheckbox
+              label="Multiple Lines"
+              checked={elementAttributes.options.multiline}
+              onChangeChecked={newChecked =>
+                updateAttribute('options.multiline', newChecked)
+              }
+              style={sharedStyles.mt}
+            />
+          )}
         </>
       )}
       {elementAttributes['element-type'] === ELEMENT_TYPES.BUTTON.key && (
