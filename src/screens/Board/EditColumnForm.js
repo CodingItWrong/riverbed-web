@@ -101,39 +101,50 @@ function CardInclusionCondition({board, attributes, updateAttribute}) {
   );
 
   const queryOptions = Object.values(QUERIES);
+  const conditions = attributes['card-inclusion-conditions'] ?? [];
+
+  function addFilter() {
+    updateAttribute('card-inclusion-conditions', [...conditions, {}]);
+  }
 
   return (
     <Card style={sharedStyles.mt}>
       <Text>Cards to Include</Text>
-      <Button onPress={() => {}}>Add Filter</Button>
-      <Dropdown
-        fieldLabel="Show Query"
-        emptyLabel="(choose)"
-        options={queryOptions}
-        value={queryOptions.find(
-          query => query.key === attributes['card-inclusion-condition']?.query,
-        )}
-        onValueChange={query =>
-          updateAttribute('card-inclusion-condition.query', query.key)
-        }
-        keyExtractor={query => query.key}
-        labelExtractor={query => query.label}
-        style={sharedStyles.mt}
-      />
-      <Dropdown
-        fieldLabel="Query Field"
-        emptyLabel="(choose)"
-        options={fields}
-        value={fields.find(
-          f => f.id === attributes['card-inclusion-condition']?.field,
-        )}
-        onValueChange={field =>
-          updateAttribute('card-inclusion-condition.field', field.id)
-        }
-        keyExtractor={field => field.id}
-        labelExtractor={field => field.attributes.name}
-        style={sharedStyles.mt}
-      />
+      {conditions.map((condition, index) => (
+        <>
+          <Dropdown
+            fieldLabel="Show Query"
+            emptyLabel="(choose)"
+            options={queryOptions}
+            value={queryOptions.find(query => query.key === condition.query)}
+            onValueChange={query =>
+              updateAttribute(
+                `card-inclusion-conditions[${index}].query`,
+                query.key,
+              )
+            }
+            keyExtractor={query => query.key}
+            labelExtractor={query => query.label}
+            style={sharedStyles.mt}
+          />
+          <Dropdown
+            fieldLabel="Query Field"
+            emptyLabel="(choose)"
+            options={fields}
+            value={fields.find(f => f.id === condition.field)}
+            onValueChange={field =>
+              updateAttribute(
+                `card-inclusion-conditions[${index}].field`,
+                field.id,
+              )
+            }
+            keyExtractor={field => field.id}
+            labelExtractor={field => field.attributes.name}
+            style={sharedStyles.mt}
+          />
+        </>
+      ))}
+      <Button onPress={addFilter}>Add Filter</Button>
     </Card>
   );
 }
