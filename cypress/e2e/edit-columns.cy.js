@@ -169,17 +169,29 @@ describe('edit columns', () => {
     // set filter
     cy.get('[aria-label="Edit Column"]').click();
 
-    cy.get('[data-testid="text-input-column-name"]').clear().type('Purchased');
+    cy.get('[data-testid="text-input-column-name"]').clear().type('To Play');
+
+    cy.contains('Add Filter').click();
     cy.contains('Show Query: (choose)').paperSelect('Not Empty');
     cy.contains('Query Field: (choose)').paperSelect('Purchase Date');
 
+    cy.contains('Add Filter').click();
+    cy.contains('Show Query: (choose)').paperSelect('Empty');
+    cy.contains('Query Field: (choose)').paperSelect('Complete Date');
+
     const filteredColumn = Factory.column(
       {
-        name: 'Purchased',
-        'card-inclusion-condition': {
-          query: QUERIES.IS_NOT_EMPTY.key,
-          field: purchaseDate.id,
-        },
+        name: 'To Play',
+        'card-inclusion-conditions': [
+          {
+            query: QUERIES.IS_NOT_EMPTY.key,
+            field: purchaseDate.id,
+          },
+          {
+            query: QUERIES.IS_EMPTY.key,
+            field: completeDate.id,
+          },
+        ],
         'card-sort-order': {
           field: titleField.id,
           direction: SORT_DIRECTIONS.DESCENDING.key,
@@ -202,7 +214,7 @@ describe('edit columns', () => {
     // confirm correct cards filtered out
     cy.contains(unownedTitle).should('not.exist');
     cy.contains(unplayedTitle).should('exist');
-    cy.contains(playedTitle).should('exist');
+    cy.contains(playedTitle).should('not.exist');
   }
 
   function deleteColumn() {
