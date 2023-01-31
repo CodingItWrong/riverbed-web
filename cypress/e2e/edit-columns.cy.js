@@ -13,12 +13,23 @@ describe('edit columns', () => {
     'data-type': FIELD_DATA_TYPES.TEXT.key,
     'show-in-summary': true,
   });
+  const purchaseDate = Factory.field({
+    name: 'Purchase Date',
+    'data-type': FIELD_DATA_TYPES.DATE.key,
+    'show-in-summary': false,
+  });
 
   const firstCardTitle = 'Danganronpoa';
   const secondCardTitle = 'Final Fantasy 7';
 
-  const firstCard = Factory.card({[titleField.id]: firstCardTitle});
-  const secondCard = Factory.card({[titleField.id]: secondCardTitle});
+  const firstCard = Factory.card({
+    [titleField.id]: firstCardTitle,
+    [purchaseDate.id]: null,
+  });
+  const secondCard = Factory.card({
+    [titleField.id]: secondCardTitle,
+    [purchaseDate.id]: '1998-01-01',
+  });
   const newColumn = Factory.column({});
   const columnName = 'All';
   const allColumn = Factory.column({name: columnName}, newColumn);
@@ -28,7 +39,7 @@ describe('edit columns', () => {
       data: [board],
     });
     cy.intercept('GET', `${apiUrl}/boards/${board.id}/elements?`, {
-      data: [titleField],
+      data: [titleField, purchaseDate],
     });
     cy.intercept('GET', `${apiUrl}/boards/${board.id}/columns?`, {
       data: [],
@@ -140,14 +151,16 @@ describe('edit columns', () => {
     // set filter
     cy.get('[aria-label="Edit Column"]').click();
 
-    cy.contains('Query: (choose)').paperSelect('Empty');
-    cy.contains('Query Field: (choose)').paperSelect('Title');
+    cy.get('[data-testid="text-input-column-name"]').clear().type('Purchased');
+    cy.contains('Query: (choose)').paperSelect('Not Empty');
+    cy.contains('Query Field: (choose)').paperSelect('Purchase Date');
 
     const filteredColumn = Factory.column(
       {
+        name: 'Purchased',
         'card-inclusion-condition': {
-          query: QUERIES.IS_EMPTY.key,
-          field: titleField.id,
+          query: QUERIES.IS_NOT_EMPTY.key,
+          field: purchaseDate.id,
         },
         'card-sort-order': {
           field: titleField.id,
@@ -168,9 +181,9 @@ describe('edit columns', () => {
       .should('deep.equal', {data: filteredColumn});
     cy.contains('Save Column').should('not.exist');
 
-    // confirm all cards filtered out
+    // confirm correct cards filtered out
     cy.contains(firstCardTitle).should('not.exist');
-    cy.contains(secondCardTitle).should('not.exist');
+    cy.contains(secondCardTitle).should('exist');
   }
 
   function deleteColumn() {
