@@ -31,6 +31,9 @@ describe('edit elements', () => {
     cy.intercept('http://cypressapi/boards?', {
       data: [board],
     });
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}?`, {
+      data: board,
+    });
     cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
       data: [],
     });
@@ -186,6 +189,9 @@ describe('edit elements', () => {
 
     cy.intercept('http://cypressapi/boards?', {
       data: [board],
+    });
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}?`, {
+      data: board,
     });
     cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
       data: [greetingField],

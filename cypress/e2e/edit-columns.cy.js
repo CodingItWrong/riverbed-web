@@ -38,6 +38,9 @@ describe('edit columns', () => {
     cy.intercept('GET', `${apiUrl}/boards?`, {
       data: [board],
     });
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}?`, {
+      data: board,
+    });
     cy.intercept('GET', `${apiUrl}/boards/${board.id}/elements?`, {
       data: [titleField, purchaseDate],
     });

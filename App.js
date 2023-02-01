@@ -8,7 +8,7 @@ import {useEffect} from 'react';
 import {AppState, Platform} from 'react-native';
 import {Provider as PaperProvider} from 'react-native-paper';
 import {en, registerTranslation} from 'react-native-paper-dates';
-import Navigation from './src/screens/Navigation';
+import Navigation from './src/Navigation';
 
 registerTranslation('en', en);
 

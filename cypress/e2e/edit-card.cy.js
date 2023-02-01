@@ -53,6 +53,9 @@ describe('edit cards', () => {
     cy.intercept('GET', 'http://cypressapi/boards?', {
       data: [board],
     });
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}?`, {
+      data: board,
+    });
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
       data: fields,
     });

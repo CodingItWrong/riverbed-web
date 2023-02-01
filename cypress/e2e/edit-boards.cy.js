@@ -18,6 +18,9 @@ describe('edit boards', () => {
     cy.intercept('GET', 'http://cypressapi/boards?', {
       data: [newBoard],
     });
+    cy.intercept('GET', `http://cypressapi/boards/${newBoard.id}?`, {
+      data: newBoard,
+    });
     cy.contains('Add Board').click();
     cy.wait('@addBoard')
       .its('request.body')
@@ -38,16 +41,19 @@ describe('edit boards', () => {
     cy.intercept('GET', 'http://cypressapi/boards?', {
       data: [updatedBoard],
     });
+    cy.intercept('GET', `http://cypressapi/boards/${newBoard.id}?`, {
+      data: updatedBoard,
+    });
     cy.contains('Save Board').click();
     cy.wait('@updateBoard')
       .its('request.body')
       .should('deep.equal', {data: updatedBoard});
 
     cy.get('[data-testid="text-input-board-name"]').should('not.exist');
-    cy.contains(boardName).click();
+    cy.contains(boardName).should('exist');
     cy.get('[aria-label="Board Menu"]').should('exist');
 
-    cy.get('[aria-label="Back to Board List"]').click();
+    cy.get('[aria-label="Go back"]').click();
     cy.get('[aria-label="Board Menu"]').should('not.exist');
 
     cy.log('DELETE BOARD');
