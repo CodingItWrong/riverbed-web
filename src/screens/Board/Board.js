@@ -1,12 +1,11 @@
 import {useNavigation} from '@react-navigation/native';
 import {useQuery} from '@tanstack/react-query';
-import {useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {useCallback, useEffect, useState} from 'react';
+import {StyleSheet, Text, View} from 'react-native';
 import DropdownMenu from '../../components/DropdownMenu';
 import IconButton from '../../components/IconButton';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import ScreenBackground from '../../components/ScreenBackground';
-import Text from '../../components/Text';
 import sharedStyles from '../../components/sharedStyles';
 import {useBoards} from '../../data/boards';
 import ColumnList from './ColumnList';
@@ -22,20 +21,42 @@ export default function Board({route}) {
     boardClient.find({id}).then(response => response.data),
   );
 
+  useEffect(() => {
+    navigation.setOptions({
+      title: board?.attributes?.name ?? '(unnamed board)',
+      headerRight: renderMenu,
+    });
+  }, [navigation, board, renderMenu]);
+
+  const renderMenu = useCallback(() => {
+    function menuItems() {
+      if (editingBoard || editingElements) {
+        return [];
+      } else {
+        return [
+          {title: 'Edit Board', onPress: () => setEditingBoard(true)},
+          {title: 'Edit Elements', onPress: () => setEditingElements(true)},
+        ];
+      }
+    }
+
+    return (
+      <DropdownMenu
+        menuItems={menuItems()}
+        menuButton={props => (
+          <IconButton
+            icon="dots-vertical"
+            accessibilityLabel="Board Menu"
+            {...props}
+          />
+        )}
+      />
+    );
+  }, [editingBoard, editingElements]);
+
   // TODO: make these an enum
   const [editingBoard, setEditingBoard] = useState(false);
   const [editingElements, setEditingElements] = useState(false);
-
-  function menuItems() {
-    if (editingBoard || editingElements) {
-      return [];
-    } else {
-      return [
-        {title: 'Edit Board', onPress: () => setEditingBoard(true)},
-        {title: 'Edit Elements', onPress: () => setEditingElements(true)},
-      ];
-    }
-  }
 
   function renderContents() {
     if (editingBoard) {
@@ -56,7 +77,6 @@ export default function Board({route}) {
     }
   }
 
-  console.log({board});
   if (!board) {
     return (
       <View style={sharedStyles.fullHeight}>
@@ -67,22 +87,6 @@ export default function Board({route}) {
 
   return (
     <ScreenBackground style={sharedStyles.fullHeight}>
-      <View style={sharedStyles.row}>
-        <Text variant="titleLarge">
-          {board.attributes.name ?? '(unnamed board)'}
-        </Text>
-        <View style={styles.spacer} />
-        <DropdownMenu
-          menuItems={menuItems()}
-          menuButton={props => (
-            <IconButton
-              icon="dots-vertical"
-              accessibilityLabel="Board Menu"
-              {...props}
-            />
-          )}
-        />
-      </View>
       {renderContents()}
     </ScreenBackground>
   );

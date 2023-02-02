@@ -1,10 +1,12 @@
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import NavigationBar from './components/NavigationBar';
 import Board from './screens/Board';
 import BoardList from './screens/BoardList';
 
 const linking = {
   config: {
+    initialRouteName: 'BoardList',
     screens: {
       BoardList: 'boards',
       Board: 'boards/:id',
@@ -14,8 +16,14 @@ const linking = {
 
 const BoardStack = createNativeStackNavigator();
 const Boards = () => (
-  <BoardStack.Navigator>
-    <BoardStack.Screen name="BoardList" component={BoardList} />
+  <BoardStack.Navigator
+    screenOptions={{header: props => <NavigationBar {...props} />}}
+  >
+    <BoardStack.Screen
+      name="BoardList"
+      component={BoardList}
+      options={{title: 'My Boards'}}
+    />
     <BoardStack.Screen name="Board" component={Board} />
   </BoardStack.Navigator>
 );
