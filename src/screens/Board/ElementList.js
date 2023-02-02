@@ -13,6 +13,7 @@ import sharedStyles, {useColumnStyle} from '../../components/sharedStyles';
 import {useElements} from '../../data/elements';
 import ELEMENT_TYPES from '../../enums/elementTypes';
 import FIELD_DATA_TYPES from '../../enums/fieldDataTypes';
+import sortElements from '../../utils/sortElements';
 import EditElementForm from './EditElementForm';
 
 export default function ElementList({board, onClose}) {
@@ -24,6 +25,7 @@ export default function ElementList({board, onClose}) {
   const {data: elements = []} = useQuery(['elements', board.id], () =>
     elementClient.related({parent: board}).then(resp => resp.data),
   );
+  const sortedElements = sortElements(elements);
 
   const refreshElements = () =>
     queryClient.invalidateQueries(['elements', board.id]);
@@ -67,7 +69,7 @@ export default function ElementList({board, onClose}) {
       </Button>
       <KeyboardAwareFlatList
         extraScrollHeight={EXPERIMENTAL_EXTRA_SCROLL_HEIGHT}
-        data={elements}
+        data={sortedElements}
         keyExtractor={element => element.id}
         contentContainerStyle={{paddingBottom: insets.bottom}}
         scrollIndicatorInsets={{bottom: insets.bottom}}
@@ -85,6 +87,7 @@ export default function ElementList({board, onClose}) {
             <EditableElement
               element={element}
               onEdit={() => setSelectedElementId(element.id)}
+              testID={`element-${element.id}`}
             />
           )
         }
@@ -114,7 +117,7 @@ export default function ElementList({board, onClose}) {
 
 const EXPERIMENTAL_EXTRA_SCROLL_HEIGHT = 120;
 
-function EditableElement({element, onEdit}) {
+function EditableElement({element, onEdit, testID}) {
   const {name, 'element-type': elementType} = element.attributes;
   const elementTypeObject = Object.values(ELEMENT_TYPES).find(
     et => et.key === elementType,
@@ -136,7 +139,7 @@ function EditableElement({element, onEdit}) {
   // TODO: don't assume label and key are the same
 
   return (
-    <View style={[sharedStyles.row, sharedStyles.mt]}>
+    <View style={[sharedStyles.row, sharedStyles.mt]} testID={testID}>
       <View style={sharedStyles.fill}>{disabledElement()}</View>
       <IconButton
         icon="pencil"

@@ -1,6 +1,6 @@
 import {useMutation, useQuery} from '@tanstack/react-query';
 import {useState} from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import Button from '../../components/Button';
 import ButtonElement from '../../components/ButtonElement';
 import Card from '../../components/Card';
@@ -88,14 +88,15 @@ export default function CardDetail({card, board, onChange, onCancel, style}) {
         switch (element.attributes['element-type']) {
           case ELEMENT_TYPES.FIELD.key:
             return (
-              <Field
-                key={element.id}
-                field={element}
-                value={fieldValues[element.id]}
-                setValue={value => setFieldValue(element.id, value)}
-                readOnly={element.attributes['read-only']}
-                style={elementIndex > 0 && sharedStyles.mt}
-              />
+              <View key={element.id} testID={`element-${element.id}`}>
+                <Field
+                  field={element}
+                  value={fieldValues[element.id]}
+                  setValue={value => setFieldValue(element.id, value)}
+                  readOnly={element.attributes['read-only']}
+                  style={elementIndex > 0 && sharedStyles.mt}
+                />
+              </View>
             );
           case ELEMENT_TYPES.BUTTON.key:
             return (

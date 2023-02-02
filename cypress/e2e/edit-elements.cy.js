@@ -327,13 +327,28 @@ describe('edit elements', () => {
     cy.visit('/');
     cy.contains('Video Games').click();
 
+    // confirm initial order in summary
     cy.assertContentsOrder('[data-testid="field-value"]', [
       'Value A',
       'Value B',
     ]);
 
+    // confirm initial order in card detail
+    cy.contains('Value A').click();
+    cy.assertTestIdOrder('[data-testid^="element-"]', [
+      `element-${fieldA.id}`,
+      `element-${fieldB.id}`,
+    ]);
+    cy.contains('Cancel').click();
+
     cy.get('[aria-label="Board Menu"]').click();
     cy.contains('Edit Elements').click({force: true});
+
+    // confirm initial order in Edit Elements form
+    cy.assertTestIdOrder('[data-testid^="element-"]', [
+      `element-${fieldA.id}`,
+      `element-${fieldB.id}`,
+    ]);
 
     cy.get('[aria-label="Edit Field A field"]').click();
     cy.get('[data-testid="number-input-order"]').type(2);
@@ -365,12 +380,25 @@ describe('edit elements', () => {
       .should('deep.equal', {data: orderedFieldB});
     cy.contains('Save Element').should('not.exist');
 
+    // confirm new field order in Edit Elements form
+    cy.assertTestIdOrder('[data-testid^="element-"]', [
+      `element-${fieldB.id}`,
+      `element-${fieldA.id}`,
+    ]);
+
     cy.contains('Done Editing Elements').click();
 
-    // confirm new field order in summary
+    // confirm new field order in card summary
     cy.assertContentsOrder('[data-testid="field-value"]', [
       'Value B',
       'Value A',
+    ]);
+
+    // confirm new order in card detail
+    cy.contains('Value A').click();
+    cy.assertTestIdOrder('[data-testid^="element-"]', [
+      `element-${fieldB.id}`,
+      `element-${fieldA.id}`,
     ]);
   });
 });

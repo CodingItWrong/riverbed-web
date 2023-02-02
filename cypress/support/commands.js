@@ -18,3 +18,13 @@ Cypress.Commands.add('assertContentsOrder', (selector, values) => {
     cy.get(selector).eq(i).contains(value);
   });
 });
+
+Cypress.Commands.add('assertTestIdOrder', (selector, values) => {
+  cy.get(selector).then(console.log);
+  values.forEach((childSelector, i) => {
+    cy.get(selector)
+      .eq(i)
+      .invoke('attr', 'data-testid')
+      .should('eq', childSelector);
+  });
+});
