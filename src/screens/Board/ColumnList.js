@@ -91,12 +91,12 @@ export default function ColumnList({board}) {
   const responsiveButtonContainerStyle = {
     alignItems: breakpoint === large ? 'flex-start' : 'stretch',
   };
-  const columnStyle = useColumnStyle();
+  const columnWidthStyle = useColumnStyle();
 
   const isLoading = isLoadingCards || isLoadingColumns || isLoadingElements;
   if (isLoading) {
     return (
-      <View style={columnStyle}>
+      <View style={columnWidthStyle}>
         <LoadingIndicator />
       </View>
     );
@@ -119,7 +119,7 @@ export default function ColumnList({board}) {
                 board={board}
                 onChange={onChangeColumn}
                 onCancel={() => setSelectedColumnId(null)}
-                style={columnStyle}
+                style={columnWidthStyle}
               />
             );
           } else {
@@ -151,9 +151,13 @@ export default function ColumnList({board}) {
               <View
                 key={column.id}
                 testID={`column-${column.id}`}
-                style={[columnStyle, sharedStyles.fullHeight]}
+                style={[
+                  columnWidthStyle,
+                  sharedStyles.fullHeight,
+                  styles.columnWrapper,
+                ]}
               >
-                <View style={sharedStyles.row}>
+                <View style={[sharedStyles.row, styles.columnPadding]}>
                   <Text variant="titleLarge">
                     {name ?? '(unnamed column)'} ({columnCards.length})
                   </Text>
@@ -178,7 +182,11 @@ export default function ColumnList({board}) {
                   extraScrollHeight={EXPERIMENTAL_EXTRA_SCROLL_HEIGHT}
                   data={columnCards}
                   keyExtractor={card => card.id}
-                  contentContainerStyle={{paddingBottom: insets.bottom}}
+                  contentContainerStyle={[
+                    styles.columnPadding,
+                    {paddingBottom: insets.bottom},
+                  ]}
+                  scrollIndicatorInsets={{bottom: insets.bottom}}
                   renderItem={({item: card}) => {
                     if (selectedCardId === card.id) {
                       return (
@@ -228,5 +236,11 @@ const styles = StyleSheet.create({
   },
   spacer: {
     flex: 1,
+  },
+  columnWrapper: {
+    padding: 0, // no idea why this is needed. does View have default padding?
+  },
+  columnPadding: {
+    paddingHorizontal: 8,
   },
 });

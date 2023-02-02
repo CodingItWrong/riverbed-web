@@ -70,6 +70,7 @@ export default function ElementList({board, onClose}) {
         data={elements}
         keyExtractor={element => element.id}
         contentContainerStyle={{paddingBottom: insets.bottom}}
+        scrollIndicatorInsets={{bottom: insets.bottom}}
         renderItem={({item: element}) =>
           selectedElementId === element.id ? (
             <EditElementForm

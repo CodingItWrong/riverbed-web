@@ -1,5 +1,4 @@
 import {useQuery} from '@tanstack/react-query';
-import {StyleSheet} from 'react-native';
 import Card from '../../components/Card';
 import Field from '../../components/Field';
 import Text from '../../components/Text';
@@ -20,7 +19,7 @@ export default function CardSummary({card, board, onPress, style}) {
   return (
     <Card
       key={card.id}
-      style={[styles.card, style]}
+      style={style}
       onPress={onPress}
       testID={`card-${card.id}`}
     >
@@ -39,9 +38,3 @@ export default function CardSummary({card, board, onPress, style}) {
     </Card>
   );
 }
-
-const styles = StyleSheet.create({
-  card: {
-    margin: 4,
-  },
-});
