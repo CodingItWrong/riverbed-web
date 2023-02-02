@@ -5,11 +5,23 @@ import QUERIES from '../../src/enums/queries';
 import Factory from '../support/Factory';
 
 describe('edit elements', () => {
-  it('allows creating, updating, and deleting fields', () => {
-    const board = Factory.board({
-      name: 'Video Games',
-    });
+  const board = Factory.board({name: 'Video Games'});
+  const allColumn = Factory.column({
+    name: 'All',
+    'card-inclusion-condition': null,
+  });
 
+  beforeEach(() => {
+    cy.intercept('http://cypressapi/boards?', {data: [board]});
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}?`, {
+      data: board,
+    });
+    cy.intercept(`http://cypressapi/boards/${board.id}/columns?`, {
+      data: [allColumn],
+    });
+  });
+
+  it('allows creating, updating, and deleting fields', () => {
     const newField = Factory.field({
       'element-type': ELEMENT_TYPES.FIELD.key,
       name: '',
@@ -23,22 +35,8 @@ describe('edit elements', () => {
       newField,
     );
 
-    const allColumn = Factory.column({
-      name: 'All',
-      'card-inclusion-condition': null,
-    });
-
-    cy.intercept('http://cypressapi/boards?', {
-      data: [board],
-    });
-    cy.intercept('GET', `http://cypressapi/boards/${board.id}?`, {
-      data: board,
-    });
     cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
       data: [],
-    });
-    cy.intercept(`http://cypressapi/boards/${board.id}/columns?`, {
-      data: [allColumn],
     });
     cy.intercept(`http://cypressapi/boards/${board.id}/cards?`, {
       data: [],
@@ -151,10 +149,6 @@ describe('edit elements', () => {
   });
 
   it('allows creating, updating, and deleting buttons', () => {
-    const board = Factory.board({
-      name: 'Video Games',
-    });
-
     const greetingField = Factory.field({
       name: 'Greeting',
       'data-type': FIELD_DATA_TYPES.TEXT.key,
@@ -179,25 +173,11 @@ describe('edit elements', () => {
       newButton,
     );
 
-    const allColumn = Factory.column({
-      name: 'All',
-      'card-inclusion-condition': null,
-    });
-
     const greetingText = 'Hello, world!';
     const card = Factory.card({[greetingField.id]: greetingText});
 
-    cy.intercept('http://cypressapi/boards?', {
-      data: [board],
-    });
-    cy.intercept('GET', `http://cypressapi/boards/${board.id}?`, {
-      data: board,
-    });
     cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
       data: [greetingField],
-    });
-    cy.intercept(`http://cypressapi/boards/${board.id}/columns?`, {
-      data: [allColumn],
     });
     cy.intercept(`http://cypressapi/boards/${board.id}/cards?`, {
       data: [card],
