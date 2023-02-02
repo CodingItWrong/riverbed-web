@@ -8,6 +8,7 @@ import {useEffect} from 'react';
 import {AppState, Platform} from 'react-native';
 import {Provider as PaperProvider} from 'react-native-paper';
 import {en, registerTranslation} from 'react-native-paper-dates';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 import Navigation from './src/Navigation';
 
 registerTranslation('en', en);
@@ -34,13 +35,13 @@ export default function App() {
   }, []);
 
   return (
-    <>
+    <SafeAreaProvider>
       <StatusBar />
       <PaperProvider>
         <QueryClientProvider client={queryClient}>
           <Navigation />
         </QueryClientProvider>
       </PaperProvider>
-    </>
+    </SafeAreaProvider>
   );
 }

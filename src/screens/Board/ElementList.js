@@ -2,6 +2,7 @@ import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {useState} from 'react';
 import {View} from 'react-native';
 import {KeyboardAwareFlatList} from 'react-native-keyboard-aware-scroll-view';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Button from '../../components/Button';
 import Card from '../../components/Card';
 import DropdownMenu from '../../components/DropdownMenu';
@@ -15,6 +16,7 @@ import FIELD_DATA_TYPES from '../../enums/fieldDataTypes';
 import EditElementForm from './EditElementForm';
 
 export default function ElementList({board, onClose}) {
+  const insets = useSafeAreaInsets();
   const queryClient = useQueryClient();
   const elementClient = useElements();
   const [selectedElementId, setSelectedElementId] = useState(null);
@@ -67,6 +69,7 @@ export default function ElementList({board, onClose}) {
         extraScrollHeight={EXPERIMENTAL_EXTRA_SCROLL_HEIGHT}
         data={elements}
         keyExtractor={element => element.id}
+        contentContainerStyle={{paddingBottom: insets.bottom}}
         renderItem={({item: element}) =>
           selectedElementId === element.id ? (
             <EditElementForm
