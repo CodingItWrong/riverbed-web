@@ -5,6 +5,7 @@ import Button from '../../components/Button';
 import Card from '../../components/Card';
 import Dropdown from '../../components/DropdownField';
 import LabeledCheckbox from '../../components/LabeledCheckbox';
+import NumberField from '../../components/NumberField';
 import Text from '../../components/Text';
 import TextField from '../../components/TextField';
 import sharedStyles from '../../components/sharedStyles';
@@ -71,6 +72,13 @@ export default function EditElementForm({
         value={elementAttributes.name ?? ''}
         onChangeText={value => updateAttribute('name', value)}
         testID="text-input-element-name"
+      />
+      <NumberField
+        keyboard-type="number-pad"
+        label="Order"
+        value={String(elementAttributes['display-order']) ?? ''}
+        onChangeText={value => updateAttribute('display-order', Number(value))}
+        testID="number-input-order"
       />
       {elementAttributes['element-type'] === ELEMENT_TYPES.FIELD.key && (
         <>

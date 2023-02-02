@@ -300,4 +300,77 @@ describe('edit elements', () => {
 
     cy.contains(updatedButtonName).should('not.exist');
   });
+
+  it('allows ordering elements', () => {
+    const fieldA = Factory.field({
+      name: 'Field A',
+      'data-type': FIELD_DATA_TYPES.TEXT.key,
+      'show-in-summary': true,
+    });
+    const fieldB = Factory.field({
+      name: 'Field B',
+      'data-type': FIELD_DATA_TYPES.TEXT.key,
+      'show-in-summary': true,
+    });
+    const card = Factory.card({
+      [fieldA.id]: 'Value A',
+      [fieldB.id]: 'Value B',
+    });
+
+    cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+      data: [fieldA, fieldB],
+    });
+    cy.intercept(`http://cypressapi/boards/${board.id}/cards?`, {
+      data: [card],
+    });
+
+    cy.visit('/');
+    cy.contains('Video Games').click();
+
+    cy.assertContentsOrder('[data-testid="field-value"]', [
+      'Value A',
+      'Value B',
+    ]);
+
+    cy.get('[aria-label="Board Menu"]').click();
+    cy.contains('Edit Elements').click({force: true});
+
+    cy.get('[aria-label="Edit Field A field"]').click();
+    cy.get('[data-testid="number-input-order"]').type(2);
+    const orderedFieldA = Factory.field({'display-order': 2}, fieldA);
+    cy.intercept('PATCH', `http://cypressapi/elements/${fieldA.id}?`, {
+      success: true,
+    }).as('updateFieldA');
+    cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+      data: [orderedFieldA, fieldB],
+    });
+    cy.contains('Save Element').click();
+    cy.wait('@updateFieldA')
+      .its('request.body')
+      .should('deep.equal', {data: orderedFieldA});
+    cy.contains('Save Element').should('not.exist');
+
+    cy.get('[aria-label="Edit Field B field"]').click();
+    cy.get('[data-testid="number-input-order"]').type(1);
+    const orderedFieldB = Factory.field({'display-order': 1}, fieldB);
+    cy.intercept('PATCH', `http://cypressapi/elements/${fieldB.id}?`, {
+      success: true,
+    }).as('updateFieldB');
+    cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+      data: [orderedFieldA, orderedFieldB],
+    });
+    cy.contains('Save Element').click();
+    cy.wait('@updateFieldB')
+      .its('request.body')
+      .should('deep.equal', {data: orderedFieldB});
+    cy.contains('Save Element').should('not.exist');
+
+    cy.contains('Done Editing Elements').click();
+
+    // confirm new field order in summary
+    cy.assertContentsOrder('[data-testid="field-value"]', [
+      'Value B',
+      'Value A',
+    ]);
+  });
 });

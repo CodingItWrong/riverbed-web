@@ -1,4 +1,5 @@
 import {useQuery} from '@tanstack/react-query';
+import {View} from 'react-native';
 import Card from '../../components/Card';
 import Field from '../../components/Field';
 import Text from '../../components/Text';
@@ -16,6 +17,7 @@ export default function CardSummary({card, board, onPress, style}) {
     elements.filter(field => field.attributes['show-in-summary']),
   );
 
+  // TODO: field wrapper test ID should be in Field component
   return (
     <Card
       key={card.id}
@@ -25,12 +27,13 @@ export default function CardSummary({card, board, onPress, style}) {
     >
       {fieldsToShow.length > 0 ? (
         fieldsToShow.map(field => (
-          <Field
-            key={field.id}
-            field={field}
-            value={card.attributes['field-values'][field.id]}
-            readOnly
-          />
+          <View key={field.id} testID="field-value">
+            <Field
+              field={field}
+              value={card.attributes['field-values'][field.id]}
+              readOnly
+            />
+          </View>
         ))
       ) : (
         <Text>(no fields to show!)</Text>
