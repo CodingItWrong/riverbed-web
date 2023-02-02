@@ -15,7 +15,7 @@ class HttpClient {
   }
 
   async get(url) {
-    const response = await fetch(this.#fullUrl(url), {
+    const response = await fetch(this._fullUrl(url), {
       method: 'GET',
       headers: this.headers,
     });
@@ -24,7 +24,7 @@ class HttpClient {
   }
 
   async post(url, body, {headers} = {}) {
-    const response = await fetch(this.#fullUrl(url), {
+    const response = await fetch(this._fullUrl(url), {
       method: 'POST',
       headers: {...this.headers, ...headers},
       body: JSON.stringify(body),
@@ -34,7 +34,7 @@ class HttpClient {
   }
 
   async patch(url, body, {headers} = {}) {
-    const response = await fetch(this.#fullUrl(url), {
+    const response = await fetch(this._fullUrl(url), {
       method: 'PATCH',
       headers: {...this.headers, ...headers},
       body: JSON.stringify(body),
@@ -44,7 +44,7 @@ class HttpClient {
   }
 
   async delete(url, body, {headers} = {}) {
-    const response = await fetch(this.#fullUrl(url), {
+    const response = await fetch(this._fullUrl(url), {
       method: 'DELETE',
       headers: {...this.headers, ...headers},
       body: JSON.stringify(body),
@@ -57,7 +57,7 @@ class HttpClient {
     }
   }
 
-  #fullUrl(url) {
+  _fullUrl(url) {
     if (url.match(/^https?:\/\//)) {
       return url;
     }
