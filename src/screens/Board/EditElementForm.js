@@ -76,8 +76,14 @@ export default function EditElementForm({
       <NumberField
         keyboard-type="number-pad"
         label="Order"
-        value={String(elementAttributes['display-order']) ?? ''}
-        onChangeText={value => updateAttribute('display-order', Number(value))}
+        value={
+          elementAttributes['display-order'] == null
+            ? ''
+            : String(elementAttributes['display-order'])
+        }
+        onChangeText={value =>
+          updateAttribute('display-order', value === '' ? null : Number(value))
+        }
         testID="number-input-order"
       />
       {elementAttributes['element-type'] === ELEMENT_TYPES.FIELD.key && (
