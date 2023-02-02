@@ -3,7 +3,7 @@ import sortBy from 'lodash.sortby';
 import {useState} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {KeyboardAwareFlatList} from 'react-native-keyboard-aware-scroll-view';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {large, useBreakpoint} from '../../breakpoints';
 import Button from '../../components/Button';
 import IconButton from '../../components/IconButton';
@@ -20,6 +20,7 @@ import CardSummary from './CardSummary';
 import EditColumnForm from './EditColumnForm';
 
 export default function ColumnList({board}) {
+  const insets = useSafeAreaInsets();
   const queryClient = useQueryClient();
   const elementClient = useElements();
   const columnClient = useColumns();
@@ -147,61 +148,61 @@ export default function ColumnList({board}) {
             const isLastColumn = columnIndex === columns.length - 1;
 
             return (
-              <SafeAreaView key={column.id} edges={['right', 'bottom', 'left']}>
-                <View
-                  testID={`column-${column.id}`}
-                  style={[columnStyle, sharedStyles.fullHeight]}
-                >
-                  <View style={sharedStyles.row}>
-                    <Text variant="titleLarge">
-                      {name ?? '(unnamed column)'} ({columnCards.length})
-                    </Text>
-                    <IconButton
-                      icon="pencil"
-                      onPress={() => setSelectedColumnId(column.id)}
-                      accessibilityLabel="Edit Column"
-                    />
-                    {isLastColumn && (
-                      <>
-                        <View style={styles.spacer} />
-                        <IconButton
-                          icon="plus"
-                          accessibilityLabel="Add Column"
-                          disabled={isAddingColumn}
-                          onPress={addColumn}
-                        />
-                      </>
-                    )}
-                  </View>
-                  <KeyboardAwareFlatList
-                    extraScrollHeight={EXPERIMENTAL_EXTRA_SCROLL_HEIGHT}
-                    data={columnCards}
-                    keyExtractor={card => card.id}
-                    renderItem={({item: card}) => {
-                      if (selectedCardId === card.id) {
-                        return (
-                          <CardDetail
-                            card={card}
-                            board={board}
-                            onChange={onChangeCard}
-                            onCancel={hideDetail}
-                            style={sharedStyles.mt}
-                          />
-                        );
-                      } else {
-                        return (
-                          <CardSummary
-                            card={card}
-                            board={board}
-                            onPress={() => showDetail(card.id)}
-                            style={sharedStyles.mt}
-                          />
-                        );
-                      }
-                    }}
+              <View
+                key={column.id}
+                testID={`column-${column.id}`}
+                style={[columnStyle, sharedStyles.fullHeight]}
+              >
+                <View style={sharedStyles.row}>
+                  <Text variant="titleLarge">
+                    {name ?? '(unnamed column)'} ({columnCards.length})
+                  </Text>
+                  <IconButton
+                    icon="pencil"
+                    onPress={() => setSelectedColumnId(column.id)}
+                    accessibilityLabel="Edit Column"
                   />
+                  {isLastColumn && (
+                    <>
+                      <View style={styles.spacer} />
+                      <IconButton
+                        icon="plus"
+                        accessibilityLabel="Add Column"
+                        disabled={isAddingColumn}
+                        onPress={addColumn}
+                      />
+                    </>
+                  )}
                 </View>
-              </SafeAreaView>
+                <KeyboardAwareFlatList
+                  extraScrollHeight={EXPERIMENTAL_EXTRA_SCROLL_HEIGHT}
+                  data={columnCards}
+                  keyExtractor={card => card.id}
+                  contentContainerStyle={{paddingBottom: insets.bottom}}
+                  renderItem={({item: card}) => {
+                    if (selectedCardId === card.id) {
+                      return (
+                        <CardDetail
+                          card={card}
+                          board={board}
+                          onChange={onChangeCard}
+                          onCancel={hideDetail}
+                          style={sharedStyles.mt}
+                        />
+                      );
+                    } else {
+                      return (
+                        <CardSummary
+                          card={card}
+                          board={board}
+                          onPress={() => showDetail(card.id)}
+                          style={sharedStyles.mt}
+                        />
+                      );
+                    }
+                  }}
+                />
+              </View>
             );
           }
         })}
