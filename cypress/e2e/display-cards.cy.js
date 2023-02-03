@@ -26,17 +26,21 @@ describe('display cards', () => {
 
     const releasedColumn = Factory.column({
       name: 'Released',
-      'card-inclusion-condition': {
-        field: releasedAtField.id,
-        query: QUERIES.IS_NOT_EMPTY.key,
-      },
+      'card-inclusion-conditions': [
+        {
+          field: releasedAtField.id,
+          query: QUERIES.IS_NOT_EMPTY.key,
+        },
+      ],
     });
     const unreleasedColumn = Factory.column({
       name: 'Unreleased',
-      'card-inclusion-condition': {
-        field: releasedAtField.id,
-        query: QUERIES.IS_EMPTY.key,
-      },
+      'card-inclusion-conditions': [
+        {
+          field: releasedAtField.id,
+          query: QUERIES.IS_EMPTY.key,
+        },
+      ],
     });
 
     const cards = [
