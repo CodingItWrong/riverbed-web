@@ -12,7 +12,7 @@ import {useElements} from '../../data/elements';
 import COMMANDS from '../../enums/commands';
 import ELEMENT_TYPES from '../../enums/elementTypes';
 import VALUES from '../../enums/values';
-import checkCondition from '../../utils/checkCondition';
+import checkConditions from '../../utils/checkConditions';
 import sortElements from '../../utils/sortElements';
 
 export default function CardDetail({card, board, onChange, onCancel, style}) {
@@ -28,9 +28,9 @@ export default function CardDetail({card, board, onChange, onCancel, style}) {
 
   const elementsToShow = sortElements(
     elements.filter(element =>
-      checkCondition({
+      checkConditions({
         card,
-        condition: element.attributes['show-condition'],
+        conditions: [element.attributes['show-condition']],
       }),
     ),
   );
