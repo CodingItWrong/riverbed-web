@@ -1,6 +1,7 @@
 import {useMutation, useQuery} from '@tanstack/react-query';
 import set from 'lodash.set';
 import {useState} from 'react';
+import {View} from 'react-native';
 import Button from '../../components/Button';
 import Card from '../../components/Card';
 import Dropdown from '../../components/DropdownField';
@@ -116,7 +117,7 @@ function CardInclusionCondition({board, attributes, updateAttribute}) {
     <Card style={sharedStyles.mt}>
       <Text>Cards to Include</Text>
       {conditions.map((condition, index) => (
-        <>
+        <View key={`condition-${index}`}>
           <Dropdown
             fieldLabel="Show Query"
             emptyLabel="(choose)"
@@ -147,7 +148,7 @@ function CardInclusionCondition({board, attributes, updateAttribute}) {
             labelExtractor={field => field.attributes.name}
             style={sharedStyles.mt}
           />
-        </>
+        </View>
       ))}
       <Button onPress={addFilter}>Add Filter</Button>
     </Card>
