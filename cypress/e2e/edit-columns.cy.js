@@ -24,22 +24,24 @@ describe('edit columns', () => {
     'show-in-summary': false,
   });
 
-  const firstCardTitle = 'Danganronpoa';
-  const secondCardTitle = 'Final Fantasy 7';
-  const thirdCardTitle = 'Disco Elysium';
+  const unownedTitle = 'Unowned Game';
+  const unplayedTitle = 'Unplayed Game';
+  const playedTitle = 'Played Game';
 
-  const firstCard = Factory.card({
-    [titleField.id]: firstCardTitle,
+  const unownedCard = Factory.card({
+    [titleField.id]: unownedTitle,
     [purchaseDate.id]: null,
+    [completeDate.id]: null,
   });
-  const secondCard = Factory.card({
-    [titleField.id]: secondCardTitle,
+  const unplayedCard = Factory.card({
+    [titleField.id]: unplayedTitle,
+    [purchaseDate.id]: '2023-01-01',
+    [completeDate.id]: null,
+  });
+  const playedCard = Factory.card({
+    [titleField.id]: playedTitle,
     [purchaseDate.id]: '1998-01-01',
     [completeDate.id]: '1999-01-01',
-  });
-  const thirdCard = Factory.card({
-    [titleField.id]: thirdCardTitle,
-    [purchaseDate.id]: '2023-01-01',
   });
   const newColumn = Factory.column({});
   const columnName = 'All';
@@ -59,7 +61,7 @@ describe('edit columns', () => {
       data: [],
     });
     cy.intercept('GET', `${apiUrl}/boards/${board.id}/cards?`, {
-      data: [firstCard, secondCard, thirdCard],
+      data: [unownedCard, unplayedCard, playedCard],
     });
 
     // go to Video Games board
@@ -121,8 +123,9 @@ describe('edit columns', () => {
 
     // confirm default sort order
     cy.assertContentsOrder(`[data-testid=field-${titleField.id}]`, [
-      firstCardTitle,
-      secondCardTitle,
+      unownedTitle,
+      unplayedTitle,
+      playedTitle,
     ]);
 
     // set sort
@@ -154,9 +157,9 @@ describe('edit columns', () => {
 
     // confirm sort order has reversed
     cy.assertContentsOrder(`[data-testid=field-${titleField.id}]`, [
-      secondCardTitle,
-      thirdCardTitle,
-      firstCardTitle,
+      unplayedTitle,
+      unownedTitle,
+      playedTitle,
     ]);
   }
 
@@ -197,9 +200,9 @@ describe('edit columns', () => {
     cy.contains('Save Column').should('not.exist');
 
     // confirm correct cards filtered out
-    cy.contains(firstCardTitle).should('not.exist');
-    cy.contains(secondCardTitle).should('exist');
-    cy.contains(thirdCardTitle).should('exist');
+    cy.contains(unownedTitle).should('not.exist');
+    cy.contains(unplayedTitle).should('exist');
+    cy.contains(playedTitle).should('exist');
   }
 
   function deleteColumn() {
