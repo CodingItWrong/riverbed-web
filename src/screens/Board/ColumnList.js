@@ -14,7 +14,7 @@ import {useCards} from '../../data/cards';
 import {useColumns} from '../../data/columns';
 import {useElements} from '../../data/elements';
 import SORT_DIRECTIONS from '../../enums/sortDirections';
-import checkCondition from '../../utils/checkCondition';
+import checkConditions from '../../utils/checkConditions';
 import CardDetail from './CardDetail';
 import CardSummary from './CardSummary';
 import EditColumnForm from './EditColumnForm';
@@ -126,11 +126,11 @@ export default function ColumnList({board}) {
             const {
               name,
               'card-sort-order': cardSortOrder,
-              'card-inclusion-condition': cardInclusionCondition,
+              'card-inclusion-conditions': cardInclusionConditions,
             } = column.attributes;
 
             const filteredCards = cards.filter(card =>
-              checkCondition({card, condition: cardInclusionCondition}),
+              checkConditions({card, conditions: cardInclusionConditions}),
             );
             let columnCards;
 
