@@ -13,7 +13,7 @@ import COMMANDS from '../../enums/commands';
 import ELEMENT_TYPES from '../../enums/elementTypes';
 import VALUES from '../../enums/values';
 import checkConditions from '../../utils/checkConditions';
-import sortElements from '../../utils/sortElements';
+import sortByDisplayOrder from '../../utils/sortByDisplayOrder';
 
 export default function CardDetail({card, board, onChange, onCancel, style}) {
   const cardClient = useCards();
@@ -26,7 +26,7 @@ export default function CardDetail({card, board, onChange, onCancel, style}) {
     elementClient.related({parent: board}).then(resp => resp.data),
   );
 
-  const elementsToShow = sortElements(
+  const elementsToShow = sortByDisplayOrder(
     elements.filter(element =>
       checkConditions({
         card,

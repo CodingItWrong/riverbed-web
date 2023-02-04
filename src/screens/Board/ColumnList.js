@@ -15,6 +15,7 @@ import {useColumns} from '../../data/columns';
 import {useElements} from '../../data/elements';
 import SORT_DIRECTIONS from '../../enums/sortDirections';
 import checkConditions from '../../utils/checkConditions';
+import sortByDisplayOrder from '../../utils/sortByDisplayOrder';
 import CardDetail from './CardDetail';
 import CardSummary from './CardSummary';
 import EditColumnForm from './EditColumnForm';
@@ -103,6 +104,8 @@ export default function ColumnList({board}) {
     );
   }
 
+  const sortedColumns = sortByDisplayOrder(columns);
+
   return (
     <View style={sharedStyles.fullHeight}>
       <View style={[styles.buttonContainer, responsiveButtonContainerStyle]}>
@@ -111,7 +114,7 @@ export default function ColumnList({board}) {
         </Button>
       </View>
       <ScrollView horizontal pagingEnabled style={sharedStyles.fullHeight}>
-        {columns.map((column, columnIndex) => {
+        {sortedColumns.map((column, columnIndex) => {
           if (selectedColumnId === column.id) {
             return (
               <EditColumnForm
@@ -163,7 +166,7 @@ export default function ColumnList({board}) {
                 ]}
               >
                 <View style={[sharedStyles.row, styles.columnPadding]}>
-                  <Text variant="titleLarge">
+                  <Text variant="titleLarge" testID="column-name">
                     {name ?? '(unnamed column)'} ({columnCards.length})
                   </Text>
                   <IconButton

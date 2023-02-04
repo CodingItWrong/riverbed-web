@@ -13,7 +13,7 @@ import sharedStyles, {useColumnStyle} from '../../components/sharedStyles';
 import {useElements} from '../../data/elements';
 import ELEMENT_TYPES from '../../enums/elementTypes';
 import FIELD_DATA_TYPES from '../../enums/fieldDataTypes';
-import sortElements from '../../utils/sortElements';
+import sortElements from '../../utils/sortByDisplayOrder';
 import EditElementForm from './EditElementForm';
 
 export default function ElementList({board, onClose}) {

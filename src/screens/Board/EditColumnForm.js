@@ -5,6 +5,7 @@ import {View} from 'react-native';
 import Button from '../../components/Button';
 import Card from '../../components/Card';
 import Dropdown from '../../components/DropdownField';
+import NumberField from '../../components/NumberField';
 import Text from '../../components/Text';
 import TextField from '../../components/TextField';
 import sharedStyles from '../../components/sharedStyles';
@@ -58,6 +59,19 @@ export default function EditColumnForm({
         value={attributes.name ?? ''}
         onChangeText={value => updateAttribute('name', value)}
         testID="text-input-column-name"
+      />
+      <NumberField
+        keyboard-type="number-pad"
+        label="Order"
+        value={
+          attributes['display-order'] == null
+            ? ''
+            : String(attributes['display-order'])
+        }
+        onChangeText={value =>
+          updateAttribute('display-order', value === '' ? null : Number(value))
+        }
+        testID="number-input-order"
       />
       <CardInclusionCondition
         board={board}

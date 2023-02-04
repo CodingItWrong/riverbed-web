@@ -236,4 +236,81 @@ describe('edit columns', () => {
     // confirm the column is gone
     cy.contains(columnName).should('not.exist');
   }
+
+  it('allows ordering columns', () => {
+    const columnA = Factory.column({name: 'Column A', displayOrder: 1});
+    const columnB = Factory.column({name: 'Column B', displayOrder: 2});
+
+    cy.intercept('GET', 'http://cypressapi/boards?', {
+      data: [board],
+    });
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}?`, {
+      data: board,
+    });
+    cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+      data: [],
+    });
+    cy.intercept(`http://cypressapi/boards/${board.id}/cards?`, {
+      data: [],
+    });
+    cy.intercept(`http://cypressapi/boards/${board.id}/columns?`, {
+      data: [columnA, columnB],
+    });
+
+    cy.visit('/');
+    cy.contains('Video Games').click();
+
+    // confirm initial order
+    cy.assertContentsOrder('[data-testid="column-name"]', [
+      'Column A',
+      'Column B',
+    ]);
+
+    // change order
+    cy.get('[aria-label="Edit Column"]').eq(0).click();
+    cy.get('[data-testid=number-input-order]').type(2);
+
+    const updatedColumnA = Factory.column(
+      {
+        'display-order': 2,
+      },
+      columnA,
+    );
+    cy.intercept('PATCH', `${apiUrl}/columns/${columnA.id}?`, successJson).as(
+      'updateColumnA',
+    );
+    cy.intercept('GET', `${apiUrl}/boards/${board.id}/columns?`, {
+      data: [updatedColumnA, columnB],
+    });
+    cy.contains('Save Column').click();
+    cy.wait('@updateColumnA')
+      .its('request.body')
+      .should('deep.equal', {data: updatedColumnA});
+
+    cy.get('[aria-label="Edit Column"]').eq(1).click();
+    cy.get('[data-testid=number-input-order]').type(1);
+
+    const updatedColumnB = Factory.column(
+      {
+        'display-order': 1,
+      },
+      columnB,
+    );
+    cy.intercept('PATCH', `${apiUrl}/columns/${columnB.id}?`, successJson).as(
+      'updateColumnB',
+    );
+    cy.intercept('GET', `${apiUrl}/boards/${board.id}/columns?`, {
+      data: [updatedColumnA, updatedColumnB],
+    });
+    cy.contains('Save Column').click();
+    cy.wait('@updateColumnB')
+      .its('request.body')
+      .should('deep.equal', {data: updatedColumnB});
+
+    // confirm updated order
+    cy.assertContentsOrder('[data-testid="column-name"]', [
+      'Column B',
+      'Column A',
+    ]);
+  });
 });

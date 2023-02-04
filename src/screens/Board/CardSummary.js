@@ -4,7 +4,7 @@ import Card from '../../components/Card';
 import Field from '../../components/Field';
 import Text from '../../components/Text';
 import {useElements} from '../../data/elements';
-import sortElements from '../../utils/sortElements';
+import sortElements from '../../utils/sortByDisplayOrder';
 
 export default function CardSummary({card, board, onPress, style}) {
   const elementClient = useElements();
