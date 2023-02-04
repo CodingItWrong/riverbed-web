@@ -59,13 +59,11 @@ export default function BoardList() {
                 </Card>
               )}
             />
-            <Button
-              onPress={addBoard}
-              disabled={isAdding}
-              style={sharedStyles.mt}
-            >
-              Add Board
-            </Button>
+            <View style={sharedStyles.columnPadding}>
+              <Button onPress={addBoard} disabled={isAdding}>
+                Add Board
+              </Button>
+            </View>
           </SafeAreaView>
         )}
       </View>
