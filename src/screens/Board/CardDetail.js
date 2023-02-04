@@ -31,6 +31,7 @@ export default function CardDetail({card, board, onChange, onCancel, style}) {
       checkConditions({
         card,
         conditions: [element.attributes['show-condition']],
+        elements,
       }),
     ),
   );

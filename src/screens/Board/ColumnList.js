@@ -29,8 +29,9 @@ export default function ColumnList({board}) {
   const [selectedCardId, setSelectedCardId] = useState(null);
   const [selectedColumnId, setSelectedColumnId] = useState(null);
 
-  const {isLoading: isLoadingElements} = useQuery(['elements', board.id], () =>
-    elementClient.related({parent: board}).then(resp => resp.data),
+  const {data: elements, isLoading: isLoadingElements} = useQuery(
+    ['elements', board.id],
+    () => elementClient.related({parent: board}).then(resp => resp.data),
   );
   const {data: columns = [], isLoading: isLoadingColumns} = useQuery(
     ['columns', board.id],
@@ -130,7 +131,11 @@ export default function ColumnList({board}) {
             } = column.attributes;
 
             const filteredCards = cards.filter(card =>
-              checkConditions({card, conditions: cardInclusionConditions}),
+              checkConditions({
+                card,
+                conditions: cardInclusionConditions,
+                elements,
+              }),
             );
             let columnCards;
 
