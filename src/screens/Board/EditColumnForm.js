@@ -1,7 +1,8 @@
 import {useMutation, useQuery} from '@tanstack/react-query';
 import set from 'lodash.set';
 import {useState} from 'react';
-import {View} from 'react-native';
+import {ScrollView, View} from 'react-native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Button from '../../components/Button';
 import Card from '../../components/Card';
 import Dropdown from '../../components/DropdownField';
@@ -22,6 +23,7 @@ export default function EditColumnForm({
   onCancel,
   style,
 }) {
+  const insets = useSafeAreaInsets();
   const columnClient = useColumns();
   const [attributes, setAttributes] = useState(column.attributes);
 
@@ -53,55 +55,63 @@ export default function EditColumnForm({
   const isLoading = isSaving || isDeleting;
 
   return (
-    <Card style={style}>
-      <TextField
-        label="Column Name"
-        value={attributes.name ?? ''}
-        onChangeText={value => updateAttribute('name', value)}
-        testID="text-input-column-name"
-      />
-      <NumberField
-        keyboard-type="number-pad"
-        label="Order"
-        value={
-          attributes['display-order'] == null
-            ? ''
-            : String(attributes['display-order'])
-        }
-        onChangeText={value =>
-          updateAttribute('display-order', value === '' ? null : Number(value))
-        }
-        testID="number-input-order"
-      />
-      <CardInclusionCondition
-        board={board}
-        attributes={attributes}
-        updateAttribute={updateAttribute}
-      />
-      <ColumnSortOrder
-        board={board}
-        attributes={attributes}
-        updateAttribute={updateAttribute}
-      />
-      <Button onPress={onCancel} disabled={isLoading} style={sharedStyles.mt}>
-        Cancel
-      </Button>
-      <Button
-        onPress={deleteColumn}
-        disabled={isLoading}
-        style={sharedStyles.mt}
-      >
-        Delete Column
-      </Button>
-      <Button
-        mode="primary"
-        onPress={updateColumn}
-        disabled={isLoading}
-        style={sharedStyles.mt}
-      >
-        Save Column
-      </Button>
-    </Card>
+    <ScrollView
+      contentContainerStyle={{paddingBottom: insets.bottom}}
+      scrollIndicatorInsets={{bottom: insets.bottom}}
+    >
+      <Card style={style}>
+        <TextField
+          label="Column Name"
+          value={attributes.name ?? ''}
+          onChangeText={value => updateAttribute('name', value)}
+          testID="text-input-column-name"
+        />
+        <NumberField
+          keyboard-type="number-pad"
+          label="Order"
+          value={
+            attributes['display-order'] == null
+              ? ''
+              : String(attributes['display-order'])
+          }
+          onChangeText={value =>
+            updateAttribute(
+              'display-order',
+              value === '' ? null : Number(value),
+            )
+          }
+          testID="number-input-order"
+        />
+        <CardInclusionCondition
+          board={board}
+          attributes={attributes}
+          updateAttribute={updateAttribute}
+        />
+        <ColumnSortOrder
+          board={board}
+          attributes={attributes}
+          updateAttribute={updateAttribute}
+        />
+        <Button onPress={onCancel} disabled={isLoading} style={sharedStyles.mt}>
+          Cancel
+        </Button>
+        <Button
+          onPress={deleteColumn}
+          disabled={isLoading}
+          style={sharedStyles.mt}
+        >
+          Delete Column
+        </Button>
+        <Button
+          mode="primary"
+          onPress={updateColumn}
+          disabled={isLoading}
+          style={sharedStyles.mt}
+        >
+          Save Column
+        </Button>
+      </Card>
+    </ScrollView>
   );
 }
 
