@@ -4,9 +4,9 @@ import {useState} from 'react';
 import Button from '../../components/Button';
 import Card from '../../components/Card';
 import Dropdown from '../../components/DropdownField';
+import FormGroup from '../../components/FormGroup';
 import LabeledCheckbox from '../../components/LabeledCheckbox';
 import NumberField from '../../components/NumberField';
-import Text from '../../components/Text';
 import TextField from '../../components/TextField';
 import sharedStyles from '../../components/sharedStyles';
 import {useElements} from '../../data/elements';
@@ -167,8 +167,7 @@ function ActionInputs({elementAttributes, updateAttribute, fields}) {
   const valueOptions = Object.values(VALUES);
 
   return (
-    <Card style={sharedStyles.mt}>
-      <Text>Click Action</Text>
+    <FormGroup title="Click Action">
       <Dropdown
         fieldLabel="Command"
         emptyLabel="(choose)"
@@ -199,7 +198,7 @@ function ActionInputs({elementAttributes, updateAttribute, fields}) {
         onValueChange={option => updateAttribute('action.value', option.key)}
         style={sharedStyles.mt}
       />
-    </Card>
+    </FormGroup>
   );
 }
 
@@ -207,8 +206,7 @@ function ShowConditionInputs({elementAttributes, updateAttribute, fields}) {
   const queryOptions = Object.values(QUERIES);
 
   return (
-    <Card style={sharedStyles.mt}>
-      <Text>Show Condition</Text>
+    <FormGroup title="Show Condition">
       <Dropdown
         fieldLabel="Show Query"
         emptyLabel="(choose)"
@@ -237,6 +235,6 @@ function ShowConditionInputs({elementAttributes, updateAttribute, fields}) {
         labelExtractor={field => field.attributes.name}
         style={sharedStyles.mt}
       />
-    </Card>
+    </FormGroup>
   );
 }

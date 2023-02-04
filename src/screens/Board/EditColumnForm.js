@@ -6,6 +6,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Button from '../../components/Button';
 import Card from '../../components/Card';
 import Dropdown from '../../components/DropdownField';
+import FormGroup from '../../components/FormGroup';
 import NumberField from '../../components/NumberField';
 import Text from '../../components/Text';
 import TextField from '../../components/TextField';
@@ -139,8 +140,7 @@ function CardInclusionCondition({board, attributes, updateAttribute}) {
   // - test removing a filter
   // - refactor visuals incl field names
   return (
-    <Card style={sharedStyles.mt}>
-      <Text>Cards to Include</Text>
+    <FormGroup title="Cards to Include">
       {conditions.map((condition, index) => (
         <View key={`condition-${index}`}>
           <Dropdown
@@ -176,7 +176,7 @@ function CardInclusionCondition({board, attributes, updateAttribute}) {
         </View>
       ))}
       <Button onPress={addFilter}>Add Filter</Button>
-    </Card>
+    </FormGroup>
   );
 }
 
@@ -192,8 +192,7 @@ function ColumnSortOrder({board, attributes, updateAttribute}) {
   const sortDirectionOptions = Object.values(SORT_DIRECTIONS);
 
   return (
-    <Card style={sharedStyles.mt}>
-      <Text>Sort Order</Text>
+    <FormGroup title="Sort Order">
       <Dropdown
         fieldLabel="Sort Field"
         emptyLabel="(choose)"
@@ -221,6 +220,6 @@ function ColumnSortOrder({board, attributes, updateAttribute}) {
         labelExtractor={direction => direction.label}
         style={sharedStyles.mt}
       />
-    </Card>
+    </FormGroup>
   );
 }
