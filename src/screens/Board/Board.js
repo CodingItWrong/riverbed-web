@@ -1,7 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import {useQuery} from '@tanstack/react-query';
 import {useCallback, useEffect, useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {View} from 'react-native';
 import DropdownMenu from '../../components/DropdownMenu';
 import IconButton from '../../components/IconButton';
 import LoadingIndicator from '../../components/LoadingIndicator';
@@ -91,9 +91,3 @@ export default function Board({route}) {
     </ScreenBackground>
   );
 }
-
-const styles = StyleSheet.create({
-  spacer: {
-    flex: 1,
-  },
-});

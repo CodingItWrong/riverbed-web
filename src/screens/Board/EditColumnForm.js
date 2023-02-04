@@ -8,7 +8,6 @@ import Card from '../../components/Card';
 import Dropdown from '../../components/DropdownField';
 import FormGroup from '../../components/FormGroup';
 import NumberField from '../../components/NumberField';
-import Text from '../../components/Text';
 import TextField from '../../components/TextField';
 import sharedStyles from '../../components/sharedStyles';
 import {useColumns} from '../../data/columns';
