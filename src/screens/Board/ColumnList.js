@@ -153,8 +153,6 @@ export default function ColumnList({board}) {
               columnCards = filteredCards;
             }
 
-            const isLastColumn = columnIndex === columns.length - 1;
-
             return (
               <View
                 key={column.id}
@@ -174,17 +172,6 @@ export default function ColumnList({board}) {
                     onPress={() => setSelectedColumnId(column.id)}
                     accessibilityLabel="Edit Column"
                   />
-                  {isLastColumn && (
-                    <>
-                      <View style={styles.spacer} />
-                      <IconButton
-                        icon="plus"
-                        accessibilityLabel="Add Column"
-                        disabled={isAddingColumn}
-                        onPress={addColumn}
-                      />
-                    </>
-                  )}
                 </View>
                 <KeyboardAwareFlatList
                   extraScrollHeight={EXPERIMENTAL_EXTRA_SCROLL_HEIGHT}
@@ -222,14 +209,13 @@ export default function ColumnList({board}) {
             );
           }
         })}
-        {columns.length === 0 && (
-          <IconButton
-            icon="plus"
-            accessibilityLabel="Add Column"
-            onPress={addColumn}
-            disabled={isAddingColumn}
-          />
-        )}
+        <View style={[columnWidthStyle, sharedStyles.columnPadding]}>
+          <View style={responsiveButtonContainerStyle}>
+            <Button onPress={addColumn} disabled={isAddingColumn}>
+              Add Column
+            </Button>
+          </View>
+        </View>
       </ScrollView>
     </View>
   );

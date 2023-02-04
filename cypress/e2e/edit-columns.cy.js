@@ -85,7 +85,7 @@ describe('edit columns', () => {
       data: [newColumn],
     });
 
-    cy.get('[aria-label="Add Column"]').click();
+    cy.contains('Add Column').click();
     cy.wait('@addColumn')
       .its('request.body')
       .should('deep.equal', {
