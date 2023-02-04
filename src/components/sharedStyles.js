@@ -2,14 +2,23 @@ import {StyleSheet, useWindowDimensions} from 'react-native';
 import {large, useBreakpoint} from '../breakpoints';
 
 const sharedStyles = StyleSheet.create({
+  columnPadding: {
+    padding: 8,
+  },
   fill: {
     flex: 1,
   },
   fullHeight: {
     flex: 1,
   },
+  mb: {
+    marginBottom: 8,
+  },
   mt: {
     marginTop: 8,
+  },
+  noPadding: {
+    padding: 0,
   },
   row: {
     flexDirection: 'row',

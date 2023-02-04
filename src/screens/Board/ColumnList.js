@@ -165,7 +165,7 @@ export default function ColumnList({board}) {
                   styles.columnWrapper,
                 ]}
               >
-                <View style={[sharedStyles.row, styles.columnPadding]}>
+                <View style={[sharedStyles.row, sharedStyles.columnPadding]}>
                   <Text variant="titleLarge" testID="column-name">
                     {name ?? '(unnamed column)'} ({columnCards.length})
                   </Text>
@@ -191,7 +191,7 @@ export default function ColumnList({board}) {
                   data={columnCards}
                   keyExtractor={card => card.id}
                   contentContainerStyle={[
-                    styles.columnPadding,
+                    sharedStyles.columnPadding,
                     {paddingBottom: insets.bottom},
                   ]}
                   scrollIndicatorInsets={{bottom: insets.bottom}}
@@ -203,7 +203,7 @@ export default function ColumnList({board}) {
                           board={board}
                           onChange={onChangeCard}
                           onCancel={hideDetail}
-                          style={sharedStyles.mt}
+                          style={sharedStyles.mb}
                         />
                       );
                     } else {
@@ -212,7 +212,7 @@ export default function ColumnList({board}) {
                           card={card}
                           board={board}
                           onPress={() => showDetail(card.id)}
-                          style={sharedStyles.mt}
+                          style={sharedStyles.mb}
                         />
                       );
                     }
@@ -247,8 +247,5 @@ const styles = StyleSheet.create({
   },
   columnWrapper: {
     padding: 0, // no idea why this is needed. does View have default padding?
-  },
-  columnPadding: {
-    paddingHorizontal: 8,
   },
 });

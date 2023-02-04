@@ -1,6 +1,7 @@
 import {useMutation, useQueryClient} from '@tanstack/react-query';
 import set from 'lodash.set';
 import {useState} from 'react';
+import {View} from 'react-native';
 import Button from '../../components/Button';
 import Card from '../../components/Card';
 import TextField from '../../components/TextField';
@@ -51,42 +52,44 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
   const columnStyle = useColumnStyle();
 
   return (
-    <Card style={columnStyle}>
-      <TextField
-        label="Name"
-        value={attributes.name ?? ''}
-        onChangeText={value => updateAttribute('name', value)}
-        testID="text-input-board-name"
-        style={sharedStyles.mt}
-      />
-      <Button onPress={onCancel} disabled={isLoading} style={sharedStyles.mt}>
-        Cancel
-      </Button>
-      {confirmingDelete ? (
+    <View style={sharedStyles.columnPadding}>
+      <Card style={columnStyle}>
+        <TextField
+          label="Name"
+          value={attributes.name ?? ''}
+          onChangeText={value => updateAttribute('name', value)}
+          testID="text-input-board-name"
+          style={sharedStyles.mt}
+        />
+        <Button onPress={onCancel} disabled={isLoading} style={sharedStyles.mt}>
+          Cancel
+        </Button>
+        {confirmingDelete ? (
+          <Button
+            onPress={deleteBoard}
+            disabled={isLoading}
+            style={sharedStyles.mt}
+          >
+            Confirm Delete Board
+          </Button>
+        ) : (
+          <Button
+            onPress={() => setConfirmingDelete(true)}
+            disabled={isLoading}
+            style={sharedStyles.mt}
+          >
+            Delete Board
+          </Button>
+        )}
         <Button
-          onPress={deleteBoard}
+          mode="primary"
+          onPress={updateBoard}
           disabled={isLoading}
           style={sharedStyles.mt}
         >
-          Confirm Delete Board
+          Save Board
         </Button>
-      ) : (
-        <Button
-          onPress={() => setConfirmingDelete(true)}
-          disabled={isLoading}
-          style={sharedStyles.mt}
-        >
-          Delete Board
-        </Button>
-      )}
-      <Button
-        mode="primary"
-        onPress={updateBoard}
-        disabled={isLoading}
-        style={sharedStyles.mt}
-      >
-        Save Board
-      </Button>
-    </Card>
+      </Card>
+    </View>
   );
 }

@@ -56,7 +56,10 @@ export default function EditColumnForm({
 
   return (
     <ScrollView
-      contentContainerStyle={{paddingBottom: insets.bottom}}
+      contentContainerStyle={[
+        sharedStyles.columnPadding,
+        {paddingBottom: insets.bottom},
+      ]}
       scrollIndicatorInsets={{bottom: insets.bottom}}
     >
       <Card style={style}>

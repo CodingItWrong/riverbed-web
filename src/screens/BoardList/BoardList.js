@@ -39,7 +39,9 @@ export default function BoardList() {
 
   return (
     <ScreenBackground>
-      <View style={[columnStyle, sharedStyles.fullHeight]}>
+      <View
+        style={[columnStyle, sharedStyles.fullHeight, sharedStyles.noPadding]}
+      >
         {isLoading ? (
           <LoadingIndicator />
         ) : (
@@ -50,6 +52,7 @@ export default function BoardList() {
             <FlatList
               data={sortedBoards}
               keyExtractor={board => board.id}
+              contentContainerStyle={sharedStyles.columnPadding}
               renderItem={({item: board}) => (
                 <Card onPress={() => goToBoard(board)} style={sharedStyles.mt}>
                   <Text>{board.attributes.name ?? '(unnamed board)'}</Text>
