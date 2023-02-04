@@ -2,6 +2,7 @@ import {useNavigation} from '@react-navigation/native';
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import sortBy from 'lodash.sortby';
 import {FlatList, View} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import Button from '../../components/Button';
 import Card from '../../components/Card';
 import LoadingIndicator from '../../components/LoadingIndicator';
@@ -42,24 +43,27 @@ export default function BoardList() {
         {isLoading ? (
           <LoadingIndicator />
         ) : (
-          <FlatList
-            data={sortedBoards}
-            keyExtractor={board => board.id}
-            renderItem={({item: board}) => (
-              <Card onPress={() => goToBoard(board)} style={sharedStyles.mt}>
-                <Text>{board.attributes.name ?? '(unnamed board)'}</Text>
-              </Card>
-            )}
-            ListFooterComponent={
-              <Button
-                onPress={addBoard}
-                disabled={isAdding}
-                style={sharedStyles.mt}
-              >
-                Add Board
-              </Button>
-            }
-          />
+          <SafeAreaView
+            style={sharedStyles.fullHeight}
+            edges={['left', 'right', 'bottom']}
+          >
+            <FlatList
+              data={sortedBoards}
+              keyExtractor={board => board.id}
+              renderItem={({item: board}) => (
+                <Card onPress={() => goToBoard(board)} style={sharedStyles.mt}>
+                  <Text>{board.attributes.name ?? '(unnamed board)'}</Text>
+                </Card>
+              )}
+            />
+            <Button
+              onPress={addBoard}
+              disabled={isAdding}
+              style={sharedStyles.mt}
+            >
+              Add Board
+            </Button>
+          </SafeAreaView>
         )}
       </View>
     </ScreenBackground>
