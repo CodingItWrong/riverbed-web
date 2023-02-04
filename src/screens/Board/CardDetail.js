@@ -1,6 +1,6 @@
 import {useMutation, useQuery} from '@tanstack/react-query';
 import {useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {View} from 'react-native';
 import Button from '../../components/Button';
 import ButtonElement from '../../components/ButtonElement';
 import Card from '../../components/Card';
@@ -84,7 +84,7 @@ export default function CardDetail({card, board, onChange, onCancel, style}) {
   const isLoading = isUpdating || isDeleting;
 
   return (
-    <Card key={card.id} style={[styles.card, style]}>
+    <Card key={card.id} style={style}>
       {elementsToShow.map((element, elementIndex) => {
         switch (element.attributes['element-type']) {
           case ELEMENT_TYPES.FIELD.key:
@@ -136,9 +136,3 @@ export default function CardDetail({card, board, onChange, onCancel, style}) {
     </Card>
   );
 }
-
-const styles = StyleSheet.create({
-  card: {
-    margin: 4,
-  },
-});
