@@ -4,7 +4,6 @@ import {View} from 'react-native';
 import {KeyboardAwareFlatList} from 'react-native-keyboard-aware-scroll-view';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Button from '../../components/Button';
-import Card from '../../components/Card';
 import DropdownMenu from '../../components/DropdownMenu';
 import Field from '../../components/Field';
 import IconButton from '../../components/IconButton';
