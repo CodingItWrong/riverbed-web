@@ -17,16 +17,18 @@ export default function Board({route}) {
 
   const navigation = useNavigation();
   const boardClient = useBoards();
-  const {data: board} = useQuery(['boards', id], () =>
+  const {data: board, isLoading} = useQuery(['boards', id], () =>
     boardClient.find({id}).then(response => response.data),
   );
 
   useEffect(() => {
-    navigation.setOptions({
-      title: board?.attributes?.name ?? '(unnamed board)',
-      headerRight: renderMenu,
-    });
-  }, [navigation, board, renderMenu]);
+    if (!isLoading) {
+      navigation.setOptions({
+        title: board?.attributes?.name ?? '(unnamed board)',
+        headerRight: renderMenu,
+      });
+    }
+  }, [navigation, board, renderMenu, isLoading]);
 
   const renderMenu = useCallback(() => {
     function menuItems() {
