@@ -37,6 +37,7 @@ export default function Field({
             onChange={newDate =>
               setValue(dateUtils.objectToServerString(newDate))
             }
+            onChangeText={newText => newText === '' && setValue(newText)}
             disabled={disabled}
             inputMode="start"
             testID={`date-input-${field.id}`}
