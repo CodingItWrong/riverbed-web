@@ -79,7 +79,7 @@ export default function Field({
       if (readOnly) {
         return (
           <View style={style} testID={`field-${field.id}`}>
-            <Text>{value}</Text>
+            <Text>{value?.trim()}</Text>
           </View>
         );
       } else {
