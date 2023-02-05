@@ -1,4 +1,5 @@
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
+import get from 'lodash.get';
 import sortBy from 'lodash.sortby';
 import {useState} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
@@ -144,7 +145,11 @@ export default function ColumnList({board}) {
 
             if (cardSortOrder?.field && cardSortOrder?.direction) {
               columnCards = sortBy(filteredCards, [
-                `attributes.field-values.${cardSortOrder.field}`,
+                c =>
+                  get(
+                    c,
+                    `attributes.field-values.${cardSortOrder.field}`,
+                  )?.trim(),
               ]);
               if (cardSortOrder?.direction === SORT_DIRECTIONS.DESCENDING.key) {
                 columnCards.reverse();
