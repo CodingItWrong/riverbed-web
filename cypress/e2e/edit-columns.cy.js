@@ -45,11 +45,7 @@ describe('edit columns', () => {
   });
   const allColumn = Factory.column({name: 'All'});
 
-  it('allows creating columns', () => {
-    const newColumn = Factory.column({});
-    const columnName = 'My Column';
-    const editedColumn = Factory.column({name: columnName}, newColumn);
-
+  function setUpInitialData({column = true} = {}) {
     cy.intercept('GET', `${apiUrl}/boards?`, {
       data: [board],
     });
@@ -59,11 +55,25 @@ describe('edit columns', () => {
     cy.intercept('GET', `${apiUrl}/boards/${board.id}/elements?`, {
       data: [titleField, purchaseDate, completeDate],
     });
-    cy.intercept('GET', `${apiUrl}/boards/${board.id}/columns?`, {
-      data: [],
-    });
     cy.intercept('GET', `${apiUrl}/boards/${board.id}/cards?`, {
       data: [unownedCard, unplayedCard, playedCard],
+    });
+
+    if (column) {
+      cy.intercept('GET', `${apiUrl}/boards/${board.id}/columns?`, {
+        data: [allColumn],
+      });
+    }
+  }
+
+  it('allows creating columns', () => {
+    const newColumn = Factory.column({});
+    const columnName = 'My Column';
+    const editedColumn = Factory.column({name: columnName}, newColumn);
+
+    setUpInitialData({column: false});
+    cy.intercept('GET', `${apiUrl}/boards/${board.id}/columns?`, {
+      data: [],
     });
 
     // go to Video Games board
@@ -112,21 +122,7 @@ describe('edit columns', () => {
   });
 
   it('allows editing column sort', () => {
-    cy.intercept('GET', `${apiUrl}/boards?`, {
-      data: [board],
-    });
-    cy.intercept('GET', `http://cypressapi/boards/${board.id}?`, {
-      data: board,
-    });
-    cy.intercept('GET', `${apiUrl}/boards/${board.id}/elements?`, {
-      data: [titleField, purchaseDate, completeDate],
-    });
-    cy.intercept('GET', `${apiUrl}/boards/${board.id}/columns?`, {
-      data: [allColumn],
-    });
-    cy.intercept('GET', `${apiUrl}/boards/${board.id}/cards?`, {
-      data: [unownedCard, unplayedCard, playedCard],
-    });
+    setUpInitialData();
 
     // go to Video Games board
     cy.visit('/');
@@ -175,21 +171,7 @@ describe('edit columns', () => {
   });
 
   it('allows editing column filtering', () => {
-    cy.intercept('GET', `${apiUrl}/boards?`, {
-      data: [board],
-    });
-    cy.intercept('GET', `http://cypressapi/boards/${board.id}?`, {
-      data: board,
-    });
-    cy.intercept('GET', `${apiUrl}/boards/${board.id}/elements?`, {
-      data: [titleField, purchaseDate, completeDate],
-    });
-    cy.intercept('GET', `${apiUrl}/boards/${board.id}/columns?`, {
-      data: [allColumn],
-    });
-    cy.intercept('GET', `${apiUrl}/boards/${board.id}/cards?`, {
-      data: [unownedCard, unplayedCard, playedCard],
-    });
+    setUpInitialData();
 
     // go to Video Games board
     cy.visit('/');
@@ -243,21 +225,10 @@ describe('edit columns', () => {
   });
 
   it('allows ordering columns', () => {
+    setUpInitialData({column: false});
+
     const columnA = Factory.column({name: 'Column A', displayOrder: 1});
     const columnB = Factory.column({name: 'Column B', displayOrder: 2});
-
-    cy.intercept('GET', 'http://cypressapi/boards?', {
-      data: [board],
-    });
-    cy.intercept('GET', `http://cypressapi/boards/${board.id}?`, {
-      data: board,
-    });
-    cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
-      data: [],
-    });
-    cy.intercept(`http://cypressapi/boards/${board.id}/cards?`, {
-      data: [],
-    });
     cy.intercept(`http://cypressapi/boards/${board.id}/columns?`, {
       data: [columnA, columnB],
     });
@@ -320,21 +291,7 @@ describe('edit columns', () => {
   });
 
   it('allows deleting columns', () => {
-    cy.intercept('GET', `${apiUrl}/boards?`, {
-      data: [board],
-    });
-    cy.intercept('GET', `http://cypressapi/boards/${board.id}?`, {
-      data: board,
-    });
-    cy.intercept('GET', `${apiUrl}/boards/${board.id}/elements?`, {
-      data: [titleField, purchaseDate, completeDate],
-    });
-    cy.intercept('GET', `${apiUrl}/boards/${board.id}/columns?`, {
-      data: [allColumn],
-    });
-    cy.intercept('GET', `${apiUrl}/boards/${board.id}/cards?`, {
-      data: [unownedCard, unplayedCard, playedCard],
-    });
+    setUpInitialData();
 
     // go to Video Games board
     cy.visit('/');
