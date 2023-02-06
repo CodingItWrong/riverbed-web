@@ -6,7 +6,8 @@ import Factory from '../support/Factory';
 describe('edit columns', () => {
   const apiUrl = 'http://cypressapi';
   const successJson = {success: true}; // needed to prevent parse errors
-  const board = Factory.board({name: 'Video Games'});
+  const boardName = 'Video Games';
+  const board = Factory.board({name: boardName});
 
   const titleField = Factory.field({
     name: 'Title',
@@ -49,7 +50,7 @@ describe('edit columns', () => {
     cy.intercept('GET', `${apiUrl}/boards?`, {
       data: [board],
     });
-    cy.intercept('GET', `http://cypressapi/boards/${board.id}?`, {
+    cy.intercept('GET', `${apiUrl}/boards/${board.id}?`, {
       data: board,
     });
     cy.intercept('GET', `${apiUrl}/boards/${board.id}/elements?`, {
@@ -66,6 +67,11 @@ describe('edit columns', () => {
     }
   }
 
+  function goToBoard() {
+    cy.visit('/');
+    cy.contains(boardName).click();
+  }
+
   it('allows creating columns', () => {
     const newColumn = Factory.column({});
     const columnName = 'My Column';
@@ -76,9 +82,7 @@ describe('edit columns', () => {
       data: [],
     });
 
-    // go to Video Games board
-    cy.visit('/');
-    cy.contains('Video Games').click();
+    goToBoard();
 
     // add column
     cy.intercept('POST', `${apiUrl}/columns?`, {
@@ -124,9 +128,7 @@ describe('edit columns', () => {
   it('allows editing column sort', () => {
     setUpInitialData();
 
-    // go to Video Games board
-    cy.visit('/');
-    cy.contains('Video Games').click();
+    goToBoard();
 
     // confirm default sort order
     cy.assertContentsOrder(`[data-testid=field-${titleField.id}]`, [
@@ -173,9 +175,7 @@ describe('edit columns', () => {
   it('allows editing column filtering', () => {
     setUpInitialData();
 
-    // go to Video Games board
-    cy.visit('/');
-    cy.contains('Video Games').click();
+    goToBoard();
 
     // set filter
     cy.get('[aria-label="Edit Column"]').click();
@@ -229,12 +229,11 @@ describe('edit columns', () => {
 
     const columnA = Factory.column({name: 'Column A', displayOrder: 1});
     const columnB = Factory.column({name: 'Column B', displayOrder: 2});
-    cy.intercept(`http://cypressapi/boards/${board.id}/columns?`, {
+    cy.intercept(`${apiUrl}/boards/${board.id}/columns?`, {
       data: [columnA, columnB],
     });
 
-    cy.visit('/');
-    cy.contains('Video Games').click();
+    goToBoard();
 
     // confirm initial order
     cy.assertContentsOrder('[data-testid="column-name"]', [
@@ -293,9 +292,7 @@ describe('edit columns', () => {
   it('allows deleting columns', () => {
     setUpInitialData();
 
-    // go to Video Games board
-    cy.visit('/');
-    cy.contains('Video Games').click();
+    goToBoard();
 
     cy.get('[aria-label="Edit Column"]').click();
 
