@@ -27,3 +27,8 @@ Cypress.Commands.add('assertTestIdOrder', (selector, values) => {
       .should('eq', childSelector);
   });
 });
+
+Cypress.Commands.add('step', (name, callback) => {
+  cy.log(name);
+  callback();
+});
