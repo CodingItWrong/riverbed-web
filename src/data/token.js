@@ -7,7 +7,7 @@ import {
 } from 'react';
 import {deleteStringAsync, getStringAsync, setStringAsync} from '../storage';
 
-const ACCESS_TOKEN_KEY = 'SURELY_ACCESS_TOKEN';
+const ACCESS_TOKEN_KEY = 'LIST_APP_ACCESS_TOKEN';
 
 const TokenContext = createContext(null);
 
