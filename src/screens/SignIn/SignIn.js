@@ -26,6 +26,7 @@ export default function SignIn({navigation}) {
       <SafeAreaView>
         <TextField
           label="Email"
+          testID="text-input-email"
           value={username}
           onChangeText={handleChange('username')}
           keyboardType="email-address"
@@ -34,6 +35,7 @@ export default function SignIn({navigation}) {
         />
         <TextField
           label="Password"
+          testID="text-input-password"
           value={password}
           onChangeText={handleChange('password')}
           secureTextEntry
