@@ -40,7 +40,7 @@ export default function BoardList() {
         )}
       />
     ),
-    [],
+    [clearToken],
   );
 
   const {data: boards = [], isLoading} = useQuery(['boards'], () =>
