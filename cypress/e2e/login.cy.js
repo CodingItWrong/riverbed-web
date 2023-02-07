@@ -26,4 +26,12 @@ describe('login', () => {
       .its('request.headers.authorization')
       .should('equal', `Bearer ${accessToken}`);
   });
+
+  it('allows logging out', () => {
+    cy.intercept('GET', 'http://cypressapi/boards?', {data: []});
+
+    cy.signIn();
+
+    cy.contains('My Boards');
+  });
 });
