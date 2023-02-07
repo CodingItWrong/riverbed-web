@@ -34,7 +34,7 @@ export default function BoardList() {
         menuButton={props => (
           <IconButton
             icon="dots-vertical"
-            accessibilityLabel="Board Menu"
+            accessibilityLabel="Menu"
             {...props}
           />
         )}
