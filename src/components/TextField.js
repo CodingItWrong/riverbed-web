@@ -7,6 +7,9 @@ export default function TextField({
   onChangeText,
   disabled,
   multiline,
+  autoCapitalize,
+  autoCorrect,
+  secureTextEntry,
   keyboardType,
   testID,
   style,
@@ -21,6 +24,9 @@ export default function TextField({
       onChangeText={onChangeText}
       disabled={disabled}
       multiline={multiline}
+      autoCapitalize={autoCapitalize}
+      autoCorrect={autoCorrect}
+      secureTextEntry={secureTextEntry}
       keyboardType={keyboardType}
       style={[sharedStyles.textInput, style]}
     />

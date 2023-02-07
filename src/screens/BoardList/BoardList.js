@@ -1,20 +1,47 @@
 import {useNavigation} from '@react-navigation/native';
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import sortBy from 'lodash.sortby';
+import {useCallback, useEffect} from 'react';
 import {FlatList, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Button from '../../components/Button';
 import Card from '../../components/Card';
+import DropdownMenu from '../../components/DropdownMenu';
+import IconButton from '../../components/IconButton';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import ScreenBackground from '../../components/ScreenBackground';
 import Text from '../../components/Text';
 import sharedStyles, {useColumnStyle} from '../../components/sharedStyles';
 import {useBoards} from '../../data/boards';
+import {useToken} from '../../data/token';
 
 export default function BoardList() {
+  const {clearToken} = useToken();
   const navigation = useNavigation();
   const queryClient = useQueryClient();
   const boardClient = useBoards();
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: renderMenu,
+    });
+  }, [navigation, renderMenu]);
+
+  const renderMenu = useCallback(
+    () => (
+      <DropdownMenu
+        menuItems={[{title: 'Sign Out', onPress: clearToken}]}
+        menuButton={props => (
+          <IconButton
+            icon="dots-vertical"
+            accessibilityLabel="Board Menu"
+            {...props}
+          />
+        )}
+      />
+    ),
+    [],
+  );
 
   const {data: boards = [], isLoading} = useQuery(['boards'], () =>
     boardClient.all().then(resp => resp.data),

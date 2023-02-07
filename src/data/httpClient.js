@@ -8,6 +8,13 @@ export default function httpClient({token} = {}) {
   return new HttpClient({baseUrl: appBaseUrl, headers});
 }
 
+class ResponseError extends Error {
+  constructor(response) {
+    super('An error was returned from the server');
+    this.response = response;
+  }
+}
+
 class HttpClient {
   constructor({baseUrl, headers}) {
     this.baseUrl = baseUrl;
@@ -29,8 +36,14 @@ class HttpClient {
       headers: {...this.headers, ...headers},
       body: JSON.stringify(body),
     });
-    const data = await response.json();
-    return {data};
+    if (response.status >= 400) {
+      const responseText = await response.text();
+      console.error(response, responseText);
+      throw new ResponseError(response);
+    } else {
+      const data = await response.json();
+      return {data};
+    }
   }
 
   async patch(url, body, {headers} = {}) {

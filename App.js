@@ -10,6 +10,8 @@ import {Provider as PaperProvider} from 'react-native-paper';
 import {en, registerTranslation} from 'react-native-paper-dates';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import Navigation from './src/Navigation';
+import TokenLoadBuffer from './src/components/TokenLoadBuffer';
+import {TokenProvider} from './src/data/token';
 
 registerTranslation('en', en);
 
@@ -35,13 +37,17 @@ export default function App() {
   }, []);
 
   return (
-    <SafeAreaProvider>
-      <StatusBar />
-      <PaperProvider>
-        <QueryClientProvider client={queryClient}>
-          <Navigation />
-        </QueryClientProvider>
-      </PaperProvider>
-    </SafeAreaProvider>
+    <TokenProvider>
+      <TokenLoadBuffer>
+        <SafeAreaProvider>
+          <StatusBar />
+          <PaperProvider>
+            <QueryClientProvider client={queryClient}>
+              <Navigation />
+            </QueryClientProvider>
+          </PaperProvider>
+        </SafeAreaProvider>
+      </TokenLoadBuffer>
+    </TokenProvider>
   );
 }

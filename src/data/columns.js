@@ -1,11 +1,15 @@
 import {ResourceClient} from '@codingitwrong/jsonapi-client';
+import {useMemo} from 'react';
 import httpClient from './httpClient';
-
-const columnClient = new ResourceClient({
-  name: 'columns',
-  httpClient: httpClient(),
-});
+import {useToken} from './token';
 
 export function useColumns() {
+  const {token} = useToken();
+
+  const columnClient = useMemo(() => {
+    const client = httpClient({token});
+    return new ResourceClient({name: 'columns', httpClient: client});
+  }, [token]);
+
   return columnClient;
 }

@@ -1,11 +1,15 @@
 import {ResourceClient} from '@codingitwrong/jsonapi-client';
+import {useMemo} from 'react';
 import httpClient from './httpClient';
-
-const boardClient = new ResourceClient({
-  name: 'boards',
-  httpClient: httpClient(),
-});
+import {useToken} from './token';
 
 export function useBoards() {
+  const {token} = useToken();
+
+  const boardClient = useMemo(() => {
+    const client = httpClient({token});
+    return new ResourceClient({name: 'boards', httpClient: client});
+  }, [token]);
+
   return boardClient;
 }
