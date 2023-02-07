@@ -8,7 +8,7 @@ describe('edit boards', () => {
       data: [],
     });
 
-    cy.visit('/');
+    cy.signIn();
 
     cy.log('ADD BOARD');
 

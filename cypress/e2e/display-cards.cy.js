@@ -71,7 +71,7 @@ describe('display cards', () => {
       data: cards,
     });
 
-    cy.visit('/');
+    cy.signIn();
     cy.contains('Video Games').click();
 
     cy.contains('Released (1)');

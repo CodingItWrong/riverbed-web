@@ -69,7 +69,7 @@ describe('edit columns', () => {
   }
 
   function goToBoard() {
-    cy.visit('/');
+    cy.signIn();
     cy.contains(boardName).click();
   }
 

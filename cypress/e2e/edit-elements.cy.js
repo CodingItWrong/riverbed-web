@@ -42,7 +42,7 @@ describe('edit elements', () => {
       data: [],
     });
 
-    cy.visit('/');
+    cy.signIn();
     cy.contains('Video Games').click();
 
     cy.log('ADD FIELD');
@@ -183,7 +183,7 @@ describe('edit elements', () => {
       data: [card],
     });
 
-    cy.visit('/');
+    cy.signIn();
     cy.contains('Video Games').click();
 
     cy.log('ADD BUTTON');
@@ -324,7 +324,7 @@ describe('edit elements', () => {
       data: [card],
     });
 
-    cy.visit('/');
+    cy.signIn();
     cy.contains('Video Games').click();
 
     // confirm initial order in summary

@@ -70,7 +70,7 @@ describe('edit cards', () => {
       data: [card],
     });
 
-    cy.visit('/');
+    cy.signIn();
     cy.contains('Video Games').click();
 
     cy.log('SHOW DETAIL');
