@@ -1,5 +1,8 @@
+import {Platform, StyleSheet} from 'react-native';
 import {TextInput as PaperTextInput} from 'react-native-paper';
 import sharedStyles from './sharedStyles';
+
+const IS_WEB = Platform.OS === 'web';
 
 export default function TextField({
   label,
@@ -28,7 +31,19 @@ export default function TextField({
       autoCorrect={autoCorrect}
       secureTextEntry={secureTextEntry}
       keyboardType={keyboardType}
-      style={[sharedStyles.textInput, style]}
+      style={[
+        sharedStyles.textInput,
+        style,
+        IS_WEB && multiline && styles.multilineWeb,
+      ]}
     />
   );
 }
+
+const styles = StyleSheet.create({
+  // 3 lines, because does not auto-expand to fit content on web
+  // @see https://github.com/callstack/react-native-paper/issues/3124
+  multilineWeb: {
+    height: 100,
+  },
+});
