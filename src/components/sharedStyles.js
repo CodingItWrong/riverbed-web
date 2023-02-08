@@ -25,8 +25,9 @@ const sharedStyles = StyleSheet.create({
     alignItems: 'center',
   },
   textInput: {
-    backgroundColor: 'transparent',
-    paddingHorizontal: 0,
+    // causes label overlap issues on web
+    // backgroundColor: 'transparent',
+    // paddingHorizontal: 0,
   },
 });
 
