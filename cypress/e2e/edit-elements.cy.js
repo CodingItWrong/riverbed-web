@@ -2,6 +2,7 @@ import COMMANDS from '../../src/enums/commands';
 import ELEMENT_TYPES from '../../src/enums/elementTypes';
 import FIELD_DATA_TYPES from '../../src/enums/fieldDataTypes';
 import QUERIES from '../../src/enums/queries';
+import VALUES from '../../src/enums/values';
 import Factory from '../support/Factory';
 
 describe('edit elements', () => {
@@ -163,7 +164,7 @@ describe('edit elements', () => {
         action: {
           command: COMMANDS.SET_VALUE.key,
           field: greetingField.id,
-          value: 'EMPTY',
+          value: VALUES.EMPTY.key,
         },
         'show-condition': {
           query: QUERIES.IS_NOT_EMPTY.key,

@@ -3,12 +3,12 @@ import FIELD_DATA_TYPES from './fieldDataTypes';
 
 const VALUES = {
   EMPTY: {
-    key: 'EMPTY',
+    key: 'empty',
     label: 'Empty',
     call: () => null,
   },
   NOW: {
-    key: 'NOW',
+    key: 'now',
     label: 'Now',
     call: dataType => {
       switch (dataType) {

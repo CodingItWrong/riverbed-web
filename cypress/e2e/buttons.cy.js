@@ -1,5 +1,6 @@
 import FIELD_DATA_TYPES from '../../src/enums/fieldDataTypes';
 import QUERIES from '../../src/enums/queries';
+import VALUES from '../../src/enums/values';
 import Factory from '../support/Factory';
 
 describe('edit cards', () => {
@@ -26,7 +27,7 @@ describe('edit cards', () => {
       action: {
         command: 'SET_VALUE',
         field: releasedAtField.id,
-        value: 'NOW',
+        value: VALUES.NOW.key,
       },
       'show-condition': {
         field: releasedAtField.id,
@@ -39,7 +40,7 @@ describe('edit cards', () => {
       action: {
         command: 'SET_VALUE',
         field: releasedAtField.id,
-        value: 'NOW',
+        value: VALUES.NOW.key,
       },
       'show-condition': {
         field: releasedAtField.id,
