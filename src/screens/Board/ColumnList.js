@@ -68,28 +68,15 @@ export default function ColumnList({board}) {
   }
 
   const {mutate: addCard, isLoading: isAddingCard} = useMutation({
-    mutationFn: () => {
-      const fieldValues = Object.fromEntries(
-        elements
-          .filter(
-            e =>
-              e.attributes['element-type'] === ELEMENT_TYPES.FIELD.key &&
-              e.attributes['initial-value'] !== null,
-          )
-          .map(e => {
-            const {'data-type': dataType, 'initial-value': initialValue} =
-              e.attributes;
-            const resolvedValue = Object.values(VALUES)
-              .find(v => v.key === initialValue)
-              ?.call(dataType);
-            return [e.id, resolvedValue];
-          }),
-      );
-      return cardClient.create({
-        relationships: {board: {data: {type: 'boards', id: board.id}}},
-        attributes: {'field-values': fieldValues},
-      });
-    },
+    mutationFn: () =>
+      cardClient.create({
+        attributes: {
+          'field-values': getInitialFieldValues(elements),
+        },
+        relationships: {
+          board: {data: {type: 'boards', id: board.id}},
+        },
+      }),
     onSuccess: ({data: newCard}) => {
       setSelectedCardId(newCard.id);
       refreshCards();
@@ -259,3 +246,20 @@ const styles = StyleSheet.create({
     padding: 0, // no idea why this is needed. does View have default padding?
   },
 });
+
+function getInitialFieldValues(elements) {
+  const fieldsWithInitialValues = elements.filter(
+    e =>
+      e.attributes['element-type'] === ELEMENT_TYPES.FIELD.key &&
+      e.attributes['initial-value'] !== null,
+  );
+  const initialValueEntries = fieldsWithInitialValues.map(field => {
+    const {'data-type': dataType, 'initial-value': initialValue} =
+      field.attributes;
+    const resolvedValue = Object.values(VALUES)
+      .find(v => v.key === initialValue)
+      ?.call(dataType);
+    return [field.id, resolvedValue];
+  });
+  return Object.fromEntries(initialValueEntries);
+}
