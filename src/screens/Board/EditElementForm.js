@@ -45,6 +45,7 @@ export default function EditElementForm({
   }
 
   const dataTypeOptions = Object.values(FIELD_DATA_TYPES);
+  const valueOptions = Object.values(VALUES);
 
   const {mutate: updateElement, isLoading: isSaving} = useMutation({
     mutationFn: () => {
@@ -96,6 +97,18 @@ export default function EditElementForm({
             )}
             onValueChange={option => updateAttribute('data-type', option.key)}
             options={dataTypeOptions}
+            style={sharedStyles.mt}
+          />
+          <Dropdown
+            fieldLabel="Initial Value"
+            emptyLabel="(choose)"
+            value={valueOptions.find(
+              o => o.key === elementAttributes['initial-value'],
+            )}
+            onValueChange={option =>
+              updateAttribute('initial-value', option.key)
+            }
+            options={valueOptions}
             style={sharedStyles.mt}
           />
           <LabeledCheckbox

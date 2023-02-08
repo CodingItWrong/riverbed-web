@@ -402,4 +402,96 @@ describe('edit elements', () => {
       `element-${fieldA.id}`,
     ]);
   });
+
+  it('allows setting initial values for fields', () => {
+    const dateField = Factory.field({
+      name: 'Date',
+      'data-type': FIELD_DATA_TYPES.DATE.key,
+    });
+    const dateTimeField = Factory.field({
+      name: 'Date and Time',
+      'data-type': FIELD_DATA_TYPES.DATETIME.key,
+    });
+    cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+      data: [dateField, dateTimeField],
+    });
+    cy.intercept(`http://cypressapi/boards/${board.id}/cards?`, {
+      data: [],
+    });
+
+    cy.signIn();
+    cy.contains('Video Games').click();
+
+    cy.step('EDIT ELEMENTS', () => {
+      cy.get('[aria-label="Board Menu"]').click();
+      cy.contains('Edit Elements').click({force: true});
+    });
+
+    const updatedDateField = Factory.field(
+      {'initial-value': VALUES.NOW.key},
+      dateField,
+    );
+    cy.step('SET INITIAL DATE VALUE TO NOW', () => {
+      cy.get('[aria-label="Edit Date field"]').click();
+      cy.contains('Initial Value: (choose)').paperSelect('Now');
+
+      cy.intercept('PATCH', `http://cypressapi/elements/${dateField.id}?`, {
+        success: true,
+      }).as('updateField');
+      cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+        data: [updatedDateField, dateTimeField],
+      });
+      cy.contains('Save Element').click();
+      cy.wait('@updateField')
+        .its('request.body')
+        .should('deep.equal', {data: updatedDateField});
+    });
+
+    const updatedDateTimeField = Factory.field(
+      {'initial-value': VALUES.NOW.key},
+      dateTimeField,
+    );
+    cy.step('SET INITIAL DATETIME VALUE TO NOW', () => {
+      cy.get('[aria-label="Edit Date and Time field"]').click();
+      cy.contains('Initial Value: (choose)').paperSelect('Now');
+
+      cy.intercept('PATCH', `http://cypressapi/elements/${dateTimeField.id}?`, {
+        success: true,
+      }).as('updateField');
+      cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+        data: [updatedDateField, updatedDateTimeField],
+      });
+      cy.contains('Save Element').click();
+      cy.wait('@updateField')
+        .its('request.body')
+        .should('deep.equal', {data: updatedDateTimeField});
+    });
+
+    cy.step('FINISH EDITING ELEMENTS', () => {
+      cy.contains('Done Editing Elements').click();
+    });
+
+    const nowString = '2023-01-01T12:00:00.000Z';
+    cy.clock(new Date(nowString));
+
+    cy.step('ADD NEW CARD', () => {
+      const newCard = Factory.card();
+      cy.intercept('POST', 'http://cypressapi/cards?', {data: newCard}).as(
+        'createCard',
+      );
+      cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
+        data: [newCard],
+      });
+      cy.contains('Add Card').click();
+    });
+
+    cy.step('CONFIRM INITIAL VALUES SET IN REQUEST TO SERVER', () => {
+      cy.wait('@createCard')
+        .its('request.body.data.attributes["field-values"]')
+        .should('deep.equal', {
+          [updatedDateField.id]: '2023-01-01',
+          [updatedDateTimeField.id]: nowString,
+        });
+    });
+  });
 });

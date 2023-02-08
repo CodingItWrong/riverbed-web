@@ -149,7 +149,9 @@ describe('edit cards', () => {
           relationships: {
             board: {data: {type: 'boards', id: String(board.id)}},
           },
-          attributes: {},
+          attributes: {
+            'field-values': {},
+          },
         },
       });
     cy.get(`[data-testid=text-input-${titleField.id}]`).clear().type(newTitle);

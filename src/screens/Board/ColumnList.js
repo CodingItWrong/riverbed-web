@@ -14,7 +14,9 @@ import sharedStyles, {useColumnStyle} from '../../components/sharedStyles';
 import {useCards} from '../../data/cards';
 import {useColumns} from '../../data/columns';
 import {useElements} from '../../data/elements';
+import ELEMENT_TYPES from '../../enums/elementTypes';
 import SORT_DIRECTIONS from '../../enums/sortDirections';
+import VALUES from '../../enums/values';
 import checkConditions from '../../utils/checkConditions';
 import sortByDisplayOrder from '../../utils/sortByDisplayOrder';
 import CardDetail from './CardDetail';
@@ -66,11 +68,28 @@ export default function ColumnList({board}) {
   }
 
   const {mutate: addCard, isLoading: isAddingCard} = useMutation({
-    mutationFn: () =>
-      cardClient.create({
+    mutationFn: () => {
+      const fieldValues = Object.fromEntries(
+        elements
+          .filter(
+            e =>
+              e.attributes['element-type'] === ELEMENT_TYPES.FIELD.key &&
+              e.attributes['initial-value'] !== null,
+          )
+          .map(e => {
+            const {'data-type': dataType, 'initial-value': initialValue} =
+              e.attributes;
+            const resolvedValue = Object.values(VALUES)
+              .find(v => v.key === initialValue)
+              ?.call(dataType);
+            return [e.id, resolvedValue];
+          }),
+      );
+      return cardClient.create({
         relationships: {board: {data: {type: 'boards', id: board.id}}},
-        attributes: {},
-      }),
+        attributes: {'field-values': fieldValues},
+      });
+    },
     onSuccess: ({data: newCard}) => {
       setSelectedCardId(newCard.id);
       refreshCards();
