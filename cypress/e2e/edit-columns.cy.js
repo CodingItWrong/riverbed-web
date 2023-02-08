@@ -36,13 +36,13 @@ describe('edit columns', () => {
 
   const unownedCard = Factory.card({
     [titleField.id]: unownedTitle,
-    [genreField.id]: 'Action',
+    [genreField.id]: 'RPG',
     [purchaseDate.id]: null,
     [completeDate.id]: null,
   });
   const unplayedCard = Factory.card({
     [titleField.id]: unplayedTitle,
-    [genreField.id]: 'RPG',
+    [genreField.id]: 'Action',
     [purchaseDate.id]: '2023-01-01',
     [completeDate.id]: null,
   });
@@ -254,12 +254,23 @@ describe('edit columns', () => {
       cy.get('[aria-label="Edit Column"]').click();
 
       cy.contains('Group Field: (choose)').paperSelect('Genre');
-      cy.contains('Group Direction: (choose)').paperSelect('Ascending');
+      cy.contains(/^\(choose\)$/).should('not.exist'); // ensure modal is closed
+      cy.contains('Group Direction: (choose)').paperSelect('Descending');
+      cy.contains(/^\(choose\)$/).should('not.exist');
+
+      cy.contains('Sort Field: (choose)').paperSelect('Title');
+      cy.contains(/^\(choose\)$/).should('not.exist');
+      cy.contains('Sort Direction: (choose)').paperSelect('Ascending');
+      cy.contains(/^\(choose\)$/).should('not.exist');
 
       const groupedColumn = Factory.column(
         {
           'card-grouping': {
             field: genreField.id,
+            direction: 'DESCENDING',
+          },
+          'card-sort-order': {
+            field: titleField.id,
             direction: 'ASCENDING',
           },
         },
@@ -282,16 +293,16 @@ describe('edit columns', () => {
 
     cy.step('CONFIRM GROUPING', () => {
       // confirm which groups are shown in which order
-      cy.assertContentsOrder('[data-testid=group-heading]', ['Action', 'RPG']);
+      cy.assertContentsOrder('[data-testid=group-heading]', ['RPG', 'Action']);
 
       // confirm the cards in each group
       cy.assertContentsOrder(
         `[data-testid="group-${genreField.id}-Action-card"]`,
-        [unownedTitle],
+        [unplayedTitle],
       );
       cy.assertContentsOrder(
         `[data-testid="group-${genreField.id}-RPG-card"]`,
-        [unplayedTitle, playedTitle],
+        [playedTitle, unownedTitle],
       );
 
       // TODO: use Paper styles

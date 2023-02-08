@@ -166,9 +166,10 @@ export default function ColumnList({board}) {
               columnCards = filteredCards;
             }
 
-            const cardGroups = [];
+            let cardGroups;
 
             if (cardGrouping?.field && cardGrouping?.direction) {
+              cardGroups = [];
               columnCards.forEach(card => {
                 const groupValue =
                   card.attributes['field-values'][cardGrouping.field];
@@ -179,8 +180,12 @@ export default function ColumnList({board}) {
                 }
                 group.data.push(card);
               });
+              cardGroups = sortBy(cardGroups, ['value']);
+              if (cardGrouping.direction === SORT_DIRECTIONS.DESCENDING.key) {
+                cardGroups.reverse();
+              }
             } else {
-              cardGroups.push({value: null, data: columnCards});
+              cardGroups = [{value: null, data: columnCards}];
             }
 
             return (
