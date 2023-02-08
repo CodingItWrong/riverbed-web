@@ -42,7 +42,7 @@ export default function CardDetail({card, board, onChange, onCancel, style}) {
 
   function handlePerformAction(action) {
     const {command, field, value} = action;
-    const valueObject = VALUES[value];
+    const valueObject = Object.values(VALUES).find(v => v.key === value);
 
     const fieldObject = elements.find(element => element.id === field);
 
