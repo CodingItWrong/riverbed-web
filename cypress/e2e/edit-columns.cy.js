@@ -14,6 +14,11 @@ describe('edit columns', () => {
     'data-type': FIELD_DATA_TYPES.TEXT.key,
     'show-in-summary': true,
   });
+  const genreField = Factory.field({
+    name: 'Genre',
+    'data-type': FIELD_DATA_TYPES.TEXT.key,
+    'show-in-summary': false,
+  });
   const purchaseDate = Factory.field({
     name: 'Purchase Date',
     'data-type': FIELD_DATA_TYPES.DATE.key,
@@ -31,16 +36,19 @@ describe('edit columns', () => {
 
   const unownedCard = Factory.card({
     [titleField.id]: unownedTitle,
+    [genreField.id]: 'Action',
     [purchaseDate.id]: null,
     [completeDate.id]: null,
   });
   const unplayedCard = Factory.card({
     [titleField.id]: unplayedTitle,
+    [genreField.id]: 'RPG',
     [purchaseDate.id]: '2023-01-01',
     [completeDate.id]: null,
   });
   const playedCard = Factory.card({
     [titleField.id]: playedTitle,
+    [genreField.id]: 'RPG',
     [purchaseDate.id]: '1998-01-01',
     [completeDate.id]: '1999-01-01',
   });
@@ -55,7 +63,7 @@ describe('edit columns', () => {
       data: board,
     });
     cy.intercept('GET', `${apiUrl}/boards/${board.id}/elements?`, {
-      data: [titleField, purchaseDate, completeDate],
+      data: [titleField, genreField, purchaseDate, completeDate],
     });
     cy.intercept('GET', `${apiUrl}/boards/${board.id}/cards?`, {
       data: [unownedCard, unplayedCard, playedCard],
@@ -234,6 +242,59 @@ describe('edit columns', () => {
       cy.contains(unownedTitle).should('not.exist');
       cy.contains(unplayedTitle).should('exist');
       cy.contains(playedTitle).should('not.exist');
+    });
+  });
+
+  it('allows editing column card grouping', () => {
+    setUpInitialData();
+
+    goToBoard();
+
+    cy.step('SET GROUPING', () => {
+      cy.get('[aria-label="Edit Column"]').click();
+
+      cy.contains('Group Field: (choose)').paperSelect('Genre');
+      cy.contains('Group Direction: (choose)').paperSelect('Ascending');
+
+      const groupedColumn = Factory.column(
+        {
+          'card-grouping': {
+            field: genreField.id,
+            direction: 'ASCENDING',
+          },
+        },
+        allColumn,
+      );
+      cy.intercept(
+        'PATCH',
+        `${apiUrl}/columns/${allColumn.id}?`,
+        successJson,
+      ).as('updateColumn');
+      cy.intercept('GET', `${apiUrl}/boards/${board.id}/columns?`, {
+        data: [groupedColumn],
+      });
+      cy.contains('Save Column').click();
+      cy.wait('@updateColumn')
+        .its('request.body')
+        .should('deep.equal', {data: groupedColumn});
+      cy.contains('Save Column').should('not.exist');
+    });
+
+    cy.step('CONFIRM GROUPING', () => {
+      // confirm which groups are shown in which order
+      cy.assertContentsOrder('[data-testid=group-heading]', ['Action', 'RPG']);
+
+      // confirm the cards in each group
+      cy.assertContentsOrder(
+        `[data-testid="group-${genreField.id}-Action-card"]`,
+        [unownedTitle],
+      );
+      cy.assertContentsOrder(
+        `[data-testid="group-${genreField.id}-RPG-card"]`,
+        [unplayedTitle, playedTitle],
+      );
+
+      // TODO: use Paper styles
     });
   });
 

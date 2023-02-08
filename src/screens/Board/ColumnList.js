@@ -3,12 +3,13 @@ import get from 'lodash.get';
 import sortBy from 'lodash.sortby';
 import {useState} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
-import {KeyboardAwareFlatList} from 'react-native-keyboard-aware-scroll-view';
+import {KeyboardAwareSectionList} from 'react-native-keyboard-aware-scroll-view';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {large, useBreakpoint} from '../../breakpoints';
 import Button from '../../components/Button';
 import IconButton from '../../components/IconButton';
 import LoadingIndicator from '../../components/LoadingIndicator';
+import SectionHeader from '../../components/SectionHeader';
 import Text from '../../components/Text';
 import sharedStyles, {useColumnStyle} from '../../components/sharedStyles';
 import {useCards} from '../../data/cards';
@@ -138,6 +139,7 @@ export default function ColumnList({board}) {
               name,
               'card-sort-order': cardSortOrder,
               'card-inclusion-conditions': cardInclusionConditions,
+              'card-grouping': cardGrouping,
             } = column.attributes;
 
             const filteredCards = cards.filter(card =>
@@ -164,6 +166,23 @@ export default function ColumnList({board}) {
               columnCards = filteredCards;
             }
 
+            const cardGroups = [];
+
+            if (cardGrouping?.field && cardGrouping?.direction) {
+              columnCards.forEach(card => {
+                const groupValue =
+                  card.attributes['field-values'][cardGrouping.field];
+                let group = cardGroups.find(g => g.value === groupValue);
+                if (!group) {
+                  group = {value: groupValue, data: []};
+                  cardGroups.push(group);
+                }
+                group.data.push(card);
+              });
+            } else {
+              cardGroups.push({value: null, data: columnCards});
+            }
+
             return (
               <View
                 key={column.id}
@@ -184,16 +203,23 @@ export default function ColumnList({board}) {
                     accessibilityLabel="Edit Column"
                   />
                 </View>
-                <KeyboardAwareFlatList
+                <KeyboardAwareSectionList
                   extraScrollHeight={EXPERIMENTAL_EXTRA_SCROLL_HEIGHT}
-                  data={columnCards}
+                  sections={cardGroups}
                   keyExtractor={card => card.id}
                   contentContainerStyle={[
                     sharedStyles.columnPadding,
                     {paddingBottom: insets.bottom},
                   ]}
                   scrollIndicatorInsets={{bottom: insets.bottom}}
-                  renderItem={({item: card}) => {
+                  renderSectionHeader={({section: group}) =>
+                    group.value && (
+                      <SectionHeader testID="group-heading">
+                        {group.value}
+                      </SectionHeader>
+                    )
+                  }
+                  renderItem={({item: card, section: group}) => {
                     if (selectedCardId === card.id) {
                       return (
                         <CardDetail
@@ -206,12 +232,19 @@ export default function ColumnList({board}) {
                       );
                     } else {
                       return (
-                        <CardSummary
-                          card={card}
-                          board={board}
-                          onPress={() => showDetail(card.id)}
-                          style={sharedStyles.mb}
-                        />
+                        <View
+                          testID={
+                            cardGrouping &&
+                            `group-${cardGrouping.field}-${group.value}-card`
+                          }
+                        >
+                          <CardSummary
+                            card={card}
+                            board={board}
+                            onPress={() => showDetail(card.id)}
+                            style={sharedStyles.mb}
+                          />
+                        </View>
                       );
                     }
                   }}

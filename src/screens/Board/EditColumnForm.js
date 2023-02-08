@@ -95,6 +95,11 @@ export default function EditColumnForm({
           attributes={attributes}
           updateAttribute={updateAttribute}
         />
+        <ColumnGrouping
+          board={board}
+          attributes={attributes}
+          updateAttribute={updateAttribute}
+        />
         <Button onPress={onCancel} disabled={isLoading} style={sharedStyles.mt}>
           Cancel
         </Button>
@@ -214,6 +219,50 @@ function ColumnSortOrder({board, attributes, updateAttribute}) {
         )}
         onValueChange={direction =>
           updateAttribute('card-sort-order.direction', direction.key)
+        }
+        keyExtractor={direction => direction.key}
+        labelExtractor={direction => direction.label}
+        style={sharedStyles.mt}
+      />
+    </FormGroup>
+  );
+}
+
+function ColumnGrouping({board, attributes, updateAttribute}) {
+  const elementClient = useElements();
+  const {data: elements = []} = useQuery(['elements', board.id], () =>
+    elementClient.related({parent: board}).then(resp => resp.data),
+  );
+  // TODO: pass fields in from parent
+  const fields = elements.filter(
+    e => e.attributes['element-type'] === ELEMENT_TYPES.FIELD.key,
+  );
+
+  const sortDirectionOptions = Object.values(SORT_DIRECTIONS);
+
+  return (
+    <FormGroup title="Grouping">
+      <Dropdown
+        fieldLabel="Group Field"
+        emptyLabel="(choose)"
+        options={fields}
+        value={fields.find(f => f.id === attributes['card-grouping']?.field)}
+        onValueChange={field =>
+          updateAttribute('card-grouping.field', field.id)
+        }
+        keyExtractor={field => field.id}
+        labelExtractor={field => field.attributes.name}
+        style={sharedStyles.mt}
+      />
+      <Dropdown
+        fieldLabel="Group Direction"
+        emptyLabel="(choose)"
+        options={sortDirectionOptions}
+        value={sortDirectionOptions.find(
+          direction => direction.key === attributes['card-grouping']?.direction,
+        )}
+        onValueChange={direction =>
+          updateAttribute('card-grouping.direction', direction.key)
         }
         keyExtractor={direction => direction.key}
         labelExtractor={direction => direction.label}
