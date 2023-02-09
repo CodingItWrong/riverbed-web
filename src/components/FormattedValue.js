@@ -5,7 +5,7 @@ import dateUtils from '../utils/dateUtils';
 import Text from './Text';
 
 // TODO: replace Field readonly mode with this
-export default function FormattedValue({value, dataType, style}) {
+export default function FormattedValue({value, dataType, style, testID}) {
   function formatValue() {
     switch (dataType) {
       case FIELD_DATA_TYPES.DATE.key:
@@ -22,7 +22,7 @@ export default function FormattedValue({value, dataType, style}) {
   }
 
   return (
-    <View style={style}>
+    <View style={style} testID={testID}>
       <Text>{formatValue()}</Text>
     </View>
   );
