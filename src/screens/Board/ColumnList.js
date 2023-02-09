@@ -207,7 +207,7 @@ export default function ColumnList({board}) {
                 ]}
               >
                 <View style={[sharedStyles.row, sharedStyles.columnPadding]}>
-                  <Text variant="titleLarge" testID="column-name">
+                  <Text variant="titleMedium" testID="column-name">
                     {name ?? '(unnamed column)'} ({columnCards.length})
                   </Text>
                   <IconButton
