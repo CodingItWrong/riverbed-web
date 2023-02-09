@@ -225,6 +225,7 @@ export default function ColumnList({board}) {
                     {paddingBottom: insets.bottom},
                   ]}
                   scrollIndicatorInsets={{bottom: insets.bottom}}
+                  stickySectionHeadersEnabled={false}
                   renderSectionHeader={({section: group}) =>
                     applyGrouping && (
                       <SectionHeader testID="group-heading">
