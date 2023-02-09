@@ -1,3 +1,4 @@
+import {useQuery} from '@tanstack/react-query';
 import get from 'lodash.get';
 import sortBy from 'lodash.sortby';
 import {StyleSheet, View} from 'react-native';
@@ -8,6 +9,8 @@ import IconButton from '../../components/IconButton';
 import SectionHeader from '../../components/SectionHeader';
 import Text from '../../components/Text';
 import sharedStyles, {useColumnStyle} from '../../components/sharedStyles';
+import {useCards} from '../../data/cards';
+import {useElements} from '../../data/elements';
 import SORT_DIRECTIONS from '../../enums/sortDirections';
 import checkConditions from '../../utils/checkConditions';
 import CardDetail from './CardDetail';
@@ -16,18 +19,23 @@ import CardSummary from './CardSummary';
 export default function Column({
   column,
   board,
-  cards,
-  elements,
   onEdit,
   onCancelEdit,
   selectedCardId,
   onSelectCard,
   onChangeCard,
 }) {
-  // TODO: retrieve some data via hooks instead of props
-
   const insets = useSafeAreaInsets();
   const columnWidthStyle = useColumnStyle();
+  const elementClient = useElements();
+  const cardClient = useCards();
+
+  const {data: elements} = useQuery(['elements', board.id], () =>
+    elementClient.related({parent: board}).then(resp => resp.data),
+  );
+  const {data: cards = []} = useQuery(['cards', board.id], () =>
+    cardClient.related({parent: board}).then(resp => resp.data),
+  );
 
   const {
     name,

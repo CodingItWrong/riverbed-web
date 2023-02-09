@@ -31,9 +31,8 @@ export default function ColumnList({board}) {
     ['columns', board.id],
     () => columnClient.related({parent: board}).then(resp => resp.data),
   );
-  const {data: cards = [], isLoading: isLoadingCards} = useQuery(
-    ['cards', board.id],
-    () => cardClient.related({parent: board}).then(resp => resp.data),
+  const {isLoading: isLoadingCards} = useQuery(['cards', board.id], () =>
+    cardClient.related({parent: board}).then(resp => resp.data),
   );
 
   const refreshCards = () => queryClient.invalidateQueries(['cards', board.id]);
@@ -128,8 +127,6 @@ export default function ColumnList({board}) {
               <Column
                 column={column}
                 board={board}
-                cards={cards}
-                elements={elements}
                 onEdit={() => setSelectedColumnId(column.id)}
                 selectedCardId={selectedCardId}
                 onSelectCard={card => showDetail(card.id)}
