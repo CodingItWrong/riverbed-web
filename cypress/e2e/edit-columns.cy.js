@@ -296,8 +296,8 @@ describe('edit columns', () => {
       // confirm which groups are shown in which order
       cy.assertContentsOrder('[data-testid=group-heading]', [
         '(empty)',
-        'Jan 1, 2023',
-        'Jan 1, 1998',
+        'Sun Jan 1, 2023',
+        'Thu Jan 1, 1998',
       ]);
 
       // confirm the cards in each group

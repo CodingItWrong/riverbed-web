@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 
-const HUMAN_FORMAT = 'MMM D, YYYY h:mm:ss A';
+const HUMAN_FORMAT = 'ddd MMM D, YYYY h:mm:ss A';
 
 const dateUtils = {
   serverStringToHumanString(dateString) {
