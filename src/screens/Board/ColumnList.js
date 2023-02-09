@@ -1,32 +1,20 @@
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
-import get from 'lodash.get';
-import sortBy from 'lodash.sortby';
 import {useState} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
-import {KeyboardAwareSectionList} from 'react-native-keyboard-aware-scroll-view';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {large, useBreakpoint} from '../../breakpoints';
 import Button from '../../components/Button';
-import FormattedValue from '../../components/FormattedValue';
-import IconButton from '../../components/IconButton';
 import LoadingIndicator from '../../components/LoadingIndicator';
-import SectionHeader from '../../components/SectionHeader';
-import Text from '../../components/Text';
 import sharedStyles, {useColumnStyle} from '../../components/sharedStyles';
 import {useCards} from '../../data/cards';
 import {useColumns} from '../../data/columns';
 import {useElements} from '../../data/elements';
 import ELEMENT_TYPES from '../../enums/elementTypes';
-import SORT_DIRECTIONS from '../../enums/sortDirections';
 import VALUES from '../../enums/values';
-import checkConditions from '../../utils/checkConditions';
 import sortByDisplayOrder from '../../utils/sortByDisplayOrder';
-import CardDetail from './CardDetail';
-import CardSummary from './CardSummary';
+import Column from './Column';
 import EditColumnForm from './EditColumnForm';
 
 export default function ColumnList({board}) {
-  const insets = useSafeAreaInsets();
   const queryClient = useQueryClient();
   const elementClient = useElements();
   const columnClient = useColumns();
@@ -136,141 +124,18 @@ export default function ColumnList({board}) {
               />
             );
           } else {
-            const {
-              name,
-              'card-sort-order': cardSortOrder,
-              'card-inclusion-conditions': cardInclusionConditions,
-              'card-grouping': cardGrouping,
-            } = column.attributes;
-
-            const filteredCards = cards.filter(card =>
-              checkConditions({
-                card,
-                conditions: cardInclusionConditions,
-                elements,
-              }),
-            );
-            let columnCards;
-
-            if (cardSortOrder?.field && cardSortOrder?.direction) {
-              columnCards = sortBy(filteredCards, [
-                c =>
-                  get(
-                    c,
-                    `attributes.field-values.${cardSortOrder.field}`,
-                  )?.trim(),
-              ]);
-              if (cardSortOrder?.direction === SORT_DIRECTIONS.DESCENDING.key) {
-                columnCards.reverse();
-              }
-            } else {
-              columnCards = filteredCards;
-            }
-
-            let cardGroups;
-
-            const applyGrouping =
-              cardGrouping?.field && cardGrouping?.direction;
-            const groupFieldDataType =
-              applyGrouping &&
-              elements.find(e => e.id === cardGrouping.field).attributes[
-                'data-type'
-              ];
-            if (applyGrouping) {
-              cardGroups = [];
-              columnCards.forEach(card => {
-                const groupValue =
-                  card.attributes['field-values'][cardGrouping.field];
-                let group = cardGroups.find(g => g.value === groupValue);
-                if (!group) {
-                  group = {value: groupValue, data: []};
-                  cardGroups.push(group);
-                }
-                group.data.push(card);
-              });
-              cardGroups = sortBy(cardGroups, ['value']);
-              if (cardGrouping.direction === SORT_DIRECTIONS.DESCENDING.key) {
-                cardGroups.reverse();
-              }
-            } else {
-              cardGroups = [{value: null, data: columnCards}];
-            }
-
             return (
-              <View
-                key={column.id}
-                testID={`column-${column.id}`}
-                style={[
-                  columnWidthStyle,
-                  sharedStyles.fullHeight,
-                  styles.columnWrapper,
-                ]}
-              >
-                <View style={[sharedStyles.row, sharedStyles.columnPadding]}>
-                  <Text variant="titleMedium" testID="column-name">
-                    {name ?? '(unnamed column)'} ({columnCards.length})
-                  </Text>
-                  <IconButton
-                    icon="pencil"
-                    onPress={() => setSelectedColumnId(column.id)}
-                    accessibilityLabel="Edit Column"
-                  />
-                </View>
-                <KeyboardAwareSectionList
-                  extraScrollHeight={EXPERIMENTAL_EXTRA_SCROLL_HEIGHT}
-                  sections={cardGroups}
-                  keyExtractor={card => card.id}
-                  contentContainerStyle={[
-                    sharedStyles.columnPadding,
-                    {paddingBottom: insets.bottom},
-                  ]}
-                  scrollIndicatorInsets={{bottom: insets.bottom}}
-                  stickySectionHeadersEnabled={false}
-                  renderSectionHeader={({section: group}) =>
-                    applyGrouping && (
-                      <SectionHeader testID="group-heading">
-                        {group.value ? (
-                          <FormattedValue
-                            value={group.value}
-                            dataType={groupFieldDataType}
-                          />
-                        ) : (
-                          '(empty)'
-                        )}
-                      </SectionHeader>
-                    )
-                  }
-                  renderItem={({item: card, section: group}) => {
-                    if (selectedCardId === card.id) {
-                      return (
-                        <CardDetail
-                          card={card}
-                          board={board}
-                          onChange={onChangeCard}
-                          onCancel={hideDetail}
-                          style={sharedStyles.mb}
-                        />
-                      );
-                    } else {
-                      return (
-                        <View
-                          testID={
-                            cardGrouping &&
-                            `group-${cardGrouping.field}-${group.value}-card`
-                          }
-                        >
-                          <CardSummary
-                            card={card}
-                            board={board}
-                            onPress={() => showDetail(card.id)}
-                            style={sharedStyles.mb}
-                          />
-                        </View>
-                      );
-                    }
-                  }}
-                />
-              </View>
+              <Column
+                column={column}
+                board={board}
+                cards={cards}
+                elements={elements}
+                onEdit={() => setSelectedColumnId(column.id)}
+                selectedCardId={selectedCardId}
+                onSelectCard={card => showDetail(card.id)}
+                onChangeCard={onChangeCard}
+                onCancelEdit={hideDetail}
+              />
             );
           }
         })}
@@ -286,18 +151,12 @@ export default function ColumnList({board}) {
   );
 }
 
-// Just guessed a value and it worked. Might be due to Add/title rows
-const EXPERIMENTAL_EXTRA_SCROLL_HEIGHT = 180;
-
 const styles = StyleSheet.create({
   buttonContainer: {
     margin: 8,
   },
   spacer: {
     flex: 1,
-  },
-  columnWrapper: {
-    padding: 0, // no idea why this is needed. does View have default padding?
   },
 });
 
