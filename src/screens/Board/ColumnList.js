@@ -7,6 +7,7 @@ import {KeyboardAwareSectionList} from 'react-native-keyboard-aware-scroll-view'
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {large, useBreakpoint} from '../../breakpoints';
 import Button from '../../components/Button';
+import FormattedValue from '../../components/FormattedValue';
 import IconButton from '../../components/IconButton';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import SectionHeader from '../../components/SectionHeader';
@@ -170,6 +171,11 @@ export default function ColumnList({board}) {
 
             const applyGrouping =
               cardGrouping?.field && cardGrouping?.direction;
+            const groupFieldDataType =
+              applyGrouping &&
+              elements.find(e => e.id === cardGrouping.field).attributes[
+                'data-type'
+              ];
             if (applyGrouping) {
               cardGroups = [];
               columnCards.forEach(card => {
@@ -222,7 +228,14 @@ export default function ColumnList({board}) {
                   renderSectionHeader={({section: group}) =>
                     applyGrouping && (
                       <SectionHeader testID="group-heading">
-                        {group.value ?? '(empty)'}
+                        {group.value ? (
+                          <FormattedValue
+                            value={group.value}
+                            dataType={groupFieldDataType}
+                          />
+                        ) : (
+                          '(empty)'
+                        )}
                       </SectionHeader>
                     )
                   }
