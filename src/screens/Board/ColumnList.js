@@ -168,7 +168,9 @@ export default function ColumnList({board}) {
 
             let cardGroups;
 
-            if (cardGrouping?.field && cardGrouping?.direction) {
+            const applyGrouping =
+              cardGrouping?.field && cardGrouping?.direction;
+            if (applyGrouping) {
               cardGroups = [];
               columnCards.forEach(card => {
                 const groupValue =
@@ -218,9 +220,9 @@ export default function ColumnList({board}) {
                   ]}
                   scrollIndicatorInsets={{bottom: insets.bottom}}
                   renderSectionHeader={({section: group}) =>
-                    group.value && (
+                    applyGrouping && (
                       <SectionHeader testID="group-heading">
-                        {group.value}
+                        {group.value ?? '(empty)'}
                       </SectionHeader>
                     )
                   }

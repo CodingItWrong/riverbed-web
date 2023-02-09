@@ -14,11 +14,6 @@ describe('edit columns', () => {
     'data-type': FIELD_DATA_TYPES.TEXT.key,
     'show-in-summary': true,
   });
-  const genreField = Factory.field({
-    name: 'Genre',
-    'data-type': FIELD_DATA_TYPES.TEXT.key,
-    'show-in-summary': false,
-  });
   const purchaseDate = Factory.field({
     name: 'Purchase Date',
     'data-type': FIELD_DATA_TYPES.DATE.key,
@@ -31,24 +26,27 @@ describe('edit columns', () => {
   });
 
   const unownedTitle = 'Unowned Game';
-  const unplayedTitle = 'Unplayed Game';
-  const playedTitle = 'Played Game';
+  const unplayedTitle1 = 'Unplayed Game 1';
+  const unplayedTitle2 = 'Unplayed Game 2';
+  const playedTitle = 'Played Game 1';
 
   const unownedCard = Factory.card({
     [titleField.id]: unownedTitle,
-    [genreField.id]: 'RPG',
     [purchaseDate.id]: null,
     [completeDate.id]: null,
   });
-  const unplayedCard = Factory.card({
-    [titleField.id]: unplayedTitle,
-    [genreField.id]: 'Action',
+  const unplayedCard1 = Factory.card({
+    [titleField.id]: unplayedTitle1,
     [purchaseDate.id]: '2023-01-01',
+    [completeDate.id]: null,
+  });
+  const unplayedCard2 = Factory.card({
+    [titleField.id]: unplayedTitle2,
+    [purchaseDate.id]: '1998-01-01',
     [completeDate.id]: null,
   });
   const playedCard = Factory.card({
     [titleField.id]: playedTitle,
-    [genreField.id]: 'RPG',
     [purchaseDate.id]: '1998-01-01',
     [completeDate.id]: '1999-01-01',
   });
@@ -63,10 +61,10 @@ describe('edit columns', () => {
       data: board,
     });
     cy.intercept('GET', `${apiUrl}/boards/${board.id}/elements?`, {
-      data: [titleField, genreField, purchaseDate, completeDate],
+      data: [titleField, purchaseDate, completeDate],
     });
     cy.intercept('GET', `${apiUrl}/boards/${board.id}/cards?`, {
-      data: [unownedCard, unplayedCard, playedCard],
+      data: [unownedCard, unplayedCard1, unplayedCard2, playedCard],
     });
 
     if (column) {
@@ -145,7 +143,8 @@ describe('edit columns', () => {
     cy.step('CONFIRM DEFAULT SORT ORDER', () => {
       cy.assertContentsOrder(`[data-testid=field-${titleField.id}]`, [
         unownedTitle,
-        unplayedTitle,
+        unplayedTitle1,
+        unplayedTitle2,
         playedTitle,
       ]);
     });
@@ -182,7 +181,8 @@ describe('edit columns', () => {
 
     cy.step('CONFIRM NEW SORT ORDER', () => {
       cy.assertContentsOrder(`[data-testid=field-${titleField.id}]`, [
-        unplayedTitle,
+        unplayedTitle2,
+        unplayedTitle1,
         unownedTitle,
         playedTitle,
       ]);
@@ -240,7 +240,8 @@ describe('edit columns', () => {
 
     cy.step('CONFIRM CORRECT CARDS FILTERED OUT', () => {
       cy.contains(unownedTitle).should('not.exist');
-      cy.contains(unplayedTitle).should('exist');
+      cy.contains(unplayedTitle1).should('exist');
+      cy.contains(unplayedTitle2).should('exist');
       cy.contains(playedTitle).should('not.exist');
     });
   });
@@ -253,7 +254,7 @@ describe('edit columns', () => {
     cy.step('SET GROUPING', () => {
       cy.get('[aria-label="Edit Column"]').click();
 
-      cy.contains('Group Field: (choose)').paperSelect('Genre');
+      cy.contains('Group Field: (choose)').paperSelect('Purchase Date');
       cy.contains(/^\(choose\)$/).should('not.exist'); // ensure modal is closed
       cy.contains('Group Direction: (choose)').paperSelect('Descending');
       cy.contains(/^\(choose\)$/).should('not.exist');
@@ -266,7 +267,7 @@ describe('edit columns', () => {
       const groupedColumn = Factory.column(
         {
           'card-grouping': {
-            field: genreField.id,
+            field: purchaseDate.id,
             direction: 'DESCENDING',
           },
           'card-sort-order': {
@@ -293,19 +294,25 @@ describe('edit columns', () => {
 
     cy.step('CONFIRM GROUPING', () => {
       // confirm which groups are shown in which order
-      cy.assertContentsOrder('[data-testid=group-heading]', ['RPG', 'Action']);
+      cy.assertContentsOrder('[data-testid=group-heading]', [
+        '(empty)',
+        '2023-01-01',
+        '1998-01-01',
+      ]);
 
       // confirm the cards in each group
       cy.assertContentsOrder(
-        `[data-testid="group-${genreField.id}-Action-card"]`,
-        [unplayedTitle],
+        `[data-testid="group-${purchaseDate.id}-2023-01-01-card"]`,
+        [unplayedTitle1],
       );
       cy.assertContentsOrder(
-        `[data-testid="group-${genreField.id}-RPG-card"]`,
-        [playedTitle, unownedTitle],
+        `[data-testid="group-${purchaseDate.id}-1998-01-01-card"]`,
+        [playedTitle, unplayedTitle2],
       );
-
-      // TODO: use Paper styles
+      cy.assertContentsOrder(
+        `[data-testid="group-${purchaseDate.id}-null-card"]`,
+        [unownedTitle],
+      );
     });
   });
 
