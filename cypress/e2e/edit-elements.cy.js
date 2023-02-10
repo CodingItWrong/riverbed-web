@@ -223,8 +223,11 @@ describe('edit elements', () => {
     cy.contains('Value: (choose)').paperSelect('Empty');
 
     // show condition
-    cy.contains('Query Field: (choose)').paperSelect('Greeting');
+    // TODO: why are these order dependent?
     cy.contains('Show Condition: (choose)').paperSelect('Not Empty');
+    // cy.contains(/^\(choose\)$/).should('not.exist');
+    cy.contains('Query Field: (choose)').paperSelect('Greeting');
+    // cy.contains(/^\(choose\)$/).should('not.exist');
 
     cy.intercept('PATCH', `http://cypressapi/elements/${newButton.id}?`, {
       success: true,
