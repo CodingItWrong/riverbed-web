@@ -4,7 +4,6 @@ import sortBy from 'lodash.sortby';
 import {StyleSheet, View} from 'react-native';
 import {KeyboardAwareSectionList} from 'react-native-keyboard-aware-scroll-view';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import FormattedValue from '../../components/FormattedValue';
 import IconButton from '../../components/IconButton';
 import SectionHeader from '../../components/SectionHeader';
 import Text from '../../components/Text';
@@ -13,6 +12,7 @@ import {useCards} from '../../data/cards';
 import {useElements} from '../../data/elements';
 import SORT_DIRECTIONS from '../../enums/sortDirections';
 import checkConditions from '../../utils/checkConditions';
+import formatValue from '../../utils/formatValue';
 import CardDetail from './CardDetail';
 import CardSummary from './CardSummary';
 
@@ -118,14 +118,12 @@ export default function Column({
         renderSectionHeader={({section: group}) =>
           applyGrouping && (
             <SectionHeader testID="group-heading">
-              {group.value ? (
-                <FormattedValue
-                  value={group.value}
-                  dataType={groupFieldDataType}
-                />
-              ) : (
-                '(empty)'
-              )}
+              {group.value
+                ? formatValue({
+                    value: group.value,
+                    dataType: groupFieldDataType,
+                  })
+                : '(empty)'}
             </SectionHeader>
           )
         }

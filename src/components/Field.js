@@ -1,7 +1,8 @@
+import {View} from 'react-native';
 import {DatePickerInput} from 'react-native-paper-dates';
 import FIELD_DATA_TYPES from '../enums/fieldDataTypes';
 import dateUtils from '../utils/dateUtils';
-import FormattedValue from './FormattedValue';
+import formatValue from '../utils/formatValue';
 import NumberField from './NumberField';
 import Text from './Text';
 import TextField from './TextField';
@@ -21,11 +22,9 @@ export default function Field({
 
   if (readOnly) {
     return (
-      <FormattedValue
-        value={value}
-        dataType={dataType}
-        testID={`field-${field.id}`}
-      />
+      <View style={style} testID={`field-${field.id}`}>
+        <Text>{formatValue({value, dataType})}</Text>
+      </View>
     );
   }
 
