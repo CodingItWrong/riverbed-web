@@ -179,7 +179,14 @@ function CardInclusionCondition({board, attributes, updateAttribute}) {
           />
         </View>
       ))}
-      <Button onPress={addFilter}>Add Filter</Button>
+      <Button
+        icon="plus"
+        mode="link"
+        onPress={addFilter}
+        style={sharedStyles.mt}
+      >
+        Add Filter
+      </Button>
     </FormGroup>
   );
 }
