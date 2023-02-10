@@ -136,7 +136,7 @@ function CardInclusionCondition({board, attributes, updateAttribute}) {
   const queryOptions = Object.values(QUERIES);
   const conditions = attributes['card-inclusion-conditions'] ?? [];
 
-  function addFilter() {
+  function addCondition() {
     updateAttribute('card-inclusion-conditions', [...conditions, {}]);
   }
 
@@ -182,7 +182,7 @@ function CardInclusionCondition({board, attributes, updateAttribute}) {
       <Button
         icon="plus"
         mode="link"
-        onPress={addFilter}
+        onPress={addCondition}
         style={sharedStyles.mt}
       >
         Add Filter
