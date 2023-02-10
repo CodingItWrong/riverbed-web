@@ -47,7 +47,11 @@ export default function Field({
       );
     case FIELD_DATA_TYPES.DATETIME.key:
       // TODO: implement writable
-      return <FormattedValue value={value} dataType={dataType} />;
+      return (
+        <View style={style} testID={`field-${field.id}`}>
+          <Text>{formatValue({value, dataType})}</Text>
+        </View>
+      );
     case FIELD_DATA_TYPES.NUMBER.key:
       return (
         <NumberField

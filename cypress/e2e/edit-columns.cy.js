@@ -200,12 +200,12 @@ describe('edit columns', () => {
       cy.get('[data-testid="text-input-column-name"]').clear().type('To Play');
 
       cy.contains('Add Filter').click();
-      cy.contains('Show Query: (choose)').paperSelect('Not Empty');
       cy.contains('Query Field: (choose)').paperSelect('Purchase Date');
+      cy.contains('Show Condition: (choose)').paperSelect('Not Empty');
 
       cy.contains('Add Filter').click();
-      cy.contains('Show Query: (choose)').paperSelect('Empty');
       cy.contains('Query Field: (choose)').paperSelect('Complete Date');
+      cy.contains('Show Condition: (choose)').paperSelect('Empty');
 
       const filteredColumn = Factory.column(
         {

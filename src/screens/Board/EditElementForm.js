@@ -221,20 +221,6 @@ function ShowConditionInputs({elementAttributes, updateAttribute, fields}) {
   return (
     <FormGroup title="Show Condition">
       <Dropdown
-        fieldLabel="Show Query"
-        emptyLabel="(choose)"
-        options={queryOptions}
-        value={queryOptions.find(
-          query => query.key === elementAttributes['show-condition']?.query,
-        )}
-        onValueChange={query =>
-          updateAttribute('show-condition.query', query.key)
-        }
-        keyExtractor={query => query.key}
-        labelExtractor={query => query.label}
-        style={sharedStyles.mt}
-      />
-      <Dropdown
         fieldLabel="Query Field"
         emptyLabel="(choose)"
         options={fields}
@@ -246,6 +232,20 @@ function ShowConditionInputs({elementAttributes, updateAttribute, fields}) {
         }
         keyExtractor={field => field.id}
         labelExtractor={field => field.attributes.name}
+        style={sharedStyles.mt}
+      />
+      <Dropdown
+        fieldLabel="Show Condition"
+        emptyLabel="(choose)"
+        options={queryOptions}
+        value={queryOptions.find(
+          query => query.key === elementAttributes['show-condition']?.query,
+        )}
+        onValueChange={query =>
+          updateAttribute('show-condition.query', query.key)
+        }
+        keyExtractor={query => query.key}
+        labelExtractor={query => query.label}
         style={sharedStyles.mt}
       />
     </FormGroup>
