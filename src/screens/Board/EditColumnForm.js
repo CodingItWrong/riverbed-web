@@ -7,6 +7,7 @@ import Button from '../../components/Button';
 import Card from '../../components/Card';
 import Dropdown from '../../components/DropdownField';
 import FormGroup from '../../components/FormGroup';
+import IconButton from '../../components/IconButton';
 import NumberField from '../../components/NumberField';
 import TextField from '../../components/TextField';
 import sharedStyles from '../../components/sharedStyles';
@@ -140,6 +141,12 @@ function CardInclusionCondition({board, attributes, updateAttribute}) {
     updateAttribute('card-inclusion-conditions', [...conditions, {}]);
   }
 
+  function removeConditionAtIndex(index) {
+    const newConditions = [...conditions];
+    newConditions.splice(index, 1);
+    updateAttribute('card-inclusion-conditions', newConditions);
+  }
+
   // TODO:
   // - test removing a filter
   // - refactor visuals incl field names
@@ -147,6 +154,10 @@ function CardInclusionCondition({board, attributes, updateAttribute}) {
     <FormGroup title="Cards to Include">
       {conditions.map((condition, index) => (
         <View key={`condition-${index}`}>
+          <IconButton
+            icon="close-circle"
+            onPress={() => removeConditionAtIndex(index)}
+          />
           <Dropdown
             fieldLabel="Query Field"
             emptyLabel="(choose)"
