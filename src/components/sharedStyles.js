@@ -24,6 +24,9 @@ const sharedStyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  spacer: {
+    flex: 1,
+  },
   textInput: {
     // causes label overlap issues on web
     // backgroundColor: 'transparent',

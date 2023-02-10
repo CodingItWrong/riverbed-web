@@ -31,7 +31,8 @@ export default function DropdownField({
           style={style}
           onPress={() => setIsMenuShown(true)}
         >
-          {fieldLabel}: {value ? labelExtractor(value) : emptyLabel}
+          {fieldLabel ? `${fieldLabel}: ` : ''}
+          {value ? labelExtractor(value) : emptyLabel}
         </Button>
       }
     >

@@ -153,9 +153,6 @@ const styles = StyleSheet.create({
   buttonContainer: {
     margin: 8,
   },
-  spacer: {
-    flex: 1,
-  },
 });
 
 function getInitialFieldValues(elements) {

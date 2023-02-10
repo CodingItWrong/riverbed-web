@@ -1,7 +1,7 @@
 import {useMutation, useQuery} from '@tanstack/react-query';
 import set from 'lodash.set';
 import {useState} from 'react';
-import {ScrollView, View} from 'react-native';
+import {ScrollView, StyleSheet, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Button from '../../components/Button';
 import Card from '../../components/Card';
@@ -153,14 +153,13 @@ function CardInclusionCondition({board, attributes, updateAttribute}) {
   return (
     <FormGroup title="Cards to Include">
       {conditions.map((condition, index) => (
-        <View key={`condition-${index}`}>
-          <IconButton
-            icon="close-circle"
-            onPress={() => removeConditionAtIndex(index)}
-          />
+        <View
+          key={`condition-${index}`}
+          style={[styles.conditionRow, sharedStyles.mt]}
+        >
           <Dropdown
-            fieldLabel="Query Field"
-            emptyLabel="(choose)"
+            fieldLabel={null}
+            emptyLabel="(field)"
             options={fields}
             value={fields.find(f => f.id === condition.field)}
             onValueChange={field =>
@@ -171,11 +170,11 @@ function CardInclusionCondition({board, attributes, updateAttribute}) {
             }
             keyExtractor={field => field.id}
             labelExtractor={field => field.attributes.name}
-            style={sharedStyles.mt}
+            style={styles.conditionButton}
           />
           <Dropdown
-            fieldLabel="Show Condition"
-            emptyLabel="(choose)"
+            fieldLabel={null}
+            emptyLabel="(condition)"
             options={queryOptions}
             value={queryOptions.find(query => query.key === condition.query)}
             onValueChange={query =>
@@ -186,7 +185,12 @@ function CardInclusionCondition({board, attributes, updateAttribute}) {
             }
             keyExtractor={query => query.key}
             labelExtractor={query => query.label}
-            style={sharedStyles.mt}
+            style={styles.conditionButton}
+          />
+          <View style={sharedStyles.spacer} />
+          <IconButton
+            icon="close-circle"
+            onPress={() => removeConditionAtIndex(index)}
           />
         </View>
       ))}
@@ -289,3 +293,13 @@ function ColumnGrouping({board, attributes, updateAttribute}) {
     </FormGroup>
   );
 }
+
+const styles = StyleSheet.create({
+  conditionRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  conditionButton: {
+    marginRight: 8,
+  },
+});
