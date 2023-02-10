@@ -125,6 +125,7 @@ export default function ColumnList({board}) {
           } else {
             return (
               <Column
+                key={column.id}
                 column={column}
                 board={board}
                 onEdit={() => setSelectedColumnId(column.id)}
