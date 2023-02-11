@@ -1,4 +1,4 @@
-import {View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {DatePickerInput} from 'react-native-paper-dates';
 import FIELD_DATA_TYPES from '../enums/fieldDataTypes';
 import dateUtils from '../utils/dateUtils';
@@ -65,6 +65,7 @@ export default function Field({
         />
       );
     case FIELD_DATA_TYPES.TEXT.key:
+      const {multiline} = options;
       return (
         <TextField
           key={field.id}
@@ -73,11 +74,18 @@ export default function Field({
           value={value ?? ''}
           onChangeText={setValue}
           disabled={disabled}
-          multiline={options.multiline}
-          style={style}
+          multiline={multiline}
+          style={[style, multiline && styles.multilineFix]}
         />
       );
     default:
       return <Text>ERROR: unknown data type {dataType}</Text>;
   }
 }
+
+const styles = StyleSheet.create({
+  // @see https://github.com/callstack/react-native-paper/issues/3665#issuecomment-1425643799
+  multilineFix: {
+    lineHeight: 24,
+  },
+});
