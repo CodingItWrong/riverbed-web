@@ -4,4 +4,4 @@
 yarn deploy:web
 
 # deploy to expo custom native client
-eas update --channel preview
+eas update --channel preview --message "Deploy"
