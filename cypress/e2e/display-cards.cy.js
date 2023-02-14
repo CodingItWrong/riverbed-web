@@ -43,17 +43,16 @@ describe('display cards', () => {
       ],
     });
 
-    const cards = [
-      Factory.card({
-        [titleField.id]: 'Final Fantasy 7',
-        [publisherField.id]: 'Square Enix',
-        [releasedAtField.id]: '1997-01-31',
-      }),
-      Factory.card({
-        [titleField.id]: 'Castlevania: Symphony of the Night',
-        [publisherField.id]: 'Konami',
-      }),
-    ];
+    const releasedCard = Factory.card({
+      [titleField.id]: 'Final Fantasy 7',
+      [publisherField.id]: 'Square Enix',
+      [releasedAtField.id]: '1997-01-31',
+    });
+    const unreleasedCard = Factory.card({
+      [titleField.id]: 'Castlevania: Symphony of the Night',
+      [publisherField.id]: 'Konami',
+    });
+    const cards = [releasedCard, unreleasedCard];
 
     cy.intercept('GET', 'http://cypressapi/boards?', {
       data: [board],
@@ -74,18 +73,25 @@ describe('display cards', () => {
     cy.signIn();
     cy.contains('Video Games').click();
 
-    cy.contains('Released (1)');
-    cy.contains('Unreleased (1)');
+    cy.step('VERIFY RELEASED COLUMN', () => {
+      cy.contains('Released (1)');
+      cy.get(`[data-testid=column-${releasedColumn.id}]`).contains(
+        releasedCard.attributes['field-values'][titleField.id],
+      );
+      cy.contains('Jan 31, 1997'); // release date
+    });
 
-    cy.get(`[data-testid=column-${releasedColumn.id}]`).contains(
-      cards[0].attributes['field-values'][titleField.id],
-    );
-    cy.contains('Jan 31, 1997');
-    cy.get(`[data-testid=column-${unreleasedColumn.id}]`).contains(
-      cards[1].attributes['field-values'][titleField.id],
-    );
-    cy.contains(cards[0].attributes['field-values'][publisherField.id]).should(
-      'not.exist',
-    );
+    cy.step('VERIFY UNRELEASED COLUMN', () => {
+      cy.contains('Unreleased (1)');
+      cy.get(`[data-testid=column-${unreleasedColumn.id}]`).contains(
+        unreleasedCard.attributes['field-values'][titleField.id],
+      );
+    });
+
+    cy.step('VERIFY COLUMNS NOT SHOWN IN SUMMARY', () => {
+      cy.contains(
+        releasedCard.attributes['field-values'][publisherField.id],
+      ).should('not.exist');
+    });
   });
 });
