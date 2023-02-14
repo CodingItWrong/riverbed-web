@@ -24,7 +24,7 @@ const Boards = () => (
     <BoardStack.Screen
       name="BoardList"
       component={BoardList}
-      options={{title: 'My Boards'}}
+      options={{title: 'EAS Update'}}
     />
     <BoardStack.Screen name="Board" component={Board} />
   </BoardStack.Navigator>
