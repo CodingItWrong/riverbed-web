@@ -3,5 +3,5 @@
 # deploy to web
 yarn deploy:web
 
-# deploy to expo go
-expo publish
+# deploy to expo custom native client
+eas update --channel preview
