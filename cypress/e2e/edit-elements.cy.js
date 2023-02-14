@@ -463,11 +463,12 @@ describe('edit elements', () => {
       }).as('updateField');
       cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
         data: [updatedDateField, updatedDateTimeField],
-      });
+      }).as('elementList');
       cy.contains('Save Element').click();
       cy.wait('@updateField')
         .its('request.body')
         .should('deep.equal', {data: updatedDateTimeField});
+      cy.wait('@elementList'); // to make sure the updated elements are loaded before proceeding
     });
 
     cy.step('FINISH EDITING ELEMENTS', () => {
