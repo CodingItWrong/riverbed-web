@@ -29,9 +29,6 @@ jobs:
       - name: ESLint
         run: yarn lint
 
-      - name: Install Expo CLI
-        run: yarn global add expo-cli
-
       - name: Install Sharp CLI
         run: yarn global add sharp-cli@^2.1.0
 
