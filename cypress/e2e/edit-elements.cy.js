@@ -232,78 +232,84 @@ describe('edit elements', () => {
     cy.signIn();
     cy.contains('Video Games').click();
 
-    cy.log('ADD BUTTON');
+    cy.step('CREATE BUTTON', () => {
+      cy.get('[aria-label="Board Menu"]').click();
+      cy.contains('Edit Elements').click({force: true});
 
-    cy.get('[aria-label="Board Menu"]').click();
-    cy.contains('Edit Elements').click({force: true});
-
-    cy.intercept('POST', 'http://cypressapi/elements?', {
-      data: newButton,
-    }).as('addButton');
-    cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
-      data: [greetingField, newButton],
-    });
-
-    cy.contains(/^Add$/).click();
-    cy.contains(/^Button$/).click({force: true});
-
-    cy.wait('@addButton')
-      .its('request.body')
-      .should('deep.equal', {
-        data: {
-          type: 'elements',
-          relationships: {
-            board: {data: {type: 'boards', id: String(board.id)}},
-          },
-          attributes: {'element-type': ELEMENT_TYPES.BUTTON.key},
-        },
+      cy.intercept('POST', 'http://cypressapi/elements?', {
+        data: newButton,
+      }).as('addButton');
+      cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+        data: [greetingField, newButton],
       });
 
-    cy.get('[data-testid="text-input-element-name"]').type(buttonName);
+      cy.contains(/^Add$/).click();
+      cy.contains(/^Button$/).click({force: true});
 
-    // action
-    cy.contains('Command: (choose)').paperSelect('Set Value');
-    // TODO: make this reliable to select when it's just the field name shown, not conflicting with other things on the page
-    cy.contains('Action Field: (choose)').paperSelect('Greeting');
-    cy.contains('Value: (choose)').paperSelect('Empty');
-
-    // show condition
-    // TODO: why are these order dependent?
-    cy.contains('Show Condition: (choose)').paperSelect('Not Empty');
-    // cy.contains(/^\(choose\)$/).should('not.exist');
-    cy.contains('Query Field: (choose)').paperSelect('Greeting');
-    // cy.contains(/^\(choose\)$/).should('not.exist');
-
-    cy.intercept('PATCH', `http://cypressapi/elements/${newButton.id}?`, {
-      success: true,
-    }).as('updateField');
-    cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
-      data: [greetingField, greetButton],
+      cy.wait('@addButton')
+        .its('request.body')
+        .should('deep.equal', {
+          data: {
+            type: 'elements',
+            relationships: {
+              board: {data: {type: 'boards', id: String(board.id)}},
+            },
+            attributes: {'element-type': ELEMENT_TYPES.BUTTON.key},
+          },
+        });
     });
-    cy.contains('Save Element').click();
-    cy.wait('@updateField')
-      .its('request.body')
-      .should('deep.equal', {data: greetButton});
-    cy.contains(buttonName);
-    cy.contains('Done Editing Elements').click();
 
-    cy.contains(greetingText).click();
+    cy.step('CONFIGURE BUTTON', () => {
+      cy.get('[data-testid="text-input-element-name"]').type(buttonName);
 
-    const quietedCard = Factory.card({[greetingField.id]: null}, card);
-    cy.intercept('PATCH', `http://cypressapi/cards/${card.id}?`, {
-      success: true,
-    }).as('updateCard');
-    cy.intercept(`http://cypressapi/boards/${board.id}/cards?`, {
-      data: [quietedCard],
+      // action
+      cy.contains('Command: (choose)').paperSelect('Set Value');
+      // TODO: make this reliable to select when it's just the field name shown, not conflicting with other things on the page
+      cy.contains('Action Field: (choose)').paperSelect('Greeting');
+      cy.contains('Value: (choose)').paperSelect('Empty');
+
+      // show condition
+      // TODO: why are these order dependent?
+      cy.contains('Show Condition: (choose)').paperSelect('Not Empty');
+      // cy.contains(/^\(choose\)$/).should('not.exist');
+      cy.contains('Query Field: (choose)').paperSelect('Greeting');
+      // cy.contains(/^\(choose\)$/).should('not.exist');
+
+      cy.intercept('PATCH', `http://cypressapi/elements/${newButton.id}?`, {
+        success: true,
+      }).as('updateField');
+      cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+        data: [greetingField, greetButton],
+      });
+      cy.contains('Save Element').click();
+      cy.wait('@updateField')
+        .its('request.body')
+        .should('deep.equal', {data: greetButton});
+      cy.contains(buttonName);
+      cy.contains('Done Editing Elements').click();
     });
-    cy.contains(buttonName).click();
-    cy.wait('@updateCard')
-      .its('request.body')
-      .should('deep.equal', {data: quietedCard});
-    cy.contains(greetingText).should('not.exist');
 
-    cy.get(`[data-testid="card-${quietedCard.id}"]`).click();
-    cy.contains(buttonName).should('not.exist');
+    cy.step('CONFIRM BUTTON ACTION WORKS', () => {
+      cy.contains(greetingText).click();
+
+      const quietedCard = Factory.card({[greetingField.id]: null}, card);
+      cy.intercept('PATCH', `http://cypressapi/cards/${card.id}?`, {
+        success: true,
+      }).as('updateCard');
+      cy.intercept(`http://cypressapi/boards/${board.id}/cards?`, {
+        data: [quietedCard],
+      });
+      cy.contains(buttonName).click();
+      cy.wait('@updateCard')
+        .its('request.body')
+        .should('deep.equal', {data: quietedCard});
+      cy.contains(greetingText).should('not.exist');
+    });
+
+    cy.step('CONFIRM BUTTON IS CONDITIONALLY HIDDEN', () => {
+      cy.get(`[data-testid="card-${card.id}"]`).click();
+      cy.contains(buttonName).should('not.exist');
+    });
   });
 
   it('allows updating buttons', () => {
