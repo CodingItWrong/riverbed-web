@@ -30,6 +30,7 @@
     "lodash.merge": "^4.6.2",
     "lodash.set": "^4.3.2",
     "lodash.sortby": "^4.7.0",
+    "lodash.startcase": "^4.4.0",
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "react-native": "0.70.5",
