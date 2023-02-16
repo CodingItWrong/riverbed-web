@@ -1,5 +1,6 @@
 import {useMutation, useQuery} from '@tanstack/react-query';
 import set from 'lodash.set';
+import startCase from 'lodash.startcase';
 import {useState} from 'react';
 import Button from '../../components/Button';
 import Card from '../../components/Card';
@@ -66,10 +67,12 @@ export default function EditElementForm({
 
   const isLoading = isSaving || isDeleting;
 
+  const elementType = elementAttributes['element-type'];
+
   return (
     <Card style={style}>
       <TextField
-        label="Field Name"
+        label={`${startCase(elementType)} Name`}
         value={elementAttributes.name ?? ''}
         onChangeText={value => updateAttribute('name', value)}
         testID="text-input-element-name"
@@ -87,7 +90,7 @@ export default function EditElementForm({
         }
         testID="number-input-order"
       />
-      {elementAttributes['element-type'] === ELEMENT_TYPES.FIELD.key && (
+      {elementType === ELEMENT_TYPES.FIELD.key && (
         <>
           <Dropdown
             fieldLabel="Data Type"
@@ -141,7 +144,7 @@ export default function EditElementForm({
           )}
         </>
       )}
-      {elementAttributes['element-type'] === ELEMENT_TYPES.BUTTON.key && (
+      {elementType === ELEMENT_TYPES.BUTTON.key && (
         <ActionInputs
           elementAttributes={elementAttributes}
           updateAttribute={updateAttribute}
