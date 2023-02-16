@@ -11,6 +11,12 @@ describe('edit elements', () => {
     name: 'All',
     'card-inclusion-condition': null,
   });
+  const greetingFieldName = 'Greeting';
+  const greetingField = Factory.field({
+    name: greetingFieldName,
+    'data-type': FIELD_DATA_TYPES.TEXT.key,
+    'show-in-summary': true,
+  });
 
   beforeEach(() => {
     cy.intercept('http://cypressapi/boards?', {data: [board]});
@@ -27,7 +33,7 @@ describe('edit elements', () => {
       'element-type': ELEMENT_TYPES.FIELD.key,
       name: '',
     });
-    const greetingField = Factory.field(
+    const localGreetingField = Factory.field(
       {
         name: 'Greeting',
         'data-type': FIELD_DATA_TYPES.TEXT.key,
@@ -73,12 +79,12 @@ describe('edit elements', () => {
         success: true,
       }).as('updateField');
       cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
-        data: [greetingField],
+        data: [localGreetingField],
       });
       cy.contains('Save Element').click();
       cy.wait('@updateField')
         .its('request.body')
-        .should('deep.equal', {data: greetingField});
+        .should('deep.equal', {data: localGreetingField});
       cy.contains(fieldName);
       cy.contains('Done Editing Elements').click();
     });
@@ -93,14 +99,14 @@ describe('edit elements', () => {
       });
       cy.contains('Add Card').click();
       const greeting = 'Hello, World!';
-      cy.get(`[data-testid="text-input-${greetingField.id}"]`).type(
+      cy.get(`[data-testid="text-input-${localGreetingField.id}"]`).type(
         'Hello, World!',
       );
       cy.intercept('PATCH', `http://cypressapi/cards/${newCard.id}?`, {
         success: true,
       }).as('updateField');
       cy.intercept(`http://cypressapi/boards/${board.id}/cards?`, {
-        data: [Factory.card({[greetingField.id]: greeting})],
+        data: [Factory.card({[localGreetingField.id]: greeting})],
       });
       cy.contains('Save').click();
       cy.wait('@updateField');
@@ -109,13 +115,6 @@ describe('edit elements', () => {
   });
 
   it('allows updating fields', () => {
-    const fieldName = 'Greeting';
-    const greetingField = Factory.field({
-      name: fieldName,
-      'data-type': FIELD_DATA_TYPES.TEXT.key,
-      'show-in-summary': true,
-    });
-
     cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
       data: [greetingField],
     });
@@ -133,14 +132,14 @@ describe('edit elements', () => {
     cy.get('[aria-label="Board Menu"]').click();
     cy.contains('Edit Elements').click({force: true});
 
-    cy.get(`[aria-label="Edit ${fieldName} field"]`).click();
+    cy.get(`[aria-label="Edit ${greetingFieldName} field"]`).click();
     cy.get('[data-testid="text-input-element-name"]')
       .invoke('val')
-      .then(value => expect(value).to.equal(fieldName));
+      .then(value => expect(value).to.equal(greetingFieldName));
 
     cy.contains('Cancel').click();
     cy.get('[data-testid="text-input-element-name"]').should('not.exist');
-    cy.get(`[aria-label="Edit ${fieldName} field"]`).click();
+    cy.get(`[aria-label="Edit ${greetingFieldName} field"]`).click();
 
     const updatedFieldName = 'Salutation';
     cy.get('[data-testid="text-input-element-name"]')
@@ -160,13 +159,6 @@ describe('edit elements', () => {
   });
 
   it('allows deleting fields', () => {
-    const fieldName = 'Greeting';
-    const greetingField = Factory.field({
-      name: fieldName,
-      'data-type': FIELD_DATA_TYPES.TEXT.key,
-      'show-in-summary': true,
-    });
-
     cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
       data: [greetingField],
     });
@@ -182,7 +174,7 @@ describe('edit elements', () => {
     cy.get('[aria-label="Board Menu"]').click();
     cy.contains('Edit Elements').click({force: true});
 
-    cy.get(`[aria-label="Edit ${fieldName} field"]`).click();
+    cy.get(`[aria-label="Edit ${greetingFieldName} field"]`).click();
     cy.intercept('DELETE', `http://cypressapi/elements/${greetingField.id}`, {
       success: true,
     }).as('deleteField');
@@ -191,16 +183,10 @@ describe('edit elements', () => {
     });
     cy.contains('Delete Element').click();
     cy.wait('@deleteField');
-    cy.contains(fieldName).should('not.exist');
+    cy.contains(greetingFieldName).should('not.exist');
   });
 
   it('allows creating buttons', () => {
-    const greetingField = Factory.field({
-      name: 'Greeting',
-      'data-type': FIELD_DATA_TYPES.TEXT.key,
-      'show-in-summary': true,
-    });
-
     const newButton = Factory.button({});
     const buttonName = 'Quiet Down';
     const greetButton = Factory.button(
@@ -313,12 +299,6 @@ describe('edit elements', () => {
   });
 
   it('allows updating buttons', () => {
-    const greetingField = Factory.field({
-      name: 'Greeting',
-      'data-type': FIELD_DATA_TYPES.TEXT.key,
-      'show-in-summary': true,
-    });
-
     const buttonName = 'Quiet Down';
     const greetButton = Factory.button({
       name: buttonName,
@@ -386,12 +366,6 @@ describe('edit elements', () => {
   });
 
   it('allows deleting buttons', () => {
-    const greetingField = Factory.field({
-      name: 'Greeting',
-      'data-type': FIELD_DATA_TYPES.TEXT.key,
-      'show-in-summary': true,
-    });
-
     const buttonName = 'Quiet Down';
     const greetButton = Factory.button({
       name: buttonName,
