@@ -3,6 +3,7 @@ import {useState} from 'react';
 import {View} from 'react-native';
 import Button from '../../components/Button';
 import ButtonElement from '../../components/ButtonElement';
+import ButtonMenuElement from '../../components/ButtonMenuElement';
 import Card from '../../components/Card';
 import Field from '../../components/Field';
 import Text from '../../components/Text';
@@ -42,8 +43,8 @@ export default function CardDetail({card, board, onChange, onCancel, style}) {
 
   function handlePerformAction(action) {
     const {command, field, value} = action;
-    const valueObject = Object.values(VALUES).find(v => v.key === value);
 
+    const valueObject = Object.values(VALUES).find(v => v.key === value);
     const fieldObject = elements.find(element => element.id === field);
 
     switch (command) {
@@ -106,6 +107,18 @@ export default function CardDetail({card, board, onChange, onCancel, style}) {
                 element={element}
                 onPerformAction={() =>
                   handlePerformAction(element.attributes.action)
+                }
+                disabled={isLoading}
+                style={elementIndex > 0 && sharedStyles.mt}
+              />
+            );
+          case ELEMENT_TYPES.BUTTON_MENU.key:
+            return (
+              <ButtonMenuElement
+                key={element.id}
+                element={element}
+                onPerformActionForItem={menuItem =>
+                  handlePerformAction(menuItem.action)
                 }
                 disabled={isLoading}
                 style={elementIndex > 0 && sharedStyles.mt}

@@ -416,6 +416,147 @@ describe('edit elements', () => {
     });
   });
 
+  it('allows creating button menus', () => {
+    const completedAtFieldName = 'Completed At';
+    const completedAtField = Factory.field({
+      name: completedAtFieldName,
+      'data-type': FIELD_DATA_TYPES.DATE.key,
+      'show-in-summary': true,
+    });
+    const card = Factory.card({
+      [completedAtField.id]: '2023-01-01',
+    });
+
+    const newButtonMenu = Factory.buttonMenu({});
+    const menuName = 'Update Status';
+    const completeItemName = 'Complete';
+    const uncompleteItemName = 'Uncomplete';
+    cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+      data: [completedAtField],
+    });
+    cy.intercept(`http://cypressapi/boards/${board.id}/cards?`, {
+      data: [card],
+    });
+
+    goToBoard();
+
+    cy.step('CREATE BUTTON MENU', () => {
+      cy.get('[aria-label="Board Menu"]').click();
+      cy.contains('Edit Elements').click({force: true});
+
+      cy.intercept('POST', 'http://cypressapi/elements?', {
+        data: newButtonMenu,
+      }).as('addButtonMenu');
+      cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+        data: [completedAtField, newButtonMenu],
+      });
+
+      cy.contains(/^Add$/).click();
+      cy.contains(/^Button Menu$/).click({force: true});
+
+      cy.wait('@addButtonMenu')
+        .its('request.body')
+        .should('deep.equal', {
+          data: {
+            type: 'elements',
+            relationships: {
+              board: {data: {type: 'boards', id: String(board.id)}},
+            },
+            attributes: {'element-type': ELEMENT_TYPES.BUTTON_MENU.key},
+          },
+        });
+    });
+
+    cy.step('CONFIGURE MENU NAME', () => {
+      cy.get('[data-testid="text-input-element-name"]').type(menuName);
+    });
+
+    cy.step('ADD A MENU ITEM', () => {
+      cy.contains('Add Menu Item').click();
+      cy.get('[data-testid="text-input-menu-item-0-name"]').type(
+        completeItemName,
+      );
+
+      cy.contains('Command: (choose)').paperSelect('Set Value');
+      cy.contains('Action Field: (choose)').paperSelect(completedAtFieldName);
+      cy.contains('Value: (choose)').paperSelect('Now');
+    });
+
+    cy.step('ADD A SECOND MENU ITEM', () => {
+      cy.contains('Add Menu Item').click();
+      cy.get('[data-testid="text-input-menu-item-1-name"]').type(
+        uncompleteItemName,
+      );
+
+      cy.contains('Command: (choose)').paperSelect('Set Value');
+      cy.contains('Action Field: (choose)').paperSelect(completedAtFieldName);
+      cy.contains('Value: (choose)').paperSelect('Empty');
+    });
+
+    cy.step('SAVE MENU', () => {
+      const updatedMenu = Factory.buttonMenu(
+        {
+          name: menuName,
+          options: {
+            items: [
+              {
+                name: completeItemName,
+                action: {
+                  command: COMMANDS.SET_VALUE.key,
+                  field: completedAtField.id,
+                  value: VALUES.NOW.key,
+                },
+              },
+              {
+                name: uncompleteItemName,
+                action: {
+                  command: COMMANDS.SET_VALUE.key,
+                  field: completedAtField.id,
+                  value: VALUES.EMPTY.key,
+                },
+              },
+            ],
+          },
+        },
+        newButtonMenu,
+      );
+
+      cy.intercept('PATCH', `http://cypressapi/elements/${newButtonMenu.id}?`, {
+        success: true,
+      }).as('updateMenu');
+      cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+        data: [completedAtField, updatedMenu],
+      });
+      cy.contains('Save Element').click();
+      cy.wait('@updateMenu')
+        .its('request.body')
+        .should('deep.equal', {data: updatedMenu});
+      // TODO: do I need a wait here?
+      cy.contains('Done Editing Elements').click();
+    });
+
+    cy.step('CONFIRM A BUTTON WORKS', () => {
+      cy.get(`[data-testid=card-${card.id}]`).click();
+
+      const uncompletedCard = Factory.card({[completedAtField.id]: null}, card);
+      cy.intercept('PATCH', `http://cypressapi/cards/${card.id}?`, {
+        success: true,
+      }).as('updateCard');
+      cy.intercept(`http://cypressapi/boards/${board.id}/cards?`, {
+        data: [uncompletedCard],
+      });
+      cy.contains(menuName).paperSelect(uncompleteItemName);
+      cy.wait('@updateCard')
+        .its('request.body')
+        .should('deep.equal', {data: uncompletedCard});
+
+      cy.get(`[data-testid=card-${card.id}]`).click();
+      cy.get(`[data-testid="date-input-${completedAtField.id}"]`)
+        .invoke('val')
+        .then(value => expect(value).to.equal(''));
+    });
+  });
+
   it('allows ordering elements', () => {
     const fieldA = Factory.field({
       name: 'Field A',

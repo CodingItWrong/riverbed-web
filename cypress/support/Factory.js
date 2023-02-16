@@ -50,6 +50,14 @@ const Factory = {
       newRecordAttributes: {'element-type': ELEMENT_TYPES.BUTTON.key},
     }),
 
+  buttonMenu: (attributeOverrides, baseRecord) =>
+    createOrUpdate({
+      type: 'elements',
+      attributeOverrides,
+      baseRecord,
+      newRecordAttributes: {'element-type': ELEMENT_TYPES.BUTTON_MENU.key},
+    }),
+
   column: (attributeOverrides, baseRecord) =>
     createOrUpdate({
       type: 'columns',

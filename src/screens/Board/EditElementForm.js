@@ -2,6 +2,7 @@ import {useMutation, useQuery} from '@tanstack/react-query';
 import set from 'lodash.set';
 import startCase from 'lodash.startcase';
 import {useState} from 'react';
+import {View} from 'react-native';
 import Button from '../../components/Button';
 import Card from '../../components/Card';
 import Dropdown from '../../components/DropdownField';
@@ -68,6 +69,12 @@ export default function EditElementForm({
   const isLoading = isSaving || isDeleting;
 
   const elementType = elementAttributes['element-type'];
+
+  const addButtonMenuItem = () =>
+    updateAttribute('options.items', [
+      ...(elementAttributes.options?.items ?? []),
+      {},
+    ]);
 
   return (
     <Card style={style}>
@@ -152,6 +159,35 @@ export default function EditElementForm({
           }
           fields={fields}
         />
+      )}
+      {elementType === ELEMENT_TYPES.BUTTON_MENU.key && (
+        <FormGroup title="Button Menu Items">
+          {elementAttributes.options?.items?.map((menuItem, index) => (
+            <View key={index /* it's fine */}>
+              <TextField
+                label="Menu Item Name"
+                testID={`text-input-menu-item-${index}-name`}
+                value={menuItem.name ?? ''}
+                onChangeText={newName =>
+                  updateAttribute(`options.items[${index}].name`, newName)
+                }
+              />
+              <ActionInputs
+                action={menuItem.action}
+                updateActionAttribute={(path, value) =>
+                  updateAttribute(
+                    `options.items[${index}].action.${path}`,
+                    value,
+                  )
+                }
+                fields={fields}
+              />
+            </View>
+          ))}
+          <Button mode="link" onPress={addButtonMenuItem}>
+            Add Menu Item
+          </Button>
+        </FormGroup>
       )}
       <ShowConditionInputs
         elementAttributes={elementAttributes}

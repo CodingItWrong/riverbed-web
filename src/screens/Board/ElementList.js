@@ -50,6 +50,9 @@ export default function ElementList({board, onClose}) {
   const addButton = () =>
     addElement({'element-type': ELEMENT_TYPES.BUTTON.key});
 
+  const addButtonMenu = () =>
+    addElement({'element-type': ELEMENT_TYPES.BUTTON_MENU.key});
+
   function onChange() {
     hideEditForm();
     refreshElements();
@@ -106,6 +109,7 @@ export default function ElementList({board, onClose}) {
             menuItems={[
               {title: 'Field', onPress: addField},
               {title: 'Button', onPress: addButton},
+              {title: 'Button Menu', onPress: addButtonMenu},
             ]}
           />
         }
@@ -124,7 +128,8 @@ function EditableElement({element, onEdit, testID}) {
 
   function disabledElement() {
     switch (elementType) {
-      case ELEMENT_TYPES.BUTTON.key: {
+      case ELEMENT_TYPES.BUTTON.key:
+      case ELEMENT_TYPES.BUTTON_MENU.key: {
         return <Button disabled>{name}</Button>;
       }
       case ELEMENT_TYPES.FIELD.key: {
