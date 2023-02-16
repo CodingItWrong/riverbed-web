@@ -146,8 +146,10 @@ export default function EditElementForm({
       )}
       {elementType === ELEMENT_TYPES.BUTTON.key && (
         <ActionInputs
-          elementAttributes={elementAttributes}
-          updateAttribute={updateAttribute}
+          action={elementAttributes.action}
+          updateActionAttribute={(path, value) =>
+            updateAttribute(`action.${path}`, value)
+          }
           fields={fields}
         />
       )}
@@ -178,7 +180,7 @@ export default function EditElementForm({
   );
 }
 
-function ActionInputs({elementAttributes, updateAttribute, fields}) {
+function ActionInputs({action, updateActionAttribute, fields}) {
   const commands = Object.values(COMMANDS);
   const valueOptions = Object.values(VALUES);
 
@@ -188,18 +190,16 @@ function ActionInputs({elementAttributes, updateAttribute, fields}) {
         fieldLabel="Command"
         emptyLabel="(choose)"
         options={commands}
-        value={commands.find(c => c.key === elementAttributes.action?.command)}
-        onValueChange={command =>
-          updateAttribute('action.command', command.key)
-        }
+        value={commands.find(c => c.key === action?.command)}
+        onValueChange={command => updateActionAttribute('command', command.key)}
         style={sharedStyles.mt}
       />
       <Dropdown
         fieldLabel="Action Field"
         emptyLabel="(choose)"
         options={fields}
-        value={fields.find(f => f.id === elementAttributes.action?.field)}
-        onValueChange={field => updateAttribute('action.field', field.id)}
+        value={fields.find(f => f.id === action?.field)}
+        onValueChange={field => updateActionAttribute('field', field.id)}
         keyExtractor={field => field.id}
         labelExtractor={field => field.attributes.name}
         style={sharedStyles.mt}
@@ -208,10 +208,8 @@ function ActionInputs({elementAttributes, updateAttribute, fields}) {
         fieldLabel="Value"
         emptyLabel="(choose)"
         options={valueOptions}
-        value={valueOptions.find(
-          o => o.key === elementAttributes.action?.value,
-        )}
-        onValueChange={option => updateAttribute('action.value', option.key)}
+        value={valueOptions.find(o => o.key === action?.value)}
+        onValueChange={option => updateActionAttribute('value', option.key)}
         style={sharedStyles.mt}
       />
     </FormGroup>
