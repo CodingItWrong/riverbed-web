@@ -22,7 +22,7 @@ describe('edit elements', () => {
     });
   });
 
-  it('allows creating, updating, and deleting fields', () => {
+  it('allows creating fields', () => {
     const newField = Factory.field({
       'element-type': ELEMENT_TYPES.FIELD.key,
       name: '',
@@ -46,66 +46,89 @@ describe('edit elements', () => {
     cy.signIn();
     cy.contains('Video Games').click();
 
-    cy.log('ADD FIELD');
+    cy.step('ADD FIELD', () => {
+      cy.get('[aria-label="Board Menu"]').click();
+      cy.contains('Edit Elements').click({force: true});
 
-    cy.get('[aria-label="Board Menu"]').click();
-    cy.contains('Edit Elements').click({force: true});
+      cy.intercept('POST', 'http://cypressapi/elements?', {
+        data: newField,
+      }).as('addField');
+      cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+        data: [newField],
+      });
 
-    cy.intercept('POST', 'http://cypressapi/elements?', {
-      data: newField,
-    }).as('addField');
-    cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
-      data: [newField],
+      cy.contains(/^Add$/).click();
+      cy.contains(/^Field$/).click({force: true});
+
+      cy.wait('@addField');
+      const fieldName = 'Greeting';
+      cy.get('[data-testid="text-input-element-name"]').type(fieldName);
+      cy.contains('Data Type: (choose)').paperSelect('Text');
+      cy.contains('Data Type: Text');
+      cy.get('[data-testid="checkbox-show-in-summary"]').click();
+
+      // TODO: set other element fields: show condition, etc
+
+      cy.intercept('PATCH', `http://cypressapi/elements/${newField.id}?`, {
+        success: true,
+      }).as('updateField');
+      cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+        data: [greetingField],
+      });
+      cy.contains('Save Element').click();
+      cy.wait('@updateField')
+        .its('request.body')
+        .should('deep.equal', {data: greetingField});
+      cy.contains(fieldName);
+      cy.contains('Done Editing Elements').click();
     });
 
-    cy.contains(/^Add$/).click();
-    cy.contains(/^Field$/).click({force: true});
+    cy.step('CONFIRM CARD HAS FIELD', () => {
+      const newCard = Factory.card({});
+      cy.intercept('POST', 'http://cypressapi/cards?', {
+        data: newCard,
+      });
+      cy.intercept(`http://cypressapi/boards/${board.id}/cards?`, {
+        data: [newCard],
+      });
+      cy.contains('Add Card').click();
+      const greeting = 'Hello, World!';
+      cy.get(`[data-testid="text-input-${greetingField.id}"]`).type(
+        'Hello, World!',
+      );
+      cy.intercept('PATCH', `http://cypressapi/cards/${newCard.id}?`, {
+        success: true,
+      }).as('updateField');
+      cy.intercept(`http://cypressapi/boards/${board.id}/cards?`, {
+        data: [Factory.card({[greetingField.id]: greeting})],
+      });
+      cy.contains('Save').click();
+      cy.wait('@updateField');
+      cy.contains(greeting);
+    });
+  });
 
-    cy.wait('@addField');
+  it('allows updating fields', () => {
     const fieldName = 'Greeting';
-    cy.get('[data-testid="text-input-element-name"]').type(fieldName);
-    cy.contains('Data Type: (choose)').paperSelect('Text');
-    cy.contains('Data Type: Text');
-    cy.get('[data-testid="checkbox-show-in-summary"]').click();
+    const greetingField = Factory.field({
+      name: fieldName,
+      'data-type': FIELD_DATA_TYPES.TEXT.key,
+      'show-in-summary': true,
+    });
 
-    // TODO: set other element fields: show condition, etc
-
-    cy.intercept('PATCH', `http://cypressapi/elements/${newField.id}?`, {
-      success: true,
-    }).as('updateField');
     cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
       data: [greetingField],
     });
-    cy.contains('Save Element').click();
-    cy.wait('@updateField')
-      .its('request.body')
-      .should('deep.equal', {data: greetingField});
-    cy.contains(fieldName);
-    cy.contains('Done Editing Elements').click();
-
-    const newCard = Factory.card({});
-    cy.intercept('POST', 'http://cypressapi/cards?', {
-      data: newCard,
-    });
     cy.intercept(`http://cypressapi/boards/${board.id}/cards?`, {
-      data: [newCard],
+      data: [],
     });
-    cy.contains('Add Card').click();
-    const greeting = 'Hello, World!';
-    cy.get(`[data-testid="text-input-${greetingField.id}"]`).type(
-      'Hello, World!',
-    );
-    cy.intercept('PATCH', `http://cypressapi/cards/${newCard.id}?`, {
+
+    cy.signIn();
+    cy.contains('Video Games').click();
+
+    cy.intercept('PATCH', `http://cypressapi/elements/${greetingField.id}?`, {
       success: true,
     }).as('updateField');
-    cy.intercept(`http://cypressapi/boards/${board.id}/cards?`, {
-      data: [Factory.card({[greetingField.id]: greeting})],
-    });
-    cy.contains('Save').click();
-    cy.wait('@updateField');
-    cy.contains(greeting);
-
-    cy.log('EDIT FIELD');
 
     cy.get('[aria-label="Board Menu"]').click();
     cy.contains('Edit Elements').click({force: true});
@@ -134,10 +157,32 @@ describe('edit elements', () => {
     cy.wait('@updateField');
     cy.contains('Save Element').should('not.exist');
     cy.contains(updatedFieldName);
+  });
+
+  it('allows deleting fields', () => {
+    const fieldName = 'Greeting';
+    const greetingField = Factory.field({
+      name: fieldName,
+      'data-type': FIELD_DATA_TYPES.TEXT.key,
+      'show-in-summary': true,
+    });
+
+    cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+      data: [greetingField],
+    });
+    cy.intercept(`http://cypressapi/boards/${board.id}/cards?`, {
+      data: [],
+    });
+
+    cy.signIn();
+    cy.contains('Video Games').click();
 
     cy.log('DELETE FIELD');
 
-    cy.get(`[aria-label="Edit ${updatedFieldName} field"]`).click();
+    cy.get('[aria-label="Board Menu"]').click();
+    cy.contains('Edit Elements').click({force: true});
+
+    cy.get(`[aria-label="Edit ${fieldName} field"]`).click();
     cy.intercept('DELETE', `http://cypressapi/elements/${greetingField.id}`, {
       success: true,
     }).as('deleteField');
@@ -146,10 +191,10 @@ describe('edit elements', () => {
     });
     cy.contains('Delete Element').click();
     cy.wait('@deleteField');
-    cy.contains(updatedFieldName).should('not.exist');
+    cy.contains(fieldName).should('not.exist');
   });
 
-  it('allows creating, updating, and deleting buttons', () => {
+  it('allows creating buttons', () => {
     const greetingField = Factory.field({
       name: 'Greeting',
       'data-type': FIELD_DATA_TYPES.TEXT.key,
@@ -259,50 +304,140 @@ describe('edit elements', () => {
 
     cy.get(`[data-testid="card-${quietedCard.id}"]`).click();
     cy.contains(buttonName).should('not.exist');
+  });
 
-    cy.log('EDIT BUTTON');
+  it('allows updating buttons', () => {
+    const greetingField = Factory.field({
+      name: 'Greeting',
+      'data-type': FIELD_DATA_TYPES.TEXT.key,
+      'show-in-summary': true,
+    });
+
+    const buttonName = 'Quiet Down';
+    const greetButton = Factory.button({
+      name: buttonName,
+      action: {
+        command: COMMANDS.SET_VALUE.key,
+        field: greetingField.id,
+        value: VALUES.EMPTY.key,
+      },
+      'show-condition': {
+        query: QUERIES.IS_NOT_EMPTY.key,
+        field: greetingField.id,
+      },
+    });
+
+    const greetingText = 'Hello, world!';
+    const card = Factory.card({[greetingField.id]: greetingText});
+
+    cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+      data: [greetingField, greetButton],
+    });
+    cy.intercept(`http://cypressapi/boards/${board.id}/cards?`, {
+      data: [card],
+    });
+
+    cy.signIn();
+    cy.contains('Video Games').click();
+
+    const updatedButtonName = 'Shoosh';
+
+    cy.step('EDIT BUTTON', () => {
+      cy.get('[aria-label="Board Menu"]').click();
+      cy.contains('Edit Elements').click({force: true});
+      cy.get(`[aria-label="Edit ${buttonName} button"]`).click();
+
+      cy.get('[data-testid="text-input-element-name"]')
+        .clear()
+        .type(updatedButtonName);
+
+      const renamedButton = Factory.button(
+        {name: updatedButtonName},
+        greetButton,
+      );
+      cy.intercept('PATCH', `http://cypressapi/elements/${greetButton.id}?`, {
+        success: true,
+      }).as('updateField');
+      cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+        data: [greetingField, renamedButton],
+      });
+
+      cy.contains('Save Element').click();
+      cy.wait('@updateField')
+        .its('request.body')
+        .should('deep.equal', {data: renamedButton});
+    });
+
+    cy.step('CONFIRM BUTTON EDITED IN ELEMENT LIST', () => {
+      cy.contains(updatedButtonName);
+    });
+
+    cy.step('CONFIRM BUTTON EDITED ON CARD', () => {
+      cy.contains('Done Editing Elements').click();
+      cy.get(`[data-testid="card-${card.id}"]`).click();
+      cy.contains(updatedButtonName);
+    });
+  });
+
+  it('allows deleting buttons', () => {
+    const greetingField = Factory.field({
+      name: 'Greeting',
+      'data-type': FIELD_DATA_TYPES.TEXT.key,
+      'show-in-summary': true,
+    });
+
+    const buttonName = 'Quiet Down';
+    const greetButton = Factory.button({
+      name: buttonName,
+      action: {
+        command: COMMANDS.SET_VALUE.key,
+        field: greetingField.id,
+        value: VALUES.EMPTY.key,
+      },
+      'show-condition': {
+        query: QUERIES.IS_NOT_EMPTY.key,
+        field: greetingField.id,
+      },
+    });
+
+    const greetingText = 'Hello, world!';
+    const card = Factory.card({[greetingField.id]: greetingText});
+
+    cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+      data: [greetingField, greetButton],
+    });
+    cy.intercept(`http://cypressapi/boards/${board.id}/cards?`, {
+      data: [card],
+    });
+
+    cy.signIn();
+    cy.contains('Video Games').click();
 
     cy.get('[aria-label="Board Menu"]').click();
     cy.contains('Edit Elements').click({force: true});
 
-    cy.get(`[aria-label="Edit ${buttonName} button"]`).click();
+    cy.step('DELETE BUTTON', () => {
+      cy.get(`[aria-label="Edit ${buttonName} button"]`).click();
 
-    const updatedButtonName = 'Shoosh';
-    cy.get('[data-testid="text-input-element-name"]')
-      .clear()
-      .type(updatedButtonName);
-
-    const renamedButton = Factory.button(
-      {name: updatedButtonName},
-      greetButton,
-    );
-    cy.intercept('PATCH', `http://cypressapi/elements/${newButton.id}?`, {
-      success: true,
-    }).as('updateField');
-    cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
-      data: [greetingField, renamedButton],
+      cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+        data: [greetingField],
+      });
+      cy.intercept('DELETE', `http://cypressapi/elements/${greetButton.id}`, {
+        success: true,
+      }).as('deleteButton');
+      cy.contains('Delete Element').click();
+      cy.wait('@deleteButton');
     });
 
-    cy.contains('Save Element').click();
-    cy.wait('@updateField')
-      .its('request.body')
-      .should('deep.equal', {data: renamedButton});
-    cy.contains(updatedButtonName);
-
-    cy.log('DELETE BUTTON');
-
-    cy.get(`[aria-label="Edit ${updatedButtonName} button"]`).click();
-
-    cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
-      data: [greetingField],
+    cy.step('CONFIRM BUTTON REMOVED FROM EDIT LIST', () => {
+      cy.contains(buttonName).should('not.exist');
     });
-    cy.intercept('DELETE', `http://cypressapi/elements/${renamedButton.id}`, {
-      success: true,
-    }).as('deleteButton');
-    cy.contains('Delete Element').click();
-    cy.wait('@deleteButton');
 
-    cy.contains(updatedButtonName).should('not.exist');
+    cy.step('CONFIRM BUTTON REMOVED FROM CARD', () => {
+      cy.contains('Done Editing Elements').click();
+      cy.get(`[data-testid="card-${card.id}"]`).click();
+      cy.contains(buttonName).should('not.exist');
+    });
   });
 
   it('allows ordering elements', () => {
