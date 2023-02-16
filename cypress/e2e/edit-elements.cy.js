@@ -18,6 +18,8 @@ describe('edit elements', () => {
     'data-type': FIELD_DATA_TYPES.TEXT.key,
     'show-in-summary': true,
   });
+  const greetingText = 'Hello, world!';
+  const greetingCard = Factory.card({[greetingField.id]: greetingText});
 
   beforeEach(() => {
     cy.intercept('http://cypressapi/boards?', {data: [board]});
@@ -208,14 +210,11 @@ describe('edit elements', () => {
       newButton,
     );
 
-    const greetingText = 'Hello, world!';
-    const card = Factory.card({[greetingField.id]: greetingText});
-
     cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
       data: [greetingField],
     });
     cy.intercept(`http://cypressapi/boards/${board.id}/cards?`, {
-      data: [card],
+      data: [greetingCard],
     });
 
     goToBoard();
@@ -280,8 +279,11 @@ describe('edit elements', () => {
     cy.step('CONFIRM BUTTON ACTION WORKS', () => {
       cy.contains(greetingText).click();
 
-      const quietedCard = Factory.card({[greetingField.id]: null}, card);
-      cy.intercept('PATCH', `http://cypressapi/cards/${card.id}?`, {
+      const quietedCard = Factory.card(
+        {[greetingField.id]: null},
+        greetingCard,
+      );
+      cy.intercept('PATCH', `http://cypressapi/cards/${greetingCard.id}?`, {
         success: true,
       }).as('updateCard');
       cy.intercept(`http://cypressapi/boards/${board.id}/cards?`, {
@@ -295,7 +297,7 @@ describe('edit elements', () => {
     });
 
     cy.step('CONFIRM BUTTON IS CONDITIONALLY HIDDEN', () => {
-      cy.get(`[data-testid="card-${card.id}"]`).click();
+      cy.get(`[data-testid="card-${greetingCard.id}"]`).click();
       cy.contains(buttonName).should('not.exist');
     });
   });
@@ -315,14 +317,11 @@ describe('edit elements', () => {
       },
     });
 
-    const greetingText = 'Hello, world!';
-    const card = Factory.card({[greetingField.id]: greetingText});
-
     cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
       data: [greetingField, greetButton],
     });
     cy.intercept(`http://cypressapi/boards/${board.id}/cards?`, {
-      data: [card],
+      data: [greetingCard],
     });
 
     goToBoard();
@@ -361,7 +360,7 @@ describe('edit elements', () => {
 
     cy.step('CONFIRM BUTTON EDITED ON CARD', () => {
       cy.contains('Done Editing Elements').click();
-      cy.get(`[data-testid="card-${card.id}"]`).click();
+      cy.get(`[data-testid="card-${greetingCard.id}"]`).click();
       cy.contains(updatedButtonName);
     });
   });
@@ -381,14 +380,11 @@ describe('edit elements', () => {
       },
     });
 
-    const greetingText = 'Hello, world!';
-    const card = Factory.card({[greetingField.id]: greetingText});
-
     cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
       data: [greetingField, greetButton],
     });
     cy.intercept(`http://cypressapi/boards/${board.id}/cards?`, {
-      data: [card],
+      data: [greetingCard],
     });
 
     goToBoard();
@@ -415,7 +411,7 @@ describe('edit elements', () => {
 
     cy.step('CONFIRM BUTTON REMOVED FROM CARD', () => {
       cy.contains('Done Editing Elements').click();
-      cy.get(`[data-testid="card-${card.id}"]`).click();
+      cy.get(`[data-testid="card-${greetingCard.id}"]`).click();
       cy.contains(buttonName).should('not.exist');
     });
   });
