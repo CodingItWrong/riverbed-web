@@ -6,7 +6,8 @@ import VALUES from '../../src/enums/values';
 import Factory from '../support/Factory';
 
 describe('edit elements', () => {
-  const board = Factory.board({name: 'Video Games'});
+  const boardName = 'My Board';
+  const board = Factory.board({name: boardName});
   const allColumn = Factory.column({
     name: 'All',
     'card-inclusion-condition': null,
@@ -27,6 +28,11 @@ describe('edit elements', () => {
       data: [allColumn],
     });
   });
+
+  function goToBoard() {
+    cy.signIn();
+    cy.contains(boardName).click();
+  }
 
   it('allows creating fields', () => {
     const newField = Factory.field({
@@ -49,8 +55,7 @@ describe('edit elements', () => {
       data: [],
     });
 
-    cy.signIn();
-    cy.contains('Video Games').click();
+    goToBoard();
 
     cy.step('ADD FIELD', () => {
       cy.get('[aria-label="Board Menu"]').click();
@@ -122,8 +127,7 @@ describe('edit elements', () => {
       data: [],
     });
 
-    cy.signIn();
-    cy.contains('Video Games').click();
+    goToBoard();
 
     cy.intercept('PATCH', `http://cypressapi/elements/${greetingField.id}?`, {
       success: true,
@@ -166,8 +170,7 @@ describe('edit elements', () => {
       data: [],
     });
 
-    cy.signIn();
-    cy.contains('Video Games').click();
+    goToBoard();
 
     cy.log('DELETE FIELD');
 
@@ -215,8 +218,7 @@ describe('edit elements', () => {
       data: [card],
     });
 
-    cy.signIn();
-    cy.contains('Video Games').click();
+    goToBoard();
 
     cy.step('CREATE BUTTON', () => {
       cy.get('[aria-label="Board Menu"]').click();
@@ -323,8 +325,7 @@ describe('edit elements', () => {
       data: [card],
     });
 
-    cy.signIn();
-    cy.contains('Video Games').click();
+    goToBoard();
 
     const updatedButtonName = 'Shoosh';
 
@@ -390,8 +391,7 @@ describe('edit elements', () => {
       data: [card],
     });
 
-    cy.signIn();
-    cy.contains('Video Games').click();
+    goToBoard();
 
     cy.get('[aria-label="Board Menu"]').click();
     cy.contains('Edit Elements').click({force: true});
@@ -443,8 +443,7 @@ describe('edit elements', () => {
       data: [card],
     });
 
-    cy.signIn();
-    cy.contains('Video Games').click();
+    goToBoard();
 
     // confirm initial order in summary
     cy.assertContentsOrder('[data-testid="field-value"]', [
@@ -537,8 +536,7 @@ describe('edit elements', () => {
       data: [],
     });
 
-    cy.signIn();
-    cy.contains('Video Games').click();
+    goToBoard();
 
     cy.step('EDIT ELEMENTS', () => {
       cy.get('[aria-label="Board Menu"]').click();
