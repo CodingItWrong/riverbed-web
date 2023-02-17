@@ -411,4 +411,18 @@ describe('edit columns', () => {
       cy.contains(columnName).should('not.exist');
     });
   });
+
+  it('displays a message when a column is empty', () => {
+    setUpInitialData();
+
+    cy.intercept('GET', `${apiUrl}/boards/${board.id}/cards?`, {
+      data: [],
+    });
+
+    goToBoard();
+
+    cy.step('CONFIRM THE "(no cards)" MESSAGE', () => {
+      cy.contains('(no cards)');
+    });
+  });
 });
