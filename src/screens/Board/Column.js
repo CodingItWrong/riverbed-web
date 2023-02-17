@@ -11,6 +11,7 @@ import sharedStyles, {useColumnStyle} from '../../components/sharedStyles';
 import {useCards} from '../../data/cards';
 import {useElements} from '../../data/elements';
 import SORT_DIRECTIONS from '../../enums/sortDirections';
+import {groupCards} from '../../utils/cardGroups';
 import checkConditions from '../../utils/checkConditions';
 import formatValue from '../../utils/formatValue';
 import CardDetail from './CardDetail';
@@ -64,30 +65,11 @@ export default function Column({
     columnCards = filteredCards;
   }
 
-  let cardGroups;
-
-  const applyGrouping = cardGrouping?.field && cardGrouping?.direction;
-  const groupFieldDataType =
-    applyGrouping &&
-    elements.find(e => e.id === cardGrouping.field).attributes['data-type'];
-  if (applyGrouping) {
-    cardGroups = [];
-    columnCards.forEach(card => {
-      const groupValue = card.attributes['field-values'][cardGrouping.field];
-      let group = cardGroups.find(g => g.value === groupValue);
-      if (!group) {
-        group = {value: groupValue, data: []};
-        cardGroups.push(group);
-      }
-      group.data.push(card);
-    });
-    cardGroups = sortBy(cardGroups, ['value']);
-    if (cardGrouping.direction === SORT_DIRECTIONS.DESCENDING.key) {
-      cardGroups.reverse();
-    }
-  } else {
-    cardGroups = [{value: null, data: columnCards}];
-  }
+  let {cardGroups, groupFieldDataType, applyGrouping} = groupCards(
+    columnCards,
+    cardGrouping,
+    elements,
+  );
 
   return (
     <View
