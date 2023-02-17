@@ -79,7 +79,7 @@ describe('edit cards', () => {
       .click();
     cy.get(`[data-testid="text-input-${publisherField.id}"]`)
       .invoke('val')
-      .then(value => expect(value).to.equal(publisher));
+      .should('eq', publisher);
 
     cy.log('HIDE DETAIL');
     cy.contains('Cancel').click();

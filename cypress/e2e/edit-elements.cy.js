@@ -141,7 +141,7 @@ describe('edit elements', () => {
     cy.get(`[aria-label="Edit ${greetingFieldName} field"]`).click();
     cy.get('[data-testid="text-input-element-name"]')
       .invoke('val')
-      .then(value => expect(value).to.equal(greetingFieldName));
+      .should('eq', greetingFieldName);
 
     cy.contains('Cancel').click();
     cy.get('[data-testid="text-input-element-name"]').should('not.exist');
