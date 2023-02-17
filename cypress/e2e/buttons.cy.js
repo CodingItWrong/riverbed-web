@@ -3,7 +3,7 @@ import QUERIES from '../../src/enums/queries';
 import VALUES from '../../src/enums/values';
 import Factory from '../support/Factory';
 
-describe('edit cards', () => {
+describe('buttons', () => {
   const title = 'Final Fantasy 7';
 
   it('allows clicking buttons to perform actions', () => {
