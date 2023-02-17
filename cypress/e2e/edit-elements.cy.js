@@ -6,7 +6,7 @@ import VALUES from '../../src/enums/values';
 import Factory from '../support/Factory';
 
 describe('edit elements', () => {
-  const boardName = 'My Board';
+  const boardName = 'Sample Board';
   const board = Factory.board({name: boardName});
   const allColumn = Factory.column({
     name: 'All',
