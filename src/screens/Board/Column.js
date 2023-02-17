@@ -107,7 +107,7 @@ export default function Column({
       </View>
       <KeyboardAwareSectionList
         extraScrollHeight={EXPERIMENTAL_EXTRA_SCROLL_HEIGHT}
-        sections={cardGroups}
+        sections={columnCards.length ? cardGroups : []}
         keyExtractor={card => card.id}
         contentContainerStyle={[
           sharedStyles.columnPadding,
@@ -126,6 +126,11 @@ export default function Column({
                 : '(empty)'}
             </SectionHeader>
           )
+        }
+        ListEmptyComponent={
+          <View>
+            <Text>(no cards)</Text>
+          </View>
         }
         renderItem={({item: card, section: group}) => {
           if (selectedCardId === card.id) {
