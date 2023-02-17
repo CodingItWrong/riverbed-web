@@ -37,6 +37,7 @@ jobs:
         with:
           start: yarn web
           wait-on: 'http://localhost:19006'
+          browser: chrome
 
       - uses: actions/upload-artifact@v3
         if: failure()
