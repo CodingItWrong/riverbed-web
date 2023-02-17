@@ -550,6 +550,9 @@ describe('edit elements', () => {
         .its('request.body')
         .should('deep.equal', {data: uncompletedCard});
 
+      // wait for card list to reload
+      cy.contains('Sun Jan 1, 2023').should('not.exist');
+
       cy.get(`[data-testid=card-${card.id}]`).click();
       cy.get(`[data-testid="date-input-${completedAtField.id}"]`)
         .invoke('val')
