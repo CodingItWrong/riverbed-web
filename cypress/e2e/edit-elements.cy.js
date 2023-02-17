@@ -553,7 +553,7 @@ describe('edit elements', () => {
       cy.get(`[data-testid=card-${card.id}]`).click();
       cy.get(`[data-testid="date-input-${completedAtField.id}"]`)
         .invoke('val')
-        .then(value => expect(value).to.equal(''));
+        .should('eq', '');
     });
   });
 
