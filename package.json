@@ -36,7 +36,6 @@
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "react-native": "0.70.5",
-    "react-native-get-random-values": "^1.8.0",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-paper": "^5.1.3",
     "react-native-paper-dates": "^0.11.13",
