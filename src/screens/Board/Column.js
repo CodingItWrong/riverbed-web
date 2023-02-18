@@ -13,7 +13,7 @@ import {useElements} from '../../data/elements';
 import SORT_DIRECTIONS from '../../enums/sortDirections';
 import checkConditions from '../../utils/checkConditions';
 import formatValue from '../../utils/formatValue';
-import getSortValue from '../../utils/getSortvalue';
+import getSortValue from '../../utils/getSortValue';
 import CardDetail from './CardDetail';
 import CardSummary from './CardSummary';
 
