@@ -5,7 +5,7 @@ import {ScrollView, StyleSheet, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Button from '../../components/Button';
 import Card from '../../components/Card';
-import Dropdown from '../../components/DropdownField';
+import DropdownField from '../../components/DropdownField';
 import FormGroup from '../../components/FormGroup';
 import IconButton from '../../components/IconButton';
 import NumberField from '../../components/NumberField';
@@ -157,7 +157,7 @@ function CardInclusionCondition({board, attributes, updateAttribute}) {
           key={`condition-${index}`}
           style={[styles.conditionRow, sharedStyles.mt]}
         >
-          <Dropdown
+          <DropdownField
             fieldLabel={null}
             emptyLabel="(field)"
             options={fields}
@@ -172,7 +172,7 @@ function CardInclusionCondition({board, attributes, updateAttribute}) {
             labelExtractor={field => field.attributes.name}
             style={styles.conditionButton}
           />
-          <Dropdown
+          <DropdownField
             fieldLabel={null}
             emptyLabel="(condition)"
             options={queryOptions}
@@ -219,7 +219,7 @@ function ColumnSortOrder({board, attributes, updateAttribute}) {
 
   return (
     <FormGroup title="Sort Order">
-      <Dropdown
+      <DropdownField
         fieldLabel="Sort Field"
         emptyLabel="(choose)"
         options={fields}
@@ -231,7 +231,7 @@ function ColumnSortOrder({board, attributes, updateAttribute}) {
         labelExtractor={field => field.attributes.name}
         style={sharedStyles.mt}
       />
-      <Dropdown
+      <DropdownField
         fieldLabel="Sort Direction"
         emptyLabel="(choose)"
         options={sortDirectionOptions}
@@ -264,7 +264,7 @@ function ColumnGrouping({board, attributes, updateAttribute}) {
 
   return (
     <FormGroup title="Grouping">
-      <Dropdown
+      <DropdownField
         fieldLabel="Group Field"
         emptyLabel="(choose)"
         options={fields}
@@ -276,7 +276,7 @@ function ColumnGrouping({board, attributes, updateAttribute}) {
         labelExtractor={field => field.attributes.name}
         style={sharedStyles.mt}
       />
-      <Dropdown
+      <DropdownField
         fieldLabel="Group Direction"
         emptyLabel="(choose)"
         options={sortDirectionOptions}

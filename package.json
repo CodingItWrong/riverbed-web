@@ -39,7 +39,8 @@
     "react-native-paper-dates": "^0.11.13",
     "react-native-safe-area-context": "4.4.1",
     "react-native-screens": "~3.18.0",
-    "react-native-web": "~0.18.9"
+    "react-native-web": "~0.18.9",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

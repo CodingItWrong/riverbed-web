@@ -191,6 +191,120 @@ describe('edit elements', () => {
     cy.contains(greetingFieldName).should('not.exist');
   });
 
+  it('allows creating choice fields', () => {
+    const card = Factory.card({});
+    const newField = Factory.field({
+      'element-type': ELEMENT_TYPES.FIELD.key,
+      name: '',
+    });
+    const choiceField = Factory.field(
+      {
+        name: 'Color',
+        'data-type': FIELD_DATA_TYPES.CHOICE.key,
+        'show-in-summary': true,
+        options: {
+          choices: [
+            {id: 'fake_uuid_1', label: 'Red'},
+            {id: 'fake_uuid_2', label: 'Green'},
+          ],
+        },
+      },
+      newField,
+    );
+
+    cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+      data: [],
+    });
+    cy.intercept(`http://cypressapi/boards/${board.id}/cards?`, {
+      data: [card],
+    });
+
+    goToBoard();
+
+    cy.step('ADD FIELD', () => {
+      cy.get('[aria-label="Board Menu"]').click();
+      cy.contains('Edit Elements').click({force: true});
+
+      cy.intercept('POST', 'http://cypressapi/elements?', {
+        data: newField,
+      }).as('addField');
+      cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+        data: [newField],
+      });
+
+      cy.contains(/^Add$/).click();
+      cy.contains(/^Field$/).click({force: true});
+
+      cy.wait('@addField');
+    });
+
+    cy.step('CONFIGURE FIELD', () => {
+      // name
+      const fieldName = 'Color';
+      cy.get('[data-testid="text-input-element-name"]').type(fieldName);
+
+      // data type: choice
+      cy.contains('Data Type: (choose)').paperSelect('Choice');
+      cy.contains('Data Type: Choice');
+      cy.get('[data-testid="checkbox-show-in-summary"]').click();
+
+      // options
+      cy.contains('Add Choice').click();
+      cy.get('[data-testid=text-input-choice-0-label').type('Red');
+
+      cy.contains('Add Choice').click();
+      cy.get('[data-testid=text-input-choice-1-label').type('Green');
+
+      cy.intercept('PATCH', `http://cypressapi/elements/${newField.id}?`, {
+        success: true,
+      }).as('updateField');
+      cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+        data: [choiceField],
+      });
+      cy.contains('Save Element').click();
+      cy.wait('@updateField')
+        .its('request.body.data.attributes.options.choices')
+        .then(choices => {
+          expect(choices.length).to.equal(2);
+          expect(choices.map(c => typeof c.id)).to.deep.equal([
+            'string',
+            'string',
+          ]);
+          expect(choices.map(c => c.label)).to.deep.equal(['Red', 'Green']);
+        });
+      cy.contains('Done Editing Elements').click();
+    });
+
+    cy.step('CONFIRM CARD HAS CHOICES', () => {
+      cy.get(`[data-testid="card-${card.id}"]`).click();
+      cy.contains('Color: (choose)').paperSelect('Green');
+      cy.contains('Color: Green');
+
+      const updatedCard = Factory.card({[choiceField.id]: 'fake_uuid_2'}, card);
+      cy.intercept('PATCH', `http://cypressapi/cards/${card.id}?`, {
+        success: true,
+      }).as('updateCard');
+      cy.intercept(`http://cypressapi/boards/${board.id}/cards?`, {
+        data: [updatedCard],
+      });
+      cy.contains('Save').click();
+      cy.wait('@updateCard')
+        .its('request.body')
+        .should('deep.equal', {
+          data: {
+            type: 'cards',
+            id: card.id,
+            attributes: {
+              'field-values': {[choiceField.id]: 'fake_uuid_2'},
+            },
+          },
+        });
+
+      cy.contains('Save').should('not.exist');
+      cy.contains('Green');
+    });
+  });
+
   it('allows creating buttons', () => {
     const newButton = Factory.button({});
     const buttonName = 'Quiet Down';
