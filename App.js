@@ -3,7 +3,6 @@ import {
   QueryClientProvider,
   focusManager,
 } from '@tanstack/react-query';
-import {polyfillWebCrypto} from 'expo-standard-web-crypto';
 import {StatusBar} from 'expo-status-bar';
 import {useEffect} from 'react';
 import {AppState, Platform} from 'react-native';
@@ -13,8 +12,6 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import Navigation from './src/Navigation';
 import TokenLoadBuffer from './src/components/TokenLoadBuffer';
 import {TokenProvider} from './src/data/token';
-
-polyfillWebCrypto();
 
 registerTranslation('en', en);
 
