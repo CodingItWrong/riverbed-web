@@ -90,6 +90,12 @@ export default function EditElementForm({
       {id: uuidv4()},
     ]);
 
+  function removeChoiceAtIndex(index) {
+    const newChoices = [...(elementAttributes.options?.choices ?? [])];
+    newChoices.splice(index, 1);
+    updateAttribute('options.choices', newChoices);
+  }
+
   return (
     <Card style={style}>
       <TextField
@@ -166,15 +172,21 @@ export default function EditElementForm({
           {elementAttributes['data-type'] === FIELD_DATA_TYPES.CHOICE.key && (
             <>
               {elementAttributes.options.choices?.map((choice, index) => (
-                <TextField
-                  key={index /* it's fine */}
-                  label="Choice"
-                  value={choice.label ?? ''}
-                  onChangeText={value =>
-                    updateAttribute(`options.choices[${index}].label`, value)
-                  }
-                  testID={`text-input-choice-${index}-label`}
-                />
+                <View key={index /* it's fine */} style={sharedStyles.row}>
+                  <TextField
+                    label="Choice"
+                    value={choice.label ?? ''}
+                    onChangeText={value =>
+                      updateAttribute(`options.choices[${index}].label`, value)
+                    }
+                    testID={`text-input-choice-${index}-label`}
+                    style={sharedStyles.fill}
+                  />
+                  <IconButton
+                    icon="close-circle"
+                    onPress={() => removeChoiceAtIndex(index)}
+                  />
+                </View>
               ))}
               <Button mode="link" onPress={addChoice}>
                 Add Choice
