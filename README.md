@@ -23,6 +23,10 @@ Dependencies are locked with `yarn.lock`; please use `yarn` rather than `npm` fo
 
 - Run `yarn start`
 
+## Building Dev Client
+
+`eas build --profile development-simulator --platform ios`
+
 ## E2E Tests
 
 - Run the app
