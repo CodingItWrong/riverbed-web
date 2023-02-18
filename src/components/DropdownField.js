@@ -44,17 +44,14 @@ export default function DropdownField({
         accessibilityRole="button"
         onPress={() => handleChoose(null)}
       />
-      {options?.map(option => {
-        console.log({option});
-        return (
-          <Menu.Item
-            key={keyExtractor(option)}
-            title={labelExtractor(option)}
-            accessibilityRole="button"
-            onPress={() => handleChoose(option)}
-          />
-        );
-      })}
+      {options?.map(option => (
+        <Menu.Item
+          key={keyExtractor(option)}
+          title={labelExtractor(option)}
+          accessibilityRole="button"
+          onPress={() => handleChoose(option)}
+        />
+      ))}
     </Menu>
   );
 }

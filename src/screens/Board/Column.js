@@ -67,9 +67,8 @@ export default function Column({
   let cardGroups;
 
   const applyGrouping = cardGrouping?.field && cardGrouping?.direction;
-  const groupFieldDataType =
-    applyGrouping &&
-    elements.find(e => e.id === cardGrouping.field).attributes['data-type'];
+  const groupField =
+    applyGrouping && elements.find(e => e.id === cardGrouping.field);
   if (applyGrouping) {
     cardGroups = [];
     columnCards.forEach(card => {
@@ -121,7 +120,8 @@ export default function Column({
               {group.value
                 ? formatValue({
                     value: group.value,
-                    dataType: groupFieldDataType,
+                    dataType: groupField?.attributes['data-type'],
+                    options: groupField?.attributes.options,
                   })
                 : '(empty)'}
             </SectionHeader>
