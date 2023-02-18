@@ -12,6 +12,7 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import Navigation from './src/Navigation';
 import TokenLoadBuffer from './src/components/TokenLoadBuffer';
 import {TokenProvider} from './src/data/token';
+import 'react-native-get-random-values';
 
 registerTranslation('en', en);
 
