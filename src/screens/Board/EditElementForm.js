@@ -3,7 +3,6 @@ import set from 'lodash.set';
 import startCase from 'lodash.startcase';
 import {useState} from 'react';
 import {View} from 'react-native';
-import {v4 as uuidv4} from 'uuid';
 import Button from '../../components/Button';
 import Card from '../../components/Card';
 import DropdownField from '../../components/DropdownField';
@@ -19,6 +18,7 @@ import ELEMENT_TYPES from '../../enums/elementTypes';
 import FIELD_DATA_TYPES from '../../enums/fieldDataTypes';
 import QUERIES from '../../enums/queries';
 import VALUES from '../../enums/values';
+import uuid from '../../utils/uuid';
 
 export default function EditElementForm({
   element,
@@ -87,7 +87,7 @@ export default function EditElementForm({
   const addChoice = () =>
     updateAttribute('options.choices', [
       ...(elementAttributes.options?.choices ?? []),
-      {id: uuidv4()},
+      {id: uuid()},
     ]);
 
   function removeChoiceAtIndex(index) {
