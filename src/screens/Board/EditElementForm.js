@@ -5,7 +5,7 @@ import {useState} from 'react';
 import {View} from 'react-native';
 import Button from '../../components/Button';
 import Card from '../../components/Card';
-import Dropdown from '../../components/DropdownField';
+import DropdownField from '../../components/DropdownField';
 import FormGroup from '../../components/FormGroup';
 import IconButton from '../../components/IconButton';
 import LabeledCheckbox from '../../components/LabeledCheckbox';
@@ -106,7 +106,7 @@ export default function EditElementForm({
       />
       {elementType === ELEMENT_TYPES.FIELD.key && (
         <>
-          <Dropdown
+          <DropdownField
             fieldLabel="Data Type"
             emptyLabel="(choose)"
             value={dataTypeOptions.find(
@@ -116,7 +116,7 @@ export default function EditElementForm({
             options={dataTypeOptions}
             style={sharedStyles.mt}
           />
-          <Dropdown
+          <DropdownField
             fieldLabel="Initial Value"
             emptyLabel="(choose)"
             value={valueOptions.find(
@@ -236,7 +236,7 @@ function ActionInputs({action, updateActionAttribute, fields}) {
 
   return (
     <FormGroup title="Click Action">
-      <Dropdown
+      <DropdownField
         fieldLabel="Command"
         emptyLabel="(choose)"
         options={commands}
@@ -244,7 +244,7 @@ function ActionInputs({action, updateActionAttribute, fields}) {
         onValueChange={command => updateActionAttribute('command', command.key)}
         style={sharedStyles.mt}
       />
-      <Dropdown
+      <DropdownField
         fieldLabel="Action Field"
         emptyLabel="(choose)"
         options={fields}
@@ -254,7 +254,7 @@ function ActionInputs({action, updateActionAttribute, fields}) {
         labelExtractor={field => field.attributes.name}
         style={sharedStyles.mt}
       />
-      <Dropdown
+      <DropdownField
         fieldLabel="Value"
         emptyLabel="(choose)"
         options={valueOptions}
@@ -271,7 +271,7 @@ function ShowConditionInputs({elementAttributes, updateAttribute, fields}) {
 
   return (
     <FormGroup title="Show Condition">
-      <Dropdown
+      <DropdownField
         fieldLabel="Query Field"
         emptyLabel="(choose)"
         options={fields}
@@ -285,7 +285,7 @@ function ShowConditionInputs({elementAttributes, updateAttribute, fields}) {
         labelExtractor={field => field.attributes.name}
         style={sharedStyles.mt}
       />
-      <Dropdown
+      <DropdownField
         fieldLabel="Show Condition"
         emptyLabel="(choose)"
         options={queryOptions}

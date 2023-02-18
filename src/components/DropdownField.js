@@ -7,9 +7,9 @@ export default function DropdownField({
   value,
   onValueChange,
   options,
-  style,
   keyExtractor = option => option.key,
   labelExtractor = option => option.label,
+  style,
   testID,
 }) {
   const [isMenuShown, setIsMenuShown] = useState(false);
