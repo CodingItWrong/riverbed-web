@@ -3,6 +3,7 @@ import set from 'lodash.set';
 import startCase from 'lodash.startcase';
 import {useState} from 'react';
 import {View} from 'react-native';
+import {v4 as uuidv4} from 'uuid';
 import Button from '../../components/Button';
 import Card from '../../components/Card';
 import DropdownField from '../../components/DropdownField';
@@ -83,6 +84,12 @@ export default function EditElementForm({
     updateAttribute('options.items', newItems);
   }
 
+  const addChoice = () =>
+    updateAttribute('options.choices', [
+      ...(elementAttributes.options?.choices ?? []),
+      {id: uuidv4()},
+    ]);
+
   return (
     <Card style={style}>
       <TextField
@@ -155,6 +162,24 @@ export default function EditElementForm({
               }
               style={sharedStyles.mt}
             />
+          )}
+          {elementAttributes['data-type'] === FIELD_DATA_TYPES.CHOICE.key && (
+            <>
+              {elementAttributes.options.choices?.map((choice, index) => (
+                <TextField
+                  key={index /* it's fine */}
+                  label="Choice"
+                  value={choice.label ?? ''}
+                  onChangeText={value =>
+                    updateAttribute(`options.choices[${index}].label`, value)
+                  }
+                  testID={`text-input-choice-${index}-label`}
+                />
+              ))}
+              <Button mode="link" onPress={addChoice}>
+                Add Choice
+              </Button>
+            </>
           )}
         </>
       )}

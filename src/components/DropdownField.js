@@ -7,6 +7,7 @@ export default function DropdownField({
   value,
   onValueChange,
   options,
+  disabled,
   keyExtractor = option => option.key,
   labelExtractor = option => option.label,
   style,
@@ -29,6 +30,7 @@ export default function DropdownField({
           mode="outlined"
           accessibilityLabel={fieldLabel}
           style={style}
+          disabled={disabled}
           onPress={() => setIsMenuShown(true)}
         >
           {fieldLabel ? `${fieldLabel}: ` : ''}
@@ -42,14 +44,17 @@ export default function DropdownField({
         accessibilityRole="button"
         onPress={() => handleChoose(null)}
       />
-      {options.map(option => (
-        <Menu.Item
-          key={keyExtractor(option)}
-          title={labelExtractor(option)}
-          accessibilityRole="button"
-          onPress={() => handleChoose(option)}
-        />
-      ))}
+      {options?.map(option => {
+        console.log({option});
+        return (
+          <Menu.Item
+            key={keyExtractor(option)}
+            title={labelExtractor(option)}
+            accessibilityRole="button"
+            onPress={() => handleChoose(option)}
+          />
+        );
+      })}
     </Menu>
   );
 }
