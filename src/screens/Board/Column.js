@@ -13,6 +13,7 @@ import {useElements} from '../../data/elements';
 import SORT_DIRECTIONS from '../../enums/sortDirections';
 import checkConditions from '../../utils/checkConditions';
 import formatValue from '../../utils/formatValue';
+import getSortValue from '../../utils/getSortValue';
 import CardDetail from './CardDetail';
 import CardSummary from './CardSummary';
 
@@ -54,8 +55,14 @@ export default function Column({
   let columnCards;
 
   if (cardSortOrder?.field && cardSortOrder?.direction) {
+    const sortField = elements.find(e => e.id === cardSortOrder.field);
     columnCards = sortBy(filteredCards, [
-      c => get(c, `attributes.field-values.${cardSortOrder.field}`)?.trim(),
+      card =>
+        getSortValue({
+          value: get(card, `attributes.field-values.${cardSortOrder.field}`),
+          dataType: sortField.attributes['data-type'],
+          options: sortField.attributes.options,
+        }),
     ]);
     if (cardSortOrder?.direction === SORT_DIRECTIONS.DESCENDING.key) {
       columnCards.reverse();
@@ -80,7 +87,14 @@ export default function Column({
       }
       group.data.push(card);
     });
-    cardGroups = sortBy(cardGroups, ['value']);
+    cardGroups = sortBy(cardGroups, [
+      group =>
+        getSortValue({
+          value: group.value,
+          dataType: groupField.attributes['data-type'],
+          options: groupField.attributes.options,
+        }),
+    ]);
     if (cardGrouping.direction === SORT_DIRECTIONS.DESCENDING.key) {
       cardGroups.reverse();
     }
