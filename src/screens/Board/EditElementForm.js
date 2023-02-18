@@ -7,6 +7,7 @@ import Button from '../../components/Button';
 import Card from '../../components/Card';
 import Dropdown from '../../components/DropdownField';
 import FormGroup from '../../components/FormGroup';
+import IconButton from '../../components/IconButton';
 import LabeledCheckbox from '../../components/LabeledCheckbox';
 import NumberField from '../../components/NumberField';
 import TextField from '../../components/TextField';
@@ -75,6 +76,12 @@ export default function EditElementForm({
       ...(elementAttributes.options?.items ?? []),
       {},
     ]);
+
+  function removeButtonMenuItemAtIndex(index) {
+    const newItems = [...elementAttributes.options?.items];
+    newItems.splice(index, 1);
+    updateAttribute('options.items', newItems);
+  }
 
   return (
     <Card style={style}>
@@ -164,14 +171,21 @@ export default function EditElementForm({
         <FormGroup title="Button Menu Items">
           {elementAttributes.options?.items?.map((menuItem, index) => (
             <View key={index /* it's fine */}>
-              <TextField
-                label="Menu Item Name"
-                testID={`text-input-menu-item-${index}-name`}
-                value={menuItem.name ?? ''}
-                onChangeText={newName =>
-                  updateAttribute(`options.items[${index}].name`, newName)
-                }
-              />
+              <View style={sharedStyles.row}>
+                <TextField
+                  label="Menu Item Name"
+                  testID={`text-input-menu-item-${index}-name`}
+                  value={menuItem.name ?? ''}
+                  onChangeText={newName =>
+                    updateAttribute(`options.items[${index}].name`, newName)
+                  }
+                  style={sharedStyles.fill}
+                />
+                <IconButton
+                  icon="close-circle"
+                  onPress={() => removeButtonMenuItemAtIndex(index)}
+                />
+              </View>
               <ActionInputs
                 action={menuItem.action}
                 updateActionAttribute={(path, value) =>
