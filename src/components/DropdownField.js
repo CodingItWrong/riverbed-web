@@ -1,5 +1,6 @@
 import {useState} from 'react';
 import {Button, Menu} from 'react-native-paper';
+import sharedStyles from './sharedStyles';
 
 export default function DropdownField({
   fieldLabel,
@@ -28,8 +29,10 @@ export default function DropdownField({
         <Button
           testID={testID}
           mode="outlined"
+          icon="chevron-down"
           accessibilityLabel={fieldLabel}
           style={style}
+          contentStyle={sharedStyles.flexReverse}
           disabled={disabled}
           onPress={() => setIsMenuShown(true)}
         >
