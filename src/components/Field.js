@@ -34,7 +34,7 @@ export default function Field({
           fieldLabel={name}
           emptyLabel="(choose)"
           value={options.choices?.find(c => c.id === value)}
-          onValueChange={choice => setValue(choice.id)}
+          onValueChange={choice => setValue(choice?.id)}
           options={options.choices}
           keyExtractor={choice => choice.id}
           labelExtractor={choice => choice.label}
