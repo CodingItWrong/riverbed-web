@@ -6,7 +6,6 @@ export default function IconButton({
   accessibilityLabel,
   ...props
 }) {
-  console.log({accessibilityLabel});
   if (!accessibilityLabel) {
     throw new Error('An accessibility label is required for all IconButtons');
   }
