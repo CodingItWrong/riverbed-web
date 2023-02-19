@@ -151,6 +151,15 @@ export default function EditElementForm({
             testID="checkbox-show-in-summary"
           />
           <LabeledCheckbox
+            label="Show Label When Read-Only"
+            checked={elementAttributes.options['show-label-when-read-only']}
+            onChangeChecked={newChecked =>
+              updateAttribute('options.show-label-when-read-only', newChecked)
+            }
+            style={sharedStyles.mt}
+            testID="checkbox-show-label-when-read-only"
+          />
+          <LabeledCheckbox
             label="Read-Only"
             checked={elementAttributes['read-only']}
             onChangeChecked={newChecked =>

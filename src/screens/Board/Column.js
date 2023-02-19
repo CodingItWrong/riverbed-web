@@ -128,19 +128,26 @@ export default function Column({
         ]}
         scrollIndicatorInsets={{bottom: insets.bottom}}
         stickySectionHeadersEnabled={false}
-        renderSectionHeader={({section: group}) =>
-          applyGrouping && (
-            <SectionHeader testID="group-heading">
-              {group.value
-                ? formatValue({
-                    value: group.value,
-                    dataType: groupField?.attributes['data-type'],
-                    options: groupField?.attributes.options,
-                  })
-                : '(empty)'}
-            </SectionHeader>
-          )
-        }
+        renderSectionHeader={({section: group}) => {
+          if (!applyGrouping) {
+            return;
+          }
+
+          let textToShow =
+            formatValue({
+              value: group.value,
+              dataType: groupField.attributes['data-type'],
+              options: groupField.attributes.options,
+            }) ?? '(empty)';
+
+          if (groupField?.attributes.options['show-label-when-read-only']) {
+            textToShow = `${groupField.attributes.name}: ${textToShow}`;
+          }
+
+          return (
+            <SectionHeader testID="group-heading">{textToShow}</SectionHeader>
+          );
+        }}
         renderItem={({item: card, section: group}) => {
           if (selectedCardId === card.id) {
             return (

@@ -20,9 +20,15 @@ export default function Field({
   const {name, 'data-type': dataType, options} = field.attributes;
 
   if (readOnly) {
+    let textToShow = formatValue({value, dataType, options});
+
+    if (options['show-label-when-read-only']) {
+      textToShow = `${name}: ${textToShow ?? '(empty)'}`;
+    }
+
     return (
       <View style={style} testID={`field-${field.id}`}>
-        <Text>{formatValue({value, dataType, options})}</Text>
+        <Text>{textToShow}</Text>
       </View>
     );
   }
