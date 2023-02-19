@@ -87,7 +87,12 @@ export default function BoardList() {
               )}
             />
             <View style={sharedStyles.columnPadding}>
-              <Button onPress={addBoard} disabled={isAdding}>
+              <Button
+                mode="link"
+                icon="plus"
+                onPress={addBoard}
+                disabled={isAdding}
+              >
                 Add Board
               </Button>
             </View>

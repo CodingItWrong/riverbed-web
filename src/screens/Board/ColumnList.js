@@ -105,7 +105,12 @@ export default function ColumnList({board}) {
   return (
     <View style={sharedStyles.fullHeight}>
       <View style={[styles.buttonContainer, responsiveButtonContainerStyle]}>
-        <Button onPress={addCard} disabled={isAddingCard}>
+        <Button
+          mode="link"
+          icon="plus"
+          onPress={addCard}
+          disabled={isAddingCard}
+        >
           Add Card
         </Button>
       </View>
@@ -139,7 +144,12 @@ export default function ColumnList({board}) {
         })}
         <View style={[columnWidthStyle, sharedStyles.columnPadding]}>
           <View style={responsiveButtonContainerStyle}>
-            <Button onPress={addColumn} disabled={isAddingColumn}>
+            <Button
+              mode="link"
+              icon="plus"
+              onPress={addColumn}
+              disabled={isAddingColumn}
+            >
               Add Column
             </Button>
           </View>
