@@ -103,7 +103,7 @@ export default function ElementList({board, onClose}) {
                 style={sharedStyles.mt}
                 {...props}
               >
-                Add
+                Add Element
               </Button>
             )}
             menuItems={[

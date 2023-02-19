@@ -70,8 +70,7 @@ describe('edit elements', () => {
         data: [newField],
       });
 
-      cy.contains(/^Add$/).click();
-      cy.contains(/^Field$/).click({force: true});
+      cy.contains('Add Element').paperSelect('Field');
 
       cy.wait('@addField');
       const fieldName = 'Greeting';
@@ -232,8 +231,7 @@ describe('edit elements', () => {
         data: [newField],
       });
 
-      cy.contains(/^Add$/).click();
-      cy.contains(/^Field$/).click({force: true});
+      cy.contains('Add Element').paperSelect('Field');
 
       cy.wait('@addField');
     });
@@ -344,8 +342,7 @@ describe('edit elements', () => {
         data: [greetingField, newButton],
       });
 
-      cy.contains(/^Add$/).click();
-      cy.contains(/^Button$/).click({force: true});
+      cy.contains('Add Element').paperSelect('Button');
 
       cy.wait('@addButton')
         .its('request.body')
@@ -565,8 +562,7 @@ describe('edit elements', () => {
         data: [completedAtField, newButtonMenu],
       });
 
-      cy.contains(/^Add$/).click();
-      cy.contains(/^Button Menu$/).click({force: true});
+      cy.contains('Add Element').paperSelect('Button Menu');
 
       cy.wait('@addButtonMenu')
         .its('request.body')
