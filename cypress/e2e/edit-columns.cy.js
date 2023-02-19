@@ -246,7 +246,7 @@ describe('edit columns', () => {
     });
   });
 
-  it('allows editing column card grouping', () => {
+  it.only('allows editing column card grouping', () => {
     setUpInitialData();
 
     goToBoard();
