@@ -25,7 +25,10 @@ Dependencies are locked with `yarn.lock`; please use `yarn` rather than `npm` fo
 
 ## Building Dev Client
 
-`eas build --profile development-simulator --platform ios`
+- iOS
+  - `eas build --profile development-simulator --platform ios`
+  - Download the .ipa
+  - Drag-and-drop it onto the iOS Simulator
 
 ## E2E Tests
 
