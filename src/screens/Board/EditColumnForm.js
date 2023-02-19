@@ -190,6 +190,7 @@ function CardInclusionCondition({board, attributes, updateAttribute}) {
           <View style={sharedStyles.spacer} />
           <IconButton
             icon="close-circle"
+            accessibilityLabel="Remove condition"
             onPress={() => removeConditionAtIndex(index)}
           />
         </View>
