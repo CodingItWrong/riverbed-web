@@ -189,7 +189,7 @@ export default function EditElementForm({
                   />
                 </View>
               ))}
-              <Button mode="link" onPress={addChoice}>
+              <Button mode="link" icon="plus" onPress={addChoice}>
                 Add Choice
               </Button>
             </>
@@ -237,7 +237,7 @@ export default function EditElementForm({
               />
             </View>
           ))}
-          <Button mode="link" onPress={addButtonMenuItem}>
+          <Button mode="link" icon="plus" onPress={addButtonMenuItem}>
             Add Menu Item
           </Button>
         </FormGroup>
