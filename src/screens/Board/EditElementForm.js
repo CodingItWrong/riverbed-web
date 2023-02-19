@@ -185,6 +185,7 @@ export default function EditElementForm({
                   <IconButton
                     icon="close-circle"
                     onPress={() => removeChoiceAtIndex(index)}
+                    accessibilityLabel="Remove choice"
                   />
                 </View>
               ))}
@@ -221,6 +222,7 @@ export default function EditElementForm({
                 <IconButton
                   icon="close-circle"
                   onPress={() => removeButtonMenuItemAtIndex(index)}
+                  accessibilityLabel="Remove menu item"
                 />
               </View>
               <ActionInputs
