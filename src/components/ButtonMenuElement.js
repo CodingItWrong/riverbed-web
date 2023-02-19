@@ -1,5 +1,6 @@
 import Button from './Button';
 import DropdownMenu from './DropdownMenu';
+import sharedStyles from './sharedStyles';
 
 export default function ButtonMenuElement({
   element,
@@ -16,6 +17,8 @@ export default function ButtonMenuElement({
           disabled={disabled}
           testID={`button-${element.id}`}
           style={style}
+          icon="chevron-down"
+          rightIcon
           {...props}
         >
           {name}

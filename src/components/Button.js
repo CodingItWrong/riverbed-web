@@ -1,4 +1,5 @@
 import {Button as PaperButton} from 'react-native-paper';
+import sharedStyles from './sharedStyles';
 
 export default function Button({
   icon,
@@ -6,6 +7,7 @@ export default function Button({
   disabled,
   children,
   mode = 'default',
+  rightIcon = false,
   style,
   testID,
 }) {
@@ -17,6 +19,7 @@ export default function Button({
       onPress={onPress}
       disabled={disabled}
       style={style}
+      contentStyle={rightIcon ? sharedStyles.flexReverse : null}
       testID={testID}
     >
       {children}

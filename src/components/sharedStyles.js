@@ -8,6 +8,9 @@ const sharedStyles = StyleSheet.create({
   fill: {
     flex: 1,
   },
+  flexReverse: {
+    flexDirection: 'row-reverse',
+  },
   fullHeight: {
     flex: 1,
   },
