@@ -16,6 +16,7 @@ import {useElements} from '../../data/elements';
 import ELEMENT_TYPES from '../../enums/elementTypes';
 import QUERIES from '../../enums/queries';
 import SORT_DIRECTIONS from '../../enums/sortDirections';
+import SUMMARY_FUNCTIONS from '../../enums/summaryFunctions';
 
 export default function EditColumnForm({
   column,
@@ -27,6 +28,14 @@ export default function EditColumnForm({
   const insets = useSafeAreaInsets();
   const columnClient = useColumns();
   const [attributes, setAttributes] = useState(column.attributes);
+
+  const elementClient = useElements();
+  const {data: elements = []} = useQuery(['elements', board.id], () =>
+    elementClient.related({parent: board}).then(resp => resp.data),
+  );
+  const fields = elements.filter(
+    e => e.attributes['element-type'] === ELEMENT_TYPES.FIELD.key,
+  );
 
   function updateAttribute(path, value) {
     setAttributes(oldAttributes => {
@@ -88,16 +97,25 @@ export default function EditColumnForm({
         />
         <CardInclusionCondition
           board={board}
+          fields={fields}
           attributes={attributes}
           updateAttribute={updateAttribute}
         />
         <ColumnSortOrder
           board={board}
+          fields={fields}
           attributes={attributes}
           updateAttribute={updateAttribute}
         />
         <ColumnGrouping
           board={board}
+          fields={fields}
+          attributes={attributes}
+          updateAttribute={updateAttribute}
+        />
+        <ColumnSummary
+          board={board}
+          fields={fields}
           attributes={attributes}
           updateAttribute={updateAttribute}
         />
@@ -124,16 +142,7 @@ export default function EditColumnForm({
   );
 }
 
-function CardInclusionCondition({board, attributes, updateAttribute}) {
-  // TODO: extract custom hook
-  const elementClient = useElements();
-  const {data: elements = []} = useQuery(['elements', board.id], () =>
-    elementClient.related({parent: board}).then(resp => resp.data),
-  );
-  const fields = elements.filter(
-    e => e.attributes['element-type'] === ELEMENT_TYPES.FIELD.key,
-  );
-
+function CardInclusionCondition({board, fields, attributes, updateAttribute}) {
   const queryOptions = Object.values(QUERIES);
   const conditions = attributes['card-inclusion-conditions'] ?? [];
 
@@ -207,15 +216,7 @@ function CardInclusionCondition({board, attributes, updateAttribute}) {
   );
 }
 
-function ColumnSortOrder({board, attributes, updateAttribute}) {
-  const elementClient = useElements();
-  const {data: elements = []} = useQuery(['elements', board.id], () =>
-    elementClient.related({parent: board}).then(resp => resp.data),
-  );
-  const fields = elements.filter(
-    e => e.attributes['element-type'] === ELEMENT_TYPES.FIELD.key,
-  );
-
+function ColumnSortOrder({board, fields, attributes, updateAttribute}) {
   const sortDirectionOptions = Object.values(SORT_DIRECTIONS);
 
   return (
@@ -251,16 +252,7 @@ function ColumnSortOrder({board, attributes, updateAttribute}) {
   );
 }
 
-function ColumnGrouping({board, attributes, updateAttribute}) {
-  const elementClient = useElements();
-  const {data: elements = []} = useQuery(['elements', board.id], () =>
-    elementClient.related({parent: board}).then(resp => resp.data),
-  );
-  // TODO: pass fields in from parent
-  const fields = elements.filter(
-    e => e.attributes['element-type'] === ELEMENT_TYPES.FIELD.key,
-  );
-
+function ColumnGrouping({board, fields, attributes, updateAttribute}) {
   const sortDirectionOptions = Object.values(SORT_DIRECTIONS);
 
   return (
@@ -291,6 +283,41 @@ function ColumnGrouping({board, attributes, updateAttribute}) {
         labelExtractor={direction => direction.label}
         style={sharedStyles.mt}
       />
+    </FormGroup>
+  );
+}
+
+function ColumnSummary({board, fields, attributes, updateAttribute}) {
+  const summaryFunctionOptions = Object.values(SUMMARY_FUNCTIONS);
+
+  return (
+    <FormGroup title="Summary">
+      <DropdownField
+        fieldLabel="Summary Function"
+        emptyLabel="(choose)"
+        options={summaryFunctionOptions}
+        value={summaryFunctionOptions.find(
+          o => o.key === attributes.summary?.function,
+        )}
+        onValueChange={o => updateAttribute('summary.function', o.key)}
+        keyExtractor={o => o.key}
+        labelExtractor={o => o.label}
+        style={sharedStyles.mt}
+      />
+      {attributes.summary?.function === SUMMARY_FUNCTIONS.SUM.key && (
+        <DropdownField
+          fieldLabel="Summary Field"
+          emptyLabel="(choose)"
+          options={fields}
+          value={fields.find(f => f.id === attributes.summary?.options?.field)}
+          onValueChange={field =>
+            updateAttribute('summary.options.field', field.id)
+          }
+          keyExtractor={field => field.id}
+          labelExtractor={field => field.attributes.name}
+          style={sharedStyles.mt}
+        />
+      )}
     </FormGroup>
   );
 }

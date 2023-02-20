@@ -1,6 +1,7 @@
 import FIELD_DATA_TYPES from '../../src/enums/fieldDataTypes';
 import QUERIES from '../../src/enums/queries';
 import SORT_DIRECTIONS from '../../src/enums/sortDirections';
+import SUMMARY_FUNCTIONS from '../../src/enums/summaryFunctions';
 import Factory from '../support/Factory';
 
 describe('edit columns', () => {
@@ -24,6 +25,11 @@ describe('edit columns', () => {
     'data-type': FIELD_DATA_TYPES.DATE.key,
     'show-in-summary': false,
   });
+  const price = Factory.field({
+    name: 'Price',
+    'data-type': FIELD_DATA_TYPES.NUMBER.key,
+    'show-in-summary': true,
+  });
 
   const unownedTitle = 'Unowned Game';
   const unplayedTitle1 = 'Unplayed Game 1';
@@ -34,21 +40,25 @@ describe('edit columns', () => {
     [titleField.id]: unownedTitle,
     [purchaseDate.id]: null,
     [completeDate.id]: null,
+    [price.id]: 15.99,
   });
   const unplayedCard1 = Factory.card({
     [titleField.id]: unplayedTitle1,
     [purchaseDate.id]: '2023-01-01',
     [completeDate.id]: null,
+    [price.id]: 24.99,
   });
   const unplayedCard2 = Factory.card({
     [titleField.id]: unplayedTitle2,
     [purchaseDate.id]: '1998-01-01',
     [completeDate.id]: null,
+    [price.id]: 4.99,
   });
   const playedCard = Factory.card({
     [titleField.id]: playedTitle,
     [purchaseDate.id]: '1998-01-01',
     [completeDate.id]: '1999-01-01',
+    [price.id]: 149.99,
   });
   const columnName = 'All';
   const allColumn = Factory.column({name: columnName});
@@ -61,7 +71,7 @@ describe('edit columns', () => {
       data: board,
     });
     cy.intercept('GET', `${apiUrl}/boards/${board.id}/elements?`, {
-      data: [titleField, purchaseDate, completeDate],
+      data: [titleField, purchaseDate, completeDate, price],
     });
     cy.intercept('GET', `${apiUrl}/boards/${board.id}/cards?`, {
       data: [unownedCard, unplayedCard1, unplayedCard2, playedCard],
@@ -313,6 +323,47 @@ describe('edit columns', () => {
         `[data-testid="group-${purchaseDate.id}-null-card"]`,
         [unownedTitle],
       );
+    });
+  });
+
+  it('allows editing column summary', () => {
+    setUpInitialData();
+
+    goToBoard();
+
+    cy.step('EDIT COLUMN SUMMARY', () => {
+      cy.get('[aria-label="Edit Column"]').click();
+      cy.contains('Summary Function: (choose)').paperSelect('Sum');
+      cy.contains('Summary Field: (choose)').paperSelect('Price');
+
+      const summedColumn = Factory.column(
+        {
+          summary: {
+            function: SUMMARY_FUNCTIONS.SUM.key,
+            options: {
+              field: price.id,
+            },
+          },
+        },
+        allColumn,
+      );
+      cy.intercept(
+        'PATCH',
+        `${apiUrl}/columns/${allColumn.id}?`,
+        successJson,
+      ).as('updateColumn');
+      cy.intercept('GET', `${apiUrl}/boards/${board.id}/columns?`, {
+        data: [summedColumn],
+      });
+      cy.contains('Save Column').click();
+      cy.wait('@updateColumn')
+        .its('request.body')
+        .should('deep.equal', {data: summedColumn});
+      cy.contains('Save Column').should('not.exist');
+    });
+
+    cy.step('CONFIRM SUMMARY', () => {
+      cy.contains('All (195.96)');
     });
   });
 
