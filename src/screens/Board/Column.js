@@ -113,7 +113,9 @@ export default function Column({
       <View style={[sharedStyles.row, sharedStyles.columnPadding]}>
         <Text variant="titleMedium" testID="column-name">
           {name ?? '(unnamed column)'}
-          {summary?.function && <> ({calculateSummary({cards, summary})})</>}
+          {summary?.function && (
+            <> ({calculateSummary({cards: columnCards, summary})})</>
+          )}
         </Text>
         <IconButton
           icon="pencil"
