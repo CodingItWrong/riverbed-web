@@ -299,7 +299,7 @@ function ColumnSummary({board, fields, attributes, updateAttribute}) {
         value={summaryFunctionOptions.find(
           o => o.key === attributes.summary?.function,
         )}
-        onValueChange={o => updateAttribute('summary.function', o.key)}
+        onValueChange={o => updateAttribute('summary.function', o?.key)}
         keyExtractor={o => o.key}
         labelExtractor={o => o.label}
         style={sharedStyles.mt}
