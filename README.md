@@ -25,10 +25,10 @@ Dependencies are locked with `yarn.lock`; please use `yarn` rather than `npm` fo
 
 ## Building Dev Client
 
-- iOS
-  - `eas build --profile development-simulator --platform ios`
-  - Download the .ipa
-  - Drag-and-drop it onto the iOS Simulator
+<https://docs.expo.dev/development/create-development-builds/#on-emulatorsimulator>
+
+- Android: `eas build --profile development --platform android`
+- iOS: `eas build --profile development-simulator --platform ios`
 
 ## E2E Tests
 
