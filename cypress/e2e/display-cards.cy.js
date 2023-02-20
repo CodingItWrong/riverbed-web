@@ -74,7 +74,7 @@ describe('display cards', () => {
     cy.contains('Video Games').click();
 
     cy.step('VERIFY RELEASED COLUMN', () => {
-      cy.contains('Released (1)');
+      cy.contains('Released');
       cy.get(`[data-testid=column-${releasedColumn.id}]`).contains(
         releasedCard.attributes['field-values'][titleField.id],
       );
@@ -82,7 +82,7 @@ describe('display cards', () => {
     });
 
     cy.step('VERIFY UNRELEASED COLUMN', () => {
-      cy.contains('Unreleased (1)');
+      cy.contains('Unreleased');
       cy.get(`[data-testid=column-${unreleasedColumn.id}]`).contains(
         unreleasedCard.attributes['field-values'][titleField.id],
       );

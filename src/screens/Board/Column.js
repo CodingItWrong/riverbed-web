@@ -11,6 +11,7 @@ import sharedStyles, {useColumnStyle} from '../../components/sharedStyles';
 import {useCards} from '../../data/cards';
 import {useElements} from '../../data/elements';
 import SORT_DIRECTIONS from '../../enums/sortDirections';
+import calculateSummary from '../../utils/calculateSummary';
 import checkConditions from '../../utils/checkConditions';
 import formatValue from '../../utils/formatValue';
 import getSortValue from '../../utils/getSortValue';
@@ -43,6 +44,7 @@ export default function Column({
     'card-sort-order': cardSortOrder,
     'card-inclusion-conditions': cardInclusionConditions,
     'card-grouping': cardGrouping,
+    summary,
   } = column.attributes;
 
   const filteredCards = cards.filter(card =>
@@ -110,7 +112,8 @@ export default function Column({
     >
       <View style={[sharedStyles.row, sharedStyles.columnPadding]}>
         <Text variant="titleMedium" testID="column-name">
-          {name ?? '(unnamed column)'} ({columnCards.length})
+          {name ?? '(unnamed column)'}
+          {summary && <> ({calculateSummary({cards, summary})})</>}
         </Text>
         <IconButton
           icon="pencil"

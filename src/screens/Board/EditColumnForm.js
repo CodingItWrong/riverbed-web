@@ -16,6 +16,7 @@ import {useElements} from '../../data/elements';
 import ELEMENT_TYPES from '../../enums/elementTypes';
 import QUERIES from '../../enums/queries';
 import SORT_DIRECTIONS from '../../enums/sortDirections';
+import SUMMARY_FUNCTIONS from '../../enums/summaryFunctions';
 
 export default function EditColumnForm({
   column,
@@ -107,6 +108,12 @@ export default function EditColumnForm({
           updateAttribute={updateAttribute}
         />
         <ColumnGrouping
+          board={board}
+          fields={fields}
+          attributes={attributes}
+          updateAttribute={updateAttribute}
+        />
+        <ColumnSummary
           board={board}
           fields={fields}
           attributes={attributes}
@@ -276,6 +283,41 @@ function ColumnGrouping({board, fields, attributes, updateAttribute}) {
         labelExtractor={direction => direction.label}
         style={sharedStyles.mt}
       />
+    </FormGroup>
+  );
+}
+
+function ColumnSummary({board, fields, attributes, updateAttribute}) {
+  const summaryFunctionOptions = Object.values(SUMMARY_FUNCTIONS);
+
+  return (
+    <FormGroup title="Summary">
+      <DropdownField
+        fieldLabel="Summary Function"
+        emptyLabel="(choose)"
+        options={summaryFunctionOptions}
+        value={summaryFunctionOptions.find(
+          o => o.key === attributes.summary?.function,
+        )}
+        onValueChange={o => updateAttribute('summary.function', o.key)}
+        keyExtractor={o => o.key}
+        labelExtractor={o => o.label}
+        style={sharedStyles.mt}
+      />
+      {attributes.summary?.function === SUMMARY_FUNCTIONS.SUM.key && (
+        <DropdownField
+          fieldLabel="Summary Field"
+          emptyLabel="(choose)"
+          options={fields}
+          value={fields.find(f => f.id === attributes.summary?.options?.field)}
+          onValueChange={field =>
+            updateAttribute('summary.options.field', field.id)
+          }
+          keyExtractor={field => field.id}
+          labelExtractor={field => field.attributes.name}
+          style={sharedStyles.mt}
+        />
+      )}
     </FormGroup>
   );
 }
