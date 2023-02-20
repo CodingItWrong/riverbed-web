@@ -28,6 +28,14 @@ export default function EditColumnForm({
   const columnClient = useColumns();
   const [attributes, setAttributes] = useState(column.attributes);
 
+  const elementClient = useElements();
+  const {data: elements = []} = useQuery(['elements', board.id], () =>
+    elementClient.related({parent: board}).then(resp => resp.data),
+  );
+  const fields = elements.filter(
+    e => e.attributes['element-type'] === ELEMENT_TYPES.FIELD.key,
+  );
+
   function updateAttribute(path, value) {
     setAttributes(oldAttributes => {
       const newAttributes = {...oldAttributes};
@@ -88,16 +96,19 @@ export default function EditColumnForm({
         />
         <CardInclusionCondition
           board={board}
+          fields={fields}
           attributes={attributes}
           updateAttribute={updateAttribute}
         />
         <ColumnSortOrder
           board={board}
+          fields={fields}
           attributes={attributes}
           updateAttribute={updateAttribute}
         />
         <ColumnGrouping
           board={board}
+          fields={fields}
           attributes={attributes}
           updateAttribute={updateAttribute}
         />
@@ -124,16 +135,7 @@ export default function EditColumnForm({
   );
 }
 
-function CardInclusionCondition({board, attributes, updateAttribute}) {
-  // TODO: extract custom hook
-  const elementClient = useElements();
-  const {data: elements = []} = useQuery(['elements', board.id], () =>
-    elementClient.related({parent: board}).then(resp => resp.data),
-  );
-  const fields = elements.filter(
-    e => e.attributes['element-type'] === ELEMENT_TYPES.FIELD.key,
-  );
-
+function CardInclusionCondition({board, fields, attributes, updateAttribute}) {
   const queryOptions = Object.values(QUERIES);
   const conditions = attributes['card-inclusion-conditions'] ?? [];
 
@@ -207,15 +209,7 @@ function CardInclusionCondition({board, attributes, updateAttribute}) {
   );
 }
 
-function ColumnSortOrder({board, attributes, updateAttribute}) {
-  const elementClient = useElements();
-  const {data: elements = []} = useQuery(['elements', board.id], () =>
-    elementClient.related({parent: board}).then(resp => resp.data),
-  );
-  const fields = elements.filter(
-    e => e.attributes['element-type'] === ELEMENT_TYPES.FIELD.key,
-  );
-
+function ColumnSortOrder({board, fields, attributes, updateAttribute}) {
   const sortDirectionOptions = Object.values(SORT_DIRECTIONS);
 
   return (
@@ -251,16 +245,7 @@ function ColumnSortOrder({board, attributes, updateAttribute}) {
   );
 }
 
-function ColumnGrouping({board, attributes, updateAttribute}) {
-  const elementClient = useElements();
-  const {data: elements = []} = useQuery(['elements', board.id], () =>
-    elementClient.related({parent: board}).then(resp => resp.data),
-  );
-  // TODO: pass fields in from parent
-  const fields = elements.filter(
-    e => e.attributes['element-type'] === ELEMENT_TYPES.FIELD.key,
-  );
-
+function ColumnGrouping({board, fields, attributes, updateAttribute}) {
   const sortDirectionOptions = Object.values(SORT_DIRECTIONS);
 
   return (
