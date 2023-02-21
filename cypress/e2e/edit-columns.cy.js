@@ -256,7 +256,7 @@ describe('edit columns', () => {
     });
   });
 
-  it.only('allows filtering a column by a specific value', () => {
+  it('allows filtering a column by a specific value', () => {
     setUpInitialData();
 
     goToBoard();
