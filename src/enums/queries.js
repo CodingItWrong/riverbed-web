@@ -16,6 +16,7 @@ const QUERIES = {
     key: 'EQUALS_VALUE',
     label: 'Equals Value',
     match: (v, _dataType, options) => v === options?.value,
+    showConcreteValueField: true,
   },
   IS_FUTURE: {
     key: 'IS_FUTURE',

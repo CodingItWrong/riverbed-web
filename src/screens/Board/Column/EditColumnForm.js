@@ -195,7 +195,8 @@ function CardInclusionCondition({board, fields, attributes, updateAttribute}) {
               labelExtractor={query => query.label}
               style={styles.conditionButton}
             />
-            {condition.query === QUERIES.EQUALS_VALUE.key &&
+            {queryOptions.find(query => query.key === condition.query)
+              ?.showConcreteValueField &&
               condition.field && (
                 <Field
                   field={fields.find(f => f.id === condition.field)}
