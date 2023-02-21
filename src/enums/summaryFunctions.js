@@ -10,6 +10,7 @@ const SUMMARY_FUNCTIONS = {
     call: (cards, options) =>
       cards
         .map(card => Number(card.attributes['field-values'][options.field]))
+        .filter(value => !Number.isNaN(value))
         .reduce((a, v) => a + v),
   },
 };

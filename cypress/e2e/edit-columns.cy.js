@@ -40,7 +40,7 @@ describe('edit columns', () => {
     [titleField.id]: unownedTitle,
     [purchaseDate.id]: null,
     [completeDate.id]: null,
-    [price.id]: '15.99',
+    // [price.id]: null, // undefined to test for NaN
   });
   const unplayedCard1 = Factory.card({
     [titleField.id]: unplayedTitle1,
@@ -414,7 +414,7 @@ describe('edit columns', () => {
     });
 
     cy.step('CONFIRM SUMMARY', () => {
-      cy.contains('All (195.96)');
+      cy.contains('All (179.97)');
     });
   });
 
