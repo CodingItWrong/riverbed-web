@@ -4,6 +4,18 @@ const SERVER_DATE_FORMAT = 'YYYY-MM-DD';
 const HUMAN_FORMAT = 'ddd MMM D, YYYY';
 
 const dateUtils = {
+  isCurrentMonth(dateString) {
+    if (!dateString) {
+      return true; // should this be the default?
+    }
+
+    const fieldObj = dayjs(dateString);
+    const nowObj = dayjs();
+
+    return (
+      fieldObj.year() === nowObj.year() && fieldObj.month() === nowObj.month()
+    );
+  },
   serverStringToObject(dateString) {
     return dateString ? dayjs(dateString).toDate() : dateString;
   },

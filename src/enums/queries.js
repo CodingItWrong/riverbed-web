@@ -1,6 +1,12 @@
+import dateUtils from '../utils/dateUtils';
 import VALUES from './values';
 
 const QUERIES = {
+  IS_CURRENT_MONTH: {
+    key: 'IS_CURRENT_MONTH',
+    label: 'Current Month',
+    match: v => dateUtils.isCurrentMonth(v),
+  },
   IS_EMPTY: {
     key: 'IS_EMPTY',
     label: 'Empty',
