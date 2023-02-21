@@ -40,25 +40,25 @@ describe('edit columns', () => {
     [titleField.id]: unownedTitle,
     [purchaseDate.id]: null,
     [completeDate.id]: null,
-    [price.id]: 15.99,
+    [price.id]: '15.99',
   });
   const unplayedCard1 = Factory.card({
     [titleField.id]: unplayedTitle1,
     [purchaseDate.id]: '2023-01-01',
     [completeDate.id]: null,
-    [price.id]: 24.99,
+    [price.id]: '24.99',
   });
   const unplayedCard2 = Factory.card({
     [titleField.id]: unplayedTitle2,
     [purchaseDate.id]: '1998-01-01',
     [completeDate.id]: null,
-    [price.id]: 4.99,
+    [price.id]: '4.99',
   });
   const playedCard = Factory.card({
     [titleField.id]: playedTitle,
     [purchaseDate.id]: '1998-01-01',
     [completeDate.id]: '1999-01-01',
-    [price.id]: 149.99,
+    [price.id]: '149.99',
   });
   const columnName = 'All';
   const allColumn = Factory.column({name: columnName});

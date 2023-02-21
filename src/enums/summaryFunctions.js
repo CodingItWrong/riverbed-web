@@ -9,7 +9,7 @@ const SUMMARY_FUNCTIONS = {
     label: 'Sum',
     call: (cards, options) =>
       cards
-        .map(card => card.attributes['field-values'][options.field])
+        .map(card => Number(card.attributes['field-values'][options.field]))
         .reduce((a, v) => a + v),
   },
 };
