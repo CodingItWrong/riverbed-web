@@ -12,6 +12,11 @@ const QUERIES = {
     label: 'Empty',
     match: v => !v,
   },
+  EQUALS_VALUE: {
+    key: 'EQUALS_VALUE',
+    label: 'Equals Value',
+    match: (v, _dataType, options) => v === options?.value,
+  },
   IS_FUTURE: {
     key: 'IS_FUTURE',
     label: 'Future',
