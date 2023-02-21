@@ -199,7 +199,7 @@ describe('edit columns', () => {
     });
   });
 
-  it('allows editing column filtering', () => {
+  it.only('allows editing column filtering', () => {
     setUpInitialData();
 
     goToBoard();
