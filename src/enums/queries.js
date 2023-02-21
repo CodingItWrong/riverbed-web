@@ -12,6 +12,13 @@ const QUERIES = {
     label: 'Empty',
     match: v => !v,
   },
+  IS_EMPTY_OR_EQUALS: {
+    key: 'IS_EMPTY_OR_EQUALS',
+    label: 'Empty or Equals',
+    match: (...args) =>
+      QUERIES.IS_EMPTY.match(...args) || QUERIES.EQUALS_VALUE.match(...args),
+    showConcreteValueField: true,
+  },
   EQUALS_VALUE: {
     key: 'EQUALS_VALUE',
     label: 'Equals Value',
