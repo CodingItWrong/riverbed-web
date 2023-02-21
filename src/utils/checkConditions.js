@@ -21,7 +21,7 @@ function checkCondition({card, condition, elements}) {
   const value = card.attributes['field-values'][condition.field];
   const queryObject = QUERIES[condition.query];
   if (queryObject) {
-    return queryObject.match(value, dataType);
+    return queryObject.match(value, dataType, condition.options);
   } else {
     console.error(`unrecognized query for condition: ${condition.query}`);
   }

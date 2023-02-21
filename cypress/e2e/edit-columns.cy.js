@@ -256,6 +256,57 @@ describe('edit columns', () => {
     });
   });
 
+  it.only('allows filtering a column by a specific value', () => {
+    setUpInitialData();
+
+    goToBoard();
+
+    cy.step('SET COLUMN FILTER', () => {
+      cy.get('[aria-label="Edit Column"]').click();
+
+      cy.get('[data-testid="text-input-column-name"]').clear().type('To Play');
+
+      cy.contains('Add Filter').click();
+      cy.contains('(field)').paperSelect('Title');
+      cy.contains('(condition)').paperSelect('Equals Value');
+      cy.get(`[data-testid="text-input-${titleField.id}`).type(unownedTitle);
+
+      const filteredColumn = Factory.column(
+        {
+          name: 'To Play',
+          'card-inclusion-conditions': [
+            {
+              query: QUERIES.EQUALS_VALUE.key,
+              field: titleField.id,
+              options: {value: unownedTitle},
+            },
+          ],
+        },
+        allColumn,
+      );
+      cy.intercept(
+        'PATCH',
+        `${apiUrl}/columns/${allColumn.id}?`,
+        successJson,
+      ).as('updateColumn');
+      cy.intercept('GET', `${apiUrl}/boards/${board.id}/columns?`, {
+        data: [filteredColumn],
+      });
+      cy.contains('Save Column').click();
+      cy.wait('@updateColumn')
+        .its('request.body')
+        .should('deep.equal', {data: filteredColumn});
+      cy.contains('Save Column').should('not.exist');
+    });
+
+    cy.step('CONFIRM CORRECT CARDS FILTERED OUT', () => {
+      cy.contains(unownedTitle).should('exist');
+      cy.contains(unplayedTitle1).should('not.exist');
+      cy.contains(unplayedTitle2).should('not.exist');
+      cy.contains(playedTitle).should('not.exist');
+    });
+  });
+
   it('allows editing column card grouping', () => {
     setUpInitialData();
 

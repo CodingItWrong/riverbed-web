@@ -6,6 +6,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Button from '../../../components/Button';
 import Card from '../../../components/Card';
 import DropdownField from '../../../components/DropdownField';
+import Field from '../../../components/Field';
 import FormGroup from '../../../components/FormGroup';
 import IconButton from '../../../components/IconButton';
 import NumberField from '../../../components/NumberField';
@@ -162,41 +163,52 @@ function CardInclusionCondition({board, fields, attributes, updateAttribute}) {
   return (
     <FormGroup title="Cards to Include">
       {conditions.map((condition, index) => (
-        <View
-          key={`condition-${index}`}
-          style={[styles.conditionRow, sharedStyles.mt]}
-        >
-          <DropdownField
-            fieldLabel={null}
-            emptyLabel="(field)"
-            options={fields}
-            value={fields.find(f => f.id === condition.field)}
-            onValueChange={field =>
-              updateAttribute(
-                `card-inclusion-conditions[${index}].field`,
-                field.id,
-              )
-            }
-            keyExtractor={field => field.id}
-            labelExtractor={field => field.attributes.name}
-            style={styles.conditionButton}
-          />
-          <DropdownField
-            fieldLabel={null}
-            emptyLabel="(condition)"
-            options={queryOptions}
-            value={queryOptions.find(query => query.key === condition.query)}
-            onValueChange={query =>
-              updateAttribute(
-                `card-inclusion-conditions[${index}].query`,
-                query.key,
-              )
-            }
-            keyExtractor={query => query.key}
-            labelExtractor={query => query.label}
-            style={styles.conditionButton}
-          />
-          <View style={sharedStyles.spacer} />
+        <View key={`condition-${index}`} style={[styles.conditionRow]}>
+          <View style={[styles.conditionElements, sharedStyles.mt]}>
+            <DropdownField
+              fieldLabel={null}
+              emptyLabel="(field)"
+              options={fields}
+              value={fields.find(f => f.id === condition.field)}
+              onValueChange={field =>
+                updateAttribute(
+                  `card-inclusion-conditions[${index}].field`,
+                  field.id,
+                )
+              }
+              keyExtractor={field => field.id}
+              labelExtractor={field => field.attributes.name}
+              style={styles.conditionButton}
+            />
+            <DropdownField
+              fieldLabel={null}
+              emptyLabel="(condition)"
+              options={queryOptions}
+              value={queryOptions.find(query => query.key === condition.query)}
+              onValueChange={query =>
+                updateAttribute(
+                  `card-inclusion-conditions[${index}].query`,
+                  query.key,
+                )
+              }
+              keyExtractor={query => query.key}
+              labelExtractor={query => query.label}
+              style={styles.conditionButton}
+            />
+            {condition.query === QUERIES.EQUALS_VALUE.key &&
+              condition.field && (
+                <Field
+                  field={fields.find(f => f.id === condition.field)}
+                  value={condition.options?.value}
+                  setValue={v =>
+                    updateAttribute(
+                      `card-inclusion-conditions[${index}].options.value`,
+                      v,
+                    )
+                  }
+                />
+              )}
+          </View>
           <IconButton
             icon="close-circle"
             accessibilityLabel="Remove condition"
@@ -325,7 +337,13 @@ function ColumnSummary({board, fields, attributes, updateAttribute}) {
 const styles = StyleSheet.create({
   conditionRow: {
     flexDirection: 'row',
+    alignItems: 'flex-start',
+  },
+  conditionElements: {
+    flex: 1,
+    flexDirection: 'row',
     alignItems: 'center',
+    flexWrap: 'wrap',
   },
   conditionButton: {
     marginRight: 8,
