@@ -1,16 +1,16 @@
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {useState} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
-import {large, useBreakpoint} from '../../breakpoints';
-import Button from '../../components/Button';
-import LoadingIndicator from '../../components/LoadingIndicator';
-import sharedStyles, {useColumnStyle} from '../../components/sharedStyles';
-import {useCards} from '../../data/cards';
-import {useColumns} from '../../data/columns';
-import {useElements} from '../../data/elements';
-import ELEMENT_TYPES from '../../enums/elementTypes';
-import VALUES from '../../enums/values';
-import sortByDisplayOrder from '../../utils/sortByDisplayOrder';
+import {large, useBreakpoint} from '../../../breakpoints';
+import Button from '../../../components/Button';
+import LoadingIndicator from '../../../components/LoadingIndicator';
+import sharedStyles, {useColumnStyle} from '../../../components/sharedStyles';
+import {useCards} from '../../../data/cards';
+import {useColumns} from '../../../data/columns';
+import {useElements} from '../../../data/elements';
+import ELEMENT_TYPES from '../../../enums/elementTypes';
+import VALUES from '../../../enums/values';
+import sortByDisplayOrder from '../../../utils/sortByDisplayOrder';
 import Column from './Column';
 import EditColumnForm from './EditColumnForm';
 

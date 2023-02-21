@@ -3,20 +3,20 @@ import set from 'lodash.set';
 import {useState} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import Button from '../../components/Button';
-import Card from '../../components/Card';
-import DropdownField from '../../components/DropdownField';
-import FormGroup from '../../components/FormGroup';
-import IconButton from '../../components/IconButton';
-import NumberField from '../../components/NumberField';
-import TextField from '../../components/TextField';
-import sharedStyles from '../../components/sharedStyles';
-import {useColumns} from '../../data/columns';
-import {useElements} from '../../data/elements';
-import ELEMENT_TYPES from '../../enums/elementTypes';
-import QUERIES from '../../enums/queries';
-import SORT_DIRECTIONS from '../../enums/sortDirections';
-import SUMMARY_FUNCTIONS from '../../enums/summaryFunctions';
+import Button from '../../../components/Button';
+import Card from '../../../components/Card';
+import DropdownField from '../../../components/DropdownField';
+import FormGroup from '../../../components/FormGroup';
+import IconButton from '../../../components/IconButton';
+import NumberField from '../../../components/NumberField';
+import TextField from '../../../components/TextField';
+import sharedStyles from '../../../components/sharedStyles';
+import {useColumns} from '../../../data/columns';
+import {useElements} from '../../../data/elements';
+import ELEMENT_TYPES from '../../../enums/elementTypes';
+import QUERIES from '../../../enums/queries';
+import SORT_DIRECTIONS from '../../../enums/sortDirections';
+import SUMMARY_FUNCTIONS from '../../../enums/summaryFunctions';
 
 export default function EditColumnForm({
   column,

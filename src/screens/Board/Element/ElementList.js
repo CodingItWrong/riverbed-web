@@ -3,16 +3,16 @@ import {useState} from 'react';
 import {View} from 'react-native';
 import {KeyboardAwareFlatList} from 'react-native-keyboard-aware-scroll-view';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import Button from '../../components/Button';
-import DropdownMenu from '../../components/DropdownMenu';
-import Field from '../../components/Field';
-import IconButton from '../../components/IconButton';
-import Text from '../../components/Text';
-import sharedStyles, {useColumnStyle} from '../../components/sharedStyles';
-import {useElements} from '../../data/elements';
-import ELEMENT_TYPES from '../../enums/elementTypes';
-import FIELD_DATA_TYPES from '../../enums/fieldDataTypes';
-import sortElements from '../../utils/sortByDisplayOrder';
+import Button from '../../../components/Button';
+import DropdownMenu from '../../../components/DropdownMenu';
+import Field from '../../../components/Field';
+import IconButton from '../../../components/IconButton';
+import Text from '../../../components/Text';
+import sharedStyles, {useColumnStyle} from '../../../components/sharedStyles';
+import {useElements} from '../../../data/elements';
+import ELEMENT_TYPES from '../../../enums/elementTypes';
+import FIELD_DATA_TYPES from '../../../enums/fieldDataTypes';
+import sortElements from '../../../utils/sortByDisplayOrder';
 import EditElementForm from './EditElementForm';
 
 export default function ElementList({board, onClose}) {

@@ -4,19 +4,19 @@ import sortBy from 'lodash.sortby';
 import {StyleSheet, View} from 'react-native';
 import {KeyboardAwareSectionList} from 'react-native-keyboard-aware-scroll-view';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import IconButton from '../../components/IconButton';
-import SectionHeader from '../../components/SectionHeader';
-import Text from '../../components/Text';
-import sharedStyles, {useColumnStyle} from '../../components/sharedStyles';
-import {useCards} from '../../data/cards';
-import {useElements} from '../../data/elements';
-import SORT_DIRECTIONS from '../../enums/sortDirections';
-import calculateSummary from '../../utils/calculateSummary';
-import checkConditions from '../../utils/checkConditions';
-import formatValue from '../../utils/formatValue';
-import getSortValue from '../../utils/getSortValue';
-import CardDetail from './CardDetail';
-import CardSummary from './CardSummary';
+import IconButton from '../../../components/IconButton';
+import SectionHeader from '../../../components/SectionHeader';
+import Text from '../../../components/Text';
+import sharedStyles, {useColumnStyle} from '../../../components/sharedStyles';
+import {useCards} from '../../../data/cards';
+import {useElements} from '../../../data/elements';
+import SORT_DIRECTIONS from '../../../enums/sortDirections';
+import calculateSummary from '../../../utils/calculateSummary';
+import checkConditions from '../../../utils/checkConditions';
+import formatValue from '../../../utils/formatValue';
+import getSortValue from '../../../utils/getSortValue';
+import CardDetail from '../Card/CardDetail';
+import CardSummary from '../Card/CardSummary';
 
 export default function Column({
   column,

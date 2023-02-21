@@ -8,9 +8,9 @@ import LoadingIndicator from '../../components/LoadingIndicator';
 import ScreenBackground from '../../components/ScreenBackground';
 import sharedStyles from '../../components/sharedStyles';
 import {useBoards} from '../../data/boards';
-import ColumnList from './ColumnList';
+import ColumnList from './Column/ColumnList';
 import EditBoardForm from './EditBoardForm';
-import ElementList from './ElementList';
+import ElementList from './Element/ElementList';
 
 export default function Board({route}) {
   const {id} = route.params;

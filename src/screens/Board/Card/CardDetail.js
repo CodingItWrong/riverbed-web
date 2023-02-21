@@ -1,20 +1,20 @@
 import {useMutation, useQuery} from '@tanstack/react-query';
 import {useState} from 'react';
 import {View} from 'react-native';
-import Button from '../../components/Button';
-import ButtonElement from '../../components/ButtonElement';
-import ButtonMenuElement from '../../components/ButtonMenuElement';
-import Card from '../../components/Card';
-import Field from '../../components/Field';
-import Text from '../../components/Text';
-import sharedStyles from '../../components/sharedStyles';
-import {useCards} from '../../data/cards';
-import {useElements} from '../../data/elements';
-import COMMANDS from '../../enums/commands';
-import ELEMENT_TYPES from '../../enums/elementTypes';
-import VALUES from '../../enums/values';
-import checkConditions from '../../utils/checkConditions';
-import sortByDisplayOrder from '../../utils/sortByDisplayOrder';
+import Button from '../../../components/Button';
+import ButtonElement from '../../../components/ButtonElement';
+import ButtonMenuElement from '../../../components/ButtonMenuElement';
+import Card from '../../../components/Card';
+import Field from '../../../components/Field';
+import Text from '../../../components/Text';
+import sharedStyles from '../../../components/sharedStyles';
+import {useCards} from '../../../data/cards';
+import {useElements} from '../../../data/elements';
+import COMMANDS from '../../../enums/commands';
+import ELEMENT_TYPES from '../../../enums/elementTypes';
+import VALUES from '../../../enums/values';
+import checkConditions from '../../../utils/checkConditions';
+import sortByDisplayOrder from '../../../utils/sortByDisplayOrder';
 
 export default function CardDetail({card, board, onChange, onCancel, style}) {
   const cardClient = useCards();
