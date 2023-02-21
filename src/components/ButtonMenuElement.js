@@ -1,6 +1,5 @@
 import Button from './Button';
 import DropdownMenu from './DropdownMenu';
-import sharedStyles from './sharedStyles';
 
 export default function ButtonMenuElement({
   element,
