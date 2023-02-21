@@ -12,31 +12,45 @@ const linking = {
     screens: {
       BoardList: 'boards',
       Board: 'boards/:id',
+      SignIn: '/',
     },
   },
 };
 
 const BoardStack = createNativeStackNavigator();
-const Boards = () => (
-  <BoardStack.Navigator
-    screenOptions={{header: props => <NavigationBar {...props} />}}
-  >
-    <BoardStack.Screen
-      name="BoardList"
-      component={BoardList}
-      options={{title: 'My Boards'}}
-    />
-    <BoardStack.Screen name="Board" component={Board} />
-  </BoardStack.Navigator>
-);
+const Boards = () => {
+  const {isLoggedIn} = useToken();
+  return (
+    <BoardStack.Navigator
+      screenOptions={{header: props => <NavigationBar {...props} />}}
+    >
+      {!isLoggedIn && (
+        <BoardStack.Screen
+          name="SignIn"
+          component={SignIn}
+          options={{title: 'ListApp'}}
+        />
+      )}
+      {isLoggedIn && (
+        <>
+          <BoardStack.Screen
+            name="BoardList"
+            component={BoardList}
+            options={{title: 'My Boards'}}
+          />
+          <BoardStack.Screen name="Board" component={Board} />
+        </>
+      )}
+    </BoardStack.Navigator>
+  );
+};
 
 function NavigationContents() {
-  const {isLoggedIn} = useToken();
   // IMPORTANT: NavigationContainer must not rerender too often because
   // it calls the history API, and Safari and Firefox place limits on
   // the frequency of history API calls. (Safari: 100 times in 30
   // seconds).
-  return isLoggedIn ? <Boards /> : <SignIn />;
+  return <Boards />;
 }
 
 export default function Navigation() {
