@@ -1,6 +1,12 @@
+import dateUtils from '../utils/dateUtils';
 import VALUES from './values';
 
 const QUERIES = {
+  IS_CURRENT_MONTH: {
+    key: 'IS_CURRENT_MONTH',
+    label: 'Current Month',
+    match: v => dateUtils.isCurrentMonth(v),
+  },
   IS_EMPTY: {
     key: 'IS_EMPTY',
     label: 'Empty',
@@ -30,6 +36,11 @@ const QUERIES = {
     key: 'IS_PAST',
     label: 'Past',
     match: (v, dataType) => v < VALUES.NOW.call(dataType),
+  },
+  IS_PREVIOUS_MONTH: {
+    key: 'IS_PREVIOUS_MONTH',
+    label: 'Previous Month',
+    match: v => dateUtils.isMonthOffset(v, -1),
   },
 };
 
