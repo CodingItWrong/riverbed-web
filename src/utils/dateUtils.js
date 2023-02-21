@@ -5,6 +5,9 @@ const HUMAN_FORMAT = 'ddd MMM D, YYYY';
 
 const dateUtils = {
   isCurrentMonth(dateString) {
+    return dateUtils.isMonthOffset(dateString, 0);
+  },
+  isMonthOffset(dateString, offset) {
     if (!dateString) {
       return true; // should this be the default?
     }
@@ -13,7 +16,8 @@ const dateUtils = {
     const nowObj = dayjs();
 
     return (
-      fieldObj.year() === nowObj.year() && fieldObj.month() === nowObj.month()
+      fieldObj.year() === nowObj.year() &&
+      fieldObj.month() === nowObj.month() + offset
     );
   },
   serverStringToObject(dateString) {

@@ -37,6 +37,11 @@ const QUERIES = {
     label: 'Past',
     match: (v, dataType) => v < VALUES.NOW.call(dataType),
   },
+  IS_PREVIOUS_MONTH: {
+    key: 'IS_PREVIOUS_MONTH',
+    label: 'Previous Month',
+    match: v => dateUtils.isMonthOffset(v, -1),
+  },
 };
 
 export default QUERIES;
