@@ -11,7 +11,7 @@ const SUMMARY_FUNCTIONS = {
       cards
         .map(card => Number(card.attributes['field-values'][options.field]))
         .filter(value => !Number.isNaN(value))
-        .reduce((a, v) => a + v),
+        .reduce((a, v) => a + v, 0),
   },
 };
 
