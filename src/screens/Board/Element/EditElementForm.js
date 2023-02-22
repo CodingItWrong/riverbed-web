@@ -302,14 +302,25 @@ function ActionInputs({action, updateActionAttribute, fields}) {
         labelExtractor={field => field.attributes.name}
         style={sharedStyles.mt}
       />
-      <DropdownField
-        fieldLabel="Value"
-        emptyLabel="(choose)"
-        options={valueOptions}
-        value={valueOptions.find(o => o.key === action?.value)}
-        onValueChange={option => updateActionAttribute('value', option.key)}
-        style={sharedStyles.mt}
-      />
+      {action?.command !== COMMANDS.ADD_DAYS.key && (
+        <DropdownField
+          fieldLabel="Value"
+          emptyLabel="(choose)"
+          options={valueOptions}
+          value={valueOptions.find(o => o.key === action?.value)}
+          onValueChange={option => updateActionAttribute('value', option.key)}
+          style={sharedStyles.mt}
+        />
+      )}
+      {action?.command === COMMANDS.ADD_DAYS.key && (
+        <NumberField
+          label="Days to Add"
+          testID="number-input-value"
+          value={action?.value ?? ''}
+          onChangeText={value => updateActionAttribute('value', value)}
+          style={sharedStyles.mt}
+        />
+      )}
     </FormGroup>
   );
 }

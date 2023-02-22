@@ -4,6 +4,9 @@ const SERVER_DATE_FORMAT = 'YYYY-MM-DD';
 const HUMAN_FORMAT = 'ddd MMM D, YYYY';
 
 const dateUtils = {
+  addDays(dateObject, numDays) {
+    return dayjs(dateObject).add(numDays, 'day');
+  },
   isCurrentMonth(dateString) {
     return dateUtils.isMonthOffset(dateString, 0);
   },

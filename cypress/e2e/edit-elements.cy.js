@@ -12,12 +12,20 @@ describe('edit elements', () => {
     name: 'All',
     'card-inclusion-condition': null,
   });
+
   const greetingFieldName = 'Greeting';
   const greetingField = Factory.field({
     name: greetingFieldName,
     'data-type': FIELD_DATA_TYPES.TEXT.key,
     'show-in-summary': true,
   });
+
+  const greetedAtField = Factory.field({
+    name: 'Greeted At',
+    'data-type': FIELD_DATA_TYPES.DATE.key,
+    'show-in-summary': true,
+  });
+
   const greetingText = 'Hello, world!';
   const greetingCard = Factory.card({[greetingField.id]: greetingText});
 
@@ -524,6 +532,102 @@ describe('edit elements', () => {
       cy.contains('Done Editing Elements').click();
       cy.get(`[data-testid="card-${greetingCard.id}"]`).click();
       cy.contains(buttonName).should('not.exist');
+    });
+  });
+
+  it('allows adding days to a date', () => {
+    const newButton = Factory.button({});
+    const buttonName = 'Defer 2 Days';
+    const deferButton = Factory.button(
+      {
+        name: buttonName,
+        action: {
+          command: COMMANDS.ADD_DAYS.key,
+          field: greetedAtField.id,
+          value: '2', // TODO: consider storing as number
+        },
+      },
+      newButton,
+    );
+
+    // far future because Add Days prefers current date when it's later
+    const card = Factory.card({[greetedAtField.id]: '2999-01-01'});
+
+    cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+      data: [greetedAtField],
+    });
+    cy.intercept(`http://cypressapi/boards/${board.id}/cards?`, {
+      data: [card],
+    });
+
+    goToBoard();
+
+    cy.step('CREATE BUTTON', () => {
+      cy.get('[aria-label="Board Menu"]').click();
+      cy.contains('Edit Elements').click({force: true});
+
+      cy.intercept('POST', 'http://cypressapi/elements?', {
+        data: newButton,
+      }).as('addButton');
+      cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+        data: [greetedAtField, newButton],
+      });
+
+      cy.contains('Add Element').paperSelect('Button');
+
+      cy.wait('@addButton')
+        .its('request.body')
+        .should('deep.equal', {
+          data: {
+            type: 'elements',
+            relationships: {
+              board: {data: {type: 'boards', id: String(board.id)}},
+            },
+            attributes: {'element-type': ELEMENT_TYPES.BUTTON.key},
+          },
+        });
+    });
+
+    cy.step('CONFIGURE BUTTON', () => {
+      cy.get('[data-testid="text-input-element-name"]').type(buttonName);
+
+      // action
+      cy.contains('Command: (choose)').paperSelect('Add Days');
+      cy.contains('Action Field: (choose)').paperSelect('Greeted At');
+      cy.get('[data-testid=number-input-value]').type(2);
+
+      cy.intercept('PATCH', `http://cypressapi/elements/${newButton.id}?`, {
+        success: true,
+      }).as('updateField');
+      cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+        data: [greetedAtField, deferButton],
+      });
+      cy.contains('Save Element').click();
+      cy.wait('@updateField')
+        .its('request.body')
+        .should('deep.equal', {data: deferButton});
+      cy.contains(buttonName);
+      cy.contains('Done Editing Elements').click();
+    });
+
+    cy.step('CONFIRM BUTTON ACTION WORKS', () => {
+      cy.contains('Tue Jan 1, 2999').click();
+
+      const deferredCard = Factory.card(
+        {[greetedAtField.id]: '2999-01-03'},
+        card,
+      );
+      cy.intercept('PATCH', `http://cypressapi/cards/${card.id}?`, {
+        success: true,
+      }).as('updateCard');
+      cy.intercept(`http://cypressapi/boards/${board.id}/cards?`, {
+        data: [deferredCard],
+      });
+      cy.contains(buttonName).click();
+      cy.wait('@updateCard')
+        .its('request.body')
+        .should('deep.equal', {data: deferredCard});
+      cy.contains('Thu Jan 3, 2999');
     });
   });
 
