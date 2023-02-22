@@ -1,4 +1,5 @@
 import {useMutation, useQuery} from '@tanstack/react-query';
+import dayjs from 'dayjs';
 import {useState} from 'react';
 import {View} from 'react-native';
 import Button from '../../../components/Button';
@@ -14,6 +15,7 @@ import COMMANDS from '../../../enums/commands';
 import ELEMENT_TYPES from '../../../enums/elementTypes';
 import VALUES from '../../../enums/values';
 import checkConditions from '../../../utils/checkConditions';
+import dateUtils from '../../../utils/dateUtils';
 import sortByDisplayOrder from '../../../utils/sortByDisplayOrder';
 
 export default function CardDetail({card, board, onChange, onCancel, style}) {
@@ -44,11 +46,11 @@ export default function CardDetail({card, board, onChange, onCancel, style}) {
   function handlePerformAction(action) {
     const {command, field, value} = action;
 
-    const valueObject = Object.values(VALUES).find(v => v.key === value);
     const fieldObject = elements.find(element => element.id === field);
 
     switch (command) {
       case COMMANDS.SET_VALUE.key:
+        const valueObject = Object.values(VALUES).find(v => v.key === value);
         if (valueObject) {
           const concreteValue = valueObject.call(
             fieldObject.attributes['data-type'],
@@ -58,6 +60,21 @@ export default function CardDetail({card, board, onChange, onCancel, style}) {
           console.error(`unknown value: ${value}`);
           return;
         }
+        break;
+      case COMMANDS.ADD_DAYS.key:
+        // TODO: handle datetime
+        function getStartDate() {
+          const now = new Date();
+          const fieldDate = dateUtils.serverStringToObject(fieldValues[field]);
+          if (fieldDate && fieldDate >= now) {
+            return fieldDate;
+          } else {
+            return now;
+          }
+        }
+        const startDate = getStartDate();
+        const updatedDate = dateUtils.addDays(startDate, Number(value));
+        updateCard({[field]: dateUtils.objectToServerString(updatedDate)});
         break;
       default:
         console.error(`unknown command: ${command}`);
