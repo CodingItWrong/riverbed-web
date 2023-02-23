@@ -1,17 +1,12 @@
-import {useQuery} from '@tanstack/react-query';
 import {View} from 'react-native';
 import Card from '../../../components/Card';
 import Field from '../../../components/Field';
 import Text from '../../../components/Text';
-import {useElements} from '../../../data/elements';
+import {useBoardElements} from '../../../data/elements';
 import sortElements from '../../../utils/sortByDisplayOrder';
 
 export default function CardSummary({card, board, onPress, style}) {
-  const elementClient = useElements();
-
-  const {data: elements = []} = useQuery(['elements', board.id], () =>
-    elementClient.related({parent: board}).then(resp => resp.data),
-  );
+  const {data: elements = []} = useBoardElements(board);
 
   const fieldsToShow = sortElements(
     elements.filter(field => field.attributes['show-in-summary']),

@@ -1,5 +1,4 @@
 import {useNavigation} from '@react-navigation/native';
-import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import sortBy from 'lodash.sortby';
 import {useCallback, useEffect} from 'react';
 import {FlatList, View} from 'react-native';
@@ -12,14 +11,12 @@ import LoadingIndicator from '../../components/LoadingIndicator';
 import ScreenBackground from '../../components/ScreenBackground';
 import Text from '../../components/Text';
 import sharedStyles, {useColumnStyle} from '../../components/sharedStyles';
-import {useBoards} from '../../data/boards';
+import {useBoards, useCreateBoard} from '../../data/boards';
 import {useToken} from '../../data/token';
 
 export default function BoardList() {
   const {clearToken} = useToken();
   const navigation = useNavigation();
-  const queryClient = useQueryClient();
-  const boardClient = useBoards();
 
   useEffect(() => {
     navigation.setOptions({
@@ -43,24 +40,18 @@ export default function BoardList() {
     [clearToken],
   );
 
-  const {data: boards = [], isLoading} = useQuery(['boards'], () =>
-    boardClient.all().then(resp => resp.data),
-  );
+  const {data: boards = [], isLoading} = useBoards();
   const sortedBoards = sortBy(boards, ['attributes.name']);
-
-  const refreshBoards = () => queryClient.invalidateQueries(['boards']);
 
   function goToBoard(board) {
     navigation.navigate('Board', {id: board.id});
   }
 
-  const {mutate: addBoard, isLoading: isAdding} = useMutation({
-    mutationFn: () => boardClient.create({attributes: {}}),
-    onSuccess: ({data: board}) => {
-      goToBoard(board);
-      refreshBoards();
-    },
-  });
+  const {mutate: createBoard, isLoading: isAdding} = useCreateBoard();
+  const handleCreateBoard = () =>
+    createBoard(null, {
+      onSuccess: ({data: board}) => goToBoard(board),
+    });
 
   const columnStyle = useColumnStyle();
 
@@ -90,7 +81,7 @@ export default function BoardList() {
               <Button
                 mode="link"
                 icon="plus"
-                onPress={addBoard}
+                onPress={handleCreateBoard}
                 disabled={isAdding}
               >
                 Add Board

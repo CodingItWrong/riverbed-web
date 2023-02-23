@@ -1,4 +1,3 @@
-import {useMutation, useQuery} from '@tanstack/react-query';
 import set from 'lodash.set';
 import startCase from 'lodash.startcase';
 import {useState} from 'react';
@@ -12,7 +11,11 @@ import LabeledCheckbox from '../../../components/LabeledCheckbox';
 import NumberField from '../../../components/NumberField';
 import TextField from '../../../components/TextField';
 import sharedStyles from '../../../components/sharedStyles';
-import {useElements} from '../../../data/elements';
+import {
+  useBoardElements,
+  useDeleteElement,
+  useUpdateElement,
+} from '../../../data/elements';
 import COMMANDS from '../../../enums/commands';
 import ELEMENT_TYPES from '../../../enums/elementTypes';
 import FIELD_DATA_TYPES from '../../../enums/fieldDataTypes';
@@ -28,10 +31,7 @@ export default function EditElementForm({
   onCancel,
   style,
 }) {
-  const elementClient = useElements();
-  const {data: elements = []} = useQuery(['elements', board.id], () =>
-    elementClient.related({parent: board}).then(resp => resp.data),
-  );
+  const {data: elements = []} = useBoardElements(board);
   const fields = elements.filter(
     e => e.attributes['element-type'] === ELEMENT_TYPES.FIELD.key,
   );
@@ -51,22 +51,18 @@ export default function EditElementForm({
   const dataTypeOptions = Object.values(FIELD_DATA_TYPES);
   const valueOptions = Object.values(VALUES);
 
-  const {mutate: updateElement, isLoading: isSaving} = useMutation({
-    mutationFn: () => {
-      const updatedElement = {
-        type: 'elements',
-        id: element.id,
-        attributes: elementAttributes,
-      };
-      return elementClient.update(updatedElement);
-    },
-    onSuccess: onSave,
-  });
+  const {mutate: updateElement, isLoading: isSaving} = useUpdateElement(
+    element,
+    board,
+  );
+  const handleUpdateElement = () =>
+    updateElement(elementAttributes, {onSuccess: onSave});
 
-  const {mutate: deleteElement, isLoading: isDeleting} = useMutation({
-    mutationFn: () => elementClient.delete({id: element.id}),
-    onSuccess: onDelete,
-  });
+  const {mutate: deleteElement, isLoading: isDeleting} = useDeleteElement(
+    element,
+    board,
+  );
+  const handleDeleteElement = () => deleteElement(null, {onSuccess: onDelete});
 
   const isLoading = isSaving || isDeleting;
 
@@ -260,7 +256,7 @@ export default function EditElementForm({
         Cancel
       </Button>
       <Button
-        onPress={deleteElement}
+        onPress={handleDeleteElement}
         disabled={isLoading}
         style={sharedStyles.mt}
       >
@@ -268,7 +264,7 @@ export default function EditElementForm({
       </Button>
       <Button
         mode="primary"
-        onPress={updateElement}
+        onPress={handleUpdateElement}
         disabled={isLoading}
         style={sharedStyles.mt}
       >

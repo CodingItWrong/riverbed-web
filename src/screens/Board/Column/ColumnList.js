@@ -1,13 +1,12 @@
-import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {useState} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {large, useBreakpoint} from '../../../breakpoints';
 import Button from '../../../components/Button';
 import LoadingIndicator from '../../../components/LoadingIndicator';
 import sharedStyles, {useColumnStyle} from '../../../components/sharedStyles';
-import {useCards} from '../../../data/cards';
-import {useColumns} from '../../../data/columns';
-import {useElements} from '../../../data/elements';
+import {useCards, useCreateCard} from '../../../data/cards';
+import {useColumns, useCreateColumn} from '../../../data/columns';
+import {useBoardElements} from '../../../data/elements';
 import ELEMENT_TYPES from '../../../enums/elementTypes';
 import VALUES from '../../../enums/values';
 import sortByDisplayOrder from '../../../utils/sortByDisplayOrder';
@@ -15,65 +14,33 @@ import Column from './Column';
 import EditColumnForm from './EditColumnForm';
 
 export default function ColumnList({board}) {
-  const queryClient = useQueryClient();
-  const elementClient = useElements();
-  const columnClient = useColumns();
-  const cardClient = useCards();
-
   const [selectedCardId, setSelectedCardId] = useState(null);
   const [selectedColumnId, setSelectedColumnId] = useState(null);
 
-  const {data: elements, isLoading: isLoadingElements} = useQuery(
-    ['elements', board.id],
-    () => elementClient.related({parent: board}).then(resp => resp.data),
-  );
-  const {data: columns = [], isLoading: isLoadingColumns} = useQuery(
-    ['columns', board.id],
-    () => columnClient.related({parent: board}).then(resp => resp.data),
-  );
-  const {isLoading: isLoadingCards} = useQuery(['cards', board.id], () =>
-    cardClient.related({parent: board}).then(resp => resp.data),
-  );
+  const {data: elements, isLoading: isLoadingElements} =
+    useBoardElements(board);
+  const {data: columns = [], isLoading: isLoadingColumns} = useColumns(board);
+  const {isLoading: isLoadingCards} = useCards(board);
 
-  const refreshCards = () => queryClient.invalidateQueries(['cards', board.id]);
-  const refreshColumns = () =>
-    queryClient.invalidateQueries(['columns', board.id]);
-
-  const {mutate: addColumn, isLoading: isAddingColumn} = useMutation({
-    mutationFn: () =>
-      columnClient.create({
-        relationships: {board: {data: {type: 'boards', id: board.id}}},
-        attributes: {},
-      }),
-    onSuccess: ({data: column}) => {
-      setSelectedColumnId(column.id);
-      refreshColumns();
-    },
-  });
+  const {mutate: createColumn, isLoading: isAddingColumn} =
+    useCreateColumn(board);
+  const handleCreateColumn = () =>
+    createColumn(null, {
+      onSuccess: ({data: column}) => setSelectedColumnId(column.id),
+    });
 
   function onChangeColumn() {
-    refreshColumns();
     setSelectedColumnId(null);
   }
 
-  const {mutate: addCard, isLoading: isAddingCard} = useMutation({
-    mutationFn: () =>
-      cardClient.create({
-        attributes: {
-          'field-values': getInitialFieldValues(elements),
-        },
-        relationships: {
-          board: {data: {type: 'boards', id: board.id}},
-        },
-      }),
-    onSuccess: ({data: newCard}) => {
-      setSelectedCardId(newCard.id);
-      refreshCards();
-    },
-  });
+  const {mutate: createCard, isLoading: isAddingCard} = useCreateCard(board);
+  const handleCreateCard = () =>
+    createCard(
+      {'field-values': getInitialFieldValues(elements)},
+      {onSuccess: ({data: newCard}) => setSelectedCardId(newCard.id)},
+    );
 
   function onChangeCard() {
-    refreshCards();
     hideDetail();
   }
 
@@ -108,7 +75,7 @@ export default function ColumnList({board}) {
         <Button
           mode="link"
           icon="plus"
-          onPress={addCard}
+          onPress={handleCreateCard}
           disabled={isAddingCard}
         >
           Add Card
@@ -147,7 +114,7 @@ export default function ColumnList({board}) {
             <Button
               mode="link"
               icon="plus"
-              onPress={addColumn}
+              onPress={handleCreateColumn}
               disabled={isAddingColumn}
             >
               Add Column

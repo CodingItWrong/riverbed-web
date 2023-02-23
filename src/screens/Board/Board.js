@@ -1,12 +1,11 @@
 import {useNavigation} from '@react-navigation/native';
-import {useQuery} from '@tanstack/react-query';
 import {useCallback, useEffect, useState} from 'react';
 import DropdownMenu from '../../components/DropdownMenu';
 import IconButton from '../../components/IconButton';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import ScreenBackground from '../../components/ScreenBackground';
 import sharedStyles from '../../components/sharedStyles';
-import {useBoards} from '../../data/boards';
+import {useBoard} from '../../data/boards';
 import {useCards} from '../../data/cards';
 import ColumnList from './Column/ColumnList';
 import EditBoardForm from './EditBoardForm';
@@ -16,18 +15,9 @@ export default function Board({route}) {
   const {id} = route.params;
 
   const navigation = useNavigation();
-  const boardClient = useBoards();
-  const {data: board, isLoading: isLoadingBoard} = useQuery(
-    ['boards', id],
-    () => boardClient.find({id}).then(response => response.data),
-  );
+  const {data: board, isLoading: isLoadingBoard} = useBoard(id);
 
-  const cardClient = useCards();
-  const {isFetching: isFetchingCards} = useQuery(
-    ['cards', board?.id],
-    () => cardClient.related({parent: board}).then(resp => resp.data),
-    {enabled: !!board},
-  );
+  const {isFetching: isFetchingCards} = useCards(board);
 
   useEffect(() => {
     if (!isLoadingBoard) {

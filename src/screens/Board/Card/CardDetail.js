@@ -1,4 +1,3 @@
-import {useMutation, useQuery} from '@tanstack/react-query';
 import {useState} from 'react';
 import {View} from 'react-native';
 import Button from '../../../components/Button';
@@ -8,8 +7,8 @@ import Card from '../../../components/Card';
 import Field from '../../../components/Field';
 import Text from '../../../components/Text';
 import sharedStyles from '../../../components/sharedStyles';
-import {useCards} from '../../../data/cards';
-import {useElements} from '../../../data/elements';
+import {useDeleteCard, useUpdateCard} from '../../../data/cards';
+import {useBoardElements} from '../../../data/elements';
 import COMMANDS from '../../../enums/commands';
 import ELEMENT_TYPES from '../../../enums/elementTypes';
 import VALUES from '../../../enums/values';
@@ -18,15 +17,11 @@ import dateUtils from '../../../utils/dateUtils';
 import sortByDisplayOrder from '../../../utils/sortByDisplayOrder';
 
 export default function CardDetail({card, board, onChange, onCancel, style}) {
-  const cardClient = useCards();
   const [fieldValues, setFieldValues] = useState(
     card.attributes['field-values'],
   );
 
-  const elementClient = useElements();
-  const {data: elements = []} = useQuery(['elements', board.id], () =>
-    elementClient.related({parent: board}).then(resp => resp.data),
-  );
+  const {data: elements = []} = useBoardElements(board);
 
   const elementsToShow = sortByDisplayOrder(
     elements.filter(element =>
@@ -54,7 +49,7 @@ export default function CardDetail({card, board, onChange, onCancel, style}) {
           const concreteValue = valueObject.call(
             fieldObject.attributes['data-type'],
           );
-          updateCard({[field]: concreteValue});
+          handleUpdateCard({[field]: concreteValue});
         } else {
           console.error(`unknown value: ${value}`);
           return;
@@ -73,30 +68,32 @@ export default function CardDetail({card, board, onChange, onCancel, style}) {
         }
         const startDate = getStartDate();
         const updatedDate = dateUtils.addDays(startDate, Number(value));
-        updateCard({[field]: dateUtils.objectToServerString(updatedDate)});
+        handleUpdateCard({
+          [field]: dateUtils.objectToServerString(updatedDate),
+        });
         break;
       default:
         console.error(`unknown command: ${command}`);
     }
   }
 
-  const {mutate: updateCard, isLoading: isUpdating} = useMutation({
-    mutationFn: fieldOverrides => {
-      const fieldValuesToUse = {...fieldValues, ...fieldOverrides};
-      const updatedCard = {
-        type: 'cards',
-        id: card.id,
-        attributes: {'field-values': fieldValuesToUse},
-      };
-      return cardClient.update(updatedCard);
-    },
-    onSuccess: onChange,
-  });
+  const {mutate: updateCard, isLoading: isUpdating} = useUpdateCard(
+    card,
+    board,
+  );
+  const handleUpdateCard = fieldOverrides => {
+    const fieldValuesToUse = {...fieldValues, ...fieldOverrides};
+    return updateCard(
+      {'field-values': fieldValuesToUse},
+      {onSuccess: onChange},
+    );
+  };
 
-  const {mutate: deleteCard, isLoading: isDeleting} = useMutation({
-    mutationFn: () => cardClient.delete({id: card.id}),
-    onSuccess: onChange,
-  });
+  const {mutate: deleteCard, isLoading: isDeleting} = useDeleteCard(
+    card,
+    board,
+  );
+  const handleDeleteCard = () => deleteCard(null, {onSuccess: onChange});
 
   const isLoading = isUpdating || isDeleting;
 
@@ -151,12 +148,16 @@ export default function CardDetail({card, board, onChange, onCancel, style}) {
       <Button onPress={onCancel} disabled={isLoading} style={sharedStyles.mt}>
         Cancel
       </Button>
-      <Button onPress={deleteCard} disabled={isLoading} style={sharedStyles.mt}>
+      <Button
+        onPress={handleDeleteCard}
+        disabled={isLoading}
+        style={sharedStyles.mt}
+      >
         Delete
       </Button>
       <Button
         mode="primary"
-        onPress={() => updateCard()}
+        onPress={() => handleUpdateCard()}
         disabled={isLoading}
         style={sharedStyles.mt}
       >

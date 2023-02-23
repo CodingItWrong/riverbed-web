@@ -1,4 +1,3 @@
-import {useMutation, useQueryClient} from '@tanstack/react-query';
 import set from 'lodash.set';
 import {useState} from 'react';
 import {View} from 'react-native';
@@ -6,38 +5,17 @@ import Button from '../../components/Button';
 import Card from '../../components/Card';
 import TextField from '../../components/TextField';
 import sharedStyles, {useColumnStyle} from '../../components/sharedStyles';
-import {useBoards} from '../../data/boards';
+import {useDeleteBoard, useUpdateBoard} from '../../data/boards';
 
 export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
-  const queryClient = useQueryClient();
-  const boardClient = useBoards();
   const [attributes, setAttributes] = useState(board.attributes);
   const [confirmingDelete, setConfirmingDelete] = useState(false);
 
-  const refreshBoards = () => queryClient.invalidateQueries(['boards']);
+  const {mutate: updateBoard, isLoading: isSaving} = useUpdateBoard(board);
+  const handleUpdateBoard = () => updateBoard(attributes, {onSuccess: onSave});
 
-  const {mutate: updateBoard, isLoading: isSaving} = useMutation({
-    mutationFn: () => {
-      const updatedBoard = {
-        type: 'boards',
-        id: board.id,
-        attributes,
-      };
-      return boardClient.update(updatedBoard);
-    },
-    onSuccess: () => {
-      refreshBoards();
-      onSave();
-    },
-  });
-
-  const {mutate: deleteBoard, isLoading: isDeleting} = useMutation({
-    mutationFn: () => boardClient.delete({id: board.id}),
-    onSuccess: () => {
-      refreshBoards();
-      onDelete();
-    },
-  });
+  const {mutate: deleteBoard, isLoading: isDeleting} = useDeleteBoard(board);
+  const handleDeleteBoard = () => deleteBoard(null, {onSuccess: onDelete});
 
   function updateAttribute(path, value) {
     setAttributes(oldAttributes => {
@@ -66,7 +44,7 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
         </Button>
         {confirmingDelete ? (
           <Button
-            onPress={deleteBoard}
+            onPress={handleDeleteBoard}
             disabled={isLoading}
             style={sharedStyles.mt}
           >
@@ -83,7 +61,7 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
         )}
         <Button
           mode="primary"
-          onPress={updateBoard}
+          onPress={handleUpdateBoard}
           disabled={isLoading}
           style={sharedStyles.mt}
         >

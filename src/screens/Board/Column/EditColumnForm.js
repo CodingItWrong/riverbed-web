@@ -1,4 +1,3 @@
-import {useMutation, useQuery} from '@tanstack/react-query';
 import set from 'lodash.set';
 import {useState} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
@@ -12,8 +11,8 @@ import IconButton from '../../../components/IconButton';
 import NumberField from '../../../components/NumberField';
 import TextField from '../../../components/TextField';
 import sharedStyles from '../../../components/sharedStyles';
-import {useColumns} from '../../../data/columns';
-import {useElements} from '../../../data/elements';
+import {useDeleteColumn, useUpdateColumn} from '../../../data/columns';
+import {useBoardElements} from '../../../data/elements';
 import ELEMENT_TYPES from '../../../enums/elementTypes';
 import QUERIES from '../../../enums/queries';
 import SORT_DIRECTIONS from '../../../enums/sortDirections';
@@ -27,13 +26,9 @@ export default function EditColumnForm({
   style,
 }) {
   const insets = useSafeAreaInsets();
-  const columnClient = useColumns();
   const [attributes, setAttributes] = useState(column.attributes);
 
-  const elementClient = useElements();
-  const {data: elements = []} = useQuery(['elements', board.id], () =>
-    elementClient.related({parent: board}).then(resp => resp.data),
-  );
+  const {data: elements = []} = useBoardElements(board);
   const fields = elements.filter(
     e => e.attributes['element-type'] === ELEMENT_TYPES.FIELD.key,
   );
@@ -46,22 +41,18 @@ export default function EditColumnForm({
     });
   }
 
-  const {mutate: updateColumn, isLoading: isSaving} = useMutation({
-    mutationFn: () => {
-      const updatedColumn = {
-        type: 'columns',
-        id: column.id,
-        attributes,
-      };
-      return columnClient.update(updatedColumn);
-    },
-    onSuccess: onChange,
-  });
+  const {mutate: updateColumn, isLoading: isSaving} = useUpdateColumn(
+    column,
+    board,
+  );
+  const handleUpdateColumn = () =>
+    updateColumn(attributes, {onSuccess: onChange});
 
-  const {mutate: deleteColumn, isLoading: isDeleting} = useMutation({
-    mutationFn: () => columnClient.delete({id: column.id}),
-    onSuccess: onChange,
-  });
+  const {mutate: deleteColumn, isLoading: isDeleting} = useDeleteColumn(
+    column,
+    board,
+  );
+  const handleDeleteColumn = () => deleteColumn(null, {onSuccess: onChange});
 
   const isLoading = isSaving || isDeleting;
 
@@ -124,7 +115,7 @@ export default function EditColumnForm({
           Cancel
         </Button>
         <Button
-          onPress={deleteColumn}
+          onPress={handleDeleteColumn}
           disabled={isLoading}
           style={sharedStyles.mt}
         >
@@ -132,7 +123,7 @@ export default function EditColumnForm({
         </Button>
         <Button
           mode="primary"
-          onPress={updateColumn}
+          onPress={handleUpdateColumn}
           disabled={isLoading}
           style={sharedStyles.mt}
         >
