@@ -5,7 +5,7 @@ import {large, useBreakpoint} from '../../../breakpoints';
 import Button from '../../../components/Button';
 import LoadingIndicator from '../../../components/LoadingIndicator';
 import sharedStyles, {useColumnStyle} from '../../../components/sharedStyles';
-import {useCardClient, useCreateCard} from '../../../data/cards';
+import {useCards, useCreateCard} from '../../../data/cards';
 import {useColumns} from '../../../data/columns';
 import {useBoardElements} from '../../../data/elements';
 import ELEMENT_TYPES from '../../../enums/elementTypes';
@@ -17,7 +17,6 @@ import EditColumnForm from './EditColumnForm';
 export default function ColumnList({board}) {
   const queryClient = useQueryClient();
   const columnClient = useColumns();
-  const cardClient = useCardClient();
 
   const [selectedCardId, setSelectedCardId] = useState(null);
   const [selectedColumnId, setSelectedColumnId] = useState(null);
@@ -28,9 +27,7 @@ export default function ColumnList({board}) {
     ['columns', board.id],
     () => columnClient.related({parent: board}).then(resp => resp.data),
   );
-  const {isLoading: isLoadingCards} = useQuery(['cards', board.id], () =>
-    cardClient.related({parent: board}).then(resp => resp.data),
-  );
+  const {isLoading: isLoadingCards} = useCards(board);
 
   const refreshCards = () => queryClient.invalidateQueries(['cards', board.id]);
   const refreshColumns = () =>
