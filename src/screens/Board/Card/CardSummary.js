@@ -3,11 +3,11 @@ import {View} from 'react-native';
 import Card from '../../../components/Card';
 import Field from '../../../components/Field';
 import Text from '../../../components/Text';
-import {useElements} from '../../../data/elements';
+import {useElementClient} from '../../../data/elements';
 import sortElements from '../../../utils/sortByDisplayOrder';
 
 export default function CardSummary({card, board, onPress, style}) {
-  const elementClient = useElements();
+  const elementClient = useElementClient();
 
   const {data: elements = []} = useQuery(['elements', board.id], () =>
     elementClient.related({parent: board}).then(resp => resp.data),

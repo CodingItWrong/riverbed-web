@@ -12,7 +12,7 @@ import LabeledCheckbox from '../../../components/LabeledCheckbox';
 import NumberField from '../../../components/NumberField';
 import TextField from '../../../components/TextField';
 import sharedStyles from '../../../components/sharedStyles';
-import {useElements} from '../../../data/elements';
+import {useElementClient} from '../../../data/elements';
 import COMMANDS from '../../../enums/commands';
 import ELEMENT_TYPES from '../../../enums/elementTypes';
 import FIELD_DATA_TYPES from '../../../enums/fieldDataTypes';
@@ -28,7 +28,7 @@ export default function EditElementForm({
   onCancel,
   style,
 }) {
-  const elementClient = useElements();
+  const elementClient = useElementClient();
   const {data: elements = []} = useQuery(['elements', board.id], () =>
     elementClient.related({parent: board}).then(resp => resp.data),
   );

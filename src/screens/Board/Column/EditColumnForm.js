@@ -13,7 +13,7 @@ import NumberField from '../../../components/NumberField';
 import TextField from '../../../components/TextField';
 import sharedStyles from '../../../components/sharedStyles';
 import {useColumns} from '../../../data/columns';
-import {useElements} from '../../../data/elements';
+import {useElementClient} from '../../../data/elements';
 import ELEMENT_TYPES from '../../../enums/elementTypes';
 import QUERIES from '../../../enums/queries';
 import SORT_DIRECTIONS from '../../../enums/sortDirections';
@@ -30,7 +30,7 @@ export default function EditColumnForm({
   const columnClient = useColumns();
   const [attributes, setAttributes] = useState(column.attributes);
 
-  const elementClient = useElements();
+  const elementClient = useElementClient();
   const {data: elements = []} = useQuery(['elements', board.id], () =>
     elementClient.related({parent: board}).then(resp => resp.data),
   );

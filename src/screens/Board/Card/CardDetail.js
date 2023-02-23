@@ -9,7 +9,7 @@ import Field from '../../../components/Field';
 import Text from '../../../components/Text';
 import sharedStyles from '../../../components/sharedStyles';
 import {useCards} from '../../../data/cards';
-import {useElements} from '../../../data/elements';
+import {useElementClient} from '../../../data/elements';
 import COMMANDS from '../../../enums/commands';
 import ELEMENT_TYPES from '../../../enums/elementTypes';
 import VALUES from '../../../enums/values';
@@ -23,7 +23,7 @@ export default function CardDetail({card, board, onChange, onCancel, style}) {
     card.attributes['field-values'],
   );
 
-  const elementClient = useElements();
+  const elementClient = useElementClient();
   const {data: elements = []} = useQuery(['elements', board.id], () =>
     elementClient.related({parent: board}).then(resp => resp.data),
   );

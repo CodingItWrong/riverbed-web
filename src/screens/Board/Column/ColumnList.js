@@ -7,7 +7,7 @@ import LoadingIndicator from '../../../components/LoadingIndicator';
 import sharedStyles, {useColumnStyle} from '../../../components/sharedStyles';
 import {useCards} from '../../../data/cards';
 import {useColumns} from '../../../data/columns';
-import {useElements} from '../../../data/elements';
+import {useElementClient} from '../../../data/elements';
 import ELEMENT_TYPES from '../../../enums/elementTypes';
 import VALUES from '../../../enums/values';
 import sortByDisplayOrder from '../../../utils/sortByDisplayOrder';
@@ -16,7 +16,7 @@ import EditColumnForm from './EditColumnForm';
 
 export default function ColumnList({board}) {
   const queryClient = useQueryClient();
-  const elementClient = useElements();
+  const elementClient = useElementClient();
   const columnClient = useColumns();
   const cardClient = useCards();
 

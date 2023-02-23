@@ -9,7 +9,7 @@ import Field from '../../../components/Field';
 import IconButton from '../../../components/IconButton';
 import Text from '../../../components/Text';
 import sharedStyles, {useColumnStyle} from '../../../components/sharedStyles';
-import {useElements} from '../../../data/elements';
+import {useElementClient} from '../../../data/elements';
 import ELEMENT_TYPES from '../../../enums/elementTypes';
 import FIELD_DATA_TYPES from '../../../enums/fieldDataTypes';
 import sortElements from '../../../utils/sortByDisplayOrder';
@@ -18,7 +18,7 @@ import EditElementForm from './EditElementForm';
 export default function ElementList({board, onClose}) {
   const insets = useSafeAreaInsets();
   const queryClient = useQueryClient();
-  const elementClient = useElements();
+  const elementClient = useElementClient();
   const [selectedElementId, setSelectedElementId] = useState(null);
 
   const {data: elements = []} = useQuery(['elements', board.id], () =>
