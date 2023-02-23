@@ -2,7 +2,7 @@ import {Appbar} from 'react-native-paper';
 
 export default function NavigationBar({navigation, options, back}) {
   return (
-    <Appbar.Header>
+    <Appbar.Header elevated>
       {back && (
         <Appbar.BackAction
           onPress={navigation.goBack}
