@@ -33,3 +33,15 @@ export function useCreateBoard() {
     mutationFn: () => boardClient.create({attributes: {}}),
   });
 }
+
+export function useUpdateBoard(board) {
+  const boardClient = useBoardClient();
+  return useMutation({
+    mutationFn: attributes =>
+      boardClient.update({
+        type: 'boards',
+        id: board.id,
+        attributes,
+      }),
+  });
+}

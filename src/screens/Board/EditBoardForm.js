@@ -6,7 +6,7 @@ import Button from '../../components/Button';
 import Card from '../../components/Card';
 import TextField from '../../components/TextField';
 import sharedStyles, {useColumnStyle} from '../../components/sharedStyles';
-import {useBoardClient} from '../../data/boards';
+import {useBoardClient, useUpdateBoard} from '../../data/boards';
 
 export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
   const queryClient = useQueryClient();
@@ -16,20 +16,14 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
 
   const refreshBoards = () => queryClient.invalidateQueries(['boards']);
 
-  const {mutate: updateBoard, isLoading: isSaving} = useMutation({
-    mutationFn: () => {
-      const updatedBoard = {
-        type: 'boards',
-        id: board.id,
-        attributes,
-      };
-      return boardClient.update(updatedBoard);
-    },
-    onSuccess: () => {
-      refreshBoards();
-      onSave();
-    },
-  });
+  const {mutate: updateBoard, isLoading: isSaving} = useUpdateBoard(board);
+  const handleUpdateBoard = () =>
+    updateBoard(attributes, {
+      onSuccess: () => {
+        refreshBoards();
+        onSave();
+      },
+    });
 
   const {mutate: deleteBoard, isLoading: isDeleting} = useMutation({
     mutationFn: () => boardClient.delete({id: board.id}),
@@ -83,7 +77,7 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
         )}
         <Button
           mode="primary"
-          onPress={updateBoard}
+          onPress={handleUpdateBoard}
           disabled={isLoading}
           style={sharedStyles.mt}
         >
