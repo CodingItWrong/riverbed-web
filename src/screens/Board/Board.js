@@ -81,9 +81,9 @@ export default function Board({route}) {
 
   if (!board) {
     return (
-      <View style={sharedStyles.fullHeight}>
+      <ScreenBackground style={sharedStyles.fullHeight}>
         <LoadingIndicator />
-      </View>
+      </ScreenBackground>
     );
   }
 
