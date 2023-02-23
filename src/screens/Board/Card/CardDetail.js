@@ -1,5 +1,4 @@
 import {useMutation, useQuery} from '@tanstack/react-query';
-import dayjs from 'dayjs';
 import {useState} from 'react';
 import {View} from 'react-native';
 import Button from '../../../components/Button';
