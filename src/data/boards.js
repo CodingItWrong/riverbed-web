@@ -15,6 +15,11 @@ export function useBoardClient() {
   return boardClient;
 }
 
+export function useBoards() {
+  const boardClient = useBoardClient();
+  return useQuery(['boards'], () => boardClient.all().then(resp => resp.data));
+}
+
 export function useBoard(id) {
   const boardClient = useBoardClient();
   return useQuery(['boards', id], () =>

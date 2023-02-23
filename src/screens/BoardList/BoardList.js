@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
+import {useMutation, useQueryClient} from '@tanstack/react-query';
 import sortBy from 'lodash.sortby';
 import {useCallback, useEffect} from 'react';
 import {FlatList, View} from 'react-native';
@@ -12,7 +12,7 @@ import LoadingIndicator from '../../components/LoadingIndicator';
 import ScreenBackground from '../../components/ScreenBackground';
 import Text from '../../components/Text';
 import sharedStyles, {useColumnStyle} from '../../components/sharedStyles';
-import {useBoardClient} from '../../data/boards';
+import {useBoardClient, useBoards} from '../../data/boards';
 import {useToken} from '../../data/token';
 
 export default function BoardList() {
@@ -43,9 +43,7 @@ export default function BoardList() {
     [clearToken],
   );
 
-  const {data: boards = [], isLoading} = useQuery(['boards'], () =>
-    boardClient.all().then(resp => resp.data),
-  );
+  const {data: boards = [], isLoading} = useBoards();
   const sortedBoards = sortBy(boards, ['attributes.name']);
 
   const refreshBoards = () => queryClient.invalidateQueries(['boards']);
