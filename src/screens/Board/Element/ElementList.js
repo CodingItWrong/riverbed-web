@@ -1,4 +1,3 @@
-import {useQueryClient} from '@tanstack/react-query';
 import {useState} from 'react';
 import {View} from 'react-native';
 import {KeyboardAwareFlatList} from 'react-native-keyboard-aware-scroll-view';
@@ -17,22 +16,15 @@ import EditElementForm from './EditElementForm';
 
 export default function ElementList({board, onClose}) {
   const insets = useSafeAreaInsets();
-  const queryClient = useQueryClient();
   const [selectedElementId, setSelectedElementId] = useState(null);
 
   const {data: elements = []} = useBoardElements(board);
   const sortedElements = sortElements(elements);
 
-  const refreshElements = () =>
-    queryClient.invalidateQueries(['elements', board.id]);
-
   const {mutate: createElement, isLoading: isAdding} = useCreateElement(board);
   const handleCreateElement = attributes =>
     createElement(attributes, {
-      onSuccess: newElement => {
-        setSelectedElementId(newElement.data.id);
-        refreshElements();
-      },
+      onSuccess: newElement => setSelectedElementId(newElement.data.id),
     });
 
   const addField = () =>
@@ -49,7 +41,6 @@ export default function ElementList({board, onClose}) {
 
   function onChange() {
     hideEditForm();
-    refreshElements();
   }
 
   function hideEditForm() {

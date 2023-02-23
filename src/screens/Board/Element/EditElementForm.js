@@ -51,13 +51,17 @@ export default function EditElementForm({
   const dataTypeOptions = Object.values(FIELD_DATA_TYPES);
   const valueOptions = Object.values(VALUES);
 
-  const {mutate: updateElement, isLoading: isSaving} =
-    useUpdateElement(element);
+  const {mutate: updateElement, isLoading: isSaving} = useUpdateElement(
+    element,
+    board,
+  );
   const handleUpdateElement = () =>
     updateElement(elementAttributes, {onSuccess: onSave});
 
-  const {mutate: deleteElement, isLoading: isDeleting} =
-    useDeleteElement(element);
+  const {mutate: deleteElement, isLoading: isDeleting} = useDeleteElement(
+    element,
+    board,
+  );
   const handleDeleteElement = () => deleteElement(null, {onSuccess: onDelete});
 
   const isLoading = isSaving || isDeleting;

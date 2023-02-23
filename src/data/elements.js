@@ -1,5 +1,5 @@
 import {ResourceClient} from '@codingitwrong/jsonapi-client';
-import {useMutation, useQuery} from '@tanstack/react-query';
+import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {useMemo} from 'react';
 import httpClient from './httpClient';
 import {useToken} from './token';
@@ -15,6 +15,9 @@ function useElementClient() {
   return elementClient;
 }
 
+const refreshElements = (queryClient, board) =>
+  queryClient.invalidateQueries(['elements', board.id]);
+
 export function useBoardElements(board) {
   const elementClient = useElementClient();
   return useQuery(['elements', board.id], () =>
@@ -24,17 +27,20 @@ export function useBoardElements(board) {
 
 export function useCreateElement(board) {
   const elementClient = useElementClient();
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: attributes =>
       elementClient.create({
         relationships: {board: {data: {type: 'boards', id: board.id}}},
         attributes,
       }),
+    onSuccess: () => refreshElements(queryClient, board),
   });
 }
 
-export function useUpdateElement(element) {
+export function useUpdateElement(element, board) {
   const elementClient = useElementClient();
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: attributes =>
       elementClient.update({
@@ -42,12 +48,15 @@ export function useUpdateElement(element) {
         id: element.id,
         attributes,
       }),
+    onSuccess: () => refreshElements(queryClient, board),
   });
 }
 
-export function useDeleteElement(element) {
+export function useDeleteElement(element, board) {
   const elementClient = useElementClient();
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: () => elementClient.delete({id: element.id}),
+    onSuccess: () => refreshElements(queryClient, board),
   });
 }
