@@ -25,7 +25,6 @@ export default function ColumnList({board}) {
   const {data: columns = [], isLoading: isLoadingColumns} = useColumns(board);
   const {isLoading: isLoadingCards} = useCards(board);
 
-  const refreshCards = () => queryClient.invalidateQueries(['cards', board.id]);
   const refreshColumns = () =>
     queryClient.invalidateQueries(['columns', board.id]);
 
@@ -47,19 +46,11 @@ export default function ColumnList({board}) {
   const {mutate: createCard, isLoading: isAddingCard} = useCreateCard(board);
   const handleCreateCard = () =>
     createCard(
-      {
-        'field-values': getInitialFieldValues(elements),
-      },
-      {
-        onSuccess: ({data: newCard}) => {
-          setSelectedCardId(newCard.id);
-          refreshCards();
-        },
-      },
+      {'field-values': getInitialFieldValues(elements)},
+      {onSuccess: ({data: newCard}) => setSelectedCardId(newCard.id)},
     );
 
   function onChangeCard() {
-    refreshCards();
     hideDetail();
   }
 

@@ -77,7 +77,10 @@ export default function CardDetail({card, board, onChange, onCancel, style}) {
     }
   }
 
-  const {mutate: updateCard, isLoading: isUpdating} = useUpdateCard(card);
+  const {mutate: updateCard, isLoading: isUpdating} = useUpdateCard(
+    card,
+    board,
+  );
   const handleUpdateCard = fieldOverrides => {
     const fieldValuesToUse = {...fieldValues, ...fieldOverrides};
     return updateCard(
@@ -86,7 +89,10 @@ export default function CardDetail({card, board, onChange, onCancel, style}) {
     );
   };
 
-  const {mutate: deleteCard, isLoading: isDeleting} = useDeleteCard(card);
+  const {mutate: deleteCard, isLoading: isDeleting} = useDeleteCard(
+    card,
+    board,
+  );
   const handleDeleteCard = () => deleteCard(null, {onSuccess: onChange});
 
   const isLoading = isUpdating || isDeleting;
