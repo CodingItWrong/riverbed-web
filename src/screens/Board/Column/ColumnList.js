@@ -5,7 +5,7 @@ import {large, useBreakpoint} from '../../../breakpoints';
 import Button from '../../../components/Button';
 import LoadingIndicator from '../../../components/LoadingIndicator';
 import sharedStyles, {useColumnStyle} from '../../../components/sharedStyles';
-import {useCardClient} from '../../../data/cards';
+import {useCardClient, useCreateCard} from '../../../data/cards';
 import {useColumns} from '../../../data/columns';
 import {useBoardElements} from '../../../data/elements';
 import ELEMENT_TYPES from '../../../enums/elementTypes';
@@ -53,21 +53,19 @@ export default function ColumnList({board}) {
     setSelectedColumnId(null);
   }
 
-  const {mutate: addCard, isLoading: isAddingCard} = useMutation({
-    mutationFn: () =>
-      cardClient.create({
-        attributes: {
-          'field-values': getInitialFieldValues(elements),
+  const {mutate: createCard, isLoading: isAddingCard} = useCreateCard(board);
+  const handleCreateCard = () =>
+    createCard(
+      {
+        'field-values': getInitialFieldValues(elements),
+      },
+      {
+        onSuccess: ({data: newCard}) => {
+          setSelectedCardId(newCard.id);
+          refreshCards();
         },
-        relationships: {
-          board: {data: {type: 'boards', id: board.id}},
-        },
-      }),
-    onSuccess: ({data: newCard}) => {
-      setSelectedCardId(newCard.id);
-      refreshCards();
-    },
-  });
+      },
+    );
 
   function onChangeCard() {
     refreshCards();
@@ -105,7 +103,7 @@ export default function ColumnList({board}) {
         <Button
           mode="link"
           icon="plus"
-          onPress={addCard}
+          onPress={handleCreateCard}
           disabled={isAddingCard}
         >
           Add Card

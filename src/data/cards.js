@@ -1,5 +1,5 @@
 import {ResourceClient} from '@codingitwrong/jsonapi-client';
-import {useQuery} from '@tanstack/react-query';
+import {useMutation, useQuery} from '@tanstack/react-query';
 import {useMemo} from 'react';
 import httpClient from './httpClient';
 import {useToken} from './token';
@@ -22,4 +22,17 @@ export function useCards(board) {
     () => cardClient.related({parent: board}).then(resp => resp.data),
     {enabled: !!board},
   );
+}
+
+export function useCreateCard(board) {
+  const cardClient = useCardClient();
+  return useMutation({
+    mutationFn: attributes =>
+      cardClient.create({
+        attributes,
+        relationships: {
+          board: {data: {type: 'boards', id: board.id}},
+        },
+      }),
+  });
 }
