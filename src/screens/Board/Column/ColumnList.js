@@ -6,7 +6,7 @@ import Button from '../../../components/Button';
 import LoadingIndicator from '../../../components/LoadingIndicator';
 import sharedStyles, {useColumnStyle} from '../../../components/sharedStyles';
 import {useCards, useCreateCard} from '../../../data/cards';
-import {useColumnClient} from '../../../data/columns';
+import {useColumnClient, useColumns} from '../../../data/columns';
 import {useBoardElements} from '../../../data/elements';
 import ELEMENT_TYPES from '../../../enums/elementTypes';
 import VALUES from '../../../enums/values';
@@ -23,10 +23,7 @@ export default function ColumnList({board}) {
 
   const {data: elements, isLoading: isLoadingElements} =
     useBoardElements(board);
-  const {data: columns = [], isLoading: isLoadingColumns} = useQuery(
-    ['columns', board.id],
-    () => columnClient.related({parent: board}).then(resp => resp.data),
-  );
+  const {data: columns = [], isLoading: isLoadingColumns} = useColumns(board);
   const {isLoading: isLoadingCards} = useCards(board);
 
   const refreshCards = () => queryClient.invalidateQueries(['cards', board.id]);
