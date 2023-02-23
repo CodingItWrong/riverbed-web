@@ -32,3 +32,17 @@ export function useCreateColumn(board) {
       }),
   });
 }
+
+export function useUpdateColumn(column) {
+  const columnClient = useColumnClient();
+  return useMutation({
+    mutationFn: attributes => {
+      const updatedColumn = {
+        type: 'columns',
+        id: column.id,
+        attributes,
+      };
+      return columnClient.update(updatedColumn);
+    },
+  });
+}

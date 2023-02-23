@@ -12,7 +12,7 @@ import IconButton from '../../../components/IconButton';
 import NumberField from '../../../components/NumberField';
 import TextField from '../../../components/TextField';
 import sharedStyles from '../../../components/sharedStyles';
-import {useColumnClient} from '../../../data/columns';
+import {useColumnClient, useUpdateColumn} from '../../../data/columns';
 import {useBoardElements} from '../../../data/elements';
 import ELEMENT_TYPES from '../../../enums/elementTypes';
 import QUERIES from '../../../enums/queries';
@@ -43,17 +43,9 @@ export default function EditColumnForm({
     });
   }
 
-  const {mutate: updateColumn, isLoading: isSaving} = useMutation({
-    mutationFn: () => {
-      const updatedColumn = {
-        type: 'columns',
-        id: column.id,
-        attributes,
-      };
-      return columnClient.update(updatedColumn);
-    },
-    onSuccess: onChange,
-  });
+  const {mutate: updateColumn, isLoading: isSaving} = useUpdateColumn(column);
+  const handleUpdateColumn = () =>
+    updateColumn(attributes, {onSuccess: onChange});
 
   const {mutate: deleteColumn, isLoading: isDeleting} = useMutation({
     mutationFn: () => columnClient.delete({id: column.id}),
@@ -129,7 +121,7 @@ export default function EditColumnForm({
         </Button>
         <Button
           mode="primary"
-          onPress={updateColumn}
+          onPress={handleUpdateColumn}
           disabled={isLoading}
           style={sharedStyles.mt}
         >
