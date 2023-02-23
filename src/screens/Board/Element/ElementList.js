@@ -9,7 +9,7 @@ import Field from '../../../components/Field';
 import IconButton from '../../../components/IconButton';
 import Text from '../../../components/Text';
 import sharedStyles, {useColumnStyle} from '../../../components/sharedStyles';
-import {useBoardElements, useElementClient} from '../../../data/elements';
+import {useBoardElements, useCreateElement} from '../../../data/elements';
 import ELEMENT_TYPES from '../../../enums/elementTypes';
 import FIELD_DATA_TYPES from '../../../enums/fieldDataTypes';
 import sortElements from '../../../utils/sortByDisplayOrder';
@@ -18,7 +18,6 @@ import EditElementForm from './EditElementForm';
 export default function ElementList({board, onClose}) {
   const insets = useSafeAreaInsets();
   const queryClient = useQueryClient();
-  const elementClient = useElementClient();
   const [selectedElementId, setSelectedElementId] = useState(null);
 
   const {data: elements = []} = useBoardElements(board);
@@ -27,29 +26,26 @@ export default function ElementList({board, onClose}) {
   const refreshElements = () =>
     queryClient.invalidateQueries(['elements', board.id]);
 
-  const {mutate: addElement, isLoading: isAdding} = useMutation({
-    mutationFn: attributes =>
-      elementClient.create({
-        relationships: {board: {data: {type: 'boards', id: board.id}}},
-        attributes,
-      }),
-    onSuccess: newElement => {
-      setSelectedElementId(newElement.data.id);
-      refreshElements();
-    },
-  });
+  const {mutate: createElement, isLoading: isAdding} = useCreateElement(board);
+  const handleCreateElement = attributes =>
+    createElement(attributes, {
+      onSuccess: newElement => {
+        setSelectedElementId(newElement.data.id);
+        refreshElements();
+      },
+    });
 
   const addField = () =>
-    addElement({
+    handleCreateElement({
       'element-type': ELEMENT_TYPES.FIELD.key,
       'data-type': FIELD_DATA_TYPES.TEXT.key,
     });
 
   const addButton = () =>
-    addElement({'element-type': ELEMENT_TYPES.BUTTON.key});
+    handleCreateElement({'element-type': ELEMENT_TYPES.BUTTON.key});
 
   const addButtonMenu = () =>
-    addElement({'element-type': ELEMENT_TYPES.BUTTON_MENU.key});
+    handleCreateElement({'element-type': ELEMENT_TYPES.BUTTON_MENU.key});
 
   function onChange() {
     hideEditForm();
