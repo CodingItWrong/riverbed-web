@@ -4,7 +4,7 @@ import {useMemo} from 'react';
 import httpClient from './httpClient';
 import {useToken} from './token';
 
-export function useColumnClient() {
+function useColumnClient() {
   const {token} = useToken();
 
   const columnClient = useMemo(() => {
