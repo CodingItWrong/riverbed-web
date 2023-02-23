@@ -1,5 +1,5 @@
 import {ResourceClient} from '@codingitwrong/jsonapi-client';
-import {useQuery} from '@tanstack/react-query';
+import {useMutation, useQuery} from '@tanstack/react-query';
 import {useMemo} from 'react';
 import httpClient from './httpClient';
 import {useToken} from './token';
@@ -25,4 +25,11 @@ export function useBoard(id) {
   return useQuery(['boards', id], () =>
     boardClient.find({id}).then(response => response.data),
   );
+}
+
+export function useCreateBoard() {
+  const boardClient = useBoardClient();
+  return useMutation({
+    mutationFn: () => boardClient.create({attributes: {}}),
+  });
 }
