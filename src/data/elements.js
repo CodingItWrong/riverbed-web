@@ -4,7 +4,7 @@ import {useMemo} from 'react';
 import httpClient from './httpClient';
 import {useToken} from './token';
 
-export function useElementClient() {
+function useElementClient() {
   const {token} = useToken();
 
   const elementClient = useMemo(() => {
