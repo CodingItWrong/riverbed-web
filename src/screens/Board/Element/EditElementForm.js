@@ -12,7 +12,11 @@ import LabeledCheckbox from '../../../components/LabeledCheckbox';
 import NumberField from '../../../components/NumberField';
 import TextField from '../../../components/TextField';
 import sharedStyles from '../../../components/sharedStyles';
-import {useBoardElements, useElementClient} from '../../../data/elements';
+import {
+  useBoardElements,
+  useElementClient,
+  useUpdateElement,
+} from '../../../data/elements';
 import COMMANDS from '../../../enums/commands';
 import ELEMENT_TYPES from '../../../enums/elementTypes';
 import FIELD_DATA_TYPES from '../../../enums/fieldDataTypes';
@@ -49,17 +53,10 @@ export default function EditElementForm({
   const dataTypeOptions = Object.values(FIELD_DATA_TYPES);
   const valueOptions = Object.values(VALUES);
 
-  const {mutate: updateElement, isLoading: isSaving} = useMutation({
-    mutationFn: () => {
-      const updatedElement = {
-        type: 'elements',
-        id: element.id,
-        attributes: elementAttributes,
-      };
-      return elementClient.update(updatedElement);
-    },
-    onSuccess: onSave,
-  });
+  const {mutate: updateElement, isLoading: isSaving} =
+    useUpdateElement(element);
+  const handleUpdateElement = () =>
+    updateElement(elementAttributes, {onSuccess: onSave});
 
   const {mutate: deleteElement, isLoading: isDeleting} = useMutation({
     mutationFn: () => elementClient.delete({id: element.id}),
@@ -266,7 +263,7 @@ export default function EditElementForm({
       </Button>
       <Button
         mode="primary"
-        onPress={updateElement}
+        onPress={handleUpdateElement}
         disabled={isLoading}
         style={sharedStyles.mt}
       >

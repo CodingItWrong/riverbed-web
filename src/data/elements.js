@@ -32,3 +32,15 @@ export function useCreateElement(board) {
       }),
   });
 }
+
+export function useUpdateElement(element) {
+  const elementClient = useElementClient();
+  return useMutation({
+    mutationFn: attributes =>
+      elementClient.update({
+        type: 'elements',
+        id: element.id,
+        attributes,
+      }),
+  });
+}
