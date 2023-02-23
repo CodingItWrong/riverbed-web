@@ -1,4 +1,3 @@
-import {useMutation} from '@tanstack/react-query';
 import set from 'lodash.set';
 import {useState} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
@@ -12,7 +11,7 @@ import IconButton from '../../../components/IconButton';
 import NumberField from '../../../components/NumberField';
 import TextField from '../../../components/TextField';
 import sharedStyles from '../../../components/sharedStyles';
-import {useColumnClient, useUpdateColumn} from '../../../data/columns';
+import {useDeleteColumn, useUpdateColumn} from '../../../data/columns';
 import {useBoardElements} from '../../../data/elements';
 import ELEMENT_TYPES from '../../../enums/elementTypes';
 import QUERIES from '../../../enums/queries';
@@ -27,7 +26,6 @@ export default function EditColumnForm({
   style,
 }) {
   const insets = useSafeAreaInsets();
-  const columnClient = useColumnClient();
   const [attributes, setAttributes] = useState(column.attributes);
 
   const {data: elements = []} = useBoardElements(board);
@@ -47,10 +45,8 @@ export default function EditColumnForm({
   const handleUpdateColumn = () =>
     updateColumn(attributes, {onSuccess: onChange});
 
-  const {mutate: deleteColumn, isLoading: isDeleting} = useMutation({
-    mutationFn: () => columnClient.delete({id: column.id}),
-    onSuccess: onChange,
-  });
+  const {mutate: deleteColumn, isLoading: isDeleting} = useDeleteColumn(column);
+  const handleDeleteColumn = () => deleteColumn(null, {onSuccess: onChange});
 
   const isLoading = isSaving || isDeleting;
 
@@ -113,7 +109,7 @@ export default function EditColumnForm({
           Cancel
         </Button>
         <Button
-          onPress={deleteColumn}
+          onPress={handleDeleteColumn}
           disabled={isLoading}
           style={sharedStyles.mt}
         >

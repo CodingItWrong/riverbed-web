@@ -46,3 +46,10 @@ export function useUpdateColumn(column) {
     },
   });
 }
+
+export function useDeleteColumn(column) {
+  const columnClient = useColumnClient();
+  return useMutation({
+    mutationFn: () => columnClient.delete({id: column.id}),
+  });
+}
