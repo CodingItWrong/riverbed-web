@@ -1,4 +1,3 @@
-import {useQueryClient} from '@tanstack/react-query';
 import set from 'lodash.set';
 import {useState} from 'react';
 import {View} from 'react-native';
@@ -9,29 +8,14 @@ import sharedStyles, {useColumnStyle} from '../../components/sharedStyles';
 import {useDeleteBoard, useUpdateBoard} from '../../data/boards';
 
 export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
-  const queryClient = useQueryClient();
   const [attributes, setAttributes] = useState(board.attributes);
   const [confirmingDelete, setConfirmingDelete] = useState(false);
 
-  const refreshBoards = () => queryClient.invalidateQueries(['boards']);
-
   const {mutate: updateBoard, isLoading: isSaving} = useUpdateBoard(board);
-  const handleUpdateBoard = () =>
-    updateBoard(attributes, {
-      onSuccess: () => {
-        refreshBoards();
-        onSave();
-      },
-    });
+  const handleUpdateBoard = () => updateBoard(attributes, {onSuccess: onSave});
 
   const {mutate: deleteBoard, isLoading: isDeleting} = useDeleteBoard(board);
-  const handleDeleteBoard = () =>
-    deleteBoard(null, {
-      onSuccess: () => {
-        refreshBoards();
-        onDelete();
-      },
-    });
+  const handleDeleteBoard = () => deleteBoard(null, {onSuccess: onDelete});
 
   function updateAttribute(path, value) {
     setAttributes(oldAttributes => {

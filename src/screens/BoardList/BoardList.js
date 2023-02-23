@@ -1,5 +1,4 @@
 import {useNavigation} from '@react-navigation/native';
-import {useQueryClient} from '@tanstack/react-query';
 import sortBy from 'lodash.sortby';
 import {useCallback, useEffect} from 'react';
 import {FlatList, View} from 'react-native';
@@ -18,7 +17,6 @@ import {useToken} from '../../data/token';
 export default function BoardList() {
   const {clearToken} = useToken();
   const navigation = useNavigation();
-  const queryClient = useQueryClient();
 
   useEffect(() => {
     navigation.setOptions({
@@ -45,8 +43,6 @@ export default function BoardList() {
   const {data: boards = [], isLoading} = useBoards();
   const sortedBoards = sortBy(boards, ['attributes.name']);
 
-  const refreshBoards = () => queryClient.invalidateQueries(['boards']);
-
   function goToBoard(board) {
     navigation.navigate('Board', {id: board.id});
   }
@@ -54,10 +50,7 @@ export default function BoardList() {
   const {mutate: createBoard, isLoading: isAdding} = useCreateBoard();
   const handleCreateBoard = () =>
     createBoard(null, {
-      onSuccess: ({data: board}) => {
-        goToBoard(board);
-        refreshBoards();
-      },
+      onSuccess: ({data: board}) => goToBoard(board),
     });
 
   const columnStyle = useColumnStyle();
