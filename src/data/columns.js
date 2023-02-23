@@ -1,5 +1,5 @@
 import {ResourceClient} from '@codingitwrong/jsonapi-client';
-import {useQuery} from '@tanstack/react-query';
+import {useMutation, useQuery} from '@tanstack/react-query';
 import {useMemo} from 'react';
 import httpClient from './httpClient';
 import {useToken} from './token';
@@ -20,4 +20,15 @@ export function useColumns(board) {
   return useQuery(['columns', board.id], () =>
     columnClient.related({parent: board}).then(resp => resp.data),
   );
+}
+
+export function useCreateColumn(board) {
+  const columnClient = useColumnClient();
+  return useMutation({
+    mutationFn: () =>
+      columnClient.create({
+        relationships: {board: {data: {type: 'boards', id: board.id}}},
+        attributes: {},
+      }),
+  });
 }

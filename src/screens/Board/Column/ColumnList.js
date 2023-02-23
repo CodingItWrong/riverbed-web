@@ -6,7 +6,7 @@ import Button from '../../../components/Button';
 import LoadingIndicator from '../../../components/LoadingIndicator';
 import sharedStyles, {useColumnStyle} from '../../../components/sharedStyles';
 import {useCards, useCreateCard} from '../../../data/cards';
-import {useColumnClient, useColumns} from '../../../data/columns';
+import {useColumns, useCreateColumn} from '../../../data/columns';
 import {useBoardElements} from '../../../data/elements';
 import ELEMENT_TYPES from '../../../enums/elementTypes';
 import VALUES from '../../../enums/values';
@@ -16,7 +16,6 @@ import EditColumnForm from './EditColumnForm';
 
 export default function ColumnList({board}) {
   const queryClient = useQueryClient();
-  const columnClient = useColumnClient();
 
   const [selectedCardId, setSelectedCardId] = useState(null);
   const [selectedColumnId, setSelectedColumnId] = useState(null);
@@ -30,17 +29,15 @@ export default function ColumnList({board}) {
   const refreshColumns = () =>
     queryClient.invalidateQueries(['columns', board.id]);
 
-  const {mutate: addColumn, isLoading: isAddingColumn} = useMutation({
-    mutationFn: () =>
-      columnClient.create({
-        relationships: {board: {data: {type: 'boards', id: board.id}}},
-        attributes: {},
-      }),
-    onSuccess: ({data: column}) => {
-      setSelectedColumnId(column.id);
-      refreshColumns();
-    },
-  });
+  const {mutate: createColumn, isLoading: isAddingColumn} =
+    useCreateColumn(board);
+  const handleCreateColumn = () =>
+    createColumn(null, {
+      onSuccess: ({data: column}) => {
+        setSelectedColumnId(column.id);
+        refreshColumns();
+      },
+    });
 
   function onChangeColumn() {
     refreshColumns();
@@ -136,7 +133,7 @@ export default function ColumnList({board}) {
             <Button
               mode="link"
               icon="plus"
-              onPress={addColumn}
+              onPress={handleCreateColumn}
               disabled={isAddingColumn}
             >
               Add Column
