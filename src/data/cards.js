@@ -48,3 +48,10 @@ export function useUpdateCard(card) {
       }),
   });
 }
+
+export function useDeleteCard(card) {
+  const cardClient = useCardClient();
+  return useMutation({
+    mutationFn: () => cardClient.delete({id: card.id}),
+  });
+}
