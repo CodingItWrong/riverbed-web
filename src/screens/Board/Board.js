@@ -6,7 +6,7 @@ import IconButton from '../../components/IconButton';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import ScreenBackground from '../../components/ScreenBackground';
 import sharedStyles from '../../components/sharedStyles';
-import {useBoardClient} from '../../data/boards';
+import {useBoard} from '../../data/boards';
 import {useCards} from '../../data/cards';
 import ColumnList from './Column/ColumnList';
 import EditBoardForm from './EditBoardForm';
@@ -16,11 +16,7 @@ export default function Board({route}) {
   const {id} = route.params;
 
   const navigation = useNavigation();
-  const boardClient = useBoardClient();
-  const {data: board, isLoading: isLoadingBoard} = useQuery(
-    ['boards', id],
-    () => boardClient.find({id}).then(response => response.data),
-  );
+  const {data: board, isLoading: isLoadingBoard} = useBoard(id);
 
   const cardClient = useCards();
   const {isFetching: isFetchingCards} = useQuery(
