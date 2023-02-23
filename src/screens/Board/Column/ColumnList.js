@@ -7,7 +7,7 @@ import LoadingIndicator from '../../../components/LoadingIndicator';
 import sharedStyles, {useColumnStyle} from '../../../components/sharedStyles';
 import {useCards} from '../../../data/cards';
 import {useColumns} from '../../../data/columns';
-import {useElementClient} from '../../../data/elements';
+import {useBoardElements} from '../../../data/elements';
 import ELEMENT_TYPES from '../../../enums/elementTypes';
 import VALUES from '../../../enums/values';
 import sortByDisplayOrder from '../../../utils/sortByDisplayOrder';
@@ -16,17 +16,14 @@ import EditColumnForm from './EditColumnForm';
 
 export default function ColumnList({board}) {
   const queryClient = useQueryClient();
-  const elementClient = useElementClient();
   const columnClient = useColumns();
   const cardClient = useCards();
 
   const [selectedCardId, setSelectedCardId] = useState(null);
   const [selectedColumnId, setSelectedColumnId] = useState(null);
 
-  const {data: elements, isLoading: isLoadingElements} = useQuery(
-    ['elements', board.id],
-    () => elementClient.related({parent: board}).then(resp => resp.data),
-  );
+  const {data: elements, isLoading: isLoadingElements} =
+    useBoardElements(board);
   const {data: columns = [], isLoading: isLoadingColumns} = useQuery(
     ['columns', board.id],
     () => columnClient.related({parent: board}).then(resp => resp.data),

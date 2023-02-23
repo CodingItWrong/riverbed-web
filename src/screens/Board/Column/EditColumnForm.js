@@ -1,4 +1,4 @@
-import {useMutation, useQuery} from '@tanstack/react-query';
+import {useMutation} from '@tanstack/react-query';
 import set from 'lodash.set';
 import {useState} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
@@ -13,7 +13,7 @@ import NumberField from '../../../components/NumberField';
 import TextField from '../../../components/TextField';
 import sharedStyles from '../../../components/sharedStyles';
 import {useColumns} from '../../../data/columns';
-import {useElementClient} from '../../../data/elements';
+import {useBoardElements} from '../../../data/elements';
 import ELEMENT_TYPES from '../../../enums/elementTypes';
 import QUERIES from '../../../enums/queries';
 import SORT_DIRECTIONS from '../../../enums/sortDirections';
@@ -30,10 +30,7 @@ export default function EditColumnForm({
   const columnClient = useColumns();
   const [attributes, setAttributes] = useState(column.attributes);
 
-  const elementClient = useElementClient();
-  const {data: elements = []} = useQuery(['elements', board.id], () =>
-    elementClient.related({parent: board}).then(resp => resp.data),
-  );
+  const {data: elements = []} = useBoardElements(board);
   const fields = elements.filter(
     e => e.attributes['element-type'] === ELEMENT_TYPES.FIELD.key,
   );

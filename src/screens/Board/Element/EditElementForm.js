@@ -1,4 +1,4 @@
-import {useMutation, useQuery} from '@tanstack/react-query';
+import {useMutation} from '@tanstack/react-query';
 import set from 'lodash.set';
 import startCase from 'lodash.startcase';
 import {useState} from 'react';
@@ -12,7 +12,7 @@ import LabeledCheckbox from '../../../components/LabeledCheckbox';
 import NumberField from '../../../components/NumberField';
 import TextField from '../../../components/TextField';
 import sharedStyles from '../../../components/sharedStyles';
-import {useElementClient} from '../../../data/elements';
+import {useBoardElements, useElementClient} from '../../../data/elements';
 import COMMANDS from '../../../enums/commands';
 import ELEMENT_TYPES from '../../../enums/elementTypes';
 import FIELD_DATA_TYPES from '../../../enums/fieldDataTypes';
@@ -29,9 +29,7 @@ export default function EditElementForm({
   style,
 }) {
   const elementClient = useElementClient();
-  const {data: elements = []} = useQuery(['elements', board.id], () =>
-    elementClient.related({parent: board}).then(resp => resp.data),
-  );
+  const {data: elements = []} = useBoardElements(board);
   const fields = elements.filter(
     e => e.attributes['element-type'] === ELEMENT_TYPES.FIELD.key,
   );

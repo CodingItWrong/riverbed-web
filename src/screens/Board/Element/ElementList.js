@@ -1,4 +1,4 @@
-import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
+import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {useState} from 'react';
 import {View} from 'react-native';
 import {KeyboardAwareFlatList} from 'react-native-keyboard-aware-scroll-view';
@@ -9,7 +9,7 @@ import Field from '../../../components/Field';
 import IconButton from '../../../components/IconButton';
 import Text from '../../../components/Text';
 import sharedStyles, {useColumnStyle} from '../../../components/sharedStyles';
-import {useElementClient} from '../../../data/elements';
+import {useBoardElements, useElementClient} from '../../../data/elements';
 import ELEMENT_TYPES from '../../../enums/elementTypes';
 import FIELD_DATA_TYPES from '../../../enums/fieldDataTypes';
 import sortElements from '../../../utils/sortByDisplayOrder';
@@ -21,9 +21,7 @@ export default function ElementList({board, onClose}) {
   const elementClient = useElementClient();
   const [selectedElementId, setSelectedElementId] = useState(null);
 
-  const {data: elements = []} = useQuery(['elements', board.id], () =>
-    elementClient.related({parent: board}).then(resp => resp.data),
-  );
+  const {data: elements = []} = useBoardElements(board);
   const sortedElements = sortElements(elements);
 
   const refreshElements = () =>

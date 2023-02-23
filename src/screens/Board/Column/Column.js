@@ -9,7 +9,7 @@ import SectionHeader from '../../../components/SectionHeader';
 import Text from '../../../components/Text';
 import sharedStyles, {useColumnStyle} from '../../../components/sharedStyles';
 import {useCards} from '../../../data/cards';
-import {useElementClient} from '../../../data/elements';
+import {useBoardElements} from '../../../data/elements';
 import SORT_DIRECTIONS from '../../../enums/sortDirections';
 import calculateSummary from '../../../utils/calculateSummary';
 import checkConditions from '../../../utils/checkConditions';
@@ -29,12 +29,9 @@ export default function Column({
 }) {
   const insets = useSafeAreaInsets();
   const columnWidthStyle = useColumnStyle();
-  const elementClient = useElementClient();
   const cardClient = useCards();
 
-  const {data: elements} = useQuery(['elements', board.id], () =>
-    elementClient.related({parent: board}).then(resp => resp.data),
-  );
+  const {data: elements} = useBoardElements(board);
   const {data: cards = []} = useQuery(['cards', board.id], () =>
     cardClient.related({parent: board}).then(resp => resp.data),
   );
