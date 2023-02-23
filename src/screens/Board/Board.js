@@ -7,7 +7,7 @@ import LoadingIndicator from '../../components/LoadingIndicator';
 import ScreenBackground from '../../components/ScreenBackground';
 import sharedStyles from '../../components/sharedStyles';
 import {useBoard} from '../../data/boards';
-import {useCardClient} from '../../data/cards';
+import {useCards} from '../../data/cards';
 import ColumnList from './Column/ColumnList';
 import EditBoardForm from './EditBoardForm';
 import ElementList from './Element/ElementList';
@@ -18,12 +18,7 @@ export default function Board({route}) {
   const navigation = useNavigation();
   const {data: board, isLoading: isLoadingBoard} = useBoard(id);
 
-  const cardClient = useCardClient();
-  const {isFetching: isFetchingCards} = useQuery(
-    ['cards', board?.id],
-    () => cardClient.related({parent: board}).then(resp => resp.data),
-    {enabled: !!board},
-  );
+  const {isFetching: isFetchingCards} = useCards(board);
 
   useEffect(() => {
     if (!isLoadingBoard) {

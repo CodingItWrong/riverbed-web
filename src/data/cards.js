@@ -1,4 +1,5 @@
 import {ResourceClient} from '@codingitwrong/jsonapi-client';
+import {useQuery} from '@tanstack/react-query';
 import {useMemo} from 'react';
 import httpClient from './httpClient';
 import {useToken} from './token';
@@ -12,4 +13,13 @@ export function useCardClient() {
   }, [token]);
 
   return cardClient;
+}
+
+export function useCards(board) {
+  const cardClient = useCardClient();
+  return useQuery(
+    ['cards', board?.id],
+    () => cardClient.related({parent: board}).then(resp => resp.data),
+    {enabled: !!board},
+  );
 }
