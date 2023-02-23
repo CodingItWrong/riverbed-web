@@ -41,11 +41,17 @@ export default function EditColumnForm({
     });
   }
 
-  const {mutate: updateColumn, isLoading: isSaving} = useUpdateColumn(column);
+  const {mutate: updateColumn, isLoading: isSaving} = useUpdateColumn(
+    column,
+    board,
+  );
   const handleUpdateColumn = () =>
     updateColumn(attributes, {onSuccess: onChange});
 
-  const {mutate: deleteColumn, isLoading: isDeleting} = useDeleteColumn(column);
+  const {mutate: deleteColumn, isLoading: isDeleting} = useDeleteColumn(
+    column,
+    board,
+  );
   const handleDeleteColumn = () => deleteColumn(null, {onSuccess: onChange});
 
   const isLoading = isSaving || isDeleting;

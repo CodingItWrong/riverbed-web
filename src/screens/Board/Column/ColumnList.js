@@ -1,4 +1,3 @@
-import {useQueryClient} from '@tanstack/react-query';
 import {useState} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {large, useBreakpoint} from '../../../breakpoints';
@@ -15,8 +14,6 @@ import Column from './Column';
 import EditColumnForm from './EditColumnForm';
 
 export default function ColumnList({board}) {
-  const queryClient = useQueryClient();
-
   const [selectedCardId, setSelectedCardId] = useState(null);
   const [selectedColumnId, setSelectedColumnId] = useState(null);
 
@@ -25,21 +22,14 @@ export default function ColumnList({board}) {
   const {data: columns = [], isLoading: isLoadingColumns} = useColumns(board);
   const {isLoading: isLoadingCards} = useCards(board);
 
-  const refreshColumns = () =>
-    queryClient.invalidateQueries(['columns', board.id]);
-
   const {mutate: createColumn, isLoading: isAddingColumn} =
     useCreateColumn(board);
   const handleCreateColumn = () =>
     createColumn(null, {
-      onSuccess: ({data: column}) => {
-        setSelectedColumnId(column.id);
-        refreshColumns();
-      },
+      onSuccess: ({data: column}) => setSelectedColumnId(column.id),
     });
 
   function onChangeColumn() {
-    refreshColumns();
     setSelectedColumnId(null);
   }
 

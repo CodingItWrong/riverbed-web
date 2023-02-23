@@ -1,5 +1,5 @@
 import {ResourceClient} from '@codingitwrong/jsonapi-client';
-import {useMutation, useQuery} from '@tanstack/react-query';
+import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {useMemo} from 'react';
 import httpClient from './httpClient';
 import {useToken} from './token';
@@ -15,6 +15,9 @@ function useColumnClient() {
   return columnClient;
 }
 
+const refreshColumns = (queryClient, board) =>
+  queryClient.invalidateQueries(['columns', board.id]);
+
 export function useColumns(board) {
   const columnClient = useColumnClient();
   return useQuery(['columns', board.id], () =>
@@ -24,17 +27,20 @@ export function useColumns(board) {
 
 export function useCreateColumn(board) {
   const columnClient = useColumnClient();
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: () =>
       columnClient.create({
         relationships: {board: {data: {type: 'boards', id: board.id}}},
         attributes: {},
       }),
+    onSuccess: () => refreshColumns(queryClient, board),
   });
 }
 
-export function useUpdateColumn(column) {
+export function useUpdateColumn(column, board) {
   const columnClient = useColumnClient();
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: attributes => {
       const updatedColumn = {
@@ -44,12 +50,15 @@ export function useUpdateColumn(column) {
       };
       return columnClient.update(updatedColumn);
     },
+    onSuccess: () => refreshColumns(queryClient, board),
   });
 }
 
-export function useDeleteColumn(column) {
+export function useDeleteColumn(column, board) {
   const columnClient = useColumnClient();
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: () => columnClient.delete({id: column.id}),
+    onSuccess: () => refreshColumns(queryClient, board),
   });
 }
