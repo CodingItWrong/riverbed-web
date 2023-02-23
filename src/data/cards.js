@@ -4,7 +4,7 @@ import {useMemo} from 'react';
 import httpClient from './httpClient';
 import {useToken} from './token';
 
-export function useCardClient() {
+function useCardClient() {
   const {token} = useToken();
 
   const cardClient = useMemo(() => {
