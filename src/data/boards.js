@@ -45,3 +45,10 @@ export function useUpdateBoard(board) {
       }),
   });
 }
+
+export function useDeleteBoard(board) {
+  const boardClient = useBoardClient();
+  return useMutation({
+    mutationFn: () => boardClient.delete({id: board.id}),
+  });
+}

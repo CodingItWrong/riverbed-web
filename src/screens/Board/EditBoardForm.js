@@ -1,4 +1,4 @@
-import {useMutation, useQueryClient} from '@tanstack/react-query';
+import {useQueryClient} from '@tanstack/react-query';
 import set from 'lodash.set';
 import {useState} from 'react';
 import {View} from 'react-native';
@@ -6,11 +6,10 @@ import Button from '../../components/Button';
 import Card from '../../components/Card';
 import TextField from '../../components/TextField';
 import sharedStyles, {useColumnStyle} from '../../components/sharedStyles';
-import {useBoardClient, useUpdateBoard} from '../../data/boards';
+import {useDeleteBoard, useUpdateBoard} from '../../data/boards';
 
 export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
   const queryClient = useQueryClient();
-  const boardClient = useBoardClient();
   const [attributes, setAttributes] = useState(board.attributes);
   const [confirmingDelete, setConfirmingDelete] = useState(false);
 
@@ -25,13 +24,14 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
       },
     });
 
-  const {mutate: deleteBoard, isLoading: isDeleting} = useMutation({
-    mutationFn: () => boardClient.delete({id: board.id}),
-    onSuccess: () => {
-      refreshBoards();
-      onDelete();
-    },
-  });
+  const {mutate: deleteBoard, isLoading: isDeleting} = useDeleteBoard(board);
+  const handleDeleteBoard = () =>
+    deleteBoard(null, {
+      onSuccess: () => {
+        refreshBoards();
+        onDelete();
+      },
+    });
 
   function updateAttribute(path, value) {
     setAttributes(oldAttributes => {
@@ -60,7 +60,7 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
         </Button>
         {confirmingDelete ? (
           <Button
-            onPress={deleteBoard}
+            onPress={handleDeleteBoard}
             disabled={isLoading}
             style={sharedStyles.mt}
           >
