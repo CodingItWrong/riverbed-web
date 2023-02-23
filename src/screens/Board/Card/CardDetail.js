@@ -8,7 +8,7 @@ import Card from '../../../components/Card';
 import Field from '../../../components/Field';
 import Text from '../../../components/Text';
 import sharedStyles from '../../../components/sharedStyles';
-import {useCardClient} from '../../../data/cards';
+import {useCardClient, useUpdateCard} from '../../../data/cards';
 import {useBoardElements} from '../../../data/elements';
 import COMMANDS from '../../../enums/commands';
 import ELEMENT_TYPES from '../../../enums/elementTypes';
@@ -51,7 +51,7 @@ export default function CardDetail({card, board, onChange, onCancel, style}) {
           const concreteValue = valueObject.call(
             fieldObject.attributes['data-type'],
           );
-          updateCard({[field]: concreteValue});
+          handleUpdateCard({[field]: concreteValue});
         } else {
           console.error(`unknown value: ${value}`);
           return;
@@ -70,25 +70,23 @@ export default function CardDetail({card, board, onChange, onCancel, style}) {
         }
         const startDate = getStartDate();
         const updatedDate = dateUtils.addDays(startDate, Number(value));
-        updateCard({[field]: dateUtils.objectToServerString(updatedDate)});
+        handleUpdateCard({
+          [field]: dateUtils.objectToServerString(updatedDate),
+        });
         break;
       default:
         console.error(`unknown command: ${command}`);
     }
   }
 
-  const {mutate: updateCard, isLoading: isUpdating} = useMutation({
-    mutationFn: fieldOverrides => {
-      const fieldValuesToUse = {...fieldValues, ...fieldOverrides};
-      const updatedCard = {
-        type: 'cards',
-        id: card.id,
-        attributes: {'field-values': fieldValuesToUse},
-      };
-      return cardClient.update(updatedCard);
-    },
-    onSuccess: onChange,
-  });
+  const {mutate: updateCard, isLoading: isUpdating} = useUpdateCard(card);
+  const handleUpdateCard = fieldOverrides => {
+    const fieldValuesToUse = {...fieldValues, ...fieldOverrides};
+    return updateCard(
+      {'field-values': fieldValuesToUse},
+      {onSuccess: onChange},
+    );
+  };
 
   const {mutate: deleteCard, isLoading: isDeleting} = useMutation({
     mutationFn: () => cardClient.delete({id: card.id}),
@@ -153,7 +151,7 @@ export default function CardDetail({card, board, onChange, onCancel, style}) {
       </Button>
       <Button
         mode="primary"
-        onPress={() => updateCard()}
+        onPress={() => handleUpdateCard()}
         disabled={isLoading}
         style={sharedStyles.mt}
       >

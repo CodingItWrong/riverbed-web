@@ -36,3 +36,15 @@ export function useCreateCard(board) {
       }),
   });
 }
+
+export function useUpdateCard(card) {
+  const cardClient = useCardClient();
+  return useMutation({
+    mutationFn: attributes =>
+      cardClient.update({
+        type: 'cards',
+        id: card.id,
+        attributes,
+      }),
+  });
+}
