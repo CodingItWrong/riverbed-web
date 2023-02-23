@@ -44,3 +44,10 @@ export function useUpdateElement(element) {
       }),
   });
 }
+
+export function useDeleteElement(element) {
+  const elementClient = useElementClient();
+  return useMutation({
+    mutationFn: () => elementClient.delete({id: element.id}),
+  });
+}

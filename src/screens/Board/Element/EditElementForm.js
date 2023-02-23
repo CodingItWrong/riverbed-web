@@ -1,4 +1,3 @@
-import {useMutation} from '@tanstack/react-query';
 import set from 'lodash.set';
 import startCase from 'lodash.startcase';
 import {useState} from 'react';
@@ -14,7 +13,7 @@ import TextField from '../../../components/TextField';
 import sharedStyles from '../../../components/sharedStyles';
 import {
   useBoardElements,
-  useElementClient,
+  useDeleteElement,
   useUpdateElement,
 } from '../../../data/elements';
 import COMMANDS from '../../../enums/commands';
@@ -32,7 +31,6 @@ export default function EditElementForm({
   onCancel,
   style,
 }) {
-  const elementClient = useElementClient();
   const {data: elements = []} = useBoardElements(board);
   const fields = elements.filter(
     e => e.attributes['element-type'] === ELEMENT_TYPES.FIELD.key,
@@ -58,10 +56,9 @@ export default function EditElementForm({
   const handleUpdateElement = () =>
     updateElement(elementAttributes, {onSuccess: onSave});
 
-  const {mutate: deleteElement, isLoading: isDeleting} = useMutation({
-    mutationFn: () => elementClient.delete({id: element.id}),
-    onSuccess: onDelete,
-  });
+  const {mutate: deleteElement, isLoading: isDeleting} =
+    useDeleteElement(element);
+  const handleDeleteElement = () => deleteElement(null, {onSuccess: onDelete});
 
   const isLoading = isSaving || isDeleting;
 
@@ -255,7 +252,7 @@ export default function EditElementForm({
         Cancel
       </Button>
       <Button
-        onPress={deleteElement}
+        onPress={handleDeleteElement}
         disabled={isLoading}
         style={sharedStyles.mt}
       >
