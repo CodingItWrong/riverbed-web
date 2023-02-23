@@ -7,6 +7,7 @@ import LoadingIndicator from '../../components/LoadingIndicator';
 import ScreenBackground from '../../components/ScreenBackground';
 import sharedStyles from '../../components/sharedStyles';
 import {useBoards} from '../../data/boards';
+import {useCards} from '../../data/cards';
 import ColumnList from './Column/ColumnList';
 import EditBoardForm from './EditBoardForm';
 import ElementList from './Element/ElementList';
@@ -16,18 +17,27 @@ export default function Board({route}) {
 
   const navigation = useNavigation();
   const boardClient = useBoards();
-  const {data: board, isLoading} = useQuery(['boards', id], () =>
-    boardClient.find({id}).then(response => response.data),
+  const {data: board, isLoading: isLoadingBoard} = useQuery(
+    ['boards', id],
+    () => boardClient.find({id}).then(response => response.data),
+  );
+
+  const cardClient = useCards();
+  const {isFetching: isFetchingCards} = useQuery(
+    ['cards', board?.id],
+    () => cardClient.related({parent: board}).then(resp => resp.data),
+    {enabled: !!board},
   );
 
   useEffect(() => {
-    if (!isLoading) {
+    if (!isLoadingBoard) {
       navigation.setOptions({
         title: board?.attributes?.name ?? '(unnamed board)',
         headerRight: renderMenu,
+        isFetching: isFetchingCards,
       });
     }
-  }, [navigation, board, renderMenu, isLoading]);
+  }, [navigation, board, renderMenu, isLoadingBoard, isFetchingCards]);
 
   const renderMenu = useCallback(() => {
     function menuItems() {
