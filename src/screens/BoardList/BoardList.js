@@ -12,14 +12,14 @@ import LoadingIndicator from '../../components/LoadingIndicator';
 import ScreenBackground from '../../components/ScreenBackground';
 import Text from '../../components/Text';
 import sharedStyles, {useColumnStyle} from '../../components/sharedStyles';
-import {useBoards} from '../../data/boards';
+import {useBoardClient} from '../../data/boards';
 import {useToken} from '../../data/token';
 
 export default function BoardList() {
   const {clearToken} = useToken();
   const navigation = useNavigation();
   const queryClient = useQueryClient();
-  const boardClient = useBoards();
+  const boardClient = useBoardClient();
 
   useEffect(() => {
     navigation.setOptions({

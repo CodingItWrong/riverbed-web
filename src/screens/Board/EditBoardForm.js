@@ -6,11 +6,11 @@ import Button from '../../components/Button';
 import Card from '../../components/Card';
 import TextField from '../../components/TextField';
 import sharedStyles, {useColumnStyle} from '../../components/sharedStyles';
-import {useBoards} from '../../data/boards';
+import {useBoardClient} from '../../data/boards';
 
 export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
   const queryClient = useQueryClient();
-  const boardClient = useBoards();
+  const boardClient = useBoardClient();
   const [attributes, setAttributes] = useState(board.attributes);
   const [confirmingDelete, setConfirmingDelete] = useState(false);
 

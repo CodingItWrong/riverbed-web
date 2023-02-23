@@ -3,7 +3,7 @@ import {useMemo} from 'react';
 import httpClient from './httpClient';
 import {useToken} from './token';
 
-export function useBoards() {
+export function useBoardClient() {
   const {token} = useToken();
 
   const boardClient = useMemo(() => {
