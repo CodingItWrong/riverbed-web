@@ -1,4 +1,3 @@
-import {useQuery} from '@tanstack/react-query';
 import get from 'lodash.get';
 import sortBy from 'lodash.sortby';
 import {StyleSheet, View} from 'react-native';

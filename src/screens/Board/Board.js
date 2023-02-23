@@ -1,5 +1,4 @@
 import {useNavigation} from '@react-navigation/native';
-import {useQuery} from '@tanstack/react-query';
 import {useCallback, useEffect, useState} from 'react';
 import DropdownMenu from '../../components/DropdownMenu';
 import IconButton from '../../components/IconButton';
