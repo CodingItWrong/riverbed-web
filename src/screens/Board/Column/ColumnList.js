@@ -6,7 +6,7 @@ import Button from '../../../components/Button';
 import LoadingIndicator from '../../../components/LoadingIndicator';
 import sharedStyles, {useColumnStyle} from '../../../components/sharedStyles';
 import {useCards, useCreateCard} from '../../../data/cards';
-import {useColumns} from '../../../data/columns';
+import {useColumnClient} from '../../../data/columns';
 import {useBoardElements} from '../../../data/elements';
 import ELEMENT_TYPES from '../../../enums/elementTypes';
 import VALUES from '../../../enums/values';
@@ -16,7 +16,7 @@ import EditColumnForm from './EditColumnForm';
 
 export default function ColumnList({board}) {
   const queryClient = useQueryClient();
-  const columnClient = useColumns();
+  const columnClient = useColumnClient();
 
   const [selectedCardId, setSelectedCardId] = useState(null);
   const [selectedColumnId, setSelectedColumnId] = useState(null);

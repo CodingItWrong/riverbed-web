@@ -3,7 +3,7 @@ import {useMemo} from 'react';
 import httpClient from './httpClient';
 import {useToken} from './token';
 
-export function useColumns() {
+export function useColumnClient() {
   const {token} = useToken();
 
   const columnClient = useMemo(() => {

@@ -12,7 +12,7 @@ import IconButton from '../../../components/IconButton';
 import NumberField from '../../../components/NumberField';
 import TextField from '../../../components/TextField';
 import sharedStyles from '../../../components/sharedStyles';
-import {useColumns} from '../../../data/columns';
+import {useColumnClient} from '../../../data/columns';
 import {useBoardElements} from '../../../data/elements';
 import ELEMENT_TYPES from '../../../enums/elementTypes';
 import QUERIES from '../../../enums/queries';
@@ -27,7 +27,7 @@ export default function EditColumnForm({
   style,
 }) {
   const insets = useSafeAreaInsets();
-  const columnClient = useColumns();
+  const columnClient = useColumnClient();
   const [attributes, setAttributes] = useState(column.attributes);
 
   const {data: elements = []} = useBoardElements(board);
