@@ -918,6 +918,7 @@ describe('edit elements', () => {
       cy.wait('@updateField')
         .its('request.body')
         .should('deep.equal', {data: updatedDateField});
+      cy.contains('Save Element').should('not.exist');
     });
 
     const updatedDateTimeField = Factory.field(
