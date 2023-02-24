@@ -10,6 +10,7 @@
     "cypress": "cypress open",
     "cypress:run": "cypress run",
     "lint": "eslint src cypress/e2e",
+    "lint:ci": "eslint src cypress/e2e --max-warnings=0",
     "build:web": "expo export:web && cp _redirects web-build",
     "deploy:web": "npm run build:web && netlify deploy --prod"
   },
