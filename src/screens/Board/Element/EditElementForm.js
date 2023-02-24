@@ -260,7 +260,7 @@ export default function EditElementForm({
         disabled={isLoading}
         style={sharedStyles.mt}
       >
-        Delete Element
+        Delete {startCase(elementType)}
       </Button>
       <Button
         mode="primary"
@@ -268,7 +268,7 @@ export default function EditElementForm({
         disabled={isLoading}
         style={sharedStyles.mt}
       >
-        Save Element
+        Save {startCase(elementType)}
       </Button>
     </Card>
   );
