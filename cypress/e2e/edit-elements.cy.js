@@ -30,11 +30,11 @@ describe('edit elements', () => {
   const greetingCard = Factory.card({[greetingField.id]: greetingText});
 
   beforeEach(() => {
-    cy.intercept('http://cypressapi/boards?', {data: [board]});
+    cy.intercept('GET', 'http://cypressapi/boards?', {data: [board]});
     cy.intercept('GET', `http://cypressapi/boards/${board.id}?`, {
       data: board,
     });
-    cy.intercept(`http://cypressapi/boards/${board.id}/columns?`, {
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/columns?`, {
       data: [allColumn],
     });
   });
@@ -58,10 +58,10 @@ describe('edit elements', () => {
       newField,
     );
 
-    cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
       data: [],
     });
-    cy.intercept(`http://cypressapi/boards/${board.id}/cards?`, {
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
       data: [],
     });
 
@@ -74,7 +74,7 @@ describe('edit elements', () => {
       cy.intercept('POST', 'http://cypressapi/elements?', {
         data: newField,
       }).as('addField');
-      cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+      cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
         data: [newField],
       });
 
@@ -92,7 +92,7 @@ describe('edit elements', () => {
       cy.intercept('PATCH', `http://cypressapi/elements/${newField.id}?`, {
         success: true,
       }).as('updateField');
-      cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+      cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
         data: [localGreetingField],
       });
       cy.contains('Save Element').click();
@@ -108,7 +108,7 @@ describe('edit elements', () => {
       cy.intercept('POST', 'http://cypressapi/cards?', {
         data: newCard,
       });
-      cy.intercept(`http://cypressapi/boards/${board.id}/cards?`, {
+      cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
         data: [newCard],
       });
       cy.contains('Add Card').click();
@@ -119,7 +119,7 @@ describe('edit elements', () => {
       cy.intercept('PATCH', `http://cypressapi/cards/${newCard.id}?`, {
         success: true,
       }).as('updateField');
-      cy.intercept(`http://cypressapi/boards/${board.id}/cards?`, {
+      cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
         data: [Factory.card({[localGreetingField.id]: greeting})],
       });
       cy.contains('Save').click();
@@ -129,10 +129,10 @@ describe('edit elements', () => {
   });
 
   it('allows updating fields', () => {
-    cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
       data: [greetingField],
     });
-    cy.intercept(`http://cypressapi/boards/${board.id}/cards?`, {
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
       data: [],
     });
 
@@ -162,7 +162,7 @@ describe('edit elements', () => {
       {name: updatedFieldName},
       greetingField,
     );
-    cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
       data: [updatedGreetingField],
     });
     cy.contains('Save Element').click();
@@ -172,10 +172,10 @@ describe('edit elements', () => {
   });
 
   it('allows deleting fields', () => {
-    cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
       data: [greetingField],
     });
-    cy.intercept(`http://cypressapi/boards/${board.id}/cards?`, {
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
       data: [],
     });
 
@@ -190,7 +190,7 @@ describe('edit elements', () => {
     cy.intercept('DELETE', `http://cypressapi/elements/${greetingField.id}`, {
       success: true,
     }).as('deleteField');
-    cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
       data: [],
     });
     cy.contains('Delete Element').click();
@@ -219,10 +219,10 @@ describe('edit elements', () => {
       newField,
     );
 
-    cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
       data: [],
     });
-    cy.intercept(`http://cypressapi/boards/${board.id}/cards?`, {
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
       data: [card],
     });
 
@@ -235,7 +235,7 @@ describe('edit elements', () => {
       cy.intercept('POST', 'http://cypressapi/elements?', {
         data: newField,
       }).as('addField');
-      cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+      cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
         data: [newField],
       });
 
@@ -264,7 +264,7 @@ describe('edit elements', () => {
       cy.intercept('PATCH', `http://cypressapi/elements/${newField.id}?`, {
         success: true,
       }).as('updateField');
-      cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+      cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
         data: [choiceField],
       });
       cy.contains('Save Element').click();
@@ -290,7 +290,7 @@ describe('edit elements', () => {
       cy.intercept('PATCH', `http://cypressapi/cards/${card.id}?`, {
         success: true,
       }).as('updateCard');
-      cy.intercept(`http://cypressapi/boards/${board.id}/cards?`, {
+      cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
         data: [updatedCard],
       });
       cy.contains('Save').click();
@@ -330,10 +330,10 @@ describe('edit elements', () => {
       newButton,
     );
 
-    cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
       data: [greetingField],
     });
-    cy.intercept(`http://cypressapi/boards/${board.id}/cards?`, {
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
       data: [greetingCard],
     });
 
@@ -346,7 +346,7 @@ describe('edit elements', () => {
       cy.intercept('POST', 'http://cypressapi/elements?', {
         data: newButton,
       }).as('addButton');
-      cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+      cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
         data: [greetingField, newButton],
       });
 
@@ -384,7 +384,7 @@ describe('edit elements', () => {
       cy.intercept('PATCH', `http://cypressapi/elements/${newButton.id}?`, {
         success: true,
       }).as('updateField');
-      cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+      cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
         data: [greetingField, greetButton],
       });
       cy.contains('Save Element').click();
@@ -405,7 +405,7 @@ describe('edit elements', () => {
       cy.intercept('PATCH', `http://cypressapi/cards/${greetingCard.id}?`, {
         success: true,
       }).as('updateCard');
-      cy.intercept(`http://cypressapi/boards/${board.id}/cards?`, {
+      cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
         data: [quietedCard],
       });
       cy.contains(buttonName).click();
@@ -436,10 +436,10 @@ describe('edit elements', () => {
       },
     });
 
-    cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
       data: [greetingField, greetButton],
     });
-    cy.intercept(`http://cypressapi/boards/${board.id}/cards?`, {
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
       data: [greetingCard],
     });
 
@@ -463,7 +463,7 @@ describe('edit elements', () => {
       cy.intercept('PATCH', `http://cypressapi/elements/${greetButton.id}?`, {
         success: true,
       }).as('updateField');
-      cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+      cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
         data: [greetingField, renamedButton],
       });
 
@@ -499,10 +499,10 @@ describe('edit elements', () => {
       },
     });
 
-    cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
       data: [greetingField, greetButton],
     });
-    cy.intercept(`http://cypressapi/boards/${board.id}/cards?`, {
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
       data: [greetingCard],
     });
 
@@ -514,7 +514,7 @@ describe('edit elements', () => {
     cy.step('DELETE BUTTON', () => {
       cy.get(`[aria-label="Edit ${buttonName} button"]`).click();
 
-      cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+      cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
         data: [greetingField],
       });
       cy.intercept('DELETE', `http://cypressapi/elements/${greetButton.id}`, {
@@ -553,10 +553,10 @@ describe('edit elements', () => {
     // far future because Add Days prefers current date when it's later
     const card = Factory.card({[greetedAtField.id]: '2999-01-01'});
 
-    cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
       data: [greetedAtField],
     });
-    cy.intercept(`http://cypressapi/boards/${board.id}/cards?`, {
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
       data: [card],
     });
 
@@ -569,7 +569,7 @@ describe('edit elements', () => {
       cy.intercept('POST', 'http://cypressapi/elements?', {
         data: newButton,
       }).as('addButton');
-      cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+      cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
         data: [greetedAtField, newButton],
       });
 
@@ -599,7 +599,7 @@ describe('edit elements', () => {
       cy.intercept('PATCH', `http://cypressapi/elements/${newButton.id}?`, {
         success: true,
       }).as('updateField');
-      cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+      cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
         data: [greetedAtField, deferButton],
       });
       cy.contains('Save Element').click();
@@ -620,7 +620,7 @@ describe('edit elements', () => {
       cy.intercept('PATCH', `http://cypressapi/cards/${card.id}?`, {
         success: true,
       }).as('updateCard');
-      cy.intercept(`http://cypressapi/boards/${board.id}/cards?`, {
+      cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
         data: [deferredCard],
       });
       cy.contains(buttonName).click();
@@ -646,10 +646,10 @@ describe('edit elements', () => {
     const menuName = 'Update Status';
     const completeItemName = 'Complete';
     const uncompleteItemName = 'Uncomplete';
-    cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
       data: [completedAtField],
     });
-    cy.intercept(`http://cypressapi/boards/${board.id}/cards?`, {
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
       data: [card],
     });
 
@@ -662,7 +662,7 @@ describe('edit elements', () => {
       cy.intercept('POST', 'http://cypressapi/elements?', {
         data: newButtonMenu,
       }).as('addButtonMenu');
-      cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+      cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
         data: [completedAtField, newButtonMenu],
       });
 
@@ -738,7 +738,7 @@ describe('edit elements', () => {
       cy.intercept('PATCH', `http://cypressapi/elements/${newButtonMenu.id}?`, {
         success: true,
       }).as('updateMenu');
-      cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+      cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
         data: [completedAtField, updatedMenu],
       });
       cy.contains('Save Element').click();
@@ -756,7 +756,7 @@ describe('edit elements', () => {
       cy.intercept('PATCH', `http://cypressapi/cards/${card.id}?`, {
         success: true,
       }).as('updateCard');
-      cy.intercept(`http://cypressapi/boards/${board.id}/cards?`, {
+      cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
         data: [uncompletedCard],
       });
       cy.contains(menuName).paperSelect(uncompleteItemName);
@@ -793,10 +793,10 @@ describe('edit elements', () => {
       [fieldB.id]: 'Value B',
     });
 
-    cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
       data: [fieldA, fieldB],
     });
-    cy.intercept(`http://cypressapi/boards/${board.id}/cards?`, {
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
       data: [card],
     });
 
@@ -831,7 +831,7 @@ describe('edit elements', () => {
     cy.intercept('PATCH', `http://cypressapi/elements/${fieldA.id}?`, {
       success: true,
     }).as('updateFieldA');
-    cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
       data: [orderedFieldA, fieldB],
     });
     cy.contains('Save Element').click();
@@ -846,7 +846,7 @@ describe('edit elements', () => {
     cy.intercept('PATCH', `http://cypressapi/elements/${fieldB.id}?`, {
       success: true,
     }).as('updateFieldB');
-    cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
       data: [orderedFieldA, orderedFieldB],
     });
     cy.contains('Save Element').click();
@@ -886,10 +886,10 @@ describe('edit elements', () => {
       name: 'Date and Time',
       'data-type': FIELD_DATA_TYPES.DATETIME.key,
     });
-    cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
       data: [dateField, dateTimeField],
     });
-    cy.intercept(`http://cypressapi/boards/${board.id}/cards?`, {
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
       data: [],
     });
 
@@ -911,7 +911,7 @@ describe('edit elements', () => {
       cy.intercept('PATCH', `http://cypressapi/elements/${dateField.id}?`, {
         success: true,
       }).as('updateField');
-      cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+      cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
         data: [updatedDateField, dateTimeField],
       });
       cy.contains('Save Element').click();
@@ -932,7 +932,7 @@ describe('edit elements', () => {
       cy.intercept('PATCH', `http://cypressapi/elements/${dateTimeField.id}?`, {
         success: true,
       }).as('updateField');
-      cy.intercept(`http://cypressapi/boards/${board.id}/elements?`, {
+      cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
         data: [updatedDateField, updatedDateTimeField],
       }).as('elementList');
       cy.contains('Save Element').click();
