@@ -65,11 +65,13 @@ export default function Column({
     columnCards = filteredCards;
   }
 
-  let {cardGroups, groupFieldDataType, applyGrouping} = groupCards(
-    columnCards,
-    cardGrouping,
-    elements,
-  );
+  let {cardGroups} = groupCards(columnCards, cardGrouping);
+
+  const applyGrouping = cardGrouping?.field && cardGrouping?.direction;
+
+  const groupFieldDataType =
+    applyGrouping &&
+    elements.find(e => e.id === cardGrouping.field).attributes['data-type'];
 
   return (
     <View
@@ -89,7 +91,7 @@ export default function Column({
       </View>
       <KeyboardAwareSectionList
         extraScrollHeight={EXPERIMENTAL_EXTRA_SCROLL_HEIGHT}
-        sections={columnCards.length ? cardGroups : []}
+        sections={cardGroups}
         keyExtractor={card => card.id}
         contentContainerStyle={[
           sharedStyles.columnPadding,

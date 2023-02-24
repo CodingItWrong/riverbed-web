@@ -1,10 +1,10 @@
-export function groupCards(columnCards, cardGrouping, elements) {
+import sortBy from 'lodash.sortby';
+import SORT_DIRECTIONS from '../enums/sortDirections';
+
+export function groupCards(columnCards, cardGrouping) {
   let cardGroups = [];
 
   const applyGrouping = cardGrouping?.field && cardGrouping?.direction;
-  const groupFieldDataType =
-    applyGrouping &&
-    elements.find(e => e.id === cardGrouping.field).attributes['data-type'];
   if (applyGrouping) {
     cardGroups = [];
     columnCards.forEach(card => {
@@ -21,8 +21,11 @@ export function groupCards(columnCards, cardGrouping, elements) {
       cardGroups.reverse();
     }
   } else {
+    // this is to cover the case where there are no groups, but there are some cards
     cardGroups = [{value: null, data: columnCards}];
   }
 
-  return {cardGroups, groupFieldDataType, applyGrouping};
+  cardGroups = columnCards.length ? cardGroups : [];
+
+  return {cardGroups, applyGrouping};
 }
