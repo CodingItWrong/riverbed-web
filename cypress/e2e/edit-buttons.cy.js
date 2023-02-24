@@ -120,7 +120,7 @@ describe('edit buttons', () => {
       cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
         data: [greetingField, greetButton],
       });
-      cy.contains('Save Element').click();
+      cy.contains('Save Button').click();
       cy.wait('@updateField')
         .its('request.body')
         .should('deep.equal', {data: greetButton});
@@ -200,7 +200,7 @@ describe('edit buttons', () => {
         data: [greetingField, renamedButton],
       });
 
-      cy.contains('Save Element').click();
+      cy.contains('Save Button').click();
       cy.wait('@updateField')
         .its('request.body')
         .should('deep.equal', {data: renamedButton});
@@ -253,7 +253,7 @@ describe('edit buttons', () => {
       cy.intercept('DELETE', `http://cypressapi/elements/${greetButton.id}`, {
         success: true,
       }).as('deleteButton');
-      cy.contains('Delete Element').click();
+      cy.contains('Delete Button').click();
       cy.wait('@deleteButton');
     });
 
@@ -335,7 +335,7 @@ describe('edit buttons', () => {
       cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
         data: [greetedAtField, deferButton],
       });
-      cy.contains('Save Element').click();
+      cy.contains('Save Button').click();
       cy.wait('@updateField')
         .its('request.body')
         .should('deep.equal', {data: deferButton});
@@ -474,7 +474,7 @@ describe('edit buttons', () => {
       cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
         data: [completedAtField, updatedMenu],
       });
-      cy.contains('Save Element').click();
+      cy.contains('Save Button').click();
       cy.wait('@updateMenu')
         .its('request.body')
         .should('deep.equal', {data: updatedMenu});

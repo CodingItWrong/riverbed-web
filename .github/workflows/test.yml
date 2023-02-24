@@ -31,7 +31,7 @@ jobs:
       #   run: yarn test --watchAll=false
 
       - name: ESLint
-        run: yarn lint
+        run: yarn lint:ci
 
       - name: Install Sharp CLI
         run: yarn global add sharp-cli@^2.1.0

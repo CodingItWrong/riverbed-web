@@ -1,7 +1,5 @@
-import COMMANDS from '../../src/enums/commands';
 import ELEMENT_TYPES from '../../src/enums/elementTypes';
 import FIELD_DATA_TYPES from '../../src/enums/fieldDataTypes';
-import QUERIES from '../../src/enums/queries';
 import VALUES from '../../src/enums/values';
 import Factory from '../support/Factory';
 
@@ -19,15 +17,6 @@ describe('edit fields', () => {
     'data-type': FIELD_DATA_TYPES.TEXT.key,
     'show-in-summary': true,
   });
-
-  const greetedAtField = Factory.field({
-    name: 'Greeted At',
-    'data-type': FIELD_DATA_TYPES.DATE.key,
-    'show-in-summary': true,
-  });
-
-  const greetingText = 'Hello, world!';
-  const greetingCard = Factory.card({[greetingField.id]: greetingText});
 
   beforeEach(() => {
     cy.intercept('GET', 'http://cypressapi/boards?', {data: [board]});
@@ -95,7 +84,7 @@ describe('edit fields', () => {
       cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
         data: [localGreetingField],
       });
-      cy.contains('Save Element').click();
+      cy.contains('Save Field').click();
       cy.wait('@updateField')
         .its('request.body')
         .should('deep.equal', {data: localGreetingField});
@@ -165,9 +154,9 @@ describe('edit fields', () => {
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
       data: [updatedGreetingField],
     });
-    cy.contains('Save Element').click();
+    cy.contains('Save Field').click();
     cy.wait('@updateField');
-    cy.contains('Save Element').should('not.exist');
+    cy.contains('Save Field').should('not.exist');
     cy.contains(updatedFieldName);
   });
 
@@ -193,7 +182,7 @@ describe('edit fields', () => {
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
       data: [],
     });
-    cy.contains('Delete Element').click();
+    cy.contains('Delete Field').click();
     cy.wait('@deleteField');
     cy.contains(greetingFieldName).should('not.exist');
   });
@@ -267,7 +256,7 @@ describe('edit fields', () => {
       cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
         data: [choiceField],
       });
-      cy.contains('Save Element').click();
+      cy.contains('Save Field').click();
       cy.wait('@updateField')
         .its('request.body.data.attributes.options.choices')
         .then(choices => {
@@ -368,11 +357,11 @@ describe('edit fields', () => {
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
       data: [orderedFieldA, fieldB],
     });
-    cy.contains('Save Element').click();
+    cy.contains('Save Field').click();
     cy.wait('@updateFieldA')
       .its('request.body')
       .should('deep.equal', {data: orderedFieldA});
-    cy.contains('Save Element').should('not.exist');
+    cy.contains('Save Field').should('not.exist');
 
     cy.get('[aria-label="Edit Field B field"]').click();
     cy.get('[data-testid="number-input-order"]').type(1);
@@ -383,11 +372,11 @@ describe('edit fields', () => {
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
       data: [orderedFieldA, orderedFieldB],
     });
-    cy.contains('Save Element').click();
+    cy.contains('Save Field').click();
     cy.wait('@updateFieldB')
       .its('request.body')
       .should('deep.equal', {data: orderedFieldB});
-    cy.contains('Save Element').should('not.exist');
+    cy.contains('Save Field').should('not.exist');
 
     // confirm new field order in Edit Elements form
     cy.assertTestIdOrder('[data-testid^="element-"]', [
@@ -448,11 +437,11 @@ describe('edit fields', () => {
       cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
         data: [updatedDateField, dateTimeField],
       });
-      cy.contains('Save Element').click();
+      cy.contains('Save Field').click();
       cy.wait('@updateField')
         .its('request.body')
         .should('deep.equal', {data: updatedDateField});
-      cy.contains('Save Element').should('not.exist');
+      cy.contains('Save Field').should('not.exist');
     });
 
     const updatedDateTimeField = Factory.field(
@@ -469,7 +458,7 @@ describe('edit fields', () => {
       cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
         data: [updatedDateField, updatedDateTimeField],
       }).as('elementList');
-      cy.contains('Save Element').click();
+      cy.contains('Save Field').click();
       cy.wait('@updateField')
         .its('request.body')
         .should('deep.equal', {data: updatedDateTimeField});
