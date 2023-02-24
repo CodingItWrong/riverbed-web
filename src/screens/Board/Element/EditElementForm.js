@@ -5,6 +5,7 @@ import {View} from 'react-native';
 import Button from '../../../components/Button';
 import Card from '../../../components/Card';
 import DropdownField from '../../../components/DropdownField';
+import ErrorMessage from '../../../components/ErrorMessage';
 import FormGroup from '../../../components/FormGroup';
 import IconButton from '../../../components/IconButton';
 import LabeledCheckbox from '../../../components/LabeledCheckbox';
@@ -51,17 +52,19 @@ export default function EditElementForm({
   const dataTypeOptions = Object.values(FIELD_DATA_TYPES);
   const valueOptions = Object.values(VALUES);
 
-  const {mutate: updateElement, isLoading: isSaving} = useUpdateElement(
-    element,
-    board,
-  );
+  const {
+    mutate: updateElement,
+    isLoading: isSaving,
+    isError: isUpdateError,
+  } = useUpdateElement(element, board);
   const handleUpdateElement = () =>
     updateElement(elementAttributes, {onSuccess: onSave});
 
-  const {mutate: deleteElement, isLoading: isDeleting} = useDeleteElement(
-    element,
-    board,
-  );
+  const {
+    mutate: deleteElement,
+    isLoading: isDeleting,
+    isError: isDeleteError,
+  } = useDeleteElement(element, board);
   const handleDeleteElement = () => deleteElement(null, {onSuccess: onDelete});
 
   const isLoading = isSaving || isDeleting;
@@ -90,6 +93,14 @@ export default function EditElementForm({
     const newChoices = [...(elementAttributes.options?.choices ?? [])];
     newChoices.splice(index, 1);
     updateAttribute('options.choices', newChoices);
+  }
+
+  function getErrorMessage() {
+    if (isUpdateError) {
+      return `An error occurred while saving the ${elementType}`;
+    } else if (isDeleteError) {
+      return `An error occurred while deleting the ${elementType}`;
+    }
   }
 
   return (
@@ -252,6 +263,7 @@ export default function EditElementForm({
         updateAttribute={updateAttribute}
         fields={fields}
       />
+      <ErrorMessage>{getErrorMessage()}</ErrorMessage>
       <Button onPress={onCancel} disabled={isLoading} style={sharedStyles.mt}>
         Cancel
       </Button>
