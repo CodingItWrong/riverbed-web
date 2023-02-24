@@ -4,6 +4,7 @@ import Button from '../../../components/Button';
 import ButtonElement from '../../../components/ButtonElement';
 import ButtonMenuElement from '../../../components/ButtonMenuElement';
 import Card from '../../../components/Card';
+import ErrorMessage from '../../../components/ErrorMessage';
 import Field from '../../../components/Field';
 import Text from '../../../components/Text';
 import sharedStyles from '../../../components/sharedStyles';
@@ -77,10 +78,11 @@ export default function CardDetail({card, board, onChange, onCancel, style}) {
     }
   }
 
-  const {mutate: updateCard, isLoading: isUpdating} = useUpdateCard(
-    card,
-    board,
-  );
+  const {
+    mutate: updateCard,
+    isLoading: isUpdating,
+    isError: isUpdateError,
+  } = useUpdateCard(card, board);
   const handleUpdateCard = fieldOverrides => {
     const fieldValuesToUse = {...fieldValues, ...fieldOverrides};
     return updateCard(
@@ -89,13 +91,22 @@ export default function CardDetail({card, board, onChange, onCancel, style}) {
     );
   };
 
-  const {mutate: deleteCard, isLoading: isDeleting} = useDeleteCard(
-    card,
-    board,
-  );
+  const {
+    mutate: deleteCard,
+    isLoading: isDeleting,
+    isError: isDeleteError,
+  } = useDeleteCard(card, board);
   const handleDeleteCard = () => deleteCard(null, {onSuccess: onChange});
 
   const isLoading = isUpdating || isDeleting;
+
+  function getErrorMessage() {
+    if (isUpdateError) {
+      return 'An error occurred while saving the card';
+    } else if (isDeleteError) {
+      return 'An error occurred while deleting the card';
+    }
+  }
 
   return (
     <Card key={card.id} style={style}>
@@ -145,6 +156,7 @@ export default function CardDetail({card, board, onChange, onCancel, style}) {
             );
         }
       })}
+      <ErrorMessage>{getErrorMessage()}</ErrorMessage>
       <Button onPress={onCancel} disabled={isLoading} style={sharedStyles.mt}>
         Cancel
       </Button>

@@ -5,6 +5,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Button from '../../../components/Button';
 import Card from '../../../components/Card';
 import DropdownField from '../../../components/DropdownField';
+import ErrorMessage from '../../../components/ErrorMessage';
 import Field from '../../../components/Field';
 import FormGroup from '../../../components/FormGroup';
 import IconButton from '../../../components/IconButton';
@@ -41,20 +42,30 @@ export default function EditColumnForm({
     });
   }
 
-  const {mutate: updateColumn, isLoading: isSaving} = useUpdateColumn(
-    column,
-    board,
-  );
+  const {
+    mutate: updateColumn,
+    isLoading: isSaving,
+    isError: isUpdateError,
+  } = useUpdateColumn(column, board);
   const handleUpdateColumn = () =>
     updateColumn(attributes, {onSuccess: onChange});
 
-  const {mutate: deleteColumn, isLoading: isDeleting} = useDeleteColumn(
-    column,
-    board,
-  );
+  const {
+    mutate: deleteColumn,
+    isLoading: isDeleting,
+    isError: isDeleteError,
+  } = useDeleteColumn(column, board);
   const handleDeleteColumn = () => deleteColumn(null, {onSuccess: onChange});
 
   const isLoading = isSaving || isDeleting;
+
+  function getErrorMessage() {
+    if (isUpdateError) {
+      return 'An error occurred while saving the column';
+    } else if (isDeleteError) {
+      return 'An error occurred while deleting the column';
+    }
+  }
 
   return (
     <ScrollView
@@ -111,6 +122,7 @@ export default function EditColumnForm({
           attributes={attributes}
           updateAttribute={updateAttribute}
         />
+        <ErrorMessage>{getErrorMessage()}</ErrorMessage>
         <Button onPress={onCancel} disabled={isLoading} style={sharedStyles.mt}>
           Cancel
         </Button>
