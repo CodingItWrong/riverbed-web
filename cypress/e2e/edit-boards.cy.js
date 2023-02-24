@@ -7,6 +7,9 @@ describe('edit boards', () => {
     cy.intercept('GET', 'http://cypressapi/boards?', {
       data: [],
     });
+    cy.intercept('GET', 'http://cypressapi/boards/1/cards?', {data: []});
+    cy.intercept('GET', 'http://cypressapi/boards/1/columns?', {data: []});
+    cy.intercept('GET', 'http://cypressapi/boards/1/elements?', {data: []});
 
     cy.signIn();
 
