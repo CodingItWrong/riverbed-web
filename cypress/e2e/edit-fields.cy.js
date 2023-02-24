@@ -1,7 +1,5 @@
-import COMMANDS from '../../src/enums/commands';
 import ELEMENT_TYPES from '../../src/enums/elementTypes';
 import FIELD_DATA_TYPES from '../../src/enums/fieldDataTypes';
-import QUERIES from '../../src/enums/queries';
 import VALUES from '../../src/enums/values';
 import Factory from '../support/Factory';
 
@@ -19,15 +17,6 @@ describe('edit fields', () => {
     'data-type': FIELD_DATA_TYPES.TEXT.key,
     'show-in-summary': true,
   });
-
-  const greetedAtField = Factory.field({
-    name: 'Greeted At',
-    'data-type': FIELD_DATA_TYPES.DATE.key,
-    'show-in-summary': true,
-  });
-
-  const greetingText = 'Hello, world!';
-  const greetingCard = Factory.card({[greetingField.id]: greetingText});
 
   beforeEach(() => {
     cy.intercept('GET', 'http://cypressapi/boards?', {data: [board]});
