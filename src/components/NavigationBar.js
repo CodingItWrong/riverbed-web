@@ -2,6 +2,8 @@ import {Appbar} from 'react-native-paper';
 import LoadingIndicator from './LoadingIndicator';
 
 export default function NavigationBar({navigation, options, back}) {
+  const {title, onTitlePress, headerRight, isFetching} = options;
+
   return (
     <Appbar.Header elevated>
       {back && (
@@ -10,9 +12,13 @@ export default function NavigationBar({navigation, options, back}) {
           accessibilityLabel="Go back"
         />
       )}
-      <Appbar.Content title={options.title} />
-      {options.isFetching && <LoadingIndicator />}
-      {options.headerRight?.()}
+      <Appbar.Content
+        title={title}
+        testID="navigation-bar-title"
+        onPress={onTitlePress}
+      />
+      {isFetching && <LoadingIndicator />}
+      {headerRight?.()}
     </Appbar.Header>
   );
 }

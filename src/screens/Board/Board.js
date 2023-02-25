@@ -19,10 +19,15 @@ export default function Board({route}) {
 
   const {isFetching: isFetchingCards} = useCards(board);
 
+  // TODO: make these an enum
+  const [editingBoard, setEditingBoard] = useState(false);
+  const [editingElements, setEditingElements] = useState(false);
+
   useEffect(() => {
     if (!isLoadingBoard) {
       navigation.setOptions({
         title: board?.attributes?.name ?? '(unnamed board)',
+        onTitlePress: () => setEditingBoard(true),
         headerRight: renderMenu,
         isFetching: isFetchingCards,
       });
@@ -35,7 +40,6 @@ export default function Board({route}) {
         return [];
       } else {
         return [
-          {title: 'Edit Board', onPress: () => setEditingBoard(true)},
           {title: 'Edit Elements', onPress: () => setEditingElements(true)},
         ];
       }
@@ -54,10 +58,6 @@ export default function Board({route}) {
       />
     );
   }, [editingBoard, editingElements]);
-
-  // TODO: make these an enum
-  const [editingBoard, setEditingBoard] = useState(false);
-  const [editingElements, setEditingElements] = useState(false);
 
   function renderContents() {
     if (editingBoard) {

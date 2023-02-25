@@ -31,8 +31,9 @@ describe('edit boards', () => {
 
     cy.log('EDIT BOARD');
 
-    cy.get('[aria-label="Board Menu"]').click();
-    cy.contains('Edit Board').click({force: true});
+    cy.get('[aria-label="Loading"]').should('exist');
+    cy.get('[aria-label="Loading"]').should('not.exist');
+    cy.get('[data-testid=navigation-bar-title]').eq(1).click({force: true});
 
     const boardName = 'Video Games';
     cy.get('[data-testid="text-input-board-name"]').type(boardName);
@@ -63,7 +64,7 @@ describe('edit boards', () => {
 
     cy.contains(boardName).click();
 
-    cy.get('[aria-label="Board Menu"]').paperSelect('Edit Board');
+    cy.get('[data-testid=navigation-bar-title]').eq(1).click({force: true});
 
     cy.contains('Delete Board').click();
 
