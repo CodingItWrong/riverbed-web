@@ -34,9 +34,7 @@ describe('login', () => {
 
     cy.contains('My Boards');
 
-    cy.get('[aria-label="Menu"]').click();
-
-    cy.contains('Sign Out').click({force: true});
+    cy.get('[aria-label="Sign Out"]').click();
 
     cy.contains('My Boards').should('not.exist');
     cy.contains('Sign in').should('exist');

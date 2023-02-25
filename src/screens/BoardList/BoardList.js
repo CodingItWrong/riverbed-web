@@ -26,15 +26,10 @@ export default function BoardList() {
 
   const renderMenu = useCallback(
     () => (
-      <DropdownMenu
-        menuItems={[{title: 'Sign Out', onPress: clearToken}]}
-        menuButton={props => (
-          <IconButton
-            icon="dots-vertical"
-            accessibilityLabel="Menu"
-            {...props}
-          />
-        )}
+      <IconButton
+        icon="logout"
+        accessibilityLabel="Sign Out"
+        onPress={clearToken}
       />
     ),
     [clearToken],
