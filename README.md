@@ -23,19 +23,32 @@ Dependencies are locked with `yarn.lock`; please use `yarn` rather than `npm` fo
 
 - Run `yarn web` (starts both Metro and Webpack)
 
-## Building Dev/Preview Clients
+## Development
+
+Expo Go is currently working for iOS Simulator and Android Emulator, due to using `runtimeVersion.policy = 'sdkVersion'` in `app.json`.
+
+If you need a custom dev client:
 
 <https://docs.expo.dev/development/create-development-builds/#on-emulatorsimulator>
 
 - Android dev client: `eas build --profile development --platform android`
 - iOS simulator dev client: `eas build --profile development-simulator --platform ios`
-- iOS preview app: `eas build --profile preview --platform ios`
 
-## Publishing JS Updates
+After this, run `yarn start` then press `a` or `i` to launch the app in the simulator/emulator.
 
-- Web and Mobile: `bin/deploy`
+## Preview Client
+
+The preview client requires an Apple Developer Account on the device.
+
+You can install past preview client builds from https://expo.dev
+
+To build a new preview client: `eas build --profile preview --platform ios`
+
+The preview client loads the latest published `preview` build. This can be published with `bin/deploy`
 
 ## Submitting to TestFlight
+
+TestFlight builds can be used by any device added as internal testers.
 
 - `eas build --profile production --platform ios`
 - `eas submit --platform ios`
