@@ -23,12 +23,17 @@ Dependencies are locked with `yarn.lock`; please use `yarn` rather than `npm` fo
 
 - Run `yarn start`
 
-## Building Dev Client
+## Building Clients
 
 <https://docs.expo.dev/development/create-development-builds/#on-emulatorsimulator>
 
-- Android: `eas build --profile development --platform android`
-- iOS: `eas build --profile development-simulator --platform ios`
+- Android dev client: `eas build --profile development --platform android`
+- iOS simulator dev client: `eas build --profile development-simulator --platform ios`
+- iOS preview app: `eas build --profile preview --platform ios`
+
+## Publishing JS Updates
+
+- Web and Mobile: `bin/deploy`
 
 ## E2E Tests
 

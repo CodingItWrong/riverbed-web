@@ -63,8 +63,7 @@ describe('edit boards', () => {
 
     cy.contains(boardName).click();
 
-    cy.get('[aria-label="Board Menu"]').click();
-    cy.contains('Edit Board').click({force: true});
+    cy.get('[aria-label="Board Menu"]').paperSelect('Edit Board');
 
     cy.contains('Delete Board').click();
 
