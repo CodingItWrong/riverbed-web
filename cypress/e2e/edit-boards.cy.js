@@ -31,6 +31,7 @@ describe('edit boards', () => {
 
     cy.log('EDIT BOARD');
 
+    cy.get('[aria-label="Loading"]').should('exist');
     cy.get('[aria-label="Loading"]').should('not.exist');
     cy.get('[data-testid=navigation-bar-title]').eq(1).click({force: true});
 
