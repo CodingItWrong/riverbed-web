@@ -1,6 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import {useCallback, useEffect, useState} from 'react';
-import DropdownMenu from '../../components/DropdownMenu';
+import {useEffect, useState} from 'react';
 import IconButton from '../../components/IconButton';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import ScreenBackground from '../../components/ScreenBackground';
@@ -28,36 +27,28 @@ export default function Board({route}) {
       navigation.setOptions({
         title: board?.attributes?.name ?? '(unnamed board)',
         onTitlePress: () => setEditingBoard(true),
-        headerRight: renderMenu,
+        headerRight: () => {
+          if (!(editingBoard || editingElements)) {
+            return (
+              <IconButton
+                icon="pencil"
+                accessibilityLabel="Edit Elements"
+                onPress={() => setEditingElements(true)}
+              />
+            );
+          }
+        },
         isFetching: isFetchingCards,
       });
     }
-  }, [navigation, board, renderMenu, isLoadingBoard, isFetchingCards]);
-
-  const renderMenu = useCallback(() => {
-    function menuItems() {
-      if (editingBoard || editingElements) {
-        return [];
-      } else {
-        return [
-          {title: 'Edit Elements', onPress: () => setEditingElements(true)},
-        ];
-      }
-    }
-
-    return (
-      <DropdownMenu
-        menuItems={menuItems()}
-        menuButton={props => (
-          <IconButton
-            icon="dots-vertical"
-            accessibilityLabel="Board Menu"
-            {...props}
-          />
-        )}
-      />
-    );
-  }, [editingBoard, editingElements]);
+  }, [
+    navigation,
+    board,
+    isLoadingBoard,
+    isFetchingCards,
+    editingBoard,
+    editingElements,
+  ]);
 
   function renderContents() {
     if (editingBoard) {

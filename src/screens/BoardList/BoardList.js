@@ -5,7 +5,6 @@ import {FlatList, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Button from '../../components/Button';
 import Card from '../../components/Card';
-import DropdownMenu from '../../components/DropdownMenu';
 import IconButton from '../../components/IconButton';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import ScreenBackground from '../../components/ScreenBackground';
@@ -26,15 +25,10 @@ export default function BoardList() {
 
   const renderMenu = useCallback(
     () => (
-      <DropdownMenu
-        menuItems={[{title: 'Sign Out', onPress: clearToken}]}
-        menuButton={props => (
-          <IconButton
-            icon="dots-vertical"
-            accessibilityLabel="Menu"
-            {...props}
-          />
-        )}
+      <IconButton
+        icon="logout"
+        accessibilityLabel="Sign Out"
+        onPress={clearToken}
       />
     ),
     [clearToken],

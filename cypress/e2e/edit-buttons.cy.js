@@ -73,7 +73,7 @@ describe('edit buttons', () => {
     goToBoard();
 
     cy.step('CREATE BUTTON', () => {
-      cy.get('[aria-label="Board Menu"]').paperSelect('Edit Elements');
+      cy.get('[aria-label="Edit Elements"]').click();
 
       cy.intercept('POST', 'http://cypressapi/elements?', {
         data: newButton,
@@ -180,7 +180,7 @@ describe('edit buttons', () => {
     const updatedButtonName = 'Shoosh';
 
     cy.step('EDIT BUTTON', () => {
-      cy.get('[aria-label="Board Menu"]').paperSelect('Edit Elements');
+      cy.get('[aria-label="Edit Elements"]').click();
       cy.get(`[aria-label="Edit ${buttonName} button"]`).click();
 
       cy.get('[data-testid="text-input-element-name"]')
@@ -239,7 +239,7 @@ describe('edit buttons', () => {
 
     goToBoard();
 
-    cy.get('[aria-label="Board Menu"]').paperSelect('Edit Elements');
+    cy.get('[aria-label="Edit Elements"]').click();
 
     cy.step('DELETE BUTTON', () => {
       cy.get(`[aria-label="Edit ${buttonName} button"]`).click();
@@ -293,7 +293,7 @@ describe('edit buttons', () => {
     goToBoard();
 
     cy.step('CREATE BUTTON', () => {
-      cy.get('[aria-label="Board Menu"]').paperSelect('Edit Elements');
+      cy.get('[aria-label="Edit Elements"]').click();
 
       cy.intercept('POST', 'http://cypressapi/elements?', {
         data: newButton,
@@ -385,7 +385,7 @@ describe('edit buttons', () => {
     goToBoard();
 
     cy.step('CREATE BUTTON MENU', () => {
-      cy.get('[aria-label="Board Menu"]').paperSelect('Edit Elements');
+      cy.get('[aria-label="Edit Elements"]').click();
 
       cy.intercept('POST', 'http://cypressapi/elements?', {
         data: newButtonMenu,
