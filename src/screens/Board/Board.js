@@ -1,6 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import {useCallback, useEffect, useState} from 'react';
-import DropdownMenu from '../../components/DropdownMenu';
+import {useEffect, useState} from 'react';
 import IconButton from '../../components/IconButton';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import ScreenBackground from '../../components/ScreenBackground';
