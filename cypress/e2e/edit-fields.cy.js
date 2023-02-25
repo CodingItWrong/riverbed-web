@@ -57,7 +57,7 @@ describe('edit fields', () => {
     goToBoard();
 
     cy.step('ADD FIELD', () => {
-      cy.get('[aria-label="Board Menu"]').paperSelect('Edit Elements');
+      cy.get('[aria-label="Edit Elements"]').click();
 
       cy.intercept('POST', 'http://cypressapi/elements?', {
         data: newField,
@@ -130,7 +130,7 @@ describe('edit fields', () => {
       success: true,
     }).as('updateField');
 
-    cy.get('[aria-label="Board Menu"]').paperSelect('Edit Elements');
+    cy.get('[aria-label="Edit Elements"]').click();
 
     cy.get(`[aria-label="Edit ${greetingFieldName} field"]`).click();
     cy.get('[data-testid="text-input-element-name"]')
@@ -170,7 +170,7 @@ describe('edit fields', () => {
 
     cy.log('DELETE FIELD');
 
-    cy.get('[aria-label="Board Menu"]').paperSelect('Edit Elements');
+    cy.get('[aria-label="Edit Elements"]').click();
 
     cy.get(`[aria-label="Edit ${greetingFieldName} field"]`).click();
     cy.intercept('DELETE', `http://cypressapi/elements/${greetingField.id}`, {
@@ -215,7 +215,7 @@ describe('edit fields', () => {
     goToBoard();
 
     cy.step('ADD FIELD', () => {
-      cy.get('[aria-label="Board Menu"]').paperSelect('Edit Elements');
+      cy.get('[aria-label="Edit Elements"]').click();
 
       cy.intercept('POST', 'http://cypressapi/elements?', {
         data: newField,
@@ -335,7 +335,7 @@ describe('edit fields', () => {
     ]);
     cy.contains('Cancel').click();
 
-    cy.get('[aria-label="Board Menu"]').paperSelect('Edit Elements');
+    cy.get('[aria-label="Edit Elements"]').click();
 
     // confirm initial order in Edit Elements form
     cy.assertTestIdOrder('[data-testid^="element-"]', [
@@ -414,7 +414,7 @@ describe('edit fields', () => {
     goToBoard();
 
     cy.step('EDIT ELEMENTS', () => {
-      cy.get('[aria-label="Board Menu"]').paperSelect('Edit Elements');
+      cy.get('[aria-label="Edit Elements"]').click();
     });
 
     const updatedDateField = Factory.field(
