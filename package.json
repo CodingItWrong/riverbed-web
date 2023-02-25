@@ -12,7 +12,8 @@
     "lint": "eslint src cypress/e2e",
     "lint:ci": "eslint src cypress/e2e --max-warnings=0",
     "build:web": "expo export:web && cp _redirects web-build",
-    "deploy:web": "npm run build:web && netlify deploy --prod"
+    "deploy:web": "npm run build:web && netlify deploy --prod",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@codingitwrong/jsonapi-client": "^0.0.11",
@@ -54,7 +55,8 @@
     "eslint-plugin-cypress": "^2.12.1",
     "eslint-plugin-import": "^2.27.5",
     "prettier": "^2.8.4",
-    "typescript": "^4.9.5"
+    "typescript": "^4.9.5",
+    "husky": "^8.0.0"
   },
   "private": true
 }
