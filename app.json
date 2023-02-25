@@ -40,7 +40,7 @@
     },
     "owner": "codingitwrong",
     "runtimeVersion": {
-      "policy": "appVersion"
+      "policy": "sdkVersion"
     }
   }
 }
