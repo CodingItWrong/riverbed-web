@@ -23,7 +23,7 @@ Dependencies are locked with `yarn.lock`; please use `yarn` rather than `npm` fo
 
 - Run `yarn web` (starts both Metro and Webpack)
 
-## Building Clients
+## Building Dev/Preview Clients
 
 <https://docs.expo.dev/development/create-development-builds/#on-emulatorsimulator>
 
@@ -34,6 +34,11 @@ Dependencies are locked with `yarn.lock`; please use `yarn` rather than `npm` fo
 ## Publishing JS Updates
 
 - Web and Mobile: `bin/deploy`
+
+## Submitting to TestFlight
+
+- `eas build --profile production --platform ios`
+- `eas submit --platform ios`
 
 ## E2E Tests
 
