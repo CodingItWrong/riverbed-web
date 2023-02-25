@@ -12,7 +12,11 @@ export default function NavigationBar({navigation, options, back}) {
           accessibilityLabel="Go back"
         />
       )}
-      <Appbar.Content title={title} onPress={onTitlePress} />
+      <Appbar.Content
+        title={title}
+        testID="navigation-bar-title"
+        onPress={onTitlePress}
+      />
       {isFetching && <LoadingIndicator />}
       {headerRight?.()}
     </Appbar.Header>
