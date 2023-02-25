@@ -21,7 +21,7 @@ Dependencies are locked with `yarn.lock`; please use `yarn` rather than `npm` fo
 
 ## Running
 
-- Run `yarn start`
+- Run `yarn web` (starts both Metro and Webpack)
 
 ## Building Clients
 
