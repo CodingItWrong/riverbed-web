@@ -4877,6 +4877,13 @@ expo-constants@~14.2.0, expo-constants@~14.2.1:
     "@expo/config" "~8.0.0"
     uuid "^3.3.2"
 
+expo-crypto@~12.2.1:
+  version "12.2.1"
+  resolved "https://registry.yarnpkg.com/expo-crypto/-/expo-crypto-12.2.1.tgz#d4f0ef5e2148e1168628d0ebcc2697da3e5df8b3"
+  integrity sha512-NfKsREzj55xCm0v9OKuNw3DU1r6i6VNTYrQcYSZfGOp7o+tvZsJRyr+NyrUg5YVH93TUkothCtsPahdYA4r1Wg==
+  dependencies:
+    base64-js "^1.3.0"
+
 expo-dev-client@~2.1.3:
   version "2.1.3"
   resolved "https://registry.yarnpkg.com/expo-dev-client/-/expo-dev-client-2.1.3.tgz#4f8f69fdb65124c6a1d4629a092d8127f5cb5c05"
@@ -4975,13 +4982,6 @@ expo-pwa@0.0.124:
     commander "2.20.0"
     update-check "1.5.3"
 
-expo-random@~13.1.1:
-  version "13.1.1"
-  resolved "https://registry.yarnpkg.com/expo-random/-/expo-random-13.1.1.tgz#15e781911d5db4fbcee75e26ac109bc2523fe00c"
-  integrity sha512-+KkhGp7xW45GvMRzlcSOzvDwzTgyXo6C84GaG4GI43rOdECBQ2lGUJ12st39OtfZm1lORNskpi66DjnuJ73g9w==
-  dependencies:
-    base64-js "^1.3.0"
-
 expo-secure-store@~12.1.1:
   version "12.1.1"
   resolved "https://registry.yarnpkg.com/expo-secure-store/-/expo-secure-store-12.1.1.tgz#d4992dbb6170882d99d83a440a49864b36904cd1"
@@ -4994,11 +4994,6 @@ expo-splash-screen@~0.18.1:
   dependencies:
     "@expo/configure-splash-screen" "^0.6.0"
     "@expo/prebuild-config" "6.0.0"
-
-expo-standard-web-crypto@^1.4.1:
-  version "1.4.3"
-  resolved "https://registry.yarnpkg.com/expo-standard-web-crypto/-/expo-standard-web-crypto-1.4.3.tgz#471941bb9188940d8185130ef18f1d8d1026aac4"
-  integrity sha512-5gUM16C7+hk+2qNSYAFtTdyqqwz8FBkAk2zs+3Rjv5UoxLpTY7jhRTCYpKhTMELIJxSNzD/2h2k7sp2qczZ0QA==
 
 expo-status-bar@~1.4.4:
   version "1.4.4"
@@ -10582,11 +10577,6 @@ uuid@^8.0.0, uuid@^8.3.2:
   version "8.3.2"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
   integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
-
-uuid@^9.0.0:
-  version "9.0.0"
-  resolved "https://registry.yarnpkg.com/uuid/-/uuid-9.0.0.tgz#592f550650024a38ceb0c562f2f6aa435761efb5"
-  integrity sha512-MXcSTerfPa4uqyzStbRoTgt5XIe3x5+42+q1sDuy3R5MDk66URdLMOZe5aPX/SQd+kuYAh0FdP/pO28IkQyTeg==
 
 valid-url@~1.0.9:
   version "1.0.9"
