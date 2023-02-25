@@ -1,7 +1,4 @@
-import {polyfillWebCrypto} from 'expo-standard-web-crypto';
-polyfillWebCrypto();
-import {v4 as uuidv4} from 'uuid';
+// `uuid` npm package is not compatible with Expo
+import {randomUUID} from 'expo-crypto';
 
-// Mobile says "Random.getRandomBytes is not supported; falling back to insecure Math.random"
-// But this is fine for this use case
-export default uuidv4;
+export default randomUUID;
