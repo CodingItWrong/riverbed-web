@@ -1,3 +1,4 @@
+import textFieldDataType from '../components/fieldTypes/text';
 import FIELD_DATA_TYPES from '../enums/fieldDataTypes';
 
 export default function getSortValue({value, dataType, options}) {
@@ -11,7 +12,7 @@ export default function getSortValue({value, dataType, options}) {
       // dates are stored as strings that sort lexicographically
       return value;
     case FIELD_DATA_TYPES.TEXT.key:
-      return value?.trim();
+      return textFieldDataType.getSortValue(value);
     default:
       return `ERROR: unknown data type ${dataType}`;
   }

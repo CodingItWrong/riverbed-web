@@ -1,3 +1,4 @@
+import textFieldDataType from '../components/FieldTypes/Text';
 import FIELD_DATA_TYPES from '../enums/fieldDataTypes';
 import dateTimeUtils from './dateTimeUtils';
 import dateUtils from './dateUtils';
@@ -13,7 +14,7 @@ export default function formatValue({value, dataType, options}) {
     case FIELD_DATA_TYPES.NUMBER.key:
       return value;
     case FIELD_DATA_TYPES.TEXT.key:
-      return value?.trim();
+      return textFieldDataType.formatValue(value);
     default:
       return `ERROR: unknown data type ${dataType}`;
   }
