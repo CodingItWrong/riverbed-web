@@ -12,6 +12,7 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import Navigation from './src/Navigation';
 import TokenLoadBuffer from './src/components/TokenLoadBuffer';
 import {TokenProvider} from './src/data/token';
+import useColorSchemeTheme from './src/theme/useColorSchemeTheme';
 
 registerTranslation('en', en);
 
@@ -30,6 +31,8 @@ function onAppStateChange(status) {
 }
 
 export default function App() {
+  const theme = useColorSchemeTheme();
+
   useEffect(() => {
     const subscription = AppState.addEventListener('change', onAppStateChange);
 
@@ -41,7 +44,7 @@ export default function App() {
       <TokenLoadBuffer>
         <SafeAreaProvider>
           <StatusBar />
-          <PaperProvider>
+          <PaperProvider theme={theme}>
             <QueryClientProvider client={queryClient}>
               <Navigation />
             </QueryClientProvider>
