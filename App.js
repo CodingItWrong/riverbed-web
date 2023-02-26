@@ -5,7 +5,7 @@ import {
 } from '@tanstack/react-query';
 import {StatusBar} from 'expo-status-bar';
 import {useEffect} from 'react';
-import {AppState, Platform} from 'react-native';
+import {AppState, Platform, useColorScheme} from 'react-native';
 import {Provider as PaperProvider} from 'react-native-paper';
 import {en, registerTranslation} from 'react-native-paper-dates';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
@@ -30,6 +30,9 @@ function onAppStateChange(status) {
 }
 
 export default function App() {
+  // does seem to switch to light and then dark
+  console.error(useColorScheme());
+
   useEffect(() => {
     const subscription = AppState.addEventListener('change', onAppStateChange);
 
