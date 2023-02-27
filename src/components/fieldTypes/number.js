@@ -4,8 +4,8 @@ import NumberField from '../NumberField';
 const numberFieldDataType = {
   key: FIELD_DATA_TYPES.NUMBER.key,
   label: FIELD_DATA_TYPES.NUMBER.label,
-  formatValue: value => value,
-  getSortValue: value => value,
+  formatValue: ({value}) => value,
+  getSortValue: ({value}) => value,
   EditorComponent: NumberEditorComponent,
 };
 
