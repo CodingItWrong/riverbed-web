@@ -9,16 +9,11 @@ export default function useDebouncedColorScheme() {
   const [colorScheme, setColorScheme] = useState(rawColorScheme);
 
   const setColorSchemeDebounced = useMemo(
-    () =>
-      debounce(value => {
-        console.log('inner setColorScheme', value);
-        setColorScheme(value);
-      }, DEBOUNCE_MILLISECONDS),
+    () => debounce(value => setColorScheme(value), DEBOUNCE_MILLISECONDS),
     [],
   );
 
   useEffect(() => {
-    console.log('outer setColorScheme', rawColorScheme);
     setColorSchemeDebounced(rawColorScheme);
   }, [setColorSchemeDebounced, rawColorScheme]);
 
