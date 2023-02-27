@@ -4,6 +4,7 @@ import formatValue from '../utils/formatValue';
 import Text from './Text';
 import choiceFieldDataType from './fieldTypes/choice';
 import dateFieldDataType from './fieldTypes/date';
+import dateTimeFieldDataType from './fieldTypes/dateTime';
 import numberFieldDataType from './fieldTypes/number';
 import textFieldDataType from './fieldTypes/text';
 
@@ -56,13 +57,18 @@ export default function Field({
         />
       );
     }
-    case FIELD_DATA_TYPES.DATETIME.key:
-      // TODO: implement writable
+    case FIELD_DATA_TYPES.DATETIME.key: {
+      const {EditorComponent} = dateTimeFieldDataType;
       return (
-        <View style={style} testID={`field-${field.id}`}>
-          <Text>{formatValue({value, dataType})}</Text>
-        </View>
+        <EditorComponent
+          field={field}
+          value={value ?? ''}
+          setValue={setValue}
+          disabled={disabled}
+          style={style}
+        />
       );
+    }
     case FIELD_DATA_TYPES.NUMBER.key: {
       const {EditorComponent} = numberFieldDataType;
       return (
