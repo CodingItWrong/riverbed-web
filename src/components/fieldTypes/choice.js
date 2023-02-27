@@ -7,7 +7,7 @@ const choiceFieldDataType = {
   formatValue: ({value, options}) =>
     options.choices?.find(c => c.id === value)?.label,
   getSortValue: ({value, options}) =>
-    choiceFieldDataType.formatValue({value, options})?.trim(),
+    options.choices?.findIndex(c => c.id === value),
   EditorComponent: ChoiceEditorComponent,
 };
 
