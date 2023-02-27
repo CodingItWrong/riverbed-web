@@ -3,7 +3,7 @@ import DropdownField from '../DropdownField';
 
 const choiceFieldDataType = {
   key: FIELD_DATA_TYPES.CHOICE.key,
-  label: FIELD_DATA_TYPES.CHOICE.label,
+  label: 'Choice',
   formatValue: ({value, options}) =>
     options.choices?.find(c => c.id === value)?.label,
   getSortValue: ({value, options}) =>

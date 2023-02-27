@@ -5,7 +5,7 @@ import Text from '../Text';
 
 const dateTimeFieldDataType = {
   key: FIELD_DATA_TYPES.DATETIME.key,
-  label: FIELD_DATA_TYPES.DATETIME.label,
+  label: 'Date and Time',
   formatValue: ({value}) => dateTimeUtils.serverStringToHumanString(value),
   getSortValue: ({value}) => value, // datetimes are stored as strings that sort lexicographically
   EditorComponent: DateTimeEditorComponent,

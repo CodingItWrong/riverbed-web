@@ -5,7 +5,7 @@ import sharedStyles from '../sharedStyles';
 
 const dateFieldDataType = {
   key: FIELD_DATA_TYPES.DATE.key,
-  label: FIELD_DATA_TYPES.DATE.label,
+  label: 'Date',
   formatValue: ({value}) => dateUtils.serverStringToHumanString(value),
   getSortValue: ({value}) => value, // dates are stored as strings that sort lexicographically
   EditorComponent: DateEditorComponent,

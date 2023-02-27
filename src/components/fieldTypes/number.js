@@ -3,7 +3,7 @@ import NumberField from '../NumberField';
 
 const numberFieldDataType = {
   key: FIELD_DATA_TYPES.NUMBER.key,
-  label: FIELD_DATA_TYPES.NUMBER.label,
+  label: 'Number',
   formatValue: ({value}) => value,
   getSortValue: ({value}) => value,
   EditorComponent: NumberEditorComponent,

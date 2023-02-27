@@ -4,7 +4,7 @@ import TextField from '../TextField';
 
 const textFieldDataType = {
   key: FIELD_DATA_TYPES.TEXT.key,
-  label: FIELD_DATA_TYPES.TEXT.label,
+  label: 'Text',
   formatValue: ({value}) => value?.trim(),
   getSortValue: ({value}) => textFieldDataType.formatValue({value}),
   EditorComponent: TextEditorComponent,
