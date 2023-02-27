@@ -1,8 +1,8 @@
 import {View} from 'react-native';
 import FIELD_DATA_TYPES from '../enums/fieldDataTypes';
 import formatValue from '../utils/formatValue';
-import DropdownField from './DropdownField';
 import Text from './Text';
+import choiceFieldDataType from './fieldTypes/choice';
 import dateFieldDataType from './fieldTypes/date';
 import numberFieldDataType from './fieldTypes/number';
 import textFieldDataType from './fieldTypes/text';
@@ -32,20 +32,18 @@ export default function Field({
   }
 
   switch (dataType) {
-    case FIELD_DATA_TYPES.CHOICE.key:
+    case FIELD_DATA_TYPES.CHOICE.key: {
+      const {EditorComponent} = choiceFieldDataType;
       return (
-        <DropdownField
-          fieldLabel={name}
-          emptyLabel="(choose)"
-          value={options.choices?.find(c => c.id === value)}
-          onValueChange={choice => setValue(choice?.id)}
-          options={options.choices}
-          keyExtractor={choice => choice.id}
-          labelExtractor={choice => choice.label}
+        <EditorComponent
+          field={field}
+          value={value ?? ''}
+          setValue={setValue}
           disabled={disabled}
           style={style}
         />
       );
+    }
     case FIELD_DATA_TYPES.DATE.key: {
       const {EditorComponent} = dateFieldDataType;
       return (
