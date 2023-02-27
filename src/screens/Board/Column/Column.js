@@ -13,7 +13,6 @@ import {useBoardElements} from '../../../data/elements';
 import SORT_DIRECTIONS from '../../../enums/sortDirections';
 import calculateSummary from '../../../utils/calculateSummary';
 import checkConditions from '../../../utils/checkConditions';
-import getSortValue from '../../../utils/getSortValue';
 import CardDetail from '../Card/CardDetail';
 import CardSummary from '../Card/CardSummary';
 
@@ -51,11 +50,11 @@ export default function Column({
 
   if (cardSortOrder?.field && cardSortOrder?.direction) {
     const sortField = elements.find(e => e.id === cardSortOrder.field);
+    const fieldType = fieldTypes[sortField.attributes['data-type']];
     columnCards = sortBy(filteredCards, [
       card =>
-        getSortValue({
+        fieldType.getSortValue({
           value: get(card, `attributes.field-values.${cardSortOrder.field}`),
-          dataType: sortField.attributes['data-type'],
           options: sortField.attributes.options,
         }),
     ]);
@@ -82,11 +81,11 @@ export default function Column({
       }
       group.data.push(card);
     });
+    const fieldType = fieldTypes[groupField.attributes['data-type']];
     cardGroups = sortBy(cardGroups, [
       group =>
-        getSortValue({
+        fieldType.getSortValue({
           value: group.value,
-          dataType: groupField.attributes['data-type'],
           options: groupField.attributes.options,
         }),
     ]);
