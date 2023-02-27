@@ -1,5 +1,4 @@
 import {View} from 'react-native';
-import formatValue from '../utils/formatValue';
 import Text from './Text';
 import fieldTypes from './fieldTypes';
 
@@ -13,8 +12,14 @@ export default function Field({
 }) {
   const {name, 'data-type': dataType, options} = field.attributes;
 
+  const fieldType = fieldTypes[dataType];
+
+  if (!fieldType) {
+    return <Text>ERROR: unknown data type {dataType}</Text>;
+  }
+
   if (readOnly) {
-    let textToShow = formatValue({value, dataType, options});
+    let textToShow = fieldType.formatValue({value, options});
 
     if (options['show-label-when-read-only']) {
       textToShow = `${name}: ${textToShow ?? '(empty)'}`;
@@ -25,12 +30,6 @@ export default function Field({
         <Text>{textToShow}</Text>
       </View>
     );
-  }
-
-  const fieldType = fieldTypes[dataType];
-
-  if (!fieldType) {
-    return <Text>ERROR: unknown data type {dataType}</Text>;
   }
 
   const {EditorComponent} = fieldType;

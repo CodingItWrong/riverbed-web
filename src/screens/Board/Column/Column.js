@@ -6,13 +6,13 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import IconButton from '../../../components/IconButton';
 import SectionHeader from '../../../components/SectionHeader';
 import Text from '../../../components/Text';
+import fieldTypes from '../../../components/fieldTypes';
 import sharedStyles, {useColumnStyle} from '../../../components/sharedStyles';
 import {useCards} from '../../../data/cards';
 import {useBoardElements} from '../../../data/elements';
 import SORT_DIRECTIONS from '../../../enums/sortDirections';
 import calculateSummary from '../../../utils/calculateSummary';
 import checkConditions from '../../../utils/checkConditions';
-import formatValue from '../../../utils/formatValue';
 import getSortValue from '../../../utils/getSortValue';
 import CardDetail from '../Card/CardDetail';
 import CardSummary from '../Card/CardSummary';
@@ -131,10 +131,10 @@ export default function Column({
             return;
           }
 
+          const fieldType = fieldTypes[groupField.attributes['data-type']];
           let textToShow =
-            formatValue({
+            fieldType.formatValue({
               value: group.value,
-              dataType: groupField.attributes['data-type'],
               options: groupField.attributes.options,
             }) ?? '(empty)';
 
