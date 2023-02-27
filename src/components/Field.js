@@ -4,8 +4,8 @@ import FIELD_DATA_TYPES from '../enums/fieldDataTypes';
 import dateUtils from '../utils/dateUtils';
 import formatValue from '../utils/formatValue';
 import DropdownField from './DropdownField';
-import NumberField from './NumberField';
 import Text from './Text';
+import numberFieldDataType from './fieldTypes/number';
 import textFieldDataType from './fieldTypes/text';
 import sharedStyles from './sharedStyles';
 
@@ -71,19 +71,19 @@ export default function Field({
           <Text>{formatValue({value, dataType})}</Text>
         </View>
       );
-    case FIELD_DATA_TYPES.NUMBER.key:
+    case FIELD_DATA_TYPES.NUMBER.key: {
+      const {EditorComponent} = numberFieldDataType;
       return (
-        <NumberField
-          key={field.id}
-          label={name}
-          testID={`number-input-${field.id}`}
+        <EditorComponent
+          field={field}
           value={value ?? ''}
-          onChangeText={setValue}
+          setValue={setValue}
           disabled={disabled}
           style={style}
         />
       );
-    case FIELD_DATA_TYPES.TEXT.key:
+    }
+    case FIELD_DATA_TYPES.TEXT.key: {
       const {EditorComponent} = textFieldDataType;
       return (
         <EditorComponent
@@ -94,6 +94,7 @@ export default function Field({
           style={style}
         />
       );
+    }
     default:
       return <Text>ERROR: unknown data type {dataType}</Text>;
   }
