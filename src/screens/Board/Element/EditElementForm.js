@@ -11,6 +11,7 @@ import IconButton from '../../../components/IconButton';
 import LabeledCheckbox from '../../../components/LabeledCheckbox';
 import NumberField from '../../../components/NumberField';
 import TextField from '../../../components/TextField';
+import fieldTypes from '../../../components/fieldTypes';
 import sharedStyles from '../../../components/sharedStyles';
 import {
   useBoardElements,
@@ -49,7 +50,7 @@ export default function EditElementForm({
     });
   }
 
-  const dataTypeOptions = Object.values(FIELD_DATA_TYPES);
+  const dataTypeOptions = Object.values(fieldTypes);
   const valueOptions = Object.values(VALUES);
 
   const {

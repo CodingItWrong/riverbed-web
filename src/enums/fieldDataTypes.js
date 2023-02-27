@@ -1,9 +1,9 @@
 const FIELD_DATA_TYPES = {
-  CHOICE: {key: 'choice', label: 'Choice'},
-  DATE: {key: 'date', label: 'Date'},
-  DATETIME: {key: 'datetime', label: 'Date and Time'},
-  NUMBER: {key: 'number', label: 'Number'},
-  TEXT: {key: 'text', label: 'Text'},
+  CHOICE: {key: 'choice'},
+  DATE: {key: 'date'},
+  DATETIME: {key: 'datetime'},
+  NUMBER: {key: 'number'},
+  TEXT: {key: 'text'},
 };
 
 export default FIELD_DATA_TYPES;

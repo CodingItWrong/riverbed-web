@@ -64,6 +64,7 @@ describe('edit boards', () => {
 
     cy.contains(boardName).click();
 
+    cy.get('[aria-label="Loading"]').should('not.exist');
     cy.get('[data-testid=navigation-bar-title]').eq(1).click({force: true});
 
     cy.contains('Delete Board').click();
