@@ -1,13 +1,11 @@
 import {View} from 'react-native';
-import {DatePickerInput} from 'react-native-paper-dates';
 import FIELD_DATA_TYPES from '../enums/fieldDataTypes';
-import dateUtils from '../utils/dateUtils';
 import formatValue from '../utils/formatValue';
 import DropdownField from './DropdownField';
 import Text from './Text';
+import dateFieldDataType from './fieldTypes/date';
 import numberFieldDataType from './fieldTypes/number';
 import textFieldDataType from './fieldTypes/text';
-import sharedStyles from './sharedStyles';
 
 export default function Field({
   field,
@@ -48,22 +46,18 @@ export default function Field({
           style={style}
         />
       );
-    case FIELD_DATA_TYPES.DATE.key:
+    case FIELD_DATA_TYPES.DATE.key: {
+      const {EditorComponent} = dateFieldDataType;
       return (
-        <DatePickerInput
-          locale="en"
-          label={name}
-          value={dateUtils.serverStringToObject(value)}
-          onChange={newDate =>
-            setValue(dateUtils.objectToServerString(newDate))
-          }
-          onChangeText={newText => newText === '' && setValue(newText)}
+        <EditorComponent
+          field={field}
+          value={value ?? ''}
+          setValue={setValue}
           disabled={disabled}
-          inputMode="start"
-          testID={`date-input-${field.id}`}
-          style={[sharedStyles.textInput, style]}
+          style={style}
         />
       );
+    }
     case FIELD_DATA_TYPES.DATETIME.key:
       // TODO: implement writable
       return (
