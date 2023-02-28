@@ -19,6 +19,7 @@ export default function Column({column, board, onEdit, onSelectCard}) {
   const columnWidthStyle = useColumnStyle();
 
   const {data: elements} = useBoardElements(board);
+  console.log('loading cards for board', {board});
   const {data: cards = []} = useCards(board);
 
   const {

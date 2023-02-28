@@ -1,4 +1,4 @@
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {useEffect, useState} from 'react';
 import IconButton from '../../components/IconButton';
 import LoadingIndicator from '../../components/LoadingIndicator';
@@ -11,8 +11,12 @@ import EditBoardForm from './EditBoardForm';
 import ElementList from './Element/ElementList';
 
 export default function Board({route}) {
-  console.log('Board', {route});
-  const {id} = route.params;
+  const hookRoute = useRoute();
+  console.log('Board', {route, hookRoute});
+  const id = window.location
+    ? window.location.pathname.split('/')[2]
+    : route.params.boardId;
+  console.log({split: window.location.pathname.split('/'), id});
 
   const navigation = useNavigation();
   const {data: board, isLoading: isLoadingBoard} = useBoard(id);

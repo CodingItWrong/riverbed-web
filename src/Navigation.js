@@ -15,10 +15,11 @@ const linking = {
     screens: {
       BoardList: 'boards',
       BoardStack: {
+        path: 'board/:id',
         initialRouteName: 'Board',
         screens: {
-          Board: 'boards/:id',
-          Card: 'boards/:boardId/cards/:cardId',
+          Board: '/',
+          Card: 'cards/:cardId',
         },
       },
       SignIn: '/',
