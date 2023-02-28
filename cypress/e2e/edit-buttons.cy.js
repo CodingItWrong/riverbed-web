@@ -493,7 +493,7 @@ describe('edit buttons', () => {
       cy.wait('@updateMenu')
         .its('request.body')
         .should('deep.equal', {data: updatedMenu});
-      // TODO: do I need a wait here?
+      cy.contains('Save Button').should('not.exist');
       cy.get('[aria-label="Done Editing Elements"]').click();
     });
 
