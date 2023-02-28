@@ -1,5 +1,6 @@
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {Platform} from 'react-native';
 import NavigationBar from './components/NavigationBar';
 import ScreenBackground from './components/ScreenBackground';
 import Text from './components/Text';
@@ -49,8 +50,17 @@ const Boards = () => {
             options={{title: 'My Boards'}}
           />
           <BoardStack.Screen name="Board" component={Board} />
-          <BoardStack.Group screenOptions={{presentation: 'formSheet'}}>
-            <BoardStack.Screen name="Card" component={Card} />
+          <BoardStack.Group
+            screenOptions={{
+              presentation: 'formSheet',
+              headerShown: Platform.OS !== 'ios',
+            }}
+          >
+            <BoardStack.Screen
+              name="Card"
+              component={Card}
+              options={{title: 'Card'}}
+            />
           </BoardStack.Group>
         </>
       )}
