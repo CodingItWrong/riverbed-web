@@ -39,7 +39,7 @@ const Boards = () => {
           <BoardStack.Screen
             name="BoardList"
             component={BoardList}
-            options={{title: 'My Boards!'}}
+            options={{title: 'My Boards 2/28'}}
           />
           <BoardStack.Screen name="Board" component={Board} />
           <BoardStack.Group
