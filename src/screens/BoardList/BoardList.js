@@ -10,7 +10,7 @@ import IconButton from '../../components/IconButton';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import ScreenBackground from '../../components/ScreenBackground';
 import Text from '../../components/Text';
-import sharedStyles, {useColumnStyle} from '../../components/sharedStyles';
+import sharedStyles from '../../components/sharedStyles';
 import {useBoards, useCreateBoard} from '../../data/boards';
 import {useToken} from '../../data/token';
 
