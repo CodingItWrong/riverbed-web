@@ -3,10 +3,12 @@ import {useCallback, useEffect, useState} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Appbar, Provider} from 'react-native-paper';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Card from '../../components/Card';
 import CenterModal from '../../components/CenterModal';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import ScreenBackground from '../../components/ScreenBackground';
+import sharedStyles from '../../components/sharedStyles';
 import {useBoard} from '../../data/boards';
 import {useCard} from '../../data/cards';
 import {useCurrentBoard} from '../../data/currentBoard';
@@ -14,6 +16,7 @@ import EditCardForm from '../Board/Card/EditCardForm';
 import ElementList from '../Board/Element/ElementList';
 
 export default function CardScreen({route}) {
+  const insets = useSafeAreaInsets();
   const {boardId} = useCurrentBoard();
   const {cardId} = route.params;
   const navigation = useNavigation();
@@ -31,10 +34,20 @@ export default function CardScreen({route}) {
     if (isLoading) {
       return <LoadingIndicator />;
     } else if (isEditingElements) {
-      return <ElementList board={board} />;
+      return (
+        <View style={[styles.container, sharedStyles.fill]}>
+          <ElementList board={board} />
+        </View>
+      );
     } else {
       return (
-        <KeyboardAwareScrollView>
+        <KeyboardAwareScrollView
+          contentContainerStyle={[
+            styles.container,
+            {paddingBottom: insets.bottom},
+          ]}
+          scrollIndicatorInsets={{bottom: insets.bottom}}
+        >
           {card && (
             <EditCardForm
               card={card}
@@ -92,7 +105,7 @@ function CardWrapper({children, closeModal}) {
     ),
     default: (
       <Provider>
-        <ScreenBackground style={styles.container}>{children}</ScreenBackground>
+        <ScreenBackground>{children}</ScreenBackground>
       </Provider>
     ),
   });
