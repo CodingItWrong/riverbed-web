@@ -31,6 +31,7 @@ function ChoiceEditorComponent({
       labelExtractor={choice => choice.label}
       disabled={disabled}
       style={style}
+      testID={`choice-input-${field.id}`}
     />
   );
 }

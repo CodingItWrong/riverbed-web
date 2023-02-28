@@ -1,3 +1,4 @@
+import {useNavigation} from '@react-navigation/native';
 import {useState} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {large, useBreakpoint} from '../../../breakpoints';
@@ -14,7 +15,7 @@ import Column from './Column';
 import EditColumnForm from './EditColumnForm';
 
 export default function ColumnList({board}) {
-  const [selectedCardId, setSelectedCardId] = useState(null);
+  const navigation = useNavigation();
   const [selectedColumnId, setSelectedColumnId] = useState(null);
 
   const {data: elements, isLoading: isLoadingElements} =
@@ -37,19 +38,14 @@ export default function ColumnList({board}) {
   const handleCreateCard = () =>
     createCard(
       {'field-values': getInitialFieldValues(elements)},
-      {onSuccess: ({data: newCard}) => setSelectedCardId(newCard.id)},
+      {onSuccess: ({data: newCard}) => showDetail(newCard.id)},
     );
 
-  function onChangeCard() {
-    hideDetail();
-  }
-
   function showDetail(cardId) {
-    setSelectedCardId(cardId);
-  }
-
-  function hideDetail() {
-    setSelectedCardId(null);
+    navigation.navigate('Card', {
+      boardId: board.id,
+      cardId: cardId,
+    });
   }
 
   const breakpoint = useBreakpoint();
@@ -101,10 +97,7 @@ export default function ColumnList({board}) {
                 column={column}
                 board={board}
                 onEdit={() => setSelectedColumnId(column.id)}
-                selectedCardId={selectedCardId}
                 onSelectCard={card => showDetail(card.id)}
-                onChangeCard={onChangeCard}
-                onCancelEdit={hideDetail}
               />
             );
           }

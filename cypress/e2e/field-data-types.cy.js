@@ -79,6 +79,9 @@ describe('field data types', () => {
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
       data: [card],
     });
+    cy.intercept('GET', `http://cypressapi/cards/${card.id}?`, {
+      data: card,
+    });
 
     cy.signIn();
     cy.contains(boardName).click();
@@ -94,8 +97,9 @@ describe('field data types', () => {
     cy.step('CONFIRM FIELDS CAN BE INTERACTED WITH', () => {
       cy.get(`[data-testid=card-${card.id}`).click();
 
-      cy.contains('Choice: Choice 2').paperSelect('Choice 1');
-
+      cy.get(`[data-testid="choice-input-${choiceField.id}"]`).paperSelect(
+        'Choice 1',
+      );
       cy.get(`[data-testid="element-${dateField.id}"] [role=button]`).click();
       cy.get('[role=button]').contains(/^2$/).click();
       cy.get('[data-testid=react-native-paper-dates-save-text]').click();

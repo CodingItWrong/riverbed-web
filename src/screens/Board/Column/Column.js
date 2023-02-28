@@ -1,7 +1,6 @@
 import get from 'lodash.get';
 import sortBy from 'lodash.sortby';
-import {StyleSheet, View} from 'react-native';
-import {KeyboardAwareSectionList} from 'react-native-keyboard-aware-scroll-view';
+import {SectionList, StyleSheet, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import IconButton from '../../../components/IconButton';
 import SectionHeader from '../../../components/SectionHeader';
@@ -13,18 +12,9 @@ import {useBoardElements} from '../../../data/elements';
 import SORT_DIRECTIONS from '../../../enums/sortDirections';
 import calculateSummary from '../../../utils/calculateSummary';
 import checkConditions from '../../../utils/checkConditions';
-import CardDetail from '../Card/CardDetail';
 import CardSummary from '../Card/CardSummary';
 
-export default function Column({
-  column,
-  board,
-  onEdit,
-  onCancelEdit,
-  selectedCardId,
-  onSelectCard,
-  onChangeCard,
-}) {
+export default function Column({column, board, onEdit, onSelectCard}) {
   const insets = useSafeAreaInsets();
   const columnWidthStyle = useColumnStyle();
 
@@ -115,8 +105,7 @@ export default function Column({
           accessibilityLabel="Edit Column"
         />
       </View>
-      <KeyboardAwareSectionList
-        extraScrollHeight={EXPERIMENTAL_EXTRA_SCROLL_HEIGHT}
+      <SectionList
         sections={cardGroups}
         keyExtractor={card => card.id}
         contentContainerStyle={[
@@ -145,42 +134,24 @@ export default function Column({
             <SectionHeader testID="group-heading">{textToShow}</SectionHeader>
           );
         }}
-        renderItem={({item: card, section: group}) => {
-          if (selectedCardId === card.id) {
-            return (
-              <CardDetail
-                card={card}
-                board={board}
-                onChange={onChangeCard}
-                onCancel={onCancelEdit}
-                style={sharedStyles.mb}
-              />
-            );
-          } else {
-            return (
-              <View
-                testID={
-                  cardGrouping &&
-                  `group-${cardGrouping.field}-${group.value}-card`
-                }
-              >
-                <CardSummary
-                  card={card}
-                  board={board}
-                  onPress={() => onSelectCard(card)}
-                  style={sharedStyles.mb}
-                />
-              </View>
-            );
-          }
-        }}
+        renderItem={({item: card, section: group}) => (
+          <View
+            testID={
+              cardGrouping && `group-${cardGrouping.field}-${group.value}-card`
+            }
+          >
+            <CardSummary
+              card={card}
+              board={board}
+              onPress={() => onSelectCard(card)}
+              style={sharedStyles.mb}
+            />
+          </View>
+        )}
       />
     </View>
   );
 }
-
-// Just guessed a value and it worked. Might be due to Add/title rows
-const EXPERIMENTAL_EXTRA_SCROLL_HEIGHT = 180;
 
 const styles = StyleSheet.create({
   columnWrapper: {
