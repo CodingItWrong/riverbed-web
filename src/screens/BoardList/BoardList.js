@@ -5,6 +5,7 @@ import {FlatList, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Button from '../../components/Button';
 import Card from '../../components/Card';
+import CenterColumn from '../../components/CenterColumn';
 import IconButton from '../../components/IconButton';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import ScreenBackground from '../../components/ScreenBackground';
@@ -47,43 +48,44 @@ export default function BoardList() {
       onSuccess: ({data: board}) => goToBoard(board),
     });
 
-  const columnStyle = useColumnStyle();
-
   return (
     <ScreenBackground>
-      <View
-        style={[columnStyle, sharedStyles.fullHeight, sharedStyles.noPadding]}
-      >
-        {isLoading ? (
-          <LoadingIndicator />
-        ) : (
-          <SafeAreaView
-            style={sharedStyles.fullHeight}
-            edges={['left', 'right', 'bottom']}
-          >
-            <FlatList
-              data={sortedBoards}
-              keyExtractor={board => board.id}
-              contentContainerStyle={sharedStyles.columnPadding}
-              renderItem={({item: board}) => (
-                <Card onPress={() => goToBoard(board)} style={sharedStyles.mt}>
-                  <Text>{board.attributes.name ?? '(unnamed board)'}</Text>
-                </Card>
-              )}
-            />
-            <View style={sharedStyles.columnPadding}>
-              <Button
-                mode="link"
-                icon="plus"
-                onPress={handleCreateBoard}
-                disabled={isAdding}
-              >
-                Add Board
-              </Button>
-            </View>
-          </SafeAreaView>
-        )}
-      </View>
+      <CenterColumn>
+        <View style={[sharedStyles.fullHeight, sharedStyles.noPadding]}>
+          {isLoading ? (
+            <LoadingIndicator />
+          ) : (
+            <SafeAreaView
+              style={sharedStyles.fullHeight}
+              edges={['left', 'right', 'bottom']}
+            >
+              <FlatList
+                data={sortedBoards}
+                keyExtractor={board => board.id}
+                contentContainerStyle={sharedStyles.columnPadding}
+                renderItem={({item: board}) => (
+                  <Card
+                    onPress={() => goToBoard(board)}
+                    style={sharedStyles.mt}
+                  >
+                    <Text>{board.attributes.name ?? '(unnamed board)'}</Text>
+                  </Card>
+                )}
+              />
+              <View style={sharedStyles.columnPadding}>
+                <Button
+                  mode="link"
+                  icon="plus"
+                  onPress={handleCreateBoard}
+                  disabled={isAdding}
+                >
+                  Add Board
+                </Button>
+              </View>
+            </SafeAreaView>
+          )}
+        </View>
+      </CenterColumn>
     </ScreenBackground>
   );
 }
