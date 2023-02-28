@@ -24,14 +24,11 @@ export default function CardScreen({route}) {
     navigation.goBack();
   }
 
-  return (
-    <CardWrapper closeModal={closeModal}>
-      {Platform.OS === 'ios' && (
-        <Appbar.BackAction onPress={closeModal} accessibilityLabel="Go back" />
-      )}
-      {isLoading ? (
-        <LoadingIndicator />
-      ) : (
+  function renderContents() {
+    if (isLoading) {
+      return <LoadingIndicator />;
+    } else {
+      return (
         <KeyboardAwareScrollView contentContainerStyle={styles.container}>
           {card && (
             <EditCardForm
@@ -42,7 +39,16 @@ export default function CardScreen({route}) {
             />
           )}
         </KeyboardAwareScrollView>
+      );
+    }
+  }
+
+  return (
+    <CardWrapper closeModal={closeModal}>
+      {Platform.OS === 'ios' && (
+        <Appbar.BackAction onPress={closeModal} accessibilityLabel="Go back" />
       )}
+      {renderContents()}
     </CardWrapper>
   );
 }
