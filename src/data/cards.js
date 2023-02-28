@@ -30,7 +30,7 @@ export function useCards(board) {
 export function useCard({boardId, cardId}) {
   const cardClient = useCardClient();
   return useQuery(['cards', boardId, cardId], () =>
-    cardClient.find({id: cardId}).then(resp => resp.data),
+    cardClient.find({id: cardId}).then(resp => resp.data ?? null),
   );
 }
 
