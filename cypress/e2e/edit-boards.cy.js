@@ -55,10 +55,10 @@ describe('edit boards', () => {
 
     cy.get('[data-testid="text-input-board-name"]').should('not.exist');
     cy.contains(boardName).should('exist');
-    cy.get('[aria-label="Edit Elements"]').should('exist');
+    cy.contains('Add Card').should('exist');
 
     cy.get('[aria-label="Go back"]').click();
-    cy.get('[aria-label="Edit Elements"]').should('not.exist');
+    cy.contains('Add Card').should('not.exist');
 
     cy.log('DELETE BOARD');
 

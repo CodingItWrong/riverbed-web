@@ -51,12 +51,14 @@ export default function CardScreen({route}) {
   const renderEditElementsButton = useCallback(
     () => (
       <Appbar.Action
-        accessibilityLabel="Edit Elements"
+        accessibilityLabel={
+          isEditingElements ? 'Done Editing Elements' : 'Edit Elements'
+        }
         icon="wrench"
         onPress={() => setIsEditingElements(on => !on)}
       />
     ),
-    [],
+    [isEditingElements],
   );
 
   useEffect(() => {
