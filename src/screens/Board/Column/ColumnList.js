@@ -16,7 +16,6 @@ import EditColumnForm from './EditColumnForm';
 
 export default function ColumnList({board}) {
   const navigation = useNavigation();
-  const [selectedCardId, setSelectedCardId] = useState(null);
   const [selectedColumnId, setSelectedColumnId] = useState(null);
 
   const {data: elements, isLoading: isLoadingElements} =
@@ -42,19 +41,11 @@ export default function ColumnList({board}) {
       {onSuccess: ({data: newCard}) => showDetail(newCard.id)},
     );
 
-  function onChangeCard() {
-    hideDetail();
-  }
-
   function showDetail(cardId) {
     navigation.navigate('Card', {
       boardId: board.id,
       cardId: cardId,
     });
-  }
-
-  function hideDetail() {
-    setSelectedCardId(null);
   }
 
   const breakpoint = useBreakpoint();
@@ -106,10 +97,7 @@ export default function ColumnList({board}) {
                 column={column}
                 board={board}
                 onEdit={() => setSelectedColumnId(column.id)}
-                selectedCardId={selectedCardId}
                 onSelectCard={card => showDetail(card.id)}
-                onChangeCard={onChangeCard}
-                onCancelEdit={hideDetail}
               />
             );
           }
