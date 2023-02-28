@@ -39,7 +39,7 @@ export default function ColumnList({board}) {
   const handleCreateCard = () =>
     createCard(
       {'field-values': getInitialFieldValues(elements)},
-      {onSuccess: ({data: newCard}) => setSelectedCardId(newCard.id)},
+      {onSuccess: ({data: newCard}) => showDetail(newCard.id)},
     );
 
   function onChangeCard() {
