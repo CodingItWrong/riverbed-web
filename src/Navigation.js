@@ -1,6 +1,8 @@
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import NavigationBar from './components/NavigationBar';
+import ScreenBackground from './components/ScreenBackground';
+import Text from './components/Text';
 import {useToken} from './data/token';
 import Board from './screens/Board';
 import BoardList from './screens/BoardList';
@@ -16,6 +18,14 @@ const linking = {
     },
   },
 };
+
+function Card() {
+  return (
+    <ScreenBackground>
+      <Text>THIS IS MY CARD MODAL</Text>
+    </ScreenBackground>
+  );
+}
 
 const BoardStack = createNativeStackNavigator();
 const Boards = () => {
@@ -39,6 +49,9 @@ const Boards = () => {
             options={{title: 'My Boards'}}
           />
           <BoardStack.Screen name="Board" component={Board} />
+          <BoardStack.Group screenOptions={{presentation: 'formSheet'}}>
+            <BoardStack.Screen name="Card" component={Card} />
+          </BoardStack.Group>
         </>
       )}
     </BoardStack.Navigator>
