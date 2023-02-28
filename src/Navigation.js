@@ -38,7 +38,7 @@ const modalOptions = Platform.select({
     headerShown: false,
   },
   web: {
-    cardOverlayEnabled: true,
+    // cardOverlayEnabled: true,
     headerShown: false,
     presentation: 'transparentModal',
   },
