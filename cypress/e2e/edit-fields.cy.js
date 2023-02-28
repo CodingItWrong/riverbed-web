@@ -99,6 +99,9 @@ describe('edit fields', () => {
       cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
         data: [newCard],
       });
+      cy.intercept('GET', `http://cypressapi/cards/${newCard.id}?`, {
+        data: newCard,
+      });
       cy.contains('Add Card').click();
       const greeting = 'Hello, World!';
       cy.get(`[data-testid="text-input-${localGreetingField.id}"]`).type(
@@ -211,6 +214,9 @@ describe('edit fields', () => {
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
       data: [card],
     });
+    cy.intercept('GET', `http://cypressapi/cards/${card.id}?`, {
+      data: card,
+    });
 
     goToBoard();
 
@@ -317,6 +323,9 @@ describe('edit fields', () => {
     });
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
       data: [card],
+    });
+    cy.intercept('GET', `http://cypressapi/cards/${card.id}?`, {
+      data: card,
     });
 
     goToBoard();

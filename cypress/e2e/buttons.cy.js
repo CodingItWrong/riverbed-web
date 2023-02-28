@@ -92,6 +92,9 @@ describe('buttons', () => {
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
       data: [card],
     });
+    cy.intercept('GET', `http://cypressapi/cards/${card.id}?`, {
+      data: card,
+    });
 
     cy.signIn();
     cy.contains('Video Games').click();

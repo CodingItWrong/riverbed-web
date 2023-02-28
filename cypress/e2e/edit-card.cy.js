@@ -69,101 +69,122 @@ describe('edit cards', () => {
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
       data: [card],
     });
+    cy.intercept('GET', `http://cypressapi/cards/${card.id}?`, {
+      data: card,
+    });
 
     cy.signIn();
     cy.contains('Video Games').click();
 
-    cy.log('SHOW DETAIL');
-    cy.get(`[data-testid="column-${unreleasedColumn.id}"]`)
-      .contains(title)
-      .click();
-    cy.get(`[data-testid="text-input-${publisherField.id}"]`)
-      .invoke('val')
-      .should('eq', publisher);
-
-    cy.log('HIDE DETAIL');
-    cy.contains('Cancel').click();
-    cy.contains(publisher).should('not.exist');
-
-    cy.log('EDIT CARD');
-    const updatedCard = Factory.card(
-      {[titleField.id]: updatedTitle, [releasedAtField.id]: '2000-01-01'},
-      card,
-    );
-    cy.intercept('PATCH', `http://cypressapi/cards/${card.id}?`, {
-      success: true,
-    }).as('updateCard1');
-    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
-      data: [updatedCard],
+    cy.step('SHOW DETAIL', () => {
+      cy.get(`[data-testid="column-${unreleasedColumn.id}"]`)
+        .contains(title)
+        .click();
+      cy.get(`[data-testid="text-input-${publisherField.id}"]`)
+        .invoke('val')
+        .should('eq', publisher);
     });
 
-    cy.contains(card.attributes['field-values'][titleField.id]).click();
-    cy.get(`[data-testid=text-input-${titleField.id}]`)
-      .clear()
-      .type(updatedTitle);
-    cy.get(`[data-testid="date-input-${releasedAtField.id}"]`)
-      .clear()
-      .type('01/01/2000');
-    cy.contains('Save').click();
-
-    cy.wait('@updateCard1')
-      .its('request.body')
-      .should('deep.equal', {data: updatedCard});
-
-    cy.contains(card.attributes['field-values'][titleField.id]).should(
-      'not.exist',
-    );
-    cy.contains(card.attributes['field-values'][publisherField.id]).should(
-      'not.exist',
-    );
-    cy.get(`[data-testid=column-${releasedColumn.id}]`).contains(updatedTitle);
-    cy.contains('Jan 1, 2000');
-
-    cy.log('DELETE CARD');
-    cy.intercept('DELETE', `http://cypressapi/cards/${card.id}`, {
-      success: true,
-    }).as('deleteCard');
-    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
-      data: [],
+    cy.step('HIDE DETAIL', () => {
+      cy.contains('Cancel').click();
+      cy.contains(publisher).should('not.exist');
     });
 
-    cy.contains(updatedTitle).click();
-    cy.contains('Delete').click();
-    cy.wait('@deleteCard');
-    cy.contains(updatedTitle).should('not.exist');
-
-    cy.log('CREATE CARD');
-    const newCard = Factory.card();
-    cy.intercept('POST', 'http://cypressapi/cards?', {data: newCard}).as(
-      'createCard',
-    );
-    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
-      data: [newCard],
-    });
-    cy.contains('Add Card').click();
-    cy.wait('@createCard')
-      .its('request.body')
-      .should('deep.equal', {
-        data: {
-          type: 'cards',
-          relationships: {
-            board: {data: {type: 'boards', id: String(board.id)}},
-          },
-          attributes: {
-            'field-values': {},
-          },
-        },
+    cy.step('EDIT CARD', () => {
+      const updatedCard = Factory.card(
+        {[titleField.id]: updatedTitle, [releasedAtField.id]: '2000-01-01'},
+        card,
+      );
+      cy.intercept('PATCH', `http://cypressapi/cards/${card.id}?`, {
+        success: true,
+      }).as('updateCard1');
+      cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
+        data: [updatedCard],
       });
-    cy.get(`[data-testid=text-input-${titleField.id}]`).clear().type(newTitle);
-    const updatedNewCard = Factory.card({[titleField.id]: newTitle}, newCard);
-    cy.intercept('PATCH', `http://cypressapi/cards/${newCard.id}?`, {
-      success: true,
-    });
-    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
-      data: [updatedNewCard],
+      cy.intercept('GET', `http://cypressapi/cards/${card.id}?`, {
+        data: updatedCard,
+      });
+
+      cy.contains(card.attributes['field-values'][titleField.id]).click();
+      cy.get(`[data-testid=text-input-${titleField.id}]`)
+        .clear()
+        .type(updatedTitle);
+      cy.get(`[data-testid="date-input-${releasedAtField.id}"]`)
+        .clear()
+        .type('01/01/2000');
+      cy.contains('Save').click();
+
+      cy.wait('@updateCard1')
+        .its('request.body')
+        .should('deep.equal', {data: updatedCard});
+
+      cy.contains(card.attributes['field-values'][titleField.id]).should(
+        'not.exist',
+      );
+      cy.contains(card.attributes['field-values'][publisherField.id]).should(
+        'not.exist',
+      );
+      cy.get(`[data-testid=column-${releasedColumn.id}]`).contains(
+        updatedTitle,
+      );
+      cy.contains('Jan 1, 2000');
     });
 
-    cy.contains('Save').click();
-    cy.contains(newTitle);
+    cy.step('DELETE CARD', () => {
+      cy.intercept('DELETE', `http://cypressapi/cards/${card.id}`, {
+        success: true,
+      }).as('deleteCard');
+      cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
+        data: [],
+      });
+
+      cy.contains(updatedTitle).click();
+      cy.contains('Delete').click();
+      cy.wait('@deleteCard');
+      cy.contains(updatedTitle).should('not.exist');
+    });
+
+    cy.step('CREATE CARD', () => {
+      const newCard = Factory.card();
+      cy.intercept('POST', 'http://cypressapi/cards?', {data: newCard}).as(
+        'createCard',
+      );
+      cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
+        data: [newCard],
+      });
+      cy.intercept('GET', `http://cypressapi/cards/${newCard.id}?`, {
+        data: newCard,
+      });
+      cy.contains('Add Card').click();
+      cy.wait('@createCard')
+        .its('request.body')
+        .should('deep.equal', {
+          data: {
+            type: 'cards',
+            relationships: {
+              board: {data: {type: 'boards', id: String(board.id)}},
+            },
+            attributes: {
+              'field-values': {},
+            },
+          },
+        });
+      cy.get(`[data-testid=text-input-${titleField.id}]`)
+        .clear()
+        .type(newTitle);
+      const updatedNewCard = Factory.card({[titleField.id]: newTitle}, newCard);
+      cy.intercept('PATCH', `http://cypressapi/cards/${newCard.id}?`, {
+        success: true,
+      });
+      cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
+        data: [updatedNewCard],
+      });
+      cy.intercept('GET', `http://cypressapi/cards/${updatedNewCard.id}?`, {
+        data: updatedNewCard,
+      });
+
+      cy.contains('Save').click();
+      cy.contains(newTitle);
+    });
   });
 });

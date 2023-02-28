@@ -69,6 +69,9 @@ describe('edit buttons', () => {
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
       data: [greetingCard],
     });
+    cy.intercept('GET', `http://cypressapi/cards/${greetingCard.id}?`, {
+      data: greetingCard,
+    });
 
     goToBoard();
 
@@ -140,6 +143,9 @@ describe('edit buttons', () => {
       cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
         data: [quietedCard],
       });
+      cy.intercept('GET', `http://cypressapi/cards/${quietedCard.id}?`, {
+        data: quietedCard,
+      });
       cy.contains(buttonName).click();
       cy.wait('@updateCard')
         .its('request.body')
@@ -173,6 +179,9 @@ describe('edit buttons', () => {
     });
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
       data: [greetingCard],
+    });
+    cy.intercept('GET', `http://cypressapi/cards/${greetingCard.id}?`, {
+      data: greetingCard,
     });
 
     goToBoard();
@@ -289,6 +298,9 @@ describe('edit buttons', () => {
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
       data: [card],
     });
+    cy.intercept('GET', `http://cypressapi/cards/${card.id}?`, {
+      data: card,
+    });
 
     goToBoard();
 
@@ -352,6 +364,9 @@ describe('edit buttons', () => {
       cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
         data: [deferredCard],
       });
+      cy.intercept('GET', `http://cypressapi/cards/${deferredCard.id}?`, {
+        data: deferredCard,
+      });
       cy.contains(buttonName).click();
       cy.wait('@updateCard')
         .its('request.body')
@@ -380,6 +395,9 @@ describe('edit buttons', () => {
     });
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
       data: [card],
+    });
+    cy.intercept('GET', `http://cypressapi/cards/${card.id}?`, {
+      data: card,
     });
 
     goToBoard();
@@ -486,6 +504,9 @@ describe('edit buttons', () => {
       }).as('updateCard');
       cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
         data: [uncompletedCard],
+      });
+      cy.intercept('GET', `http://cypressapi/cards/${card.id}?`, {
+        data: uncompletedCard,
       });
       cy.contains(menuName).paperSelect(uncompleteItemName);
       cy.wait('@updateCard')
