@@ -40,7 +40,7 @@ export default function BoardList() {
   const sortedBoards = sortBy(boards, ['attributes.name']);
 
   function goToBoard(board) {
-    linkTo(`/board/${board.id}`);
+    linkTo(`/boards/${board.id}`);
   }
 
   const {mutate: createBoard, isLoading: isAdding} = useCreateBoard();

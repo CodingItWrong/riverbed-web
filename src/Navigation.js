@@ -1,8 +1,10 @@
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {TransitionPresets, createStackNavigator} from '@react-navigation/stack';
+import {useEffect} from 'react';
 import {Platform} from 'react-native';
 import NavigationBar from './components/NavigationBar';
+import {useCurrentBoard} from './data/currentBoard';
 import {useToken} from './data/token';
 import Board from './screens/Board';
 import BoardList from './screens/BoardList';
@@ -15,7 +17,7 @@ const linking = {
     screens: {
       BoardList: 'boards',
       BoardStack: {
-        path: 'board/:id',
+        path: 'boards/:boardId',
         initialRouteName: 'Board',
         screens: {
           Board: '/',
@@ -38,7 +40,14 @@ const modalOptions = Platform.select({
   },
 });
 const BoardStack = createStackNavigator();
-const Boards = () => {
+const Boards = ({route}) => {
+  const {boardId} = route.params;
+  const {setBoardId} = useCurrentBoard();
+
+  useEffect(() => {
+    setBoardId(boardId);
+  }, [setBoardId, boardId]);
+
   return (
     <BoardStack.Navigator
       screenOptions={{

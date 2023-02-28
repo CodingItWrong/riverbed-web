@@ -24,8 +24,10 @@ export function useBoards() {
 
 export function useBoard(id) {
   const boardClient = useBoardClient();
-  return useQuery(['boards', id], () =>
-    boardClient.find({id}).then(response => response.data),
+  return useQuery(
+    ['boards', id],
+    () => boardClient.find({id}).then(response => response.data),
+    {enabled: !!id},
   );
 }
 
