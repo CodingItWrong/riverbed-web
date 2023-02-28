@@ -1,4 +1,3 @@
-import {useNavigation} from '@react-navigation/native';
 import get from 'lodash.get';
 import sortBy from 'lodash.sortby';
 import {StyleSheet, View} from 'react-native';
@@ -26,7 +25,6 @@ export default function Column({
   onSelectCard,
   onChangeCard,
 }) {
-  const navigation = useNavigation();
   const insets = useSafeAreaInsets();
   const columnWidthStyle = useColumnStyle();
 
@@ -169,12 +167,7 @@ export default function Column({
                 <CardSummary
                   card={card}
                   board={board}
-                  onPress={() =>
-                    navigation.navigate('Card', {
-                      boardId: board.id,
-                      cardId: card.id,
-                    })
-                  }
+                  onPress={() => onSelectCard(card)}
                   style={sharedStyles.mb}
                 />
               </View>

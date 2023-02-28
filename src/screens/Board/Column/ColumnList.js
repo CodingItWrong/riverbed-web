@@ -1,3 +1,4 @@
+import {useNavigation} from '@react-navigation/native';
 import {useState} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {large, useBreakpoint} from '../../../breakpoints';
@@ -14,6 +15,7 @@ import Column from './Column';
 import EditColumnForm from './EditColumnForm';
 
 export default function ColumnList({board}) {
+  const navigation = useNavigation();
   const [selectedCardId, setSelectedCardId] = useState(null);
   const [selectedColumnId, setSelectedColumnId] = useState(null);
 
@@ -45,7 +47,10 @@ export default function ColumnList({board}) {
   }
 
   function showDetail(cardId) {
-    setSelectedCardId(cardId);
+    navigation.navigate('Card', {
+      boardId: board.id,
+      cardId: cardId,
+    });
   }
 
   function hideDetail() {
