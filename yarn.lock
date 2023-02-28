@@ -4890,21 +4890,21 @@ expo-crypto@~12.2.1:
   dependencies:
     base64-js "^1.3.0"
 
-expo-dev-client@~2.1.3:
-  version "2.1.3"
-  resolved "https://registry.yarnpkg.com/expo-dev-client/-/expo-dev-client-2.1.3.tgz#4f8f69fdb65124c6a1d4629a092d8127f5cb5c05"
-  integrity sha512-hKfnSkHV5zdzzI26jHBcmRpkd4Olu3T7t3E1zGQicEPNCoX7wMxIQWqUpYwHhvIMZXdJ8dsTG3pMeqUMQdV+Jw==
+expo-dev-client@~2.1.4:
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/expo-dev-client/-/expo-dev-client-2.1.4.tgz#215b5327dcd91a15df2d52e5446aab329c75dbe2"
+  integrity sha512-rzohZvq1lIm3wcFp0s0pTs3ihsKBA6MT/yaEgbL0DwuGZYSGn+iJomQD48xeRbWzoZjKLibYuR+zRvUrgN4yyg==
   dependencies:
-    expo-dev-launcher "2.1.3"
+    expo-dev-launcher "2.1.4"
     expo-dev-menu "2.1.3"
     expo-dev-menu-interface "1.1.1"
     expo-manifests "~0.5.0"
     expo-updates-interface "~0.9.0"
 
-expo-dev-launcher@2.1.3:
-  version "2.1.3"
-  resolved "https://registry.yarnpkg.com/expo-dev-launcher/-/expo-dev-launcher-2.1.3.tgz#3db73fca0084e6bc7b6d37b71ab5310e2f7b4d5e"
-  integrity sha512-Wssr3ArC34pKNJQNQtZ7PQUmKz8PnBGrJTUTUfkiPGPPB1yP+oiDas7DftOMOzkLvw61UoB6aXc8rdxcC8+6NA==
+expo-dev-launcher@2.1.4:
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/expo-dev-launcher/-/expo-dev-launcher-2.1.4.tgz#a2edab371818c28fcdb381120147b09a310a50a1"
+  integrity sha512-WwfhgE2tJWHn5/XPOpn6zbzT59c8YVW6xzGPnHPx0IYCIadROs/KnhkKCsWJGbgBZdeGDQotlzNv1Y6117eKeQ==
   dependencies:
     expo-dev-menu "2.1.3"
     resolve-from "^5.0.0"
