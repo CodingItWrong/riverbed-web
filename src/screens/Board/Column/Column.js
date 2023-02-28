@@ -1,7 +1,6 @@
 import get from 'lodash.get';
 import sortBy from 'lodash.sortby';
-import {StyleSheet, View} from 'react-native';
-import {KeyboardAwareSectionList} from 'react-native-keyboard-aware-scroll-view';
+import {SectionList, StyleSheet, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import IconButton from '../../../components/IconButton';
 import SectionHeader from '../../../components/SectionHeader';
@@ -106,8 +105,7 @@ export default function Column({column, board, onEdit, onSelectCard}) {
           accessibilityLabel="Edit Column"
         />
       </View>
-      <KeyboardAwareSectionList
-        extraScrollHeight={EXPERIMENTAL_EXTRA_SCROLL_HEIGHT}
+      <SectionList
         sections={cardGroups}
         keyExtractor={card => card.id}
         contentContainerStyle={[
@@ -154,9 +152,6 @@ export default function Column({column, board, onEdit, onSelectCard}) {
     </View>
   );
 }
-
-// Just guessed a value and it worked. Might be due to Add/title rows
-const EXPERIMENTAL_EXTRA_SCROLL_HEIGHT = 180;
 
 const styles = StyleSheet.create({
   columnWrapper: {
