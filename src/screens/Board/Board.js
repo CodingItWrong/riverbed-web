@@ -6,15 +6,15 @@ import ScreenBackground from '../../components/ScreenBackground';
 import sharedStyles from '../../components/sharedStyles';
 import {useBoard} from '../../data/boards';
 import {useCards} from '../../data/cards';
+import {useCurrentBoard} from '../../data/currentBoard';
 import ColumnList from './Column/ColumnList';
 import EditBoardForm from './EditBoardForm';
 import ElementList from './Element/ElementList';
 
-export default function Board({route}) {
-  const {id} = route.params;
-
+export default function Board(...args) {
+  const {boardId} = useCurrentBoard();
   const navigation = useNavigation();
-  const {data: board, isLoading: isLoadingBoard} = useBoard(id);
+  const {data: board, isLoading: isLoadingBoard} = useBoard(boardId);
 
   const {isFetching: isFetchingCards} = useCards(board);
 

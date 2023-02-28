@@ -42,10 +42,7 @@ export default function ColumnList({board}) {
     );
 
   function showDetail(cardId) {
-    navigation.navigate('Card', {
-      boardId: board.id,
-      cardId: cardId,
-    });
+    navigation.navigate('Card', {cardId});
   }
 
   const breakpoint = useBreakpoint();

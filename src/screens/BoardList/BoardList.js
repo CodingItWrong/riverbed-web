@@ -1,4 +1,4 @@
-import {useNavigation} from '@react-navigation/native';
+import {useLinkTo, useNavigation} from '@react-navigation/native';
 import sortBy from 'lodash.sortby';
 import {useCallback, useEffect} from 'react';
 import {FlatList, View} from 'react-native';
@@ -17,6 +17,7 @@ import {useToken} from '../../data/token';
 export default function BoardList() {
   const {clearToken} = useToken();
   const navigation = useNavigation();
+  const linkTo = useLinkTo();
 
   useEffect(() => {
     navigation.setOptions({
@@ -39,7 +40,7 @@ export default function BoardList() {
   const sortedBoards = sortBy(boards, ['attributes.name']);
 
   function goToBoard(board) {
-    navigation.navigate('Board', {id: board.id});
+    linkTo(`/boards/${board.id}`);
   }
 
   const {mutate: createBoard, isLoading: isAdding} = useCreateBoard();

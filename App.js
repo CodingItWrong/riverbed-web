@@ -11,6 +11,7 @@ import {en, registerTranslation} from 'react-native-paper-dates';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import Navigation from './src/Navigation';
 import TokenLoadBuffer from './src/components/TokenLoadBuffer';
+import {CurrentBoardProvider} from './src/data/currentBoard';
 import {TokenProvider} from './src/data/token';
 import useColorSchemeTheme from './src/theme/useColorSchemeTheme';
 
@@ -40,17 +41,19 @@ export default function App() {
   }, []);
 
   return (
-    <TokenProvider>
-      <TokenLoadBuffer>
-        <SafeAreaProvider>
-          <StatusBar />
-          <PaperProvider theme={theme}>
-            <QueryClientProvider client={queryClient}>
-              <Navigation />
-            </QueryClientProvider>
-          </PaperProvider>
-        </SafeAreaProvider>
-      </TokenLoadBuffer>
-    </TokenProvider>
+    <CurrentBoardProvider>
+      <TokenProvider>
+        <TokenLoadBuffer>
+          <SafeAreaProvider>
+            <StatusBar />
+            <PaperProvider theme={theme}>
+              <QueryClientProvider client={queryClient}>
+                <Navigation />
+              </QueryClientProvider>
+            </PaperProvider>
+          </SafeAreaProvider>
+        </TokenLoadBuffer>
+      </TokenProvider>
+    </CurrentBoardProvider>
   );
 }
