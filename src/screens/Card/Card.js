@@ -1,7 +1,8 @@
 import {useNavigation} from '@react-navigation/native';
-import {Platform, StyleSheet} from 'react-native';
+import {Platform, StyleSheet, View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Appbar} from 'react-native-paper';
+import Card from '../../components/Card';
 import CenterColumn from '../../components/CenterColumn';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import ScreenBackground from '../../components/ScreenBackground';
@@ -24,30 +25,42 @@ export default function CardScreen({route}) {
   return (
     <ScreenBackground>
       <CenterColumn>
-        {Platform.OS === 'ios' && (
-          <Appbar.BackAction
-            onPress={closeModal}
-            accessibilityLabel="Go back"
-          />
-        )}
-        {isLoading ? (
-          <LoadingIndicator />
-        ) : (
-          <KeyboardAwareScrollView contentContainerStyle={styles.container}>
-            <EditCardForm
-              card={card}
-              board={board}
-              onChange={closeModal}
-              onCancel={closeModal}
+        <CardWrapper>
+          {Platform.OS === 'ios' && (
+            <Appbar.BackAction
+              onPress={closeModal}
+              accessibilityLabel="Go back"
             />
-          </KeyboardAwareScrollView>
-        )}
+          )}
+          {isLoading ? (
+            <LoadingIndicator />
+          ) : (
+            <KeyboardAwareScrollView contentContainerStyle={styles.container}>
+              <EditCardForm
+                card={card}
+                board={board}
+                onChange={closeModal}
+                onCancel={closeModal}
+              />
+            </KeyboardAwareScrollView>
+          )}
+        </CardWrapper>
       </CenterColumn>
     </ScreenBackground>
   );
 }
 
+function CardWrapper({children}) {
+  return Platform.select({
+    web: <Card style={styles.wrapperCard}>{children}</Card>,
+    default: <View>{children}</View>,
+  });
+}
+
 const styles = StyleSheet.create({
+  wrapperCard: {
+    marginTop: 8,
+  },
   container: {
     padding: 16,
   },
