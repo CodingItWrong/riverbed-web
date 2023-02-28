@@ -36,12 +36,14 @@ export default function CardScreen({route}) {
             <LoadingIndicator />
           ) : (
             <KeyboardAwareScrollView contentContainerStyle={styles.container}>
-              <EditCardForm
-                card={card}
-                board={board}
-                onChange={closeModal}
-                onCancel={closeModal}
-              />
+              {card && (
+                <EditCardForm
+                  card={card}
+                  board={board}
+                  onChange={closeModal}
+                  onCancel={closeModal}
+                />
+              )}
             </KeyboardAwareScrollView>
           )}
         </CardWrapper>
