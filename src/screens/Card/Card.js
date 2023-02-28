@@ -2,7 +2,7 @@ import {useNavigation} from '@react-navigation/native';
 import {useCallback, useEffect, useState} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {Appbar} from 'react-native-paper';
+import {Appbar, Provider} from 'react-native-paper';
 import Card from '../../components/Card';
 import CenterModal from '../../components/CenterModal';
 import LoadingIndicator from '../../components/LoadingIndicator';
@@ -91,7 +91,9 @@ function CardWrapper({children, closeModal}) {
       </CenterModal>
     ),
     default: (
-      <ScreenBackground style={styles.container}>{children}</ScreenBackground>
+      <Provider>
+        <ScreenBackground style={styles.container}>{children}</ScreenBackground>
+      </Provider>
     ),
   });
 }
