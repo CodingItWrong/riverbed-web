@@ -1,9 +1,10 @@
 import {useNavigation} from '@react-navigation/native';
+import {StyleSheet} from 'react-native';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import ScreenBackground from '../../components/ScreenBackground';
 import {useBoard} from '../../data/boards';
 import {useCard} from '../../data/cards';
-import CardDetail from '../Board/Card/CardDetail';
+import EditCardForm from '../Board/Card/EditCardForm';
 
 export default function CardScreen({route}) {
   const {boardId, cardId} = route.params;
@@ -22,11 +23,11 @@ export default function CardScreen({route}) {
   }
 
   return (
-    <ScreenBackground>
+    <ScreenBackground style={styles.container}>
       {isLoading ? (
         <LoadingIndicator />
       ) : (
-        <CardDetail
+        <EditCardForm
           card={card}
           board={board}
           onChange={handleChange}
@@ -36,3 +37,9 @@ export default function CardScreen({route}) {
     </ScreenBackground>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 16,
+  },
+});
