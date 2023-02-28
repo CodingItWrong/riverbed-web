@@ -53,6 +53,7 @@ export default function ColumnList({board}) {
     alignItems: breakpoint === large ? 'flex-start' : 'stretch',
   };
   const columnWidthStyle = useColumnStyle();
+  const pagingEnabled = breakpoint !== large;
 
   const isLoading = isLoadingCards || isLoadingColumns || isLoadingElements;
   if (isLoading) {
@@ -77,7 +78,11 @@ export default function ColumnList({board}) {
           Add Card
         </Button>
       </View>
-      <ScrollView horizontal pagingEnabled style={sharedStyles.fullHeight}>
+      <ScrollView
+        horizontal
+        pagingEnabled={pagingEnabled}
+        style={sharedStyles.fullHeight}
+      >
         {sortedColumns.map((column, columnIndex) => {
           if (selectedColumnId === column.id) {
             return (
