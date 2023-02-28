@@ -15,21 +15,14 @@ export default function CardScreen({route}) {
   const {data: card, isLoading: isLoadingCard} = useCard({boardId, cardId});
   const isLoading = isLoadingBoard || isLoadingCard;
 
-  function handleChange() {
-    // TODO: actually save
-    navigation.goBack();
-  }
-  function handleCancel() {
+  function closeModal() {
     navigation.goBack();
   }
 
   return (
     <ScreenBackground style={styles.container}>
       {Platform.OS === 'ios' && (
-        <Appbar.BackAction
-          onPress={handleCancel}
-          accessibilityLabel="Go back"
-        />
+        <Appbar.BackAction onPress={closeModal} accessibilityLabel="Go back" />
       )}
       {isLoading ? (
         <LoadingIndicator />
@@ -37,8 +30,8 @@ export default function CardScreen({route}) {
         <EditCardForm
           card={card}
           board={board}
-          onChange={handleChange}
-          onCancel={handleCancel}
+          onChange={closeModal}
+          onCancel={closeModal}
         />
       )}
     </ScreenBackground>
