@@ -1,5 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import {Platform, StyleSheet} from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Appbar} from 'react-native-paper';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import ScreenBackground from '../../components/ScreenBackground';
@@ -20,19 +21,21 @@ export default function CardScreen({route}) {
   }
 
   return (
-    <ScreenBackground style={styles.container}>
+    <ScreenBackground>
       {Platform.OS === 'ios' && (
         <Appbar.BackAction onPress={closeModal} accessibilityLabel="Go back" />
       )}
       {isLoading ? (
         <LoadingIndicator />
       ) : (
-        <EditCardForm
-          card={card}
-          board={board}
-          onChange={closeModal}
-          onCancel={closeModal}
-        />
+        <KeyboardAwareScrollView contentContainerStyle={styles.container}>
+          <EditCardForm
+            card={card}
+            board={board}
+            onChange={closeModal}
+            onCancel={closeModal}
+          />
+        </KeyboardAwareScrollView>
       )}
     </ScreenBackground>
   );
