@@ -1,5 +1,6 @@
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {TransitionPresets, createStackNavigator} from '@react-navigation/stack';
 import {Platform} from 'react-native';
 import NavigationBar from './components/NavigationBar';
 import {useToken} from './data/token';
@@ -13,22 +14,58 @@ const linking = {
     initialRouteName: 'BoardList',
     screens: {
       BoardList: 'boards',
-      Board: 'boards/:id',
-      Card: 'boards/:boardId/cards/:cardId',
+      BoardStack: {
+        initialRouteName: 'Board',
+        screens: {
+          Board: 'boards/:id',
+          Card: 'boards/:boardId/cards/:cardId',
+        },
+      },
       SignIn: '/',
     },
   },
 };
 
-const BoardStack = createNativeStackNavigator();
+const modalOptions = Platform.select({
+  // TODO: android
+  ios: {
+    ...TransitionPresets.ModalPresentationIOS,
+  },
+  web: {
+    presentation: 'transparentModal',
+    cardOverlayEnabled: true,
+  },
+});
+const BoardStack = createStackNavigator();
 const Boards = () => {
-  const {isLoggedIn} = useToken();
   return (
     <BoardStack.Navigator
+      screenOptions={{
+        header: props => <NavigationBar {...props} />,
+      }}
+    >
+      <BoardStack.Screen name="Board" component={Board} />
+      <AppStack.Screen
+        name="Card"
+        component={Card}
+        options={{
+          headerShown: false,
+          ...modalOptions,
+        }}
+      />
+    </BoardStack.Navigator>
+  );
+};
+
+const AppStack = createNativeStackNavigator();
+const AppNav = () => {
+  const {isLoggedIn} = useToken();
+  return (
+    <AppStack.Navigator
       screenOptions={{header: props => <NavigationBar {...props} />}}
     >
       {!isLoggedIn && (
-        <BoardStack.Screen
+        <AppStack.Screen
           name="SignIn"
           component={SignIn}
           options={{title: 'ListApp'}}
@@ -36,27 +73,19 @@ const Boards = () => {
       )}
       {isLoggedIn && (
         <>
-          <BoardStack.Screen
+          <AppStack.Screen
             name="BoardList"
             component={BoardList}
             options={{title: 'My Boards 2/28'}}
           />
-          <BoardStack.Screen name="Board" component={Board} />
-          <BoardStack.Group
-            screenOptions={{
-              presentation: 'formSheet',
-              headerShown: Platform.OS !== 'ios',
-            }}
-          >
-            <BoardStack.Screen
-              name="Card"
-              component={Card}
-              options={{title: 'Card'}}
-            />
-          </BoardStack.Group>
+          <AppStack.Screen
+            name="BoardStack"
+            component={Boards}
+            options={{headerShown: false}}
+          />
         </>
       )}
-    </BoardStack.Navigator>
+    </AppStack.Navigator>
   );
 };
 
@@ -65,7 +94,7 @@ function NavigationContents() {
   // it calls the history API, and Safari and Firefox place limits on
   // the frequency of history API calls. (Safari: 100 times in 30
   // seconds).
-  return <Boards />;
+  return <AppNav />;
 }
 
 export default function Navigation() {

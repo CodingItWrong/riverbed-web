@@ -11,6 +11,7 @@ import EditBoardForm from './EditBoardForm';
 import ElementList from './Element/ElementList';
 
 export default function Board({route}) {
+  console.log('Board', {route});
   const {id} = route.params;
 
   const navigation = useNavigation();

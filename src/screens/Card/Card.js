@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import {Platform, StyleSheet, View} from 'react-native';
+import {Platform, Pressable, StyleSheet, View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Appbar} from 'react-native-paper';
 import Card from '../../components/Card';
@@ -23,39 +23,50 @@ export default function CardScreen({route}) {
   }
 
   return (
-    <ScreenBackground>
-      <CenterColumn>
-        <CardWrapper>
-          {Platform.OS === 'ios' && (
-            <Appbar.BackAction
-              onPress={closeModal}
-              accessibilityLabel="Go back"
+    <CardWrapper>
+      {Platform.OS === 'ios' && (
+        <Appbar.BackAction onPress={closeModal} accessibilityLabel="Go back" />
+      )}
+      {isLoading ? (
+        <LoadingIndicator />
+      ) : (
+        <KeyboardAwareScrollView contentContainerStyle={styles.container}>
+          {card && (
+            <EditCardForm
+              card={card}
+              board={board}
+              onChange={closeModal}
+              onCancel={closeModal}
             />
           )}
-          {isLoading ? (
-            <LoadingIndicator />
-          ) : (
-            <KeyboardAwareScrollView contentContainerStyle={styles.container}>
-              {card && (
-                <EditCardForm
-                  card={card}
-                  board={board}
-                  onChange={closeModal}
-                  onCancel={closeModal}
-                />
-              )}
-            </KeyboardAwareScrollView>
-          )}
-        </CardWrapper>
-      </CenterColumn>
-    </ScreenBackground>
+        </KeyboardAwareScrollView>
+      )}
+    </CardWrapper>
   );
 }
 
 function CardWrapper({children}) {
+  const navigation = useNavigation();
   return Platform.select({
-    web: <Card style={styles.wrapperCard}>{children}</Card>,
-    default: <View>{children}</View>,
+    web: (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Pressable
+          style={[
+            StyleSheet.absoluteFill,
+            {backgroundColor: 'rgba(0, 0, 0, 0.5)'},
+          ]}
+          onPress={navigation.goBack}
+        />
+        <Card style={styles.wrapperCard}>{children}</Card>
+      </View>
+    ),
+    default: <ScreenBackground>{children}</ScreenBackground>,
   });
 }
 
