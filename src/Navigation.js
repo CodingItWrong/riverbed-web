@@ -1,6 +1,5 @@
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {TransitionPresets, createStackNavigator} from '@react-navigation/stack';
 import {useEffect} from 'react';
 import {Platform} from 'react-native';
 import NavigationBar from './components/NavigationBar';
@@ -30,20 +29,15 @@ const linking = {
 };
 
 const modalOptions = Platform.select({
-  android: {
-    ...TransitionPresets.ModalTransition,
-  },
   ios: {
-    ...TransitionPresets.ModalTransition,
     headerShown: false,
   },
   web: {
-    // cardOverlayEnabled: true,
     headerShown: false,
     presentation: 'transparentModal',
   },
 });
-const BoardStack = createStackNavigator();
+const BoardStack = createNativeStackNavigator();
 const Boards = ({route}) => {
   const {boardId} = route.params;
   const {setBoardId} = useCurrentBoard();
@@ -64,6 +58,7 @@ const Boards = ({route}) => {
         component={Card}
         options={{
           title: 'Card',
+          presentation: 'formSheet',
           ...modalOptions,
         }}
       />
