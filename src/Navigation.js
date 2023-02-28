@@ -30,13 +30,17 @@ const linking = {
 };
 
 const modalOptions = Platform.select({
-  // TODO: android
+  android: {
+    ...TransitionPresets.ModalTransition,
+  },
   ios: {
-    ...TransitionPresets.ModalPresentationIOS,
+    ...TransitionPresets.ModalTransition,
+    headerShown: false,
   },
   web: {
-    presentation: 'transparentModal',
     cardOverlayEnabled: true,
+    headerShown: false,
+    presentation: 'transparentModal',
   },
 });
 const BoardStack = createStackNavigator();
@@ -59,7 +63,7 @@ const Boards = ({route}) => {
         name="Card"
         component={Card}
         options={{
-          headerShown: false,
+          title: 'Card',
           ...modalOptions,
         }}
       />
