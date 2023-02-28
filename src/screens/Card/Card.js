@@ -1,8 +1,9 @@
 import {useNavigation} from '@react-navigation/native';
-import {Platform, Pressable, StyleSheet, View} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Appbar} from 'react-native-paper';
 import Card from '../../components/Card';
+import CenterModal from '../../components/CenterModal';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import ScreenBackground from '../../components/ScreenBackground';
 import {useBoard} from '../../data/boards';
@@ -24,7 +25,7 @@ export default function CardScreen({route}) {
   }
 
   return (
-    <CardWrapper>
+    <CardWrapper closeModal={closeModal}>
       {Platform.OS === 'ios' && (
         <Appbar.BackAction onPress={closeModal} accessibilityLabel="Go back" />
       )}
@@ -46,26 +47,12 @@ export default function CardScreen({route}) {
   );
 }
 
-function CardWrapper({children}) {
-  const navigation = useNavigation();
+function CardWrapper({children, closeModal}) {
   return Platform.select({
     web: (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <Pressable
-          style={[
-            StyleSheet.absoluteFill,
-            {backgroundColor: 'rgba(0, 0, 0, 0.5)'},
-          ]}
-          onPress={navigation.goBack}
-        />
+      <CenterModal onDismiss={closeModal}>
         <Card style={styles.wrapperCard}>{children}</Card>
-      </View>
+      </CenterModal>
     ),
     default: <ScreenBackground>{children}</ScreenBackground>,
   });
