@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {KeyboardAwareFlatList} from 'react-native-keyboard-aware-scroll-view';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Button from '../../../components/Button';
@@ -7,14 +7,14 @@ import DropdownMenu from '../../../components/DropdownMenu';
 import Field from '../../../components/Field';
 import IconButton from '../../../components/IconButton';
 import Text from '../../../components/Text';
-import sharedStyles, {useColumnStyle} from '../../../components/sharedStyles';
+import sharedStyles from '../../../components/sharedStyles';
 import {useBoardElements, useCreateElement} from '../../../data/elements';
 import ELEMENT_TYPES from '../../../enums/elementTypes';
 import FIELD_DATA_TYPES from '../../../enums/fieldDataTypes';
 import sortElements from '../../../utils/sortByDisplayOrder';
 import EditElementForm from './EditElementForm';
 
-export default function ElementList({board, onClose}) {
+export default function ElementList({board}) {
   const insets = useSafeAreaInsets();
   const [selectedElementId, setSelectedElementId] = useState(null);
 
@@ -47,20 +47,15 @@ export default function ElementList({board, onClose}) {
     setSelectedElementId(null);
   }
 
-  const columnStyle = useColumnStyle();
-
   return (
-    <View style={[columnStyle, sharedStyles.fullHeight]}>
-      <Button onPress={onClose} style={sharedStyles.mt}>
-        Done Editing Elements
-      </Button>
+    <View style={[sharedStyles.fullHeight]}>
       <KeyboardAwareFlatList
         extraScrollHeight={EXPERIMENTAL_EXTRA_SCROLL_HEIGHT}
         data={sortedElements}
         keyExtractor={element => element.id}
         contentContainerStyle={{paddingBottom: insets.bottom}}
         scrollIndicatorInsets={{bottom: insets.bottom}}
-        renderItem={({item: element}) =>
+        renderItem={({item: element, index: elementIndex}) =>
           selectedElementId === element.id ? (
             <EditElementForm
               element={element}
@@ -68,13 +63,14 @@ export default function ElementList({board, onClose}) {
               onSave={onChange}
               onDelete={onChange}
               onCancel={hideEditForm}
-              style={sharedStyles.mt}
+              style={elementIndex > 0 && sharedStyles.mt}
             />
           ) : (
             <EditableElement
               element={element}
               onEdit={() => setSelectedElementId(element.id)}
               testID={`element-${element.id}`}
+              style={elementIndex > 0 && sharedStyles.mt}
             />
           )
         }
@@ -105,7 +101,7 @@ export default function ElementList({board, onClose}) {
 
 const EXPERIMENTAL_EXTRA_SCROLL_HEIGHT = 120;
 
-function EditableElement({element, onEdit, testID}) {
+function EditableElement({element, onEdit, testID, style}) {
   const {name, 'element-type': elementType} = element.attributes;
   const elementTypeObject = Object.values(ELEMENT_TYPES).find(
     et => et.key === elementType,
@@ -128,13 +124,20 @@ function EditableElement({element, onEdit, testID}) {
   // TODO: don't assume label and key are the same
 
   return (
-    <View style={[sharedStyles.row, sharedStyles.mt]} testID={testID}>
+    <View style={[sharedStyles.row, style]} testID={testID}>
       <View style={sharedStyles.fill}>{disabledElement()}</View>
       <IconButton
         icon="pencil"
         accessibilityLabel={`Edit ${name} ${elementTypeObject.label}`}
         onPress={onEdit}
+        style={styles.editIcon}
       />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  editIcon: {
+    marginVertical: 0,
+  },
+});

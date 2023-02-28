@@ -76,6 +76,7 @@ describe('edit buttons', () => {
     goToBoard();
 
     cy.step('CREATE BUTTON', () => {
+      cy.get(`[data-testid=card-${greetingCard.id}`).click();
       cy.get('[aria-label="Edit Elements"]').click();
 
       cy.intercept('POST', 'http://cypressapi/elements?', {
@@ -127,12 +128,10 @@ describe('edit buttons', () => {
         .its('request.body')
         .should('deep.equal', {data: greetButton});
       cy.contains(buttonName);
-      cy.contains('Done Editing Elements').click();
+      cy.get('[aria-label="Done Editing Elements"]').click();
     });
 
     cy.step('CONFIRM BUTTON ACTION WORKS', () => {
-      cy.contains(greetingText).click();
-
       const quietedCard = Factory.card(
         {[greetingField.id]: null},
         greetingCard,
@@ -189,6 +188,7 @@ describe('edit buttons', () => {
     const updatedButtonName = 'Shoosh';
 
     cy.step('EDIT BUTTON', () => {
+      cy.get(`[data-testid=card-${greetingCard.id}`).click();
       cy.get('[aria-label="Edit Elements"]').click();
       cy.get(`[aria-label="Edit ${buttonName} button"]`).click();
 
@@ -218,8 +218,7 @@ describe('edit buttons', () => {
     });
 
     cy.step('CONFIRM BUTTON EDITED ON CARD', () => {
-      cy.contains('Done Editing Elements').click();
-      cy.get(`[data-testid="card-${greetingCard.id}"]`).click();
+      cy.get('[aria-label="Done Editing Elements"]').click();
       cy.contains(updatedButtonName);
     });
   });
@@ -245,9 +244,13 @@ describe('edit buttons', () => {
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
       data: [greetingCard],
     });
+    cy.intercept('GET', `http://cypressapi/cards/${greetingCard.id}?`, {
+      data: greetingCard,
+    });
 
     goToBoard();
 
+    cy.get(`[data-testid=card-${greetingCard.id}`).click();
     cy.get('[aria-label="Edit Elements"]').click();
 
     cy.step('DELETE BUTTON', () => {
@@ -268,8 +271,7 @@ describe('edit buttons', () => {
     });
 
     cy.step('CONFIRM BUTTON REMOVED FROM CARD', () => {
-      cy.contains('Done Editing Elements').click();
-      cy.get(`[data-testid="card-${greetingCard.id}"]`).click();
+      cy.get('[aria-label="Done Editing Elements"]').click();
       cy.contains(buttonName).should('not.exist');
     });
   });
@@ -305,6 +307,7 @@ describe('edit buttons', () => {
     goToBoard();
 
     cy.step('CREATE BUTTON', () => {
+      cy.get(`[data-testid=card-${card.id}`).click();
       cy.get('[aria-label="Edit Elements"]').click();
 
       cy.intercept('POST', 'http://cypressapi/elements?', {
@@ -348,12 +351,10 @@ describe('edit buttons', () => {
         .its('request.body')
         .should('deep.equal', {data: deferButton});
       cy.contains(buttonName);
-      cy.contains('Done Editing Elements').click();
+      cy.get('[aria-label="Done Editing Elements"]').click();
     });
 
     cy.step('CONFIRM BUTTON ACTION WORKS', () => {
-      cy.contains('Tue Jan 1, 2999').click();
-
       const deferredCard = Factory.card(
         {[greetedAtField.id]: '2999-01-03'},
         card,
@@ -403,6 +404,7 @@ describe('edit buttons', () => {
     goToBoard();
 
     cy.step('CREATE BUTTON MENU', () => {
+      cy.get(`[data-testid=card-${card.id}]`).click();
       cy.get('[aria-label="Edit Elements"]').click();
 
       cy.intercept('POST', 'http://cypressapi/elements?', {
@@ -491,13 +493,11 @@ describe('edit buttons', () => {
       cy.wait('@updateMenu')
         .its('request.body')
         .should('deep.equal', {data: updatedMenu});
-      // TODO: do I need a wait here?
-      cy.contains('Done Editing Elements').click();
+      cy.contains('Save Button').should('not.exist');
+      cy.get('[aria-label="Done Editing Elements"]').click();
     });
 
     cy.step('CONFIRM A BUTTON WORKS', () => {
-      cy.get(`[data-testid=card-${card.id}]`).click();
-
       const uncompletedCard = Factory.card({[completedAtField.id]: null}, card);
       cy.intercept('PATCH', `http://cypressapi/cards/${card.id}?`, {
         success: true,

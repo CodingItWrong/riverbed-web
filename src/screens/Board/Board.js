@@ -1,6 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
 import {useEffect, useState} from 'react';
-import IconButton from '../../components/IconButton';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import ScreenBackground from '../../components/ScreenBackground';
 import sharedStyles from '../../components/sharedStyles';
@@ -9,7 +8,6 @@ import {useCards} from '../../data/cards';
 import {useCurrentBoard} from '../../data/currentBoard';
 import ColumnList from './Column/ColumnList';
 import EditBoardForm from './EditBoardForm';
-import ElementList from './Element/ElementList';
 
 export default function Board(...args) {
   const {boardId} = useCurrentBoard();
@@ -18,37 +16,17 @@ export default function Board(...args) {
 
   const {isFetching: isFetchingCards} = useCards(board);
 
-  // TODO: make these an enum
   const [editingBoard, setEditingBoard] = useState(false);
-  const [editingElements, setEditingElements] = useState(false);
 
   useEffect(() => {
     if (!isLoadingBoard) {
       navigation.setOptions({
         title: board?.attributes?.name ?? '(unnamed board)',
         onTitlePress: () => setEditingBoard(true),
-        headerRight: () => {
-          if (!(editingBoard || editingElements)) {
-            return (
-              <IconButton
-                icon="pencil"
-                accessibilityLabel="Edit Elements"
-                onPress={() => setEditingElements(true)}
-              />
-            );
-          }
-        },
         isFetching: isFetchingCards,
       });
     }
-  }, [
-    navigation,
-    board,
-    isLoadingBoard,
-    isFetchingCards,
-    editingBoard,
-    editingElements,
-  ]);
+  }, [navigation, board, isLoadingBoard, isFetchingCards, editingBoard]);
 
   function renderContents() {
     if (editingBoard) {
@@ -59,10 +37,6 @@ export default function Board(...args) {
           onDelete={() => navigation.goBack()}
           onCancel={() => setEditingBoard(false)}
         />
-      );
-    } else if (editingElements) {
-      return (
-        <ElementList board={board} onClose={() => setEditingElements(false)} />
       );
     } else {
       return <ColumnList board={board} />;

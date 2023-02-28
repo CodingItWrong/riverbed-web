@@ -46,6 +46,7 @@ describe('edit fields', () => {
       },
       newField,
     );
+    const card = Factory.card({});
 
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
       data: [],
@@ -53,10 +54,17 @@ describe('edit fields', () => {
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
       data: [],
     });
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
+      data: [card],
+    });
+    cy.intercept('GET', `http://cypressapi/cards/${card.id}?`, {
+      data: card,
+    });
 
     goToBoard();
 
     cy.step('ADD FIELD', () => {
+      cy.get(`[data-testid=card-${card.id}`).click();
       cy.get('[aria-label="Edit Elements"]').click();
 
       cy.intercept('POST', 'http://cypressapi/elements?', {
@@ -88,26 +96,15 @@ describe('edit fields', () => {
         .its('request.body')
         .should('deep.equal', {data: localGreetingField});
       cy.contains(fieldName);
-      cy.contains('Done Editing Elements').click();
+      cy.get('[aria-label="Done Editing Elements"]').click();
     });
 
     cy.step('CONFIRM CARD HAS FIELD', () => {
-      const newCard = Factory.card({});
-      cy.intercept('POST', 'http://cypressapi/cards?', {
-        data: newCard,
-      });
-      cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
-        data: [newCard],
-      });
-      cy.intercept('GET', `http://cypressapi/cards/${newCard.id}?`, {
-        data: newCard,
-      });
-      cy.contains('Add Card').click();
       const greeting = 'Hello, World!';
       cy.get(`[data-testid="text-input-${localGreetingField.id}"]`).type(
         'Hello, World!',
       );
-      cy.intercept('PATCH', `http://cypressapi/cards/${newCard.id}?`, {
+      cy.intercept('PATCH', `http://cypressapi/cards/${card.id}?`, {
         success: true,
       }).as('updateField');
       cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
@@ -123,8 +120,12 @@ describe('edit fields', () => {
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
       data: [greetingField],
     });
+    const card = Factory.card({});
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
-      data: [],
+      data: [card],
+    });
+    cy.intercept('GET', `http://cypressapi/cards/${card.id}?`, {
+      data: card,
     });
 
     goToBoard();
@@ -133,6 +134,7 @@ describe('edit fields', () => {
       success: true,
     }).as('updateField');
 
+    cy.get(`[data-testid=card-${card.id}]`).click();
     cy.get('[aria-label="Edit Elements"]').click();
 
     cy.get(`[aria-label="Edit ${greetingFieldName} field"]`).click();
@@ -165,14 +167,19 @@ describe('edit fields', () => {
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
       data: [greetingField],
     });
+    const card = Factory.card({});
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
-      data: [],
+      data: [card],
+    });
+    cy.intercept('GET', `http://cypressapi/cards/${card.id}?`, {
+      data: card,
     });
 
     goToBoard();
 
     cy.log('DELETE FIELD');
 
+    cy.get(`[data-testid=card-${card.id}]`).click();
     cy.get('[aria-label="Edit Elements"]').click();
 
     cy.get(`[aria-label="Edit ${greetingFieldName} field"]`).click();
@@ -221,6 +228,7 @@ describe('edit fields', () => {
     goToBoard();
 
     cy.step('ADD FIELD', () => {
+      cy.get(`[data-testid=card-${card.id}]`).click();
       cy.get('[aria-label="Edit Elements"]').click();
 
       cy.intercept('POST', 'http://cypressapi/elements?', {
@@ -269,11 +277,10 @@ describe('edit fields', () => {
           ]);
           expect(choices.map(c => c.label)).to.deep.equal(['Red', 'Green']);
         });
-      cy.contains('Done Editing Elements').click();
+      cy.get('[aria-label="Done Editing Elements"]').click();
     });
 
     cy.step('CONFIRM CARD HAS CHOICES', () => {
-      cy.get(`[data-testid="card-${card.id}"]`).click();
       cy.contains('Color: (choose)').paperSelect('Green');
       cy.contains('Color: Green');
 
@@ -344,6 +351,7 @@ describe('edit fields', () => {
     ]);
     cy.contains('Cancel').click();
 
+    cy.get(`[data-testid=card-${card.id}]`).click();
     cy.get('[aria-label="Edit Elements"]').click();
 
     // confirm initial order in Edit Elements form
@@ -388,7 +396,7 @@ describe('edit fields', () => {
       `element-${fieldA.id}`,
     ]);
 
-    cy.contains('Done Editing Elements').click();
+    cy.get('[aria-label="Done Editing Elements"]').click();
 
     // confirm new field order in card summary
     cy.assertContentsOrder('[data-testid="field-value"]', [
@@ -397,7 +405,6 @@ describe('edit fields', () => {
     ]);
 
     // confirm new order in card detail
-    cy.contains('Value A').click();
     cy.assertTestIdOrder('[data-testid^="element-"]', [
       `element-${fieldB.id}`,
       `element-${fieldA.id}`,
@@ -416,13 +423,18 @@ describe('edit fields', () => {
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
       data: [dateField, dateTimeField],
     });
+    const card = Factory.card({});
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
-      data: [],
+      data: [card],
+    });
+    cy.intercept('GET', `http://cypressapi/cards/${card.id}?`, {
+      data: card,
     });
 
     goToBoard();
 
     cy.step('EDIT ELEMENTS', () => {
+      cy.get(`[data-testid=card-${card.id}]`).click();
       cy.get('[aria-label="Edit Elements"]').click();
     });
 
@@ -469,7 +481,8 @@ describe('edit fields', () => {
     });
 
     cy.step('FINISH EDITING ELEMENTS', () => {
-      cy.contains('Done Editing Elements').click();
+      cy.get('[aria-label="Done Editing Elements"]').click();
+      cy.contains('Cancel').click();
     });
 
     const nowString = '2023-01-01T12:00:00.000Z';
