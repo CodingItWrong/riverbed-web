@@ -1,5 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
+import {Appbar} from 'react-native-paper';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import ScreenBackground from '../../components/ScreenBackground';
 import {useBoard} from '../../data/boards';
@@ -24,6 +25,12 @@ export default function CardScreen({route}) {
 
   return (
     <ScreenBackground style={styles.container}>
+      {Platform.OS === 'ios' && (
+        <Appbar.BackAction
+          onPress={handleCancel}
+          accessibilityLabel="Go back"
+        />
+      )}
       {isLoading ? (
         <LoadingIndicator />
       ) : (
