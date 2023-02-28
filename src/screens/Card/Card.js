@@ -1,5 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
-import {Platform, StyleSheet} from 'react-native';
+import {useCallback, useEffect, useState} from 'react';
+import {Platform, StyleSheet, View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Appbar} from 'react-native-paper';
 import Card from '../../components/Card';
@@ -10,11 +11,13 @@ import {useBoard} from '../../data/boards';
 import {useCard} from '../../data/cards';
 import {useCurrentBoard} from '../../data/currentBoard';
 import EditCardForm from '../Board/Card/EditCardForm';
+import ElementList from '../Board/Element/ElementList';
 
 export default function CardScreen({route}) {
   const {boardId} = useCurrentBoard();
   const {cardId} = route.params;
   const navigation = useNavigation();
+  const [isEditingElements, setIsEditingElements] = useState(false);
 
   const {data: board, isLoading: isLoadingBoard} = useBoard(boardId);
   const {data: card, isLoading: isLoadingCard} = useCard({boardId, cardId});
@@ -27,9 +30,11 @@ export default function CardScreen({route}) {
   function renderContents() {
     if (isLoading) {
       return <LoadingIndicator />;
+    } else if (isEditingElements) {
+      return <ElementList board={board} />;
     } else {
       return (
-        <KeyboardAwareScrollView contentContainerStyle={styles.container}>
+        <KeyboardAwareScrollView>
           {card && (
             <EditCardForm
               card={card}
@@ -43,10 +48,33 @@ export default function CardScreen({route}) {
     }
   }
 
+  const renderEditElementsButton = useCallback(
+    () => (
+      <Appbar.Action
+        accessibilityLabel="Edit Elements"
+        icon="wrench"
+        onPress={() => setIsEditingElements(on => !on)}
+      />
+    ),
+    [],
+  );
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => renderEditElementsButton(),
+    });
+  }, [navigation, renderEditElementsButton]);
+
   return (
     <CardWrapper closeModal={closeModal}>
-      {Platform.OS === 'ios' && (
-        <Appbar.BackAction onPress={closeModal} accessibilityLabel="Go back" />
+      {Platform.OS !== 'android' && (
+        <View style={styles.headerRow}>
+          <Appbar.BackAction
+            onPress={closeModal}
+            accessibilityLabel="Go back"
+          />
+          {renderEditElementsButton()}
+        </View>
       )}
       {renderContents()}
     </CardWrapper>
@@ -60,11 +88,17 @@ function CardWrapper({children, closeModal}) {
         <Card style={styles.wrapperCard}>{children}</Card>
       </CenterModal>
     ),
-    default: <ScreenBackground>{children}</ScreenBackground>,
+    default: (
+      <ScreenBackground style={styles.container}>{children}</ScreenBackground>
+    ),
   });
 }
 
 const styles = StyleSheet.create({
+  headerRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   wrapperCard: {
     marginTop: 8,
   },
