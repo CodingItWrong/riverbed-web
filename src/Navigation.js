@@ -2,11 +2,10 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {Platform} from 'react-native';
 import NavigationBar from './components/NavigationBar';
-import ScreenBackground from './components/ScreenBackground';
-import Text from './components/Text';
 import {useToken} from './data/token';
 import Board from './screens/Board';
 import BoardList from './screens/BoardList';
+import Card from './screens/Card';
 import SignIn from './screens/SignIn';
 
 const linking = {
@@ -15,18 +14,11 @@ const linking = {
     screens: {
       BoardList: 'boards',
       Board: 'boards/:id',
+      Card: 'boards/:boardId/cards/:cardId',
       SignIn: '/',
     },
   },
 };
-
-function Card() {
-  return (
-    <ScreenBackground>
-      <Text>THIS IS MY CARD MODAL</Text>
-    </ScreenBackground>
-  );
-}
 
 const BoardStack = createNativeStackNavigator();
 const Boards = () => {

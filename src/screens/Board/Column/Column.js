@@ -169,7 +169,12 @@ export default function Column({
                 <CardSummary
                   card={card}
                   board={board}
-                  onPress={() => navigation.navigate('Card')}
+                  onPress={() =>
+                    navigation.navigate('Card', {
+                      boardId: board.id,
+                      cardId: card.id,
+                    })
+                  }
                   style={sharedStyles.mb}
                 />
               </View>
