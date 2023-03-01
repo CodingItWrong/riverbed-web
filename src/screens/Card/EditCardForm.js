@@ -1,6 +1,5 @@
 import {useState} from 'react';
 import {View} from 'react-native';
-import Button from '../../components/Button';
 import ButtonElement from '../../components/ButtonElement';
 import ButtonMenuElement from '../../components/ButtonMenuElement';
 import ErrorMessage from '../../components/ErrorMessage';
