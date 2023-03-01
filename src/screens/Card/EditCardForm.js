@@ -138,7 +138,6 @@ export default function EditCardForm({card, board, onClose}) {
                 onPerformAction={() =>
                   handlePerformAction(element.attributes.action)
                 }
-                disabled={isLoading}
                 style={elementIndex > 0 && sharedStyles.mt}
               />
             );
@@ -150,7 +149,6 @@ export default function EditCardForm({card, board, onClose}) {
                 onPerformActionForItem={menuItem =>
                   handlePerformAction(menuItem.action)
                 }
-                disabled={isLoading}
                 style={elementIndex > 0 && sharedStyles.mt}
               />
             );
@@ -163,20 +161,15 @@ export default function EditCardForm({card, board, onClose}) {
         }
       })}
       <ErrorMessage>{getErrorMessage()}</ErrorMessage>
-      <Button onPress={onClose} disabled={isLoading} style={sharedStyles.mt}>
+      <Button onPress={onClose} style={sharedStyles.mt}>
         Close
       </Button>
-      <Button
-        onPress={handleDeleteCard}
-        disabled={isLoading}
-        style={sharedStyles.mt}
-      >
+      <Button onPress={handleDeleteCard} style={sharedStyles.mt}>
         Delete
       </Button>
       <Button
         mode="primary"
         onPress={() => handleUpdateCard()}
-        disabled={isLoading}
         style={sharedStyles.mt}
       >
         Save
