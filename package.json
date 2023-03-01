@@ -22,7 +22,7 @@
     "@react-navigation/native-stack": "^6.9.12",
     "@tanstack/react-query": "^4.24.9",
     "dayjs": "^1.11.7",
-    "expo": "^48.0.0",
+    "expo": "^48.0.4",
     "expo-crypto": "~12.2.1",
     "expo-dev-client": "~2.1.4",
     "expo-device": "~5.2.1",
