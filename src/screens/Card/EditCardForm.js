@@ -103,6 +103,7 @@ export default function EditCardForm({card, board, onClose}) {
 
   return (
     <View>
+      <ErrorMessage>{getErrorMessage()}</ErrorMessage>
       {elementsToShow.map((element, elementIndex) => {
         switch (element.attributes['element-type']) {
           case ELEMENT_TYPES.FIELD.key:
@@ -148,7 +149,6 @@ export default function EditCardForm({card, board, onClose}) {
             );
         }
       })}
-      <ErrorMessage>{getErrorMessage()}</ErrorMessage>
     </View>
   );
 }
