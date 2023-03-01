@@ -10,7 +10,7 @@ import LoadingIndicator from '../../components/LoadingIndicator';
 import ScreenBackground from '../../components/ScreenBackground';
 import sharedStyles from '../../components/sharedStyles';
 import {useBoard} from '../../data/boards';
-import {useCard, useDeleteCard, useRefreshCards} from '../../data/cards';
+import {useCard, useDeleteCard} from '../../data/cards';
 import {useCurrentBoard} from '../../data/currentBoard';
 import ElementList from '../Board/Element/ElementList';
 import EditCardForm from './EditCardForm';
@@ -24,13 +24,11 @@ export default function CardScreen({route}) {
 
   const {data: board, isLoading: isLoadingBoard} = useBoard(boardId);
   const {data: card, isLoading: isLoadingCard} = useCard({boardId, cardId});
-  const refreshCards = useRefreshCards(board);
   const isLoading = isLoadingBoard || isLoadingCard;
 
   const closeModal = useCallback(() => {
-    refreshCards();
     navigation.goBack();
-  }, [navigation, refreshCards]);
+  }, [navigation]);
 
   const {mutate: deleteCard} = useDeleteCard(card, board);
   const handleDeleteCard = useCallback(
