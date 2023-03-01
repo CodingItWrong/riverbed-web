@@ -25,7 +25,14 @@ const MODAL_SHOWN = {
   TIME: 'TIME',
 };
 
-function DateTimeEditorComponent({field, value, setValue, style, disabled}) {
+function DateTimeEditorComponent({
+  field,
+  value,
+  setValue,
+  onBlur,
+  style,
+  disabled,
+}) {
   const [modalShown, setModalShown] = useState(MODAL_SHOWN.NONE);
 
   const date = dateUtils.serverStringToObject(value);
@@ -43,6 +50,7 @@ function DateTimeEditorComponent({field, value, setValue, style, disabled}) {
     const resultString = dateTimeUtils.objectToServerString(result);
     setValue(resultString);
     closeModal();
+    onBlur();
   }
 
   function handleChangeTime({hours, minutes}) {
@@ -50,6 +58,7 @@ function DateTimeEditorComponent({field, value, setValue, style, disabled}) {
       dateTimeUtils.setTime({dateObject: date, hour: hours, minute: minutes}),
     );
     closeModal();
+    onBlur();
   }
 
   // TODO: how to show field label

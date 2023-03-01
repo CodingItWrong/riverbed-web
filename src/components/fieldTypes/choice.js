@@ -15,6 +15,7 @@ function ChoiceEditorComponent({
   field,
   value,
   setValue,
+  onBlur,
   readOnly,
   disabled,
   style,
@@ -25,7 +26,10 @@ function ChoiceEditorComponent({
       fieldLabel={name}
       emptyLabel="(choose)"
       value={choices?.find(c => c.id === value)}
-      onValueChange={choice => setValue(choice?.id)}
+      onValueChange={choice => {
+        setValue(choice?.id);
+        onBlur();
+      }}
       options={choices}
       keyExtractor={choice => choice.id}
       labelExtractor={choice => choice.label}

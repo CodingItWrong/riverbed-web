@@ -15,6 +15,7 @@ function DateEditorComponent({
   field,
   value,
   setValue,
+  onBlur,
   readOnly,
   disabled,
   style,
@@ -27,6 +28,7 @@ function DateEditorComponent({
       value={dateUtils.serverStringToObject(value)}
       onChange={newDate => setValue(dateUtils.objectToServerString(newDate))}
       onChangeText={newText => newText === '' && setValue(newText)}
+      onBlur={onBlur}
       disabled={disabled}
       inputMode="start"
       testID={`date-input-${field.id}`}
