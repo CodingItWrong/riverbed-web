@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 
 const SERVER_DATE_FORMAT = 'YYYY-MM-DD';
-const HUMAN_FORMAT = 'ddd MMM D, YYYY';
+export const HUMAN_FORMAT = 'ddd MMM D, YYYY';
 
 const dateUtils = {
   addDays(dateObject, numDays) {
