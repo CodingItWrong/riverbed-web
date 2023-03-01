@@ -161,18 +161,8 @@ export default function EditCardForm({card, board, onClose}) {
         }
       })}
       <ErrorMessage>{getErrorMessage()}</ErrorMessage>
-      <Button onPress={onClose} style={sharedStyles.mt}>
-        Close
-      </Button>
       <Button onPress={handleDeleteCard} style={sharedStyles.mt}>
         Delete
-      </Button>
-      <Button
-        mode="primary"
-        onPress={() => handleUpdateCard()}
-        style={sharedStyles.mt}
-      >
-        Save
       </Button>
     </View>
   );
