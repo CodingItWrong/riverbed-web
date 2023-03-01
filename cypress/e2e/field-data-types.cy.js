@@ -35,6 +35,11 @@ describe('field data types', () => {
     'data-type': FIELD_DATA_TYPES.DATETIME.key,
     ...sharedAttributes,
   });
+  const geolocationField = Factory.field({
+    name: 'Location',
+    'data-type': FIELD_DATA_TYPES.GEOLOCATION.key,
+    ...sharedAttributes,
+  });
   const numberField = Factory.field({
     name: 'Number',
     'data-type': FIELD_DATA_TYPES.NUMBER.key,
@@ -49,16 +54,19 @@ describe('field data types', () => {
     choiceField,
     dateField,
     dateTimeField,
+    geolocationField,
     numberField,
     textField,
   ];
 
   const column = Factory.column({name: 'All'});
+  const atlantaGaLocation = {lat: '33.7489954', lng: '-84.3879824'};
 
   const card = Factory.card({
     [choiceField.id]: 'fake_uuid_2',
     [dateField.id]: '2023-01-01',
     [dateTimeField.id]: new Date(2023, 1, 2, 13, 23, 45).toISOString(),
+    [geolocationField.id]: atlantaGaLocation,
     [numberField.id]: 42,
     [textField.id]: 'Hello, world!',
   });
@@ -90,6 +98,7 @@ describe('field data types', () => {
       cy.contains('Choice: Choice 2');
       cy.contains('Date: Sun Jan 1, 2023');
       cy.contains('Date and Time: Thu Feb 2, 2023 1:23:45 PM');
+      cy.contains('Location: (33.7489954, -84.3879824)');
       cy.contains('Number: 42');
       cy.contains('Text: Hello, world!');
     });
@@ -104,6 +113,12 @@ describe('field data types', () => {
       cy.get('[role=button]').contains(/^2$/).click();
       cy.get('[data-testid=react-native-paper-dates-save-text]').click();
       // TODO: datetime is not yet editable
+      cy.get(`[data-testid=number-input-${geolocationField.id}-latitude]`)
+        .clear()
+        .type(27);
+      cy.get(`[data-testid=number-input-${geolocationField.id}-longitude]`)
+        .clear()
+        .type(42);
       cy.get(`[data-testid=number-input-${numberField.id}]`).clear().type(27);
       cy.get(`[data-testid=text-input-${textField.id}]`)
         .clear()
@@ -115,6 +130,7 @@ describe('field data types', () => {
         {
           [choiceField.id]: 'fake_uuid_1',
           [dateField.id]: '2023-01-02',
+          [geolocationField.id]: {lat: '27', lng: '42'},
           [numberField.id]: '27',
           [textField.id]: 'Greetings',
         },

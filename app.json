@@ -41,6 +41,14 @@
     "owner": "codingitwrong",
     "runtimeVersion": {
       "policy": "sdkVersion"
-    }
+    },
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow you to use your current location to fill in location fields."
+        }
+      ]
+    ]
   }
 }

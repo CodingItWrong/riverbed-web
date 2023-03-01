@@ -26,6 +26,7 @@
     "expo-crypto": "~12.2.1",
     "expo-dev-client": "~2.1.4",
     "expo-device": "~5.2.1",
+    "expo-location": "~15.1.1",
     "expo-secure-store": "~12.1.1",
     "expo-splash-screen": "~0.18.1",
     "expo-status-bar": "~1.4.4",
