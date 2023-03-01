@@ -31,7 +31,7 @@ export default function Column({column, board, onEdit, onSelectCard}) {
 
   const filteredCards = cards.filter(card =>
     checkConditions({
-      card,
+      fieldValues: card.attributes['field-values'],
       conditions: cardInclusionConditions,
       elements,
     }),

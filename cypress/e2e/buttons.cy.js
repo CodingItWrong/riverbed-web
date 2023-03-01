@@ -116,8 +116,12 @@ describe('buttons', () => {
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
       data: [updatedCard],
     });
+    cy.intercept('GET', `http://cypressapi/cards/${card.id}?`, {
+      data: updatedCard,
+    });
 
     cy.get(`[data-testid=button-${releaseButton.id}]`).click();
+    cy.get('[aria-label="Close card"]').click();
 
     cy.get(`[data-testid="column-${releasedColumn.id}"]`).contains(title);
   });

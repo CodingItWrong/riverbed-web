@@ -25,7 +25,7 @@ function TextEditorComponent({
       label={name}
       value={value ?? ''}
       onChangeText={setValue}
-      onBlur={onBlur}
+      onBlur={() => onBlur?.()}
       disabled={disabled}
       multiline={multiline}
       style={[style, multiline && styles.multilineFix]}

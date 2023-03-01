@@ -46,15 +46,18 @@ function DateTimeEditorComponent({
     const resultString = dateTimeUtils.objectToServerString(result);
     setValue(resultString);
     closeModal();
-    onBlur();
+    onBlur?.({[field.id]: resultString});
   }
 
   function handleChangeTime({hours, minutes}) {
-    setValue(
-      dateTimeUtils.setTime({dateObject: date, hour: hours, minute: minutes}),
-    );
+    const resultString = dateTimeUtils.setTime({
+      dateObject: date,
+      hour: hours,
+      minute: minutes,
+    });
+    setValue(resultString);
     closeModal();
-    onBlur();
+    onBlur?.({[field.id]: resultString});
   }
 
   // TODO: how to show field label

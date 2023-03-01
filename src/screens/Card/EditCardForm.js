@@ -26,7 +26,7 @@ export default function EditCardForm({card, board, onClose}) {
   const elementsToShow = sortByDisplayOrder(
     elements.filter(element =>
       checkConditions({
-        card,
+        fieldValues,
         conditions: [element.attributes['show-condition']],
         elements,
       }),
@@ -79,9 +79,9 @@ export default function EditCardForm({card, board, onClose}) {
     }
   }
 
-  function handleBlur() {
-    if (isChanged) {
-      handleUpdateCard();
+  function handleBlur(fieldOverrides) {
+    if (isChanged || fieldOverrides) {
+      handleUpdateCard(fieldOverrides);
       setIsChanged(false);
     }
   }

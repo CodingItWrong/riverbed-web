@@ -27,8 +27,11 @@ function ChoiceEditorComponent({
       emptyLabel="(choose)"
       value={choices?.find(c => c.id === value)}
       onValueChange={choice => {
-        setValue(choice?.id);
-        onBlur();
+        const newValue = choice?.id;
+        setValue(newValue);
+
+        // remove need for this value override; make fields function consistently
+        onBlur?.({[field.id]: newValue});
       }}
       options={choices}
       keyExtractor={choice => choice.id}

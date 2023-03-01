@@ -149,12 +149,15 @@ describe('edit buttons', () => {
       cy.wait('@updateCard')
         .its('request.body')
         .should('deep.equal', {data: quietedCard});
-      cy.contains(greetingText).should('not.exist');
     });
 
     cy.step('CONFIRM BUTTON IS CONDITIONALLY HIDDEN', () => {
-      cy.get(`[data-testid="card-${greetingCard.id}"]`).click();
       cy.contains(buttonName).should('not.exist');
+    });
+
+    cy.step('CONFIRM INFO CLEARED IN LIST', () => {
+      cy.get('[aria-label="Close card"]').click();
+      cy.contains(greetingText).should('not.exist');
     });
   });
 
@@ -354,7 +357,7 @@ describe('edit buttons', () => {
       cy.get('[aria-label="Done Editing Elements"]').click();
     });
 
-    cy.step('CONFIRM BUTTON ACTION WORKS', () => {
+    cy.step('RUN BUTTON ACTION', () => {
       const deferredCard = Factory.card(
         {[greetedAtField.id]: '2999-01-03'},
         card,
@@ -372,6 +375,10 @@ describe('edit buttons', () => {
       cy.wait('@updateCard')
         .its('request.body')
         .should('deep.equal', {data: deferredCard});
+    });
+
+    cy.step('CONFIRM FIELD DATA UPDATED ON CARD', () => {
+      cy.get('[aria-label="Close card"]').click();
       cy.contains('Thu Jan 3, 2999');
     });
   });
@@ -497,7 +504,7 @@ describe('edit buttons', () => {
       cy.get('[aria-label="Done Editing Elements"]').click();
     });
 
-    cy.step('CONFIRM A BUTTON WORKS', () => {
+    cy.step('CONFIRM BUTTON WORKS', () => {
       const uncompletedCard = Factory.card({[completedAtField.id]: null}, card);
       cy.intercept('PATCH', `http://cypressapi/cards/${card.id}?`, {
         success: true,
@@ -514,6 +521,7 @@ describe('edit buttons', () => {
         .should('deep.equal', {data: uncompletedCard});
 
       // wait to go back to card list
+      cy.get('[aria-label="Close card"]').click();
       cy.contains(menuName).should('not.exist');
 
       // wait for card list to reload

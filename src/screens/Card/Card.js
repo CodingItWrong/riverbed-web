@@ -103,7 +103,7 @@ export default function CardScreen({route}) {
         <View style={styles.headerRow}>
           <Appbar.BackAction
             onPress={closeModal}
-            accessibilityLabel="Go back"
+            accessibilityLabel="Close card"
           />
           <View style={sharedStyles.spacer} />
           {renderButtonControls()}

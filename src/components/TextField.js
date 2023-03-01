@@ -26,7 +26,7 @@ export default function TextField({
       testID={testID}
       value={value}
       onChangeText={onChangeText}
-      onBlur={onBlur}
+      onBlur={event => onBlur?.(event)}
       disabled={disabled}
       multiline={multiline}
       autoCapitalize={autoCapitalize}

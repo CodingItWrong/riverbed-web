@@ -5,6 +5,7 @@ export default function NumberField({
   label,
   value,
   onChangeText,
+  onBlur,
   disabled,
   keyboardType = 'decimal-pad',
   testID,
@@ -23,6 +24,7 @@ export default function NumberField({
       value={value}
       keyboardType={keyboardType}
       onChangeText={handleChangeText}
+      onBlur={onBlur}
       disabled={disabled}
       style={[sharedStyles.textInput, style]}
     />

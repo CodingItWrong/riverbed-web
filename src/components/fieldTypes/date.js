@@ -21,14 +21,25 @@ function DateEditorComponent({
   style,
 }) {
   const {name} = field.attributes;
+
+  // TODO: should onChangeText always update? Like if you type?
   return (
     <DatePickerInput
       locale="en"
       label={name}
       value={dateUtils.serverStringToObject(value)}
-      onChange={newDate => setValue(dateUtils.objectToServerString(newDate))}
-      onChangeText={newText => newText === '' && setValue(newText)}
-      onBlur={onBlur}
+      onChange={newDate => {
+        const newValue = dateUtils.objectToServerString(newDate);
+        setValue(newValue);
+        onBlur?.({[field.id]: newValue});
+      }}
+      onChangeText={newText => {
+        if (newText === '') {
+          setValue(newText);
+          onBlur?.({[field.id]: newText});
+        }
+      }}
+      onBlur={() => onBlur()}
       disabled={disabled}
       inputMode="start"
       testID={`date-input-${field.id}`}
