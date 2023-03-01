@@ -1,20 +1,20 @@
 import {useState} from 'react';
 import {View} from 'react-native';
-import Button from '../../../components/Button';
-import ButtonElement from '../../../components/ButtonElement';
-import ButtonMenuElement from '../../../components/ButtonMenuElement';
-import ErrorMessage from '../../../components/ErrorMessage';
-import Field from '../../../components/Field';
-import Text from '../../../components/Text';
-import sharedStyles from '../../../components/sharedStyles';
-import {useDeleteCard, useUpdateCard} from '../../../data/cards';
-import {useBoardElements} from '../../../data/elements';
-import COMMANDS from '../../../enums/commands';
-import ELEMENT_TYPES from '../../../enums/elementTypes';
-import VALUES from '../../../enums/values';
-import checkConditions from '../../../utils/checkConditions';
-import dateUtils from '../../../utils/dateUtils';
-import sortByDisplayOrder from '../../../utils/sortByDisplayOrder';
+import Button from '../../components/Button';
+import ButtonElement from '../../components/ButtonElement';
+import ButtonMenuElement from '../../components/ButtonMenuElement';
+import ErrorMessage from '../../components/ErrorMessage';
+import Field from '../../components/Field';
+import Text from '../../components/Text';
+import sharedStyles from '../../components/sharedStyles';
+import {useDeleteCard, useUpdateCard} from '../../data/cards';
+import {useBoardElements} from '../../data/elements';
+import COMMANDS from '../../enums/commands';
+import ELEMENT_TYPES from '../../enums/elementTypes';
+import VALUES from '../../enums/values';
+import checkConditions from '../../utils/checkConditions';
+import dateUtils from '../../utils/dateUtils';
+import sortByDisplayOrder from '../../utils/sortByDisplayOrder';
 
 export default function EditCardForm({card, board, onChange, onCancel}) {
   const [fieldValues, setFieldValues] = useState(
