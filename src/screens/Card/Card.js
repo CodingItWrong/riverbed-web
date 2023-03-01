@@ -38,27 +38,32 @@ export default function CardScreen({route}) {
     [closeModal, deleteCard],
   );
 
-  const renderButtonControls = useCallback(
-    () => (
-      <>
+  const renderButtonControls = useCallback(() => {
+    if (isEditingElements) {
+      return (
         <Appbar.Action
-          accessibilityLabel={
-            isEditingElements ? 'Done Editing Elements' : 'Edit Elements'
-          }
-          icon="wrench"
+          accessibilityLabel="Done Editing Elements"
+          icon="check-bold"
           onPress={() => setIsEditingElements(on => !on)}
         />
-        {!isEditingElements && (
+      );
+    } else {
+      return (
+        <>
+          <Appbar.Action
+            accessibilityLabel="Edit Elements"
+            icon="wrench"
+            onPress={() => setIsEditingElements(on => !on)}
+          />
           <Appbar.Action
             accessibilityLabel="Delete Card"
             icon="delete"
             onPress={handleDeleteCard}
           />
-        )}
-      </>
-    ),
-    [isEditingElements, handleDeleteCard],
-  );
+        </>
+      );
+    }
+  }, [isEditingElements, handleDeleteCard]);
 
   useEffect(() => {
     navigation.setOptions({
