@@ -1,9 +1,12 @@
 import {getCurrentPositionAsync, useForegroundPermissions} from 'expo-location';
-import {StyleSheet, View} from 'react-native';
-import MapView, {Marker} from 'react-native-maps';
+import {Platform, StyleSheet, View} from 'react-native';
+import MapView, {Marker as NativeMarker} from 'react-native-maps';
 import FIELD_DATA_TYPES from '../../enums/fieldDataTypes';
 import IconButton from '../IconButton';
 import NumberField from '../NumberField';
+
+const {Marker: WebMarker} = MapView;
+const Marker = Platform.select({web: WebMarker, default: NativeMarker});
 
 const geolocationFieldDataType = {
   key: FIELD_DATA_TYPES.GEOLOCATION.key,
@@ -60,8 +63,14 @@ function GeolocationEditorComponent({
   const coords = valueToCoords(value);
   const region = valueToRegion(value);
 
-  function handleMapPress({nativeEvent: {coordinate}}) {
-    setValue(coordsToValue(coordinate));
+  function handleMapPress(event) {
+    // TODO: get onPress working on web
+    if (event.nativeEvent) {
+      const {
+        nativeEvent: {coordinate},
+      } = event;
+      setValue(coordsToValue(coordinate));
+    }
   }
 
   return (
@@ -94,6 +103,9 @@ function GeolocationEditorComponent({
         style={styles.detailMap}
         initialRegion={region}
         onPress={handleMapPress}
+        options={{
+          disableDefaultUI: true,
+        }}
       >
         <Marker coordinate={coords} />
       </MapView>
