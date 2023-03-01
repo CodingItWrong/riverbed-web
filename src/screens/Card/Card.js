@@ -23,8 +23,8 @@ export default function CardScreen({route}) {
   const [isEditingElements, setIsEditingElements] = useState(false);
 
   const {data: board, isLoading: isLoadingBoard} = useBoard(boardId);
-  const {data: card, isLoading: isLoadingCard} = useCard({boardId, cardId});
-  const isLoading = isLoadingBoard || isLoadingCard;
+  const {data: card, isFetching: isFetchingCard} = useCard({boardId, cardId});
+  const isLoading = isLoadingBoard || isFetchingCard;
 
   const closeModal = useCallback(() => {
     navigation.goBack();
