@@ -16,7 +16,7 @@ import checkConditions from '../../utils/checkConditions';
 import dateUtils from '../../utils/dateUtils';
 import sortByDisplayOrder from '../../utils/sortByDisplayOrder';
 
-export default function EditCardForm({card, board, onChange, onCancel}) {
+export default function EditCardForm({card, board, onClose}) {
   const [fieldValues, setFieldValues] = useState(
     card.attributes['field-values'],
   );
@@ -84,10 +84,7 @@ export default function EditCardForm({card, board, onChange, onCancel}) {
   } = useUpdateCard(card, board);
   const handleUpdateCard = fieldOverrides => {
     const fieldValuesToUse = {...fieldValues, ...fieldOverrides};
-    return updateCard(
-      {'field-values': fieldValuesToUse},
-      {onSuccess: onChange},
-    );
+    return updateCard({'field-values': fieldValuesToUse});
   };
 
   const {
@@ -95,7 +92,7 @@ export default function EditCardForm({card, board, onChange, onCancel}) {
     isLoading: isDeleting,
     isError: isDeleteError,
   } = useDeleteCard(card, board);
-  const handleDeleteCard = () => deleteCard(null, {onSuccess: onChange});
+  const handleDeleteCard = () => deleteCard(null, {onSuccess: onClose});
 
   const isLoading = isUpdating || isDeleting;
 
@@ -156,8 +153,8 @@ export default function EditCardForm({card, board, onChange, onCancel}) {
         }
       })}
       <ErrorMessage>{getErrorMessage()}</ErrorMessage>
-      <Button onPress={onCancel} disabled={isLoading} style={sharedStyles.mt}>
-        Cancel
+      <Button onPress={onClose} disabled={isLoading} style={sharedStyles.mt}>
+        Close
       </Button>
       <Button
         onPress={handleDeleteCard}

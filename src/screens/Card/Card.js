@@ -49,12 +49,7 @@ export default function CardScreen({route}) {
           scrollIndicatorInsets={{bottom: insets.bottom}}
         >
           {card && (
-            <EditCardForm
-              card={card}
-              board={board}
-              onChange={closeModal}
-              onCancel={closeModal}
-            />
+            <EditCardForm card={card} board={board} onClose={closeModal} />
           )}
         </KeyboardAwareScrollView>
       );
