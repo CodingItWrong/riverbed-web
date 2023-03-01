@@ -51,6 +51,7 @@ export default function EditCardForm({card, board, onClose}) {
           const concreteValue = valueObject.call(
             fieldObject.attributes['data-type'],
           );
+          setFieldValue(field, concreteValue);
           handleUpdateCard({[field]: concreteValue});
         } else {
           console.error(`unknown value: ${value}`);
@@ -70,9 +71,9 @@ export default function EditCardForm({card, board, onClose}) {
         }
         const startDate = getStartDate();
         const updatedDate = dateUtils.addDays(startDate, Number(value));
-        handleUpdateCard({
-          [field]: dateUtils.objectToServerString(updatedDate),
-        });
+        const concreteValue = dateUtils.objectToServerString(updatedDate);
+        setFieldValue(field, concreteValue);
+        handleUpdateCard({[field]: concreteValue});
         break;
       default:
         console.error(`unknown command: ${command}`);
