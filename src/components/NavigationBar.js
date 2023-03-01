@@ -1,3 +1,4 @@
+import {StyleSheet} from 'react-native';
 import {Appbar} from 'react-native-paper';
 import LoadingIndicator from './LoadingIndicator';
 
@@ -17,8 +18,14 @@ export default function NavigationBar({navigation, options, back}) {
         testID="navigation-bar-title"
         onPress={onTitlePress}
       />
-      {isFetching && <LoadingIndicator />}
+      {isFetching && <LoadingIndicator style={styles.navBarLoadingIndicator} />}
       {headerRight?.()}
     </Appbar.Header>
   );
 }
+
+const styles = StyleSheet.create({
+  navBarLoadingIndicator: {
+    marginRight: 8,
+  },
+});
