@@ -17,22 +17,26 @@ const geolocationFieldDataType = {
   EditorComponent: GeolocationEditorComponent,
 };
 
+const defaultValue = {lat: '33.7489954', lng: '-84.3879824'}; // Atlanta GA
+
 const valueToCoords = value =>
-  value && {
-    latitude: Number(value.lat),
-    longitude: Number(value.lng),
-  };
+  value
+    ? {
+        latitude: Number(value.lat),
+        longitude: Number(value.lng),
+      }
+    : null;
 const coordsToValue = coords => ({
   lat: String(coords.latitude),
   lng: String(coords.longitude),
 });
 
-const valueToRegion = value =>
-  value && {
-    ...valueToCoords(value), // TODO: figure out good values for this
-    latitudeDelta: 0.0147,
-    longitudeDelta: 0.0404,
-  };
+const valueToRegion = value => ({
+  ...valueToCoords(value ? value : defaultValue),
+  // TODO: figure out good values for deltas
+  latitudeDelta: 0.0147,
+  longitudeDelta: 0.0404,
+});
 
 function GeolocationEditorComponent({
   field,
@@ -60,7 +64,7 @@ function GeolocationEditorComponent({
     }
   }
 
-  const coords = valueToCoords(value);
+  const markerCoords = valueToCoords(value);
   const region = valueToRegion(value);
 
   function handleMapPress(event) {
@@ -112,7 +116,7 @@ function GeolocationEditorComponent({
           disableDefaultUI: true,
         }}
       >
-        <Marker coordinate={coords} />
+        {markerCoords && <Marker coordinate={markerCoords} />}
       </MapView>
     </>
   );
