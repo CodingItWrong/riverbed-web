@@ -12,7 +12,7 @@ export default function NumberField({
 }) {
   function handleChangeText(text) {
     // TODO: prevent multiple decimal points
-    const sanitizedText = text.replace(/[^.0-9]/g, '');
+    const sanitizedText = text.replace(/[^.0-9-]/g, '');
     onChangeText(sanitizedText);
   }
 
