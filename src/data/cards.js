@@ -68,6 +68,9 @@ export function useDeleteCard(card, board) {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: () => cardClient.delete({id: card.id}),
-    onSuccess: () => refreshCards(queryClient, board),
+    onSuccess: () => {
+      refreshCards(queryClient, board);
+      return null; // don't wait on refresh, so we can close the modal
+    },
   });
 }
