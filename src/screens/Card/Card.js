@@ -12,8 +12,8 @@ import sharedStyles from '../../components/sharedStyles';
 import {useBoard} from '../../data/boards';
 import {useCard} from '../../data/cards';
 import {useCurrentBoard} from '../../data/currentBoard';
-import EditCardForm from '../Board/Card/EditCardForm';
 import ElementList from '../Board/Element/ElementList';
+import EditCardForm from './EditCardForm';
 
 export default function CardScreen({route}) {
   const insets = useSafeAreaInsets();

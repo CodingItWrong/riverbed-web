@@ -12,7 +12,7 @@ import {useBoardElements} from '../../../data/elements';
 import SORT_DIRECTIONS from '../../../enums/sortDirections';
 import calculateSummary from '../../../utils/calculateSummary';
 import checkConditions from '../../../utils/checkConditions';
-import CardSummary from '../Card/CardSummary';
+import CardSummary from './CardSummary';
 
 export default function Column({column, board, onEdit, onSelectCard}) {
   const insets = useSafeAreaInsets();
