@@ -1,6 +1,6 @@
 import {ResourceClient} from '@codingitwrong/jsonapi-client';
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
-import {useMemo} from 'react';
+import {useCallback, useMemo} from 'react';
 import httpClient from './httpClient';
 import {useToken} from './token';
 
@@ -20,7 +20,10 @@ const refreshCards = (queryClient, board) =>
 
 export function useRefreshCards(board) {
   const queryClient = useQueryClient();
-  const returnedRefreshCards = () => refreshCards(queryClient, board);
+  const returnedRefreshCards = useCallback(
+    () => board && refreshCards(queryClient, board),
+    [board, queryClient],
+  );
   return returnedRefreshCards;
 }
 
