@@ -26,7 +26,6 @@ export default function CardScreen({route}) {
   const {data: card, isLoading: isLoadingCard} = useCard({boardId, cardId});
   const refreshCards = useRefreshCards(board);
   const isLoading = isLoadingBoard || isLoadingCard;
-  console.log({isLoadingCard});
 
   function closeModal() {
     refreshCards();
