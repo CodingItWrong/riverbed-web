@@ -1,5 +1,5 @@
 import {ActivityIndicator} from 'react-native-paper';
 
-export default function LoadingIndicator() {
-  return <ActivityIndicator accessibilityLabel="Loading" />;
+export default function LoadingIndicator({style}) {
+  return <ActivityIndicator accessibilityLabel="Loading" style={style} />;
 }
