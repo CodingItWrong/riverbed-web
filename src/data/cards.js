@@ -18,6 +18,12 @@ function useCardClient() {
 const refreshCards = (queryClient, board) =>
   queryClient.invalidateQueries(['cards', board.id]);
 
+export function useRefreshCards(board) {
+  const queryClient = useQueryClient();
+  const returnedRefreshCards = () => refreshCards(queryClient, board);
+  return returnedRefreshCards;
+}
+
 export function useCards(board) {
   const cardClient = useCardClient();
   return useQuery(
@@ -51,7 +57,6 @@ export function useCreateCard(board) {
 
 export function useUpdateCard(card, board) {
   const cardClient = useCardClient();
-  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: attributes =>
       cardClient.update({
@@ -59,7 +64,6 @@ export function useUpdateCard(card, board) {
         id: card.id,
         attributes,
       }),
-    onSuccess: () => refreshCards(queryClient, board),
   });
 }
 
