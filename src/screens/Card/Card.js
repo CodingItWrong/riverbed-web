@@ -10,7 +10,7 @@ import LoadingIndicator from '../../components/LoadingIndicator';
 import ScreenBackground from '../../components/ScreenBackground';
 import sharedStyles from '../../components/sharedStyles';
 import {useBoard} from '../../data/boards';
-import {useCard, useRefreshCards} from '../../data/cards';
+import {useCard, useDeleteCard, useRefreshCards} from '../../data/cards';
 import {useCurrentBoard} from '../../data/currentBoard';
 import ElementList from '../Board/Element/ElementList';
 import EditCardForm from './EditCardForm';
@@ -27,10 +27,44 @@ export default function CardScreen({route}) {
   const refreshCards = useRefreshCards(board);
   const isLoading = isLoadingBoard || isLoadingCard;
 
-  function closeModal() {
+  const closeModal = useCallback(() => {
     refreshCards();
     navigation.goBack();
-  }
+  }, [navigation, refreshCards]);
+
+  const {mutate: deleteCard} = useDeleteCard(card, board);
+  const handleDeleteCard = useCallback(
+    () => deleteCard(null, {onSuccess: closeModal}),
+    [closeModal, deleteCard],
+  );
+
+  const renderButtonControls = useCallback(
+    () => (
+      <>
+        <Appbar.Action
+          accessibilityLabel={
+            isEditingElements ? 'Done Editing Elements' : 'Edit Elements'
+          }
+          icon="wrench"
+          onPress={() => setIsEditingElements(on => !on)}
+        />
+        {!isEditingElements && (
+          <Appbar.Action
+            accessibilityLabel="Delete Card"
+            icon="delete"
+            onPress={handleDeleteCard}
+          />
+        )}
+      </>
+    ),
+    [isEditingElements, handleDeleteCard],
+  );
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => renderButtonControls(),
+    });
+  }, [navigation, renderButtonControls]);
 
   function renderContents() {
     if (isLoading) {
@@ -58,25 +92,6 @@ export default function CardScreen({route}) {
     }
   }
 
-  const renderEditElementsButton = useCallback(
-    () => (
-      <Appbar.Action
-        accessibilityLabel={
-          isEditingElements ? 'Done Editing Elements' : 'Edit Elements'
-        }
-        icon="wrench"
-        onPress={() => setIsEditingElements(on => !on)}
-      />
-    ),
-    [isEditingElements],
-  );
-
-  useEffect(() => {
-    navigation.setOptions({
-      headerRight: () => renderEditElementsButton(),
-    });
-  }, [navigation, renderEditElementsButton]);
-
   return (
     <CardWrapper closeModal={closeModal}>
       {Platform.OS !== 'android' && (
@@ -85,7 +100,8 @@ export default function CardScreen({route}) {
             onPress={closeModal}
             accessibilityLabel="Go back"
           />
-          {renderEditElementsButton()}
+          <View style={sharedStyles.spacer} />
+          {renderButtonControls()}
         </View>
       )}
       {renderContents()}

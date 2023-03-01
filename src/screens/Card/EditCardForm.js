@@ -7,7 +7,7 @@ import ErrorMessage from '../../components/ErrorMessage';
 import Field from '../../components/Field';
 import Text from '../../components/Text';
 import sharedStyles from '../../components/sharedStyles';
-import {useDeleteCard, useUpdateCard} from '../../data/cards';
+import {useUpdateCard} from '../../data/cards';
 import {useBoardElements} from '../../data/elements';
 import COMMANDS from '../../enums/commands';
 import ELEMENT_TYPES from '../../enums/elementTypes';
@@ -95,17 +95,9 @@ export default function EditCardForm({card, board, onClose}) {
     return updateCard({'field-values': fieldValuesToUse});
   };
 
-  const {mutate: deleteCard, isError: isDeleteError} = useDeleteCard(
-    card,
-    board,
-  );
-  const handleDeleteCard = () => deleteCard(null, {onSuccess: onClose});
-
   function getErrorMessage() {
     if (isUpdateError) {
       return 'An error occurred while saving the card';
-    } else if (isDeleteError) {
-      return 'An error occurred while deleting the card';
     }
   }
 
@@ -157,9 +149,6 @@ export default function EditCardForm({card, board, onClose}) {
         }
       })}
       <ErrorMessage>{getErrorMessage()}</ErrorMessage>
-      <Button onPress={handleDeleteCard} style={sharedStyles.mt}>
-        Delete
-      </Button>
     </View>
   );
 }
