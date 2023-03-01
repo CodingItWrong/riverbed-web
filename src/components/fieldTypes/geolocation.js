@@ -110,7 +110,7 @@ function GeolocationEditorComponent({
       </View>
       <MapView
         style={styles.detailMap}
-        initialRegion={region}
+        region={region}
         onPress={handleMapPress}
         options={{
           disableDefaultUI: true,
