@@ -64,13 +64,18 @@ function GeolocationEditorComponent({
   const region = valueToRegion(value);
 
   function handleMapPress(event) {
-    // TODO: get onPress working on web
+    let newValue;
+
     if (event.nativeEvent) {
       const {
         nativeEvent: {coordinate},
       } = event;
-      setValue(coordsToValue(coordinate));
+      newValue = coordsToValue(coordinate);
+    } else {
+      newValue = {lat: event.latLng.lat(), lng: event.latLng.lng()};
     }
+
+    setValue(newValue);
   }
 
   return (
