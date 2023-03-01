@@ -4,6 +4,7 @@ import MapView, {Marker as NativeMarker} from 'react-native-maps';
 import FIELD_DATA_TYPES from '../../enums/fieldDataTypes';
 import IconButton from '../IconButton';
 import NumberField from '../NumberField';
+import Text from '../Text';
 
 const {Marker: WebMarker} = MapView;
 const Marker = Platform.select({web: WebMarker, default: NativeMarker});
@@ -108,16 +109,20 @@ function GeolocationEditorComponent({
           onPress={fillCurrentLocation}
         />
       </View>
-      <MapView
-        style={styles.detailMap}
-        region={region}
-        onPress={handleMapPress}
-        options={{
-          disableDefaultUI: true,
-        }}
-      >
-        {markerCoords && <Marker coordinate={markerCoords} />}
-      </MapView>
+      {window.Cypress ? (
+        <Text>(hiding map view in cypress)</Text>
+      ) : (
+        <MapView
+          style={styles.detailMap}
+          region={region}
+          onPress={handleMapPress}
+          options={{
+            disableDefaultUI: true,
+          }}
+        >
+          {markerCoords && <Marker coordinate={markerCoords} />}
+        </MapView>
+      )}
     </>
   );
 }

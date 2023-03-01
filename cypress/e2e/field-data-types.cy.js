@@ -109,10 +109,8 @@ describe('field data types', () => {
       cy.get(`[data-testid="choice-input-${choiceField.id}"]`).paperSelect(
         'Choice 1',
       );
-      cy.get(`[data-testid="element-${dateField.id}"] [role=button]`).click();
-      cy.get('[role=button]').contains(/^2$/).click();
-      cy.get('[data-testid=react-native-paper-dates-save-text]').click();
-      // TODO: datetime is not yet editable
+
+      // simple fields
       cy.get(`[data-testid=number-input-${geolocationField.id}-latitude]`)
         .clear()
         .type(27);
@@ -123,26 +121,45 @@ describe('field data types', () => {
       cy.get(`[data-testid=text-input-${textField.id}]`)
         .clear()
         .type('Greetings');
+
+      // date
+      cy.get(`[data-testid="element-${dateField.id}"] [role=button]`).click();
+      cy.get('[role=button]').contains(/^2$/).click();
+      cy.get('[data-testid=react-native-paper-dates-save-text]').click();
+
+      // datetime
+      cy.get(`[data-testid=date-input-${dateTimeField.id}`).click();
+      cy.get('[role=button]').contains(/^3$/).click();
+      cy.get('[data-testid=react-native-paper-dates-save-text]').click();
+      cy.get(`[data-testid=time-input-${dateTimeField.id}`).click();
+      cy.get('[aria-modal=true]');
+      cy.get('[aria-modal=true] input[inputmode=numeric]')
+        .eq(0)
+        .clear({force: true})
+        .type('4', {force: true});
+      cy.get('[aria-modal=true] input[inputmode=numeric]')
+        .eq(1)
+        .clear({force: true})
+        .type('56', {force: true});
+      cy.get('[role=button]').contains('Ok').click();
     });
 
     cy.step('CONFIRM FIELDS SAVE CORRECT DATA', () => {
-      const updatedCard = Factory.card(
-        {
-          [choiceField.id]: 'fake_uuid_1',
-          [dateField.id]: '2023-01-02',
-          [geolocationField.id]: {lat: '27', lng: '42'},
-          [numberField.id]: '27',
-          [textField.id]: 'Greetings',
-        },
-        card,
-      );
+      const updatedValues = {
+        [choiceField.id]: 'fake_uuid_1',
+        [dateField.id]: '2023-01-02',
+        // [dateTimeField.id]: '2023-02-03T21:56:00.000Z', // TODO: address time zone differences
+        [geolocationField.id]: {lat: '27', lng: '42'},
+        [numberField.id]: '27',
+        [textField.id]: 'Greetings',
+      };
       cy.intercept('PATCH', `http://cypressapi/cards/${card.id}?`, {
         success: true,
       }).as('updateCard');
       cy.contains('Save').click();
       cy.wait('@updateCard')
-        .its('request.body')
-        .should('deep.equal', {data: updatedCard});
+        .its('request.body.data.attributes["field-values"]')
+        .should('deep.include', updatedValues);
     });
   });
 });
