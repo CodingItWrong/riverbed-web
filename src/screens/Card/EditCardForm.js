@@ -1,13 +1,12 @@
 import {useState} from 'react';
 import {View} from 'react-native';
-import Button from '../../components/Button';
 import ButtonElement from '../../components/ButtonElement';
 import ButtonMenuElement from '../../components/ButtonMenuElement';
 import ErrorMessage from '../../components/ErrorMessage';
 import Field from '../../components/Field';
 import Text from '../../components/Text';
 import sharedStyles from '../../components/sharedStyles';
-import {useDeleteCard, useUpdateCard} from '../../data/cards';
+import {useUpdateCard} from '../../data/cards';
 import {useBoardElements} from '../../data/elements';
 import COMMANDS from '../../enums/commands';
 import ELEMENT_TYPES from '../../enums/elementTypes';
@@ -16,7 +15,8 @@ import checkConditions from '../../utils/checkConditions';
 import dateUtils from '../../utils/dateUtils';
 import sortByDisplayOrder from '../../utils/sortByDisplayOrder';
 
-export default function EditCardForm({card, board, onChange, onCancel}) {
+export default function EditCardForm({card, board, onClose}) {
+  const [isChanged, setIsChanged] = useState(false);
   const [fieldValues, setFieldValues] = useState(
     card.attributes['field-values'],
   );
@@ -26,7 +26,7 @@ export default function EditCardForm({card, board, onChange, onCancel}) {
   const elementsToShow = sortByDisplayOrder(
     elements.filter(element =>
       checkConditions({
-        card,
+        fieldValues,
         conditions: [element.attributes['show-condition']],
         elements,
       }),
@@ -35,6 +35,7 @@ export default function EditCardForm({card, board, onChange, onCancel}) {
 
   function setFieldValue(fieldId, value) {
     setFieldValues(oldValues => ({...oldValues, [fieldId]: value}));
+    setIsChanged(true);
   }
 
   function handlePerformAction(action) {
@@ -49,6 +50,7 @@ export default function EditCardForm({card, board, onChange, onCancel}) {
           const concreteValue = valueObject.call(
             fieldObject.attributes['data-type'],
           );
+          setFieldValue(field, concreteValue);
           handleUpdateCard({[field]: concreteValue});
         } else {
           console.error(`unknown value: ${value}`);
@@ -68,47 +70,40 @@ export default function EditCardForm({card, board, onChange, onCancel}) {
         }
         const startDate = getStartDate();
         const updatedDate = dateUtils.addDays(startDate, Number(value));
-        handleUpdateCard({
-          [field]: dateUtils.objectToServerString(updatedDate),
-        });
+        const concreteValue = dateUtils.objectToServerString(updatedDate);
+        setFieldValue(field, concreteValue);
+        handleUpdateCard({[field]: concreteValue});
         break;
       default:
         console.error(`unknown command: ${command}`);
     }
   }
 
-  const {
-    mutate: updateCard,
-    isLoading: isUpdating,
-    isError: isUpdateError,
-  } = useUpdateCard(card, board);
+  function handleBlur(fieldOverrides) {
+    if (isChanged || fieldOverrides) {
+      handleUpdateCard(fieldOverrides);
+      setIsChanged(false);
+    }
+  }
+
+  const {mutate: updateCard, isError: isUpdateError} = useUpdateCard(
+    card,
+    board,
+  );
   const handleUpdateCard = fieldOverrides => {
     const fieldValuesToUse = {...fieldValues, ...fieldOverrides};
-    return updateCard(
-      {'field-values': fieldValuesToUse},
-      {onSuccess: onChange},
-    );
+    return updateCard({'field-values': fieldValuesToUse});
   };
-
-  const {
-    mutate: deleteCard,
-    isLoading: isDeleting,
-    isError: isDeleteError,
-  } = useDeleteCard(card, board);
-  const handleDeleteCard = () => deleteCard(null, {onSuccess: onChange});
-
-  const isLoading = isUpdating || isDeleting;
 
   function getErrorMessage() {
     if (isUpdateError) {
       return 'An error occurred while saving the card';
-    } else if (isDeleteError) {
-      return 'An error occurred while deleting the card';
     }
   }
 
   return (
     <View>
+      <ErrorMessage>{getErrorMessage()}</ErrorMessage>
       {elementsToShow.map((element, elementIndex) => {
         switch (element.attributes['element-type']) {
           case ELEMENT_TYPES.FIELD.key:
@@ -118,6 +113,7 @@ export default function EditCardForm({card, board, onChange, onCancel}) {
                   field={element}
                   value={fieldValues[element.id]}
                   setValue={value => setFieldValue(element.id, value)}
+                  onBlur={handleBlur}
                   readOnly={element.attributes['read-only']}
                   style={elementIndex > 0 && sharedStyles.mt}
                 />
@@ -131,7 +127,6 @@ export default function EditCardForm({card, board, onChange, onCancel}) {
                 onPerformAction={() =>
                   handlePerformAction(element.attributes.action)
                 }
-                disabled={isLoading}
                 style={elementIndex > 0 && sharedStyles.mt}
               />
             );
@@ -143,7 +138,6 @@ export default function EditCardForm({card, board, onChange, onCancel}) {
                 onPerformActionForItem={menuItem =>
                   handlePerformAction(menuItem.action)
                 }
-                disabled={isLoading}
                 style={elementIndex > 0 && sharedStyles.mt}
               />
             );
@@ -155,25 +149,6 @@ export default function EditCardForm({card, board, onChange, onCancel}) {
             );
         }
       })}
-      <ErrorMessage>{getErrorMessage()}</ErrorMessage>
-      <Button onPress={onCancel} disabled={isLoading} style={sharedStyles.mt}>
-        Cancel
-      </Button>
-      <Button
-        onPress={handleDeleteCard}
-        disabled={isLoading}
-        style={sharedStyles.mt}
-      >
-        Delete
-      </Button>
-      <Button
-        mode="primary"
-        onPress={() => handleUpdateCard()}
-        disabled={isLoading}
-        style={sharedStyles.mt}
-      >
-        Save
-      </Button>
     </View>
   );
 }

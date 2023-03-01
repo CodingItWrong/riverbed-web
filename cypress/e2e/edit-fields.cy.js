@@ -101,17 +101,18 @@ describe('edit fields', () => {
 
     cy.step('CONFIRM CARD HAS FIELD', () => {
       const greeting = 'Hello, World!';
-      cy.get(`[data-testid="text-input-${localGreetingField.id}"]`).type(
-        'Hello, World!',
-      );
       cy.intercept('PATCH', `http://cypressapi/cards/${card.id}?`, {
         success: true,
       }).as('updateField');
       cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
         data: [Factory.card({[localGreetingField.id]: greeting})],
       });
-      cy.contains('Save').click();
+      cy.get(`[data-testid="text-input-${localGreetingField.id}"]`)
+        .type('Hello, World!')
+        .blur();
       cy.wait('@updateField');
+
+      cy.get('[aria-label="Close card"]').click();
       cy.contains(greeting);
     });
   });
@@ -281,9 +282,6 @@ describe('edit fields', () => {
     });
 
     cy.step('CONFIRM CARD HAS CHOICES', () => {
-      cy.contains('Color: (choose)').paperSelect('Green');
-      cy.contains('Color: Green');
-
       const updatedCard = Factory.card({[choiceField.id]: 'fake_uuid_2'}, card);
       cy.intercept('PATCH', `http://cypressapi/cards/${card.id}?`, {
         success: true,
@@ -291,7 +289,8 @@ describe('edit fields', () => {
       cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
         data: [updatedCard],
       });
-      cy.contains('Save').click();
+      cy.contains('Color: (choose)').paperSelect('Green');
+      cy.contains('Color: Green');
       cy.wait('@updateCard')
         .its('request.body')
         .should('deep.equal', {
@@ -304,7 +303,8 @@ describe('edit fields', () => {
           },
         });
 
-      cy.contains('Save').should('not.exist');
+      cy.get('[aria-label="Close card"]').click();
+      cy.contains('Color: Green').should('not.exist');
       cy.contains('Green');
     });
   });
@@ -349,7 +349,7 @@ describe('edit fields', () => {
       `element-${fieldA.id}`,
       `element-${fieldB.id}`,
     ]);
-    cy.contains('Cancel').click();
+    cy.get('[aria-label="Close card"]').click();
 
     cy.get(`[data-testid=card-${card.id}]`).click();
     cy.get('[aria-label="Edit Elements"]').click();
@@ -482,7 +482,7 @@ describe('edit fields', () => {
 
     cy.step('FINISH EDITING ELEMENTS', () => {
       cy.get('[aria-label="Done Editing Elements"]').click();
-      cy.contains('Cancel').click();
+      cy.get('[aria-label="Close card"]').click();
     });
 
     const nowString = '2023-01-01T12:00:00.000Z';

@@ -10,7 +10,7 @@ import LoadingIndicator from '../../components/LoadingIndicator';
 import ScreenBackground from '../../components/ScreenBackground';
 import sharedStyles from '../../components/sharedStyles';
 import {useBoard} from '../../data/boards';
-import {useCard} from '../../data/cards';
+import {useCard, useDeleteCard, useRefreshCards} from '../../data/cards';
 import {useCurrentBoard} from '../../data/currentBoard';
 import ElementList from '../Board/Element/ElementList';
 import EditCardForm from './EditCardForm';
@@ -24,11 +24,52 @@ export default function CardScreen({route}) {
 
   const {data: board, isLoading: isLoadingBoard} = useBoard(boardId);
   const {data: card, isLoading: isLoadingCard} = useCard({boardId, cardId});
+  const refreshCards = useRefreshCards(board);
   const isLoading = isLoadingBoard || isLoadingCard;
 
-  function closeModal() {
+  const closeModal = useCallback(() => {
+    refreshCards();
     navigation.goBack();
-  }
+  }, [navigation, refreshCards]);
+
+  const {mutate: deleteCard} = useDeleteCard(card, board);
+  const handleDeleteCard = useCallback(
+    () => deleteCard(null, {onSuccess: closeModal}),
+    [closeModal, deleteCard],
+  );
+
+  const renderButtonControls = useCallback(() => {
+    if (isEditingElements) {
+      return (
+        <Appbar.Action
+          accessibilityLabel="Done Editing Elements"
+          icon="check-bold"
+          onPress={() => setIsEditingElements(on => !on)}
+        />
+      );
+    } else {
+      return (
+        <>
+          <Appbar.Action
+            accessibilityLabel="Edit Elements"
+            icon="wrench"
+            onPress={() => setIsEditingElements(on => !on)}
+          />
+          <Appbar.Action
+            accessibilityLabel="Delete Card"
+            icon="delete"
+            onPress={handleDeleteCard}
+          />
+        </>
+      );
+    }
+  }, [isEditingElements, handleDeleteCard]);
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => renderButtonControls(),
+    });
+  }, [navigation, renderButtonControls]);
 
   function renderContents() {
     if (isLoading) {
@@ -49,36 +90,12 @@ export default function CardScreen({route}) {
           scrollIndicatorInsets={{bottom: insets.bottom}}
         >
           {card && (
-            <EditCardForm
-              card={card}
-              board={board}
-              onChange={closeModal}
-              onCancel={closeModal}
-            />
+            <EditCardForm card={card} board={board} onClose={closeModal} />
           )}
         </KeyboardAwareScrollView>
       );
     }
   }
-
-  const renderEditElementsButton = useCallback(
-    () => (
-      <Appbar.Action
-        accessibilityLabel={
-          isEditingElements ? 'Done Editing Elements' : 'Edit Elements'
-        }
-        icon="wrench"
-        onPress={() => setIsEditingElements(on => !on)}
-      />
-    ),
-    [isEditingElements],
-  );
-
-  useEffect(() => {
-    navigation.setOptions({
-      headerRight: () => renderEditElementsButton(),
-    });
-  }, [navigation, renderEditElementsButton]);
 
   return (
     <CardWrapper closeModal={closeModal}>
@@ -86,9 +103,10 @@ export default function CardScreen({route}) {
         <View style={styles.headerRow}>
           <Appbar.BackAction
             onPress={closeModal}
-            accessibilityLabel="Go back"
+            accessibilityLabel="Close card"
           />
-          {renderEditElementsButton()}
+          <View style={sharedStyles.spacer} />
+          {renderButtonControls()}
         </View>
       )}
       {renderContents()}

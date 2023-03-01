@@ -103,34 +103,38 @@ describe('field data types', () => {
       cy.contains('Text: Hello, world!');
     });
 
-    cy.step('CONFIRM FIELDS CAN BE INTERACTED WITH', () => {
+    cy.step('OPEN CARD DETAILS', () => {
       cy.get(`[data-testid=card-${card.id}`).click();
+    });
 
+    cy.intercept('PATCH', `http://cypressapi/cards/${card.id}?`, {
+      success: true,
+    }).as('updateCard');
+
+    cy.step('TEST CHOICE FIELD', () => {
       cy.get(`[data-testid="choice-input-${choiceField.id}"]`).paperSelect(
         'Choice 1',
       );
+      cy.wait('@updateCard')
+        .its('request.body.data.attributes["field-values"]')
+        .should('deep.include', {[choiceField.id]: 'fake_uuid_1'});
+    });
 
-      // simple fields
-      cy.get(`[data-testid=number-input-${geolocationField.id}-latitude]`)
-        .clear()
-        .type(27);
-      cy.get(`[data-testid=number-input-${geolocationField.id}-longitude]`)
-        .clear()
-        .type(42);
-      cy.get(`[data-testid=number-input-${numberField.id}]`).clear().type(27);
-      cy.get(`[data-testid=text-input-${textField.id}]`)
-        .clear()
-        .type('Greetings');
-
-      // date
+    cy.step('TEST DATE FIELD', () => {
       cy.get(`[data-testid="element-${dateField.id}"] [role=button]`).click();
       cy.get('[role=button]').contains(/^2$/).click();
       cy.get('[data-testid=react-native-paper-dates-save-text]').click();
+      cy.wait('@updateCard')
+        .its('request.body.data.attributes["field-values"]')
+        .should('deep.include', {[dateField.id]: '2023-01-02'});
+    });
 
-      // datetime
+    cy.step('TEST DATETIME FIELD', () => {
       cy.get(`[data-testid=date-input-${dateTimeField.id}`).click();
       cy.get('[role=button]').contains(/^3$/).click();
       cy.get('[data-testid=react-native-paper-dates-save-text]').click();
+      cy.wait('@updateCard'); // not verifying contents due to time zone issues
+
       cy.get(`[data-testid=time-input-${dateTimeField.id}`).click();
       cy.get('[aria-modal=true]');
       cy.get('[aria-modal=true] input[inputmode=numeric]')
@@ -142,24 +146,49 @@ describe('field data types', () => {
         .clear({force: true})
         .type('56', {force: true});
       cy.get('[role=button]').contains('Ok').click();
+      cy.wait('@updateCard'); // not verifying contents due to time zone issues
     });
 
-    cy.step('CONFIRM FIELDS SAVE CORRECT DATA', () => {
-      const updatedValues = {
-        [choiceField.id]: 'fake_uuid_1',
-        [dateField.id]: '2023-01-02',
-        // [dateTimeField.id]: '2023-02-03T21:56:00.000Z', // TODO: address time zone differences
-        [geolocationField.id]: {lat: '27', lng: '42'},
-        [numberField.id]: '27',
-        [textField.id]: 'Greetings',
-      };
-      cy.intercept('PATCH', `http://cypressapi/cards/${card.id}?`, {
-        success: true,
-      }).as('updateCard');
-      cy.contains('Save').click();
+    cy.step('TEST GEOLCOATION FIELD', () => {
+      cy.get(`[data-testid=number-input-${geolocationField.id}-latitude]`)
+        .clear()
+        .type(27)
+        .blur();
+      cy.wait('@updateCard')
+        .its(
+          `request.body.data.attributes["field-values"][${geolocationField.id}]`,
+        )
+        .should('deep.include', {lat: '27'});
+
+      cy.get(`[data-testid=number-input-${geolocationField.id}-longitude]`)
+        .clear()
+        .type(42)
+        .blur();
+      cy.wait('@updateCard')
+        .its(
+          `request.body.data.attributes["field-values"][${geolocationField.id}]`,
+        )
+        .should('deep.include', {lng: '42'});
+    });
+
+    cy.step('TEST NUMBER FIELD', () => {
+      cy.get(`[data-testid=number-input-${numberField.id}]`)
+        .clear()
+        .type(27)
+        .blur();
       cy.wait('@updateCard')
         .its('request.body.data.attributes["field-values"]')
-        .should('deep.include', updatedValues);
+        .should('deep.include', {[numberField.id]: '27'});
+    });
+
+    cy.step('TEST TEXT FIELD', () => {
+      cy.get(`[data-testid=text-input-${textField.id}]`)
+        .clear()
+        .type('Greetings')
+        .blur();
+      cy.wait('@updateCard')
+        .its('request.body.data.attributes["field-values"]')
+        .should('deep.include', {[textField.id]: 'Greetings'});
     });
   });
 });

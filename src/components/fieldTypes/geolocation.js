@@ -43,6 +43,7 @@ function GeolocationEditorComponent({
   field,
   value,
   setValue,
+  onBlur,
   readOnly,
   disabled,
 }) {
@@ -61,7 +62,9 @@ function GeolocationEditorComponent({
       const {
         coords: {latitude, longitude},
       } = await getCurrentPositionAsync({});
-      setValue({lat: String(latitude), lng: String(longitude)});
+      const newValue = {lat: String(latitude), lng: String(longitude)};
+      setValue(newValue);
+      onBlur({[field.id]: newValue});
     }
   }
 
@@ -91,6 +94,7 @@ function GeolocationEditorComponent({
             label={`${name} latitude`}
             value={value?.lat ?? ''}
             onChangeText={newValue => setValue({...value, lat: newValue})}
+            onBlur={() => onBlur?.()}
             disabled={disabled}
             testID={`number-input-${field.id}-latitude`}
           />
@@ -98,6 +102,7 @@ function GeolocationEditorComponent({
             label={`${name} longitude`}
             value={value?.lng ?? ''}
             onChangeText={newValue => setValue({...value, lng: newValue})}
+            onBlur={() => onBlur?.()}
             disabled={disabled}
             testID={`number-input-${field.id}-longitude`}
           />

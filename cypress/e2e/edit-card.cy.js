@@ -86,15 +86,12 @@ describe('edit cards', () => {
     });
 
     cy.step('HIDE DETAIL', () => {
-      cy.contains('Cancel').click();
+      cy.get('[aria-label="Close card"]').click();
       cy.contains(publisher).should('not.exist');
     });
 
     cy.step('EDIT CARD', () => {
-      const updatedCard = Factory.card(
-        {[titleField.id]: updatedTitle, [releasedAtField.id]: '2000-01-01'},
-        card,
-      );
+      const updatedCard = Factory.card({[titleField.id]: updatedTitle}, card);
       cy.intercept('PATCH', `http://cypressapi/cards/${card.id}?`, {
         success: true,
       }).as('updateCard1');
@@ -108,26 +105,18 @@ describe('edit cards', () => {
       cy.contains(card.attributes['field-values'][titleField.id]).click();
       cy.get(`[data-testid=text-input-${titleField.id}]`)
         .clear()
-        .type(updatedTitle);
-      cy.get(`[data-testid="date-input-${releasedAtField.id}"]`)
-        .clear()
-        .type('01/01/2000');
-      cy.contains('Save').click();
+        .type(updatedTitle)
+        .blur();
 
       cy.wait('@updateCard1')
         .its('request.body')
         .should('deep.equal', {data: updatedCard});
 
+      cy.get('[aria-label="Close card"]').click();
+
       cy.contains(card.attributes['field-values'][titleField.id]).should(
         'not.exist',
       );
-      cy.contains(card.attributes['field-values'][publisherField.id]).should(
-        'not.exist',
-      );
-      cy.get(`[data-testid=column-${releasedColumn.id}]`).contains(
-        updatedTitle,
-      );
-      cy.contains('Jan 1, 2000');
     });
 
     cy.step('DELETE CARD', () => {
@@ -139,7 +128,7 @@ describe('edit cards', () => {
       });
 
       cy.contains(updatedTitle).click();
-      cy.contains('Delete').click();
+      cy.get('[aria-label="Delete Card"]').click();
       cy.wait('@deleteCard');
       cy.contains(updatedTitle).should('not.exist');
     });
@@ -169,13 +158,10 @@ describe('edit cards', () => {
             },
           },
         });
-      cy.get(`[data-testid=text-input-${titleField.id}]`)
-        .clear()
-        .type(newTitle);
       const updatedNewCard = Factory.card({[titleField.id]: newTitle}, newCard);
       cy.intercept('PATCH', `http://cypressapi/cards/${newCard.id}?`, {
         success: true,
-      });
+      }).as('updateNewCard');
       cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
         data: [updatedNewCard],
       });
@@ -183,7 +169,13 @@ describe('edit cards', () => {
         data: updatedNewCard,
       });
 
-      cy.contains('Save').click();
+      cy.get(`[data-testid=text-input-${titleField.id}]`)
+        .clear()
+        .type(newTitle)
+        .blur();
+      cy.wait('@updateNewCard');
+
+      cy.get('[aria-label="Close card"]').click();
       cy.contains(newTitle);
     });
   });

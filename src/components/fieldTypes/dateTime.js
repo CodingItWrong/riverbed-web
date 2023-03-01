@@ -10,11 +10,7 @@ import sharedStyles from '../sharedStyles';
 const dateTimeFieldDataType = {
   key: FIELD_DATA_TYPES.DATETIME.key,
   label: 'Date and Time',
-  formatValue: ({value}) => {
-    const result = dateTimeUtils.serverStringToHumanString(value);
-    console.log('formatValue', {value, result});
-    return result;
-  },
+  formatValue: ({value}) => dateTimeUtils.serverStringToHumanString(value),
   getSortValue: ({value}) => value, // datetimes are stored as strings that sort lexicographically
   EditorComponent: DateTimeEditorComponent,
 };
@@ -25,7 +21,14 @@ const MODAL_SHOWN = {
   TIME: 'TIME',
 };
 
-function DateTimeEditorComponent({field, value, setValue, style, disabled}) {
+function DateTimeEditorComponent({
+  field,
+  value,
+  setValue,
+  onBlur,
+  style,
+  disabled,
+}) {
   const [modalShown, setModalShown] = useState(MODAL_SHOWN.NONE);
 
   const date = dateUtils.serverStringToObject(value);
@@ -43,13 +46,18 @@ function DateTimeEditorComponent({field, value, setValue, style, disabled}) {
     const resultString = dateTimeUtils.objectToServerString(result);
     setValue(resultString);
     closeModal();
+    onBlur?.({[field.id]: resultString});
   }
 
   function handleChangeTime({hours, minutes}) {
-    setValue(
-      dateTimeUtils.setTime({dateObject: date, hour: hours, minute: minutes}),
-    );
+    const resultString = dateTimeUtils.setTime({
+      dateObject: date,
+      hour: hours,
+      minute: minutes,
+    });
+    setValue(resultString);
     closeModal();
+    onBlur?.({[field.id]: resultString});
   }
 
   // TODO: how to show field label
