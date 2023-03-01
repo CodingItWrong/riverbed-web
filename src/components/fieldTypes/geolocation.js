@@ -1,5 +1,6 @@
 import {getCurrentPositionAsync, useForegroundPermissions} from 'expo-location';
 import {StyleSheet, View} from 'react-native';
+import MapView, {Marker} from 'react-native-maps';
 import FIELD_DATA_TYPES from '../../enums/fieldDataTypes';
 import IconButton from '../IconButton';
 import NumberField from '../NumberField';
@@ -12,6 +13,23 @@ const geolocationFieldDataType = {
   getSortValue: ({value}) => value.lat, // arbitrarily chose to sort by latitude
   EditorComponent: GeolocationEditorComponent,
 };
+
+const valueToCoords = value =>
+  value && {
+    latitude: Number(value.lat),
+    longitude: Number(value.lng),
+  };
+const coordsToValue = coords => ({
+  lat: String(coords.latitude),
+  lng: String(coords.longitude),
+});
+
+const valueToRegion = value =>
+  value && {
+    ...valueToCoords(value), // TODO: figure out good values for this
+    latitudeDelta: 0.0147,
+    longitudeDelta: 0.0404,
+  };
 
 function GeolocationEditorComponent({
   field,
@@ -39,35 +57,54 @@ function GeolocationEditorComponent({
     }
   }
 
+  const coords = valueToCoords(value);
+  const region = valueToRegion(value);
+
+  function handleMapPress({nativeEvent: {coordinate}}) {
+    setValue(coordsToValue(coordinate));
+  }
+
   return (
-    <View style={styles.geoRow}>
-      <View style={styles.coordsFieldContainer}>
-        <NumberField
-          label={`${name} latitude`}
-          value={value?.lat ?? ''}
-          onChangeText={newValue => setValue({...value, lat: newValue})}
-          disabled={disabled}
-          testID={`number-input-${field.id}-latitude`}
-        />
-        <NumberField
-          label={`${name} longitude`}
-          value={value?.lng ?? ''}
-          onChangeText={newValue => setValue({...value, lng: newValue})}
-          disabled={disabled}
-          testID={`number-input-${field.id}-longitude`}
+    <>
+      <View style={styles.geoRow}>
+        <View style={styles.coordsFieldContainer}>
+          <NumberField
+            label={`${name} latitude`}
+            value={value?.lat ?? ''}
+            onChangeText={newValue => setValue({...value, lat: newValue})}
+            disabled={disabled}
+            testID={`number-input-${field.id}-latitude`}
+          />
+          <NumberField
+            label={`${name} longitude`}
+            value={value?.lng ?? ''}
+            onChangeText={newValue => setValue({...value, lng: newValue})}
+            disabled={disabled}
+            testID={`number-input-${field.id}-longitude`}
+          />
+        </View>
+        <IconButton
+          accessibilityLabel="Use current location"
+          icon="compass"
+          disabled={!status || (!status.granted && !status.canAskAgain)}
+          onPress={fillCurrentLocation}
         />
       </View>
-      <IconButton
-        accessibilityLabel="Use current location"
-        icon="compass"
-        disabled={!status || (!status.granted && !status.canAskAgain)}
-        onPress={fillCurrentLocation}
-      />
-    </View>
+      <MapView
+        style={styles.detailMap}
+        initialRegion={region}
+        onPress={handleMapPress}
+      >
+        <Marker coordinate={coords} />
+      </MapView>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
+  detailMap: {
+    height: 250,
+  },
   geoRow: {
     flexDirection: 'row',
     alignItems: 'center',
