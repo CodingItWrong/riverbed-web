@@ -1,10 +1,10 @@
-import {useNavigation} from '@react-navigation/native';
-import {useEffect, useState} from 'react';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import {useCallback, useEffect, useState} from 'react';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import ScreenBackground from '../../components/ScreenBackground';
 import sharedStyles from '../../components/sharedStyles';
 import {useBoard} from '../../data/boards';
-import {useCards} from '../../data/cards';
+import {useCards, useRefreshCards} from '../../data/cards';
 import {useCurrentBoard} from '../../data/currentBoard';
 import ColumnList from './Column/ColumnList';
 import EditBoardForm from './EditBoardForm';
@@ -15,6 +15,7 @@ export default function Board(...args) {
   const {data: board, isLoading: isLoadingBoard} = useBoard(boardId);
 
   const {isFetching: isFetchingCards} = useCards(board);
+  const refreshCards = useRefreshCards(board);
 
   const [editingBoard, setEditingBoard] = useState(false);
 
@@ -27,6 +28,12 @@ export default function Board(...args) {
       });
     }
   }, [navigation, board, isLoadingBoard, isFetchingCards, editingBoard]);
+
+  useFocusEffect(
+    useCallback(() => {
+      refreshCards();
+    }, [refreshCards]),
+  );
 
   function renderContents() {
     if (editingBoard) {
