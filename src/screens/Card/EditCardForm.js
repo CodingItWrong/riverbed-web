@@ -86,24 +86,20 @@ export default function EditCardForm({card, board, onClose}) {
     }
   }
 
-  const {
-    mutate: updateCard,
-    isLoading: isUpdating,
-    isError: isUpdateError,
-  } = useUpdateCard(card, board);
+  const {mutate: updateCard, isError: isUpdateError} = useUpdateCard(
+    card,
+    board,
+  );
   const handleUpdateCard = fieldOverrides => {
     const fieldValuesToUse = {...fieldValues, ...fieldOverrides};
     return updateCard({'field-values': fieldValuesToUse});
   };
 
-  const {
-    mutate: deleteCard,
-    isLoading: isDeleting,
-    isError: isDeleteError,
-  } = useDeleteCard(card, board);
+  const {mutate: deleteCard, isError: isDeleteError} = useDeleteCard(
+    card,
+    board,
+  );
   const handleDeleteCard = () => deleteCard(null, {onSuccess: onClose});
-
-  const isLoading = isUpdating || isDeleting;
 
   function getErrorMessage() {
     if (isUpdateError) {
