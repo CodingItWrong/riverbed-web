@@ -105,8 +105,7 @@ describe('edit cards', () => {
       cy.contains(card.attributes['field-values'][titleField.id]).click();
       cy.get(`[data-testid=text-input-${titleField.id}]`)
         .clear()
-        .type(updatedTitle)
-        .blur();
+        .type(updatedTitle);
 
       cy.wait('@updateCard1')
         .its('request.body')
@@ -171,8 +170,7 @@ describe('edit cards', () => {
 
       cy.get(`[data-testid=text-input-${titleField.id}]`)
         .clear()
-        .type(newTitle)
-        .blur();
+        .type(newTitle);
       cy.wait('@updateNewCard');
 
       cy.get('[aria-label="Close card"]').click();
