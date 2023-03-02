@@ -26,6 +26,10 @@ export default function Field({
       textToShow = `${name}: ${textToShow ?? '(empty)'}`;
     }
 
+    if (!textToShow) {
+      return null;
+    }
+
     return (
       <View style={style} testID={`field-${field.id}`}>
         <Text>{textToShow}</Text>
