@@ -15,6 +15,8 @@ import checkConditions from '../../utils/checkConditions';
 import dateUtils from '../../utils/dateUtils';
 import sortByDisplayOrder from '../../utils/sortByDisplayOrder';
 
+const SAVE_DEBOUNCE_TIME = window.Cypress ? 0 : 300;
+
 export default function EditCardForm({card, board, onClose}) {
   // const [isChanged, setIsChanged] = useState(false);
   const [fieldValues, setFieldValues] = useState(
