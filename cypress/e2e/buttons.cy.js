@@ -121,7 +121,6 @@ describe('buttons', () => {
     });
 
     cy.get(`[data-testid=button-${releaseButton.id}]`).click();
-    cy.get('[aria-label="Close card"]').click();
 
     cy.get(`[data-testid="column-${releasedColumn.id}"]`).contains(title);
   });

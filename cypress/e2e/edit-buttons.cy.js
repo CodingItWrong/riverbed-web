@@ -156,7 +156,6 @@ describe('edit buttons', () => {
     });
 
     cy.step('CONFIRM INFO CLEARED IN LIST', () => {
-      cy.get('[aria-label="Close card"]').click();
       cy.contains(greetingText).should('not.exist');
     });
   });
@@ -378,7 +377,6 @@ describe('edit buttons', () => {
     });
 
     cy.step('CONFIRM FIELD DATA UPDATED ON CARD', () => {
-      cy.get('[aria-label="Close card"]').click();
       cy.contains('Thu Jan 3, 2999');
     });
   });
@@ -521,7 +519,6 @@ describe('edit buttons', () => {
         .should('deep.equal', {data: uncompletedCard});
 
       // wait to go back to card list
-      cy.get('[aria-label="Close card"]').click();
       cy.contains(menuName).should('not.exist');
 
       // wait for card list to reload
