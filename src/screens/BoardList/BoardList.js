@@ -67,6 +67,7 @@ export default function BoardList() {
                 sections={boardGroups}
                 keyExtractor={board => board.id}
                 contentContainerStyle={sharedStyles.columnPadding}
+                stickySectionHeadersEnabled={false}
                 renderSectionHeader={({section: group}) => {
                   if (!group.title) {
                     return;
