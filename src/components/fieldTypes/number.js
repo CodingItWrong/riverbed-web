@@ -13,7 +13,6 @@ function NumberEditorComponent({
   field,
   value,
   setValue,
-  onBlur,
   readOnly,
   disabled,
   style,
@@ -26,7 +25,6 @@ function NumberEditorComponent({
       testID={`number-input-${field.id}`}
       value={value ?? ''}
       onChangeText={setValue}
-      onBlur={() => onBlur?.()}
       disabled={disabled}
       style={style}
     />

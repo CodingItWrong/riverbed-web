@@ -100,13 +100,6 @@ export default function EditCardForm({card, board, onClose}) {
     }
   }
 
-  function handleBlur(fieldOverrides) {
-    // if (isChanged || fieldOverrides) {
-    //   handleUpdateCard(fieldOverrides);
-    //   setIsChanged(false);
-    // }
-  }
-
   const {mutate: updateCard, isError: isUpdateError} = useUpdateCard(
     card,
     board,
@@ -138,7 +131,6 @@ export default function EditCardForm({card, board, onClose}) {
                   field={element}
                   value={fieldValues[element.id]}
                   setValue={value => setFieldValue(element.id, value)}
-                  onBlur={handleBlur}
                   readOnly={element.attributes['read-only']}
                   style={elementIndex > 0 && sharedStyles.mt}
                 />

@@ -8,7 +8,6 @@ export default function Field({
   readOnly,
   disabled,
   setValue,
-  onBlur,
   style,
 }) {
   const {name, 'data-type': dataType, options} = field.attributes;
@@ -43,7 +42,6 @@ export default function Field({
       field={field}
       value={value ?? ''}
       setValue={setValue}
-      onBlur={onBlur}
       disabled={disabled}
       style={style}
     />
