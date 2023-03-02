@@ -1,7 +1,7 @@
 import {useLinkTo, useNavigation} from '@react-navigation/native';
 import sortBy from 'lodash.sortby';
 import {useCallback, useEffect} from 'react';
-import {FlatList, StyleSheet, View} from 'react-native';
+import {SectionList, StyleSheet, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Button from '../../components/Button';
 import Card from '../../components/Card';
@@ -9,6 +9,7 @@ import CenterColumn from '../../components/CenterColumn';
 import IconButton from '../../components/IconButton';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import ScreenBackground from '../../components/ScreenBackground';
+import SectionHeader from '../../components/SectionHeader';
 import Text from '../../components/Text';
 import sharedStyles from '../../components/sharedStyles';
 import {useBoards, useCreateBoard, useUpdateBoard} from '../../data/boards';
@@ -38,7 +39,6 @@ export default function BoardList() {
   );
 
   const {data: boards = [], isLoading} = useBoards();
-  const sortedBoards = sortBy(boards, ['attributes.name']);
 
   function goToBoard(board) {
     linkTo(`/boards/${board.id}`);
@@ -49,6 +49,8 @@ export default function BoardList() {
     createBoard(null, {
       onSuccess: ({data: board}) => goToBoard(board),
     });
+
+  const boardGroups = groupBoards(boards);
 
   return (
     <ScreenBackground>
@@ -61,10 +63,21 @@ export default function BoardList() {
               style={sharedStyles.fullHeight}
               edges={['left', 'right', 'bottom']}
             >
-              <FlatList
-                data={sortedBoards}
+              <SectionList
+                sections={boardGroups}
                 keyExtractor={board => board.id}
                 contentContainerStyle={sharedStyles.columnPadding}
+                renderSectionHeader={({section: group}) => {
+                  if (!group.title) {
+                    return;
+                  }
+
+                  return (
+                    <SectionHeader testID="group-heading">
+                      {group.title}
+                    </SectionHeader>
+                  );
+                }}
                 renderItem={({item: board}) => (
                   <Card
                     onPress={() => goToBoard(board)}
@@ -97,6 +110,26 @@ export default function BoardList() {
       </CenterColumn>
     </ScreenBackground>
   );
+}
+
+function groupBoards(boards) {
+  const favorites = boards.filter(board => board.attributes['favorited-at']);
+  const unfavorites = boards.filter(board => !board.attributes['favorited-at']);
+
+  const groups = [];
+
+  if (favorites.length > 0) {
+    groups.push({
+      title: 'Favorites',
+      data: sortBy(favorites, ['attributes.favorited-at']),
+    });
+  }
+
+  if (unfavorites.length > 0) {
+    const title = favorites.length > 0 ? 'Other Boards' : null;
+    groups.push({title, data: sortBy(unfavorites, ['attributes.name'])});
+  }
+  return groups;
 }
 
 function FavoriteButton({board, onToggleFavorite}) {
