@@ -2,9 +2,9 @@ import {useLinkTo, useNavigation} from '@react-navigation/native';
 import sortBy from 'lodash.sortby';
 import {useCallback, useEffect} from 'react';
 import {SectionList, StyleSheet, View} from 'react-native';
+import {Card} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Button from '../../components/Button';
-import Card from '../../components/Card';
 import CenterColumn from '../../components/CenterColumn';
 import IconButton from '../../components/IconButton';
 import LoadingIndicator from '../../components/LoadingIndicator';
@@ -85,8 +85,8 @@ export default function BoardList() {
                     style={sharedStyles.mt}
                   >
                     <View style={styles.boardCard}>
-                      <View style={styles.boardTitle}>
-                        <Text variant="titleLarge">
+                      <View style={sharedStyles.fill}>
+                        <Text variant="titleMedium">
                           {board.attributes.name ?? '(unnamed board)'}
                         </Text>
                       </View>
@@ -162,11 +162,10 @@ function FavoriteButton({board, onToggleFavorite}) {
 
 const styles = StyleSheet.create({
   boardCard: {
+    paddingLeft: 16,
+    paddingRight: 8,
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  boardTitle: {
-    flex: 1,
   },
   favoriteStar: {
     margin: 0,
