@@ -151,11 +151,11 @@ describe('edit columns', () => {
     goToBoard();
 
     cy.step('CONFIRM DEFAULT SORT ORDER', () => {
-      cy.assertContentsOrder(`[data-testid=field-${titleField.id}]`, [
-        unownedTitle,
-        unplayedTitle1,
-        unplayedTitle2,
-        playedTitle,
+      cy.assertOrder(`[data-testid=field-${titleField.id}]`, [
+        e => e.contains(unownedTitle),
+        e => e.contains(unplayedTitle1),
+        e => e.contains(unplayedTitle2),
+        e => e.contains(playedTitle),
       ]);
     });
 
@@ -190,11 +190,11 @@ describe('edit columns', () => {
     });
 
     cy.step('CONFIRM NEW SORT ORDER', () => {
-      cy.assertContentsOrder(`[data-testid=field-${titleField.id}]`, [
-        unplayedTitle2,
-        unplayedTitle1,
-        unownedTitle,
-        playedTitle,
+      cy.assertOrder(`[data-testid=field-${titleField.id}]`, [
+        e => e.contains(unplayedTitle2),
+        e => e.contains(unplayedTitle1),
+        e => e.contains(unownedTitle),
+        e => e.contains(playedTitle),
       ]);
     });
   });
@@ -355,25 +355,24 @@ describe('edit columns', () => {
 
     cy.step('CONFIRM GROUPING', () => {
       // confirm which groups are shown in which order
-      cy.assertContentsOrder('[data-testid=group-heading]', [
-        '(empty)',
-        'Sun Jan 1, 2023',
-        'Thu Jan 1, 1998',
+      cy.assertOrder('[data-testid=group-heading]', [
+        e => e.contains('(empty)'),
+        e => e.contains('Sun Jan 1, 2023'),
+        e => e.contains('Thu Jan 1, 1998'),
       ]);
 
       // confirm the cards in each group
-      cy.assertContentsOrder(
+      cy.assertOrder(
         `[data-testid="group-${purchaseDate.id}-2023-01-01-card"]`,
-        [unplayedTitle1],
+        [e => e.contains(unplayedTitle1)],
       );
-      cy.assertContentsOrder(
+      cy.assertOrder(
         `[data-testid="group-${purchaseDate.id}-1998-01-01-card"]`,
-        [playedTitle, unplayedTitle2],
+        [e => e.contains(playedTitle), e => e.contains(unplayedTitle2)],
       );
-      cy.assertContentsOrder(
-        `[data-testid="group-${purchaseDate.id}-null-card"]`,
-        [unownedTitle],
-      );
+      cy.assertOrder(`[data-testid="group-${purchaseDate.id}-null-card"]`, [
+        e => e.contains(unownedTitle),
+      ]);
     });
   });
 
@@ -430,9 +429,9 @@ describe('edit columns', () => {
     goToBoard();
 
     cy.step('CONFIRM INITIAL ORDER', () => {
-      cy.assertContentsOrder('[data-testid="column-name"]', [
-        'Column A',
-        'Column B',
+      cy.assertOrder('[data-testid="column-name"]', [
+        e => e.contains('Column A'),
+        e => e.contains('Column B'),
       ]);
     });
 
@@ -481,9 +480,9 @@ describe('edit columns', () => {
     });
 
     cy.step('CONFIRM UPDATED ORDER', () => {
-      cy.assertContentsOrder('[data-testid="column-name"]', [
-        'Column B',
-        'Column A',
+      cy.assertOrder('[data-testid="column-name"]', [
+        e => e.contains('Column B'),
+        e => e.contains('Column A'),
       ]);
     });
   });

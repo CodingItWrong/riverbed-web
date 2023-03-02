@@ -338,16 +338,16 @@ describe('edit fields', () => {
     goToBoard();
 
     // confirm initial order in summary
-    cy.assertContentsOrder('[data-testid="field-value"]', [
-      'Value A',
-      'Value B',
+    cy.assertOrder('[data-testid="field-value"]', [
+      e => e.contains('Value A'),
+      e => e.contains('Value B'),
     ]);
 
     // confirm initial order in card detail
     cy.contains('Value A').click();
-    cy.assertTestIdOrder('[data-testid^="element-"]', [
-      `element-${fieldA.id}`,
-      `element-${fieldB.id}`,
+    cy.assertOrder('[data-testid^="element-"]', [
+      e => e.invoke('attr', 'data-testid').should('eq', `element-${fieldA.id}`),
+      e => e.invoke('attr', 'data-testid').should('eq', `element-${fieldB.id}`),
     ]);
     cy.get('[aria-label="Close card"]').click();
 
@@ -355,9 +355,9 @@ describe('edit fields', () => {
     cy.get('[aria-label="Edit Elements"]').click();
 
     // confirm initial order in Edit Elements form
-    cy.assertTestIdOrder('[data-testid^="element-"]', [
-      `element-${fieldA.id}`,
-      `element-${fieldB.id}`,
+    cy.assertOrder('[data-testid^="element-"]', [
+      e => e.invoke('attr', 'data-testid').should('eq', `element-${fieldA.id}`),
+      e => e.invoke('attr', 'data-testid').should('eq', `element-${fieldB.id}`),
     ]);
 
     cy.get('[aria-label="Edit Field A field"]').click();
@@ -391,23 +391,23 @@ describe('edit fields', () => {
     cy.contains('Save Field').should('not.exist');
 
     // confirm new field order in Edit Elements form
-    cy.assertTestIdOrder('[data-testid^="element-"]', [
-      `element-${fieldB.id}`,
-      `element-${fieldA.id}`,
+    cy.assertOrder('[data-testid^="element-"]', [
+      e => e.invoke('attr', 'data-testid').should('eq', `element-${fieldB.id}`),
+      e => e.invoke('attr', 'data-testid').should('eq', `element-${fieldA.id}`),
     ]);
 
     cy.get('[aria-label="Done Editing Elements"]').click();
 
     // confirm new field order in card summary
-    cy.assertContentsOrder('[data-testid="field-value"]', [
-      'Value B',
-      'Value A',
+    cy.assertOrder('[data-testid="field-value"]', [
+      e => e.contains('Value B'),
+      e => e.contains('Value A'),
     ]);
 
     // confirm new order in card detail
-    cy.assertTestIdOrder('[data-testid^="element-"]', [
-      `element-${fieldB.id}`,
-      `element-${fieldA.id}`,
+    cy.assertOrder('[data-testid^="element-"]', [
+      e => e.invoke('attr', 'data-testid').should('eq', `element-${fieldB.id}`),
+      e => e.invoke('attr', 'data-testid').should('eq', `element-${fieldA.id}`),
     ]);
   });
 
