@@ -1,5 +1,6 @@
 import debounce from 'lodash.debounce';
 import {useCallback, useEffect, useRef, useState} from 'react';
+import {useBeforeunload} from 'react-beforeunload';
 import {View} from 'react-native';
 import ButtonElement from '../../components/ButtonElement';
 import ButtonMenuElement from '../../components/ButtonMenuElement';
@@ -34,6 +35,12 @@ export default function EditCardForm({card, board, onClose}) {
       mounted.current = false;
     };
   }, []);
+
+  useBeforeunload(event => {
+    if (isChanged) {
+      event.preventDefault(); // this prompts the user before proceeding with the reload
+    }
+  });
 
   const [isChanged, setIsChanged] = useState(false);
   const [fieldValues, setFieldValues] = useState(
@@ -113,6 +120,7 @@ export default function EditCardForm({card, board, onClose}) {
     (fieldOverrides, options) => {
       const fieldValuesToUse = {...fieldValues, ...fieldOverrides};
       updateCard({'field-values': fieldValuesToUse}, options);
+      setIsChanged(false);
     },
     [updateCard, fieldValues],
   );
