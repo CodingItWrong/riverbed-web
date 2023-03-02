@@ -22,12 +22,12 @@ export default function Field({
   if (readOnly) {
     let textToShow = fieldType.formatValue({value, options});
 
-    if (options['show-label-when-read-only']) {
-      textToShow = `${name}: ${textToShow ?? '(empty)'}`;
-    }
-
     if (!textToShow) {
       return null;
+    }
+
+    if (options['show-label-when-read-only']) {
+      textToShow = `${name}: ${textToShow ?? '(empty)'}`;
     }
 
     return (
