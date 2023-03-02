@@ -16,7 +16,9 @@ import checkConditions from '../../utils/checkConditions';
 import dateUtils from '../../utils/dateUtils';
 import sortByDisplayOrder from '../../utils/sortByDisplayOrder';
 
-const SAVE_DEBOUNCE_TIME = window.Cypress ? 0 : 300;
+// NOTE: cypress time needs to be long enough to prevent multiple saves at cypress's speed
+// could end up flaky
+const SAVE_DEBOUNCE_TIME = window.Cypress ? 100 : 300;
 
 const debounceSave = debounce(
   handleUpdateCard => handleUpdateCard(),
