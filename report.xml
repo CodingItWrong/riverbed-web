@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<testsuites>
+  <testsuite name="Test Suite" device="emulator-5554" tests="1" failures="1">
+    <testcase id="smoke-test" name="smoke-test">
+      <failure>Unable to launch app host.exp.Exponent: Package host.exp.Exponent is not installed</failure>
+    </testcase>
+  </testsuite>
+</testsuites>

@@ -1,0 +1,5 @@
+appId: host.exp.Exponent
+---
+- launchApp
+- tapOn: "list-app"
+- assertVisible: "My Boards.*"
