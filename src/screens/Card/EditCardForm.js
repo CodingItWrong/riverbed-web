@@ -33,16 +33,18 @@ export default function EditCardForm({card, board, onClose}) {
     };
   }, []);
 
-  // const [isChanged, setIsChanged] = useState(false);
+  const [isChanged, setIsChanged] = useState(false);
   const [fieldValues, setFieldValues] = useState(
     card.attributes['field-values'],
   );
 
   // every time field values change, schedule a debounced run of the update
   useEffect(() => {
-    debounceSave(handleUpdateCard);
+    if (isChanged) {
+      debounceSave(handleUpdateCard);
+    }
     // TODO: fieldValues shouldn't be needed here, but there seems to be a dependency issue with handleUpdateCard; not properly recreated for new fiedValues
-  }, [fieldValues, handleUpdateCard]);
+  }, [fieldValues, isChanged, handleUpdateCard]);
 
   const {data: elements = []} = useBoardElements(board);
 
@@ -58,7 +60,7 @@ export default function EditCardForm({card, board, onClose}) {
 
   function setFieldValue(fieldId, value) {
     setFieldValues(oldValues => ({...oldValues, [fieldId]: value}));
-    // setIsChanged(true);
+    setIsChanged(true);
   }
 
   function handlePerformAction(action) {
