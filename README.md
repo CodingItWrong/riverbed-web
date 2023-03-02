@@ -11,6 +11,7 @@ Optional:
 
 - To run on Android Emulator, [Android Studio](https://developer.android.com/studio)
 - To run on iOS Simulator, [Xcode](https://developer.apple.com/xcode/)
+- For mobile testing, [Maestro](https://maestro.mobile.dev/getting-started/installing-maestro)
 
 ## Installation
 
@@ -55,5 +56,13 @@ TestFlight builds can be used by any device added as internal testers.
 
 ## E2E Tests
 
-- Run the app
+### Web: Cypress
+
+- Start webpack by running `yarn start --web` (or, within Metro, press `w`)
 - In another terminal, run `yarn cypress`
+- Choose E2E Testing, then any browser, then click "Start E2E Testing"
+
+### Native: Maestro
+
+- Boot the app in Expo Go in a simulator or emulator
+- Run `maestro test maestro/[some test name].yaml`
