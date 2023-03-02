@@ -1,4 +1,5 @@
-import {useState} from 'react';
+import debounce from 'lodash.debounce';
+import {useCallback, useEffect, useRef, useState} from 'react';
 import {View} from 'react-native';
 import ButtonElement from '../../components/ButtonElement';
 import ButtonMenuElement from '../../components/ButtonMenuElement';
@@ -17,11 +18,22 @@ import sortByDisplayOrder from '../../utils/sortByDisplayOrder';
 
 const SAVE_DEBOUNCE_TIME = window.Cypress ? 0 : 300;
 
+const debounceSave = debounce(
+  handleUpdateCard => handleUpdateCard(),
+  SAVE_DEBOUNCE_TIME,
+);
+
 export default function EditCardForm({card, board, onClose}) {
   // const [isChanged, setIsChanged] = useState(false);
   const [fieldValues, setFieldValues] = useState(
     card.attributes['field-values'],
   );
+
+  // every time field values change, schedule a debounced run of the update
+  useEffect(() => {
+    debounceSave(handleUpdateCard);
+    // TODO: fieldValues shouldn't be needed here, but there seems to be a dependency issue with handleUpdateCard; not properly recreated for new fiedValues
+  }, [fieldValues, handleUpdateCard]);
 
   const {data: elements = []} = useBoardElements(board);
 
@@ -90,10 +102,13 @@ export default function EditCardForm({card, board, onClose}) {
     card,
     board,
   );
-  const handleUpdateCard = (fieldOverrides, options) => {
-    const fieldValuesToUse = {...fieldValues, ...fieldOverrides};
-    updateCard({'field-values': fieldValuesToUse}, options);
-  };
+  const handleUpdateCard = useCallback(
+    (fieldOverrides, options) => {
+      const fieldValuesToUse = {...fieldValues, ...fieldOverrides};
+      updateCard({'field-values': fieldValuesToUse}, options);
+    },
+    [updateCard, fieldValues],
+  );
 
   function getErrorMessage() {
     if (isUpdateError) {
