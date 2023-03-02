@@ -78,4 +78,103 @@ describe('edit boards', () => {
       cy.contains('Add Board');
     });
   });
+
+  it('allows favoriting boards', () => {
+    const gamesBoard = Factory.board({name: 'Games'});
+    const vegetablesBoard = Factory.board({name: 'Vegetables'});
+
+    cy.intercept('GET', 'http://cypressapi/boards?', {
+      data: [vegetablesBoard, gamesBoard],
+    });
+
+    cy.signIn();
+
+    cy.step('CHECK WHAT IS SHOWN WHEN NO BOARDS ARE FAVORITES', () => {
+      // unfavorite boards are sorted alphabetically
+      cy.assertOrder('[aria-label$="a favorite board"]', [
+        e =>
+          e
+            .invoke('attr', 'aria-label')
+            .should('eq', 'Games is not a favorite board'),
+        e =>
+          e
+            .invoke('attr', 'aria-label')
+            .should('eq', 'Vegetables is not a favorite board'),
+      ]);
+
+      cy.contains('Favorites').should('not.exist');
+      cy.contains('Other Boards').should('not.exist');
+    });
+
+    const favoriteVegetablesBoard = Factory.board(
+      {
+        'favorited-at': new Date(2023, 1, 1, 0, 0, 0).toISOString(),
+      },
+      vegetablesBoard,
+    );
+    cy.step('FAVORITE A BOARD', () => {
+      cy.intercept('PATCH', `http://cypressapi/boards/${vegetablesBoard.id}?`, {
+        success: true,
+      }).as('updateVegetables');
+      cy.intercept('GET', 'http://cypressapi/boards?', {
+        data: [gamesBoard, favoriteVegetablesBoard],
+      });
+      cy.get('[aria-label="Vegetables is not a favorite board"]').click();
+      cy.wait('@updateVegetables')
+        .its('request.body.data.attributes["favorited-at"]')
+        .should('be.a', 'string');
+      cy.get('[aria-label="Vegetables is a favorite board"]');
+
+      cy.contains('Favorites').should('exist');
+      cy.contains('Other Boards').should('exist');
+    });
+
+    const favoriteGamesBoard = Factory.board(
+      {
+        'favorited-at': new Date(2023, 1, 2, 0, 0, 0).toISOString(),
+      },
+      gamesBoard,
+    );
+    cy.step('FAVORITE THE OTHER BOARD', () => {
+      cy.intercept('PATCH', `http://cypressapi/boards/${gamesBoard.id}?`, {
+        success: true,
+      }).as('updateGames');
+      cy.intercept('GET', 'http://cypressapi/boards?', {
+        data: [favoriteGamesBoard, favoriteVegetablesBoard],
+      });
+      cy.get('[aria-label="Games is not a favorite board"]').click();
+      cy.wait('@updateGames')
+        .its('request.body.data.attributes["favorited-at"]')
+        .should('be.a', 'string');
+
+      // favorite boards are sorted by time added
+      cy.assertOrder('[aria-label$="a favorite board"]', [
+        e =>
+          e
+            .invoke('attr', 'aria-label')
+            .should('eq', 'Vegetables is a favorite board'),
+        e =>
+          e
+            .invoke('attr', 'aria-label')
+            .should('eq', 'Games is a favorite board'),
+      ]);
+
+      cy.contains('Favorites').should('exist');
+      cy.contains('Other Boards').should('not.exist');
+    });
+
+    cy.step('UNFAVORITE A BOARD', () => {
+      cy.intercept('PATCH', `http://cypressapi/boards/${vegetablesBoard.id}?`, {
+        success: true,
+      }).as('updateVegetables');
+      cy.intercept('GET', 'http://cypressapi/boards?', {
+        data: [favoriteGamesBoard, vegetablesBoard],
+      });
+      cy.get('[aria-label="Vegetables is a favorite board"]').click();
+      cy.wait('@updateVegetables')
+        .its('request.body.data.attributes["favorited-at"]')
+        .should('be.null');
+      cy.get('[aria-label="Vegetables is not a favorite board"]');
+    });
+  });
 });

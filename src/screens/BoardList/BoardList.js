@@ -146,7 +146,11 @@ function FavoriteButton({board, onToggleFavorite}) {
 
   return (
     <IconButton
-      accessibilityLabel="Favorite"
+      accessibilityLabel={
+        isFavorite
+          ? `${attributes.name} is a favorite board`
+          : `${attributes.name} is not a favorite board`
+      }
       icon={isFavorite ? 'star' : 'star-outline'}
       iconColor={isFavorite ? 'orange' : 'gray'}
       style={styles.favoriteStar}

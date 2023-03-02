@@ -20,6 +20,12 @@ Cypress.Commands.add('assertContentsOrder', (selector, values) => {
   });
 });
 
+Cypress.Commands.add('assertOrder', (selector, assertions) => {
+  assertions.forEach((assertion, i) => {
+    assertion(cy.get(selector).eq(i));
+  });
+});
+
 Cypress.Commands.add('assertTestIdOrder', (selector, values) => {
   values.forEach((childSelector, i) => {
     cy.get(selector)
