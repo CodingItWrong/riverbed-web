@@ -82,7 +82,7 @@ const AppNav = () => {
           <AppStack.Screen
             name="BoardList"
             component={BoardList}
-            options={{title: 'My Boards 3/2 C'}}
+            options={{title: 'My Boards 3/2 D'}}
           />
           <AppStack.Screen
             name="BoardStack"
