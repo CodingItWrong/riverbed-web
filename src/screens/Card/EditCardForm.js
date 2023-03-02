@@ -12,6 +12,7 @@ import {useBoardElements} from '../../data/elements';
 import COMMANDS from '../../enums/commands';
 import ELEMENT_TYPES from '../../enums/elementTypes';
 import VALUES from '../../enums/values';
+import useWebRefreshGuard from '../../hooks/useWebRefreshGuard';
 import checkConditions from '../../utils/checkConditions';
 import dateUtils from '../../utils/dateUtils';
 import sortByDisplayOrder from '../../utils/sortByDisplayOrder';
@@ -39,6 +40,8 @@ export default function EditCardForm({card, board, onClose}) {
   const [fieldValues, setFieldValues] = useState(
     card.attributes['field-values'],
   );
+
+  useWebRefreshGuard(isChanged);
 
   // every time field values change, schedule a debounced run of the update
   useEffect(() => {
@@ -113,6 +116,7 @@ export default function EditCardForm({card, board, onClose}) {
     (fieldOverrides, options) => {
       const fieldValuesToUse = {...fieldValues, ...fieldOverrides};
       updateCard({'field-values': fieldValuesToUse}, options);
+      setIsChanged(false);
     },
     [updateCard, fieldValues],
   );
