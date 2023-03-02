@@ -64,6 +64,7 @@ describe('edit boards', () => {
 
     cy.contains(boardName).click();
 
+    cy.get('[aria-label="Loading"] > div').should('be.visible');
     cy.get('[aria-label="Loading"] > div').should('not.be.visible');
     cy.get('[data-testid=navigation-bar-title]').eq(1).click({force: true});
 
