@@ -1,6 +1,5 @@
 import debounce from 'lodash.debounce';
 import {useCallback, useEffect, useRef, useState} from 'react';
-import {useBeforeunload} from 'react-beforeunload';
 import {View} from 'react-native';
 import ButtonElement from '../../components/ButtonElement';
 import ButtonMenuElement from '../../components/ButtonMenuElement';
@@ -13,6 +12,7 @@ import {useBoardElements} from '../../data/elements';
 import COMMANDS from '../../enums/commands';
 import ELEMENT_TYPES from '../../enums/elementTypes';
 import VALUES from '../../enums/values';
+import useWebRefreshGuard from '../../hooks/useWebRefreshGuard';
 import checkConditions from '../../utils/checkConditions';
 import dateUtils from '../../utils/dateUtils';
 import sortByDisplayOrder from '../../utils/sortByDisplayOrder';
@@ -36,16 +36,12 @@ export default function EditCardForm({card, board, onClose}) {
     };
   }, []);
 
-  useBeforeunload(event => {
-    if (isChanged) {
-      event.preventDefault(); // this prompts the user before proceeding with the reload
-    }
-  });
-
   const [isChanged, setIsChanged] = useState(false);
   const [fieldValues, setFieldValues] = useState(
     card.attributes['field-values'],
   );
+
+  useWebRefreshGuard(isChanged);
 
   // every time field values change, schedule a debounced run of the update
   useEffect(() => {
