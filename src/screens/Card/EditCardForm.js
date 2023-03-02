@@ -24,6 +24,15 @@ const debounceSave = debounce(
 );
 
 export default function EditCardForm({card, board, onClose}) {
+  const mounted = useRef(false);
+
+  useEffect(() => {
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+    };
+  }, []);
+
   // const [isChanged, setIsChanged] = useState(false);
   const [fieldValues, setFieldValues] = useState(
     card.attributes['field-values'],
@@ -101,6 +110,7 @@ export default function EditCardForm({card, board, onClose}) {
   const {mutate: updateCard, isError: isUpdateError} = useUpdateCard(
     card,
     board,
+    mounted,
   );
   const handleUpdateCard = useCallback(
     (fieldOverrides, options) => {

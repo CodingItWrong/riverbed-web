@@ -58,8 +58,9 @@ export function useCreateCard(board) {
   });
 }
 
-export function useUpdateCard(card, board) {
+export function useUpdateCard(card, board, mountedRef) {
   const cardClient = useCardClient();
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: attributes =>
       cardClient.update({
@@ -67,6 +68,13 @@ export function useUpdateCard(card, board) {
         id: card.id,
         attributes,
       }),
+    onSuccess: () => {
+      if (!mountedRef.current) {
+        // if card form was unloaded while card saving, reload cards.
+        // cards are refreshed upon card form unload, but this handles when a change was saved after that.
+        refreshCards(queryClient, board);
+      }
+    },
   });
 }
 
