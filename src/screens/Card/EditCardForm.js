@@ -16,7 +16,7 @@ import dateUtils from '../../utils/dateUtils';
 import sortByDisplayOrder from '../../utils/sortByDisplayOrder';
 
 export default function EditCardForm({card, board, onClose}) {
-  const [isChanged, setIsChanged] = useState(false);
+  // const [isChanged, setIsChanged] = useState(false);
   const [fieldValues, setFieldValues] = useState(
     card.attributes['field-values'],
   );
@@ -35,7 +35,7 @@ export default function EditCardForm({card, board, onClose}) {
 
   function setFieldValue(fieldId, value) {
     setFieldValues(oldValues => ({...oldValues, [fieldId]: value}));
-    setIsChanged(true);
+    // setIsChanged(true);
   }
 
   function handlePerformAction(action) {
@@ -78,10 +78,10 @@ export default function EditCardForm({card, board, onClose}) {
   }
 
   function handleBlur(fieldOverrides) {
-    if (isChanged || fieldOverrides) {
-      handleUpdateCard(fieldOverrides);
-      setIsChanged(false);
-    }
+    // if (isChanged || fieldOverrides) {
+    //   handleUpdateCard(fieldOverrides);
+    //   setIsChanged(false);
+    // }
   }
 
   const {mutate: updateCard, isError: isUpdateError} = useUpdateCard(
