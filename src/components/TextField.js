@@ -8,7 +8,6 @@ export default function TextField({
   label,
   value,
   onChangeText,
-  onBlur,
   disabled,
   multiline,
   autoCapitalize,
@@ -26,7 +25,6 @@ export default function TextField({
       testID={testID}
       value={value}
       onChangeText={onChangeText}
-      onBlur={event => onBlur?.(event)}
       disabled={disabled}
       multiline={multiline}
       autoCapitalize={autoCapitalize}

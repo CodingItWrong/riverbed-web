@@ -1,4 +1,5 @@
-import {useState} from 'react';
+import debounce from 'lodash.debounce';
+import {useCallback, useEffect, useRef, useState} from 'react';
 import {View} from 'react-native';
 import ButtonElement from '../../components/ButtonElement';
 import ButtonMenuElement from '../../components/ButtonMenuElement';
@@ -15,11 +16,37 @@ import checkConditions from '../../utils/checkConditions';
 import dateUtils from '../../utils/dateUtils';
 import sortByDisplayOrder from '../../utils/sortByDisplayOrder';
 
+// NOTE: cypress time needs to be long enough to prevent multiple saves at cypress's speed
+// could end up flaky
+const SAVE_DEBOUNCE_TIME = window.Cypress ? 100 : 300;
+
+const debounceSave = debounce(
+  handleUpdateCard => handleUpdateCard(),
+  SAVE_DEBOUNCE_TIME,
+);
+
 export default function EditCardForm({card, board, onClose}) {
+  const mounted = useRef(false);
+
+  useEffect(() => {
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+    };
+  }, []);
+
   const [isChanged, setIsChanged] = useState(false);
   const [fieldValues, setFieldValues] = useState(
     card.attributes['field-values'],
   );
+
+  // every time field values change, schedule a debounced run of the update
+  useEffect(() => {
+    if (isChanged) {
+      debounceSave(handleUpdateCard);
+    }
+    // TODO: fieldValues shouldn't be needed here, but there seems to be a dependency issue with handleUpdateCard; not properly recreated for new fiedValues
+  }, [fieldValues, isChanged, handleUpdateCard]);
 
   const {data: elements = []} = useBoardElements(board);
 
@@ -77,21 +104,18 @@ export default function EditCardForm({card, board, onClose}) {
     }
   }
 
-  function handleBlur(fieldOverrides) {
-    if (isChanged || fieldOverrides) {
-      handleUpdateCard(fieldOverrides);
-      setIsChanged(false);
-    }
-  }
-
   const {mutate: updateCard, isError: isUpdateError} = useUpdateCard(
     card,
     board,
+    mounted,
   );
-  const handleUpdateCard = (fieldOverrides, options) => {
-    const fieldValuesToUse = {...fieldValues, ...fieldOverrides};
-    updateCard({'field-values': fieldValuesToUse}, options);
-  };
+  const handleUpdateCard = useCallback(
+    (fieldOverrides, options) => {
+      const fieldValuesToUse = {...fieldValues, ...fieldOverrides};
+      updateCard({'field-values': fieldValuesToUse}, options);
+    },
+    [updateCard, fieldValues],
+  );
 
   function getErrorMessage() {
     if (isUpdateError) {
@@ -111,7 +135,6 @@ export default function EditCardForm({card, board, onClose}) {
                   field={element}
                   value={fieldValues[element.id]}
                   setValue={value => setFieldValue(element.id, value)}
-                  onBlur={handleBlur}
                   readOnly={element.attributes['read-only']}
                   style={elementIndex > 0 && sharedStyles.mt}
                 />

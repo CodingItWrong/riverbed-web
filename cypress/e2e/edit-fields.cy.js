@@ -107,9 +107,9 @@ describe('edit fields', () => {
       cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
         data: [Factory.card({[localGreetingField.id]: greeting})],
       });
-      cy.get(`[data-testid="text-input-${localGreetingField.id}"]`)
-        .type('Hello, World!')
-        .blur();
+      cy.get(`[data-testid="text-input-${localGreetingField.id}"]`).type(
+        'Hello, World!',
+      );
       cy.wait('@updateField');
 
       cy.get('[aria-label="Close card"]').click();

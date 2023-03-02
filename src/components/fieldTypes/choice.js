@@ -15,7 +15,6 @@ function ChoiceEditorComponent({
   field,
   value,
   setValue,
-  onBlur,
   readOnly,
   disabled,
   style,
@@ -26,13 +25,7 @@ function ChoiceEditorComponent({
       fieldLabel={name}
       emptyLabel="(choose)"
       value={choices?.find(c => c.id === value)}
-      onValueChange={choice => {
-        const newValue = choice?.id;
-        setValue(newValue);
-
-        // remove need for this value override; make fields function consistently
-        onBlur?.({[field.id]: newValue});
-      }}
+      onValueChange={choice => setValue(choice?.id)}
       options={choices}
       keyExtractor={choice => choice.id}
       labelExtractor={choice => choice.label}

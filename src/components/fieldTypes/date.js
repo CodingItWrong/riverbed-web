@@ -15,7 +15,6 @@ function DateEditorComponent({
   field,
   value,
   setValue,
-  onBlur,
   readOnly,
   disabled,
   style,
@@ -28,18 +27,12 @@ function DateEditorComponent({
       locale="en"
       label={name}
       value={dateUtils.serverStringToObject(value)}
-      onChange={newDate => {
-        const newValue = dateUtils.objectToServerString(newDate);
-        setValue(newValue);
-        onBlur?.({[field.id]: newValue});
-      }}
+      onChange={newDate => setValue(dateUtils.objectToServerString(newDate))}
       onChangeText={newText => {
         if (newText === '') {
           setValue(newText);
-          onBlur?.({[field.id]: newText});
         }
       }}
-      onBlur={() => onBlur()}
       disabled={disabled}
       inputMode="start"
       testID={`date-input-${field.id}`}

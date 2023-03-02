@@ -152,8 +152,7 @@ describe('field data types', () => {
     cy.step('TEST GEOLCOATION FIELD', () => {
       cy.get(`[data-testid=number-input-${geolocationField.id}-latitude]`)
         .clear()
-        .type(27)
-        .blur();
+        .type(27);
       cy.wait('@updateCard')
         .its(
           `request.body.data.attributes["field-values"][${geolocationField.id}]`,
@@ -162,8 +161,7 @@ describe('field data types', () => {
 
       cy.get(`[data-testid=number-input-${geolocationField.id}-longitude]`)
         .clear()
-        .type(42)
-        .blur();
+        .type(42);
       cy.wait('@updateCard')
         .its(
           `request.body.data.attributes["field-values"][${geolocationField.id}]`,
@@ -172,10 +170,7 @@ describe('field data types', () => {
     });
 
     cy.step('TEST NUMBER FIELD', () => {
-      cy.get(`[data-testid=number-input-${numberField.id}]`)
-        .clear()
-        .type(27)
-        .blur();
+      cy.get(`[data-testid=number-input-${numberField.id}]`).clear().type(27);
       cy.wait('@updateCard')
         .its('request.body.data.attributes["field-values"]')
         .should('deep.include', {[numberField.id]: '27'});
@@ -184,8 +179,7 @@ describe('field data types', () => {
     cy.step('TEST TEXT FIELD', () => {
       cy.get(`[data-testid=text-input-${textField.id}]`)
         .clear()
-        .type('Greetings')
-        .blur();
+        .type('Greetings');
       cy.wait('@updateCard')
         .its('request.body.data.attributes["field-values"]')
         .should('deep.include', {[textField.id]: 'Greetings'});
