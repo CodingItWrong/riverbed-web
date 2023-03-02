@@ -18,7 +18,10 @@ export default function NavigationBar({navigation, options, back}) {
         testID="navigation-bar-title"
         onPress={onTitlePress}
       />
-      {isFetching && <LoadingIndicator style={styles.navBarLoadingIndicator} />}
+      <LoadingIndicator
+        loading={Boolean(isFetching)}
+        style={styles.navBarLoadingIndicator}
+      />
       {headerRight?.()}
     </Appbar.Header>
   );
