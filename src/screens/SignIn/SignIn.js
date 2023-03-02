@@ -1,10 +1,12 @@
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {StyleSheet} from 'react-native';
 import oauthLogin from '../../auth/oauthLogin';
 import useLoginForm from '../../auth/useLoginForm';
 import Button from '../../components/Button';
+import CenterColumn from '../../components/CenterColumn';
+import ErrorMessage from '../../components/ErrorMessage';
 import ScreenBackground from '../../components/ScreenBackground';
-import Text from '../../components/Text';
 import TextField from '../../components/TextField';
+import sharedStyles from '../../components/sharedStyles';
 import httpClient from '../../data/httpClient';
 import {useToken} from '../../data/token';
 
@@ -22,8 +24,8 @@ export default function SignIn({navigation}) {
     useLoginForm(onLogIn);
 
   return (
-    <ScreenBackground>
-      <SafeAreaView>
+    <ScreenBackground style={styles.container}>
+      <CenterColumn>
         <TextField
           label="Email"
           testID="text-input-email"
@@ -40,11 +42,17 @@ export default function SignIn({navigation}) {
           onChangeText={handleChange('password')}
           secureTextEntry
         />
-        <Text>{error}</Text>
-        <Button mode="contained" onPress={handleLogIn}>
+        <ErrorMessage>{error}</ErrorMessage>
+        <Button mode="primary" onPress={handleLogIn} style={sharedStyles.mt}>
           Sign in
         </Button>
-      </SafeAreaView>
+      </CenterColumn>
     </ScreenBackground>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 16,
+  },
+});
