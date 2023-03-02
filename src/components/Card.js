@@ -9,7 +9,13 @@ export default function Card({
   testID,
 }) {
   return (
-    <PaperCard onPress={onPress} mode={mode} style={style} testID={testID}>
+    <PaperCard
+      onPress={onPress}
+      mode={mode}
+      style={style}
+      testID={testID}
+      accessible={false}
+    >
       <PaperCard.Content>{children}</PaperCard.Content>
       <PaperCard.Actions>{buttons}</PaperCard.Actions>
     </PaperCard>

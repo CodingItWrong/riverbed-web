@@ -1,0 +1,59 @@
+appId: host.exp.Exponent
+---
+# Launch Expo App
+- launchApp
+- tapOn: "list-app"
+
+# Create Board
+- tapOn: ".*Add Board"
+- tapOn: "(unnamed board)"
+- tapOn: "Name *"
+- inputText: "Ze Maestro Board"
+- tapOn: "Save Board"
+- assertNotVisible: "Save Board"
+- assertVisible: "Ze Maestro Board"
+
+# Configure Elements
+- tapOn: ".*Add Card"
+- tapOn: "Edit Elements"
+
+# Add Text Field
+- tapOn: ".*Add Element"
+- tapOn: "Field"
+- tapOn: "Field Name*"
+- inputText: "Greeting"
+- hideKeyboard
+- tapOn: "Show in Summary"
+# STEP SUCCEEDED BUT DID NOT CHANGE ANYTHING
+# - scrollUntilVisible:
+#     element:
+#       text: "Save Field"
+#     direction: DOWN
+- swipe:
+    from:
+      text: "Cancel"
+    direction: UP
+- tapOn: "Save Field"
+- assertNotVisible: "Save Field"
+
+# Finish Configuring Elements
+- tapOn: "Done Editing Elements"
+
+# Fill In Field
+- tapOn: "Greeting *"
+- inputText: "Buongiorno, Maestro!"
+- tapOn: "Close card"
+
+# Configure Column
+- tapOn: ".*Add Column"
+- tapOn: "Column Name *"
+- inputText: "All Cards"
+- hideKeyboard
+- swipe:
+    from:
+      text: "Group Direction.*"
+    direction: UP
+- tapOn: "Save Column"
+
+# Confirm value in card summary
+- assertVisible: "Buongiorno, Maestro!"
