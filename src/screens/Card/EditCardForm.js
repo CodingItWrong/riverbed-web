@@ -68,7 +68,15 @@ export default function EditCardForm({card, board, onClose}) {
     setIsChanged(true);
   }
 
-  function handlePerformAction(action) {
+  function handlePerformActions(actions) {
+    const updatedAttributes = Object.assign(
+      {},
+      ...actions.map(action => performAction(action)),
+    );
+    handleUpdateCard(updatedAttributes, {onSuccess: onClose});
+  }
+
+  function performAction(action) {
     const {command, field, value} = action;
 
     const fieldObject = elements.find(element => element.id === field);
@@ -80,12 +88,11 @@ export default function EditCardForm({card, board, onClose}) {
           const concreteValue = valueObject.call(
             fieldObject.attributes['data-type'],
           );
-          handleUpdateCard({[field]: concreteValue}, {onSuccess: onClose});
+          return {[field]: concreteValue};
         } else {
           console.error(`unknown value: ${value}`);
           return;
         }
-        break;
       case COMMANDS.ADD_DAYS.key:
         // TODO: handle datetime
         function getStartDate() {
@@ -100,8 +107,7 @@ export default function EditCardForm({card, board, onClose}) {
         const startDate = getStartDate();
         const updatedDate = dateUtils.addDays(startDate, Number(value));
         const concreteValue = dateUtils.objectToServerString(updatedDate);
-        handleUpdateCard({[field]: concreteValue}, {onSuccess: onClose});
-        break;
+        return {[field]: concreteValue};
       default:
         console.error(`unknown command: ${command}`);
     }
@@ -150,7 +156,7 @@ export default function EditCardForm({card, board, onClose}) {
                 key={element.id}
                 element={element}
                 onPerformAction={() =>
-                  handlePerformAction(element.attributes.action)
+                  handlePerformActions(element.attributes.options.actions)
                 }
                 style={elementIndex > 0 && sharedStyles.mt}
               />
@@ -161,7 +167,7 @@ export default function EditCardForm({card, board, onClose}) {
                 key={element.id}
                 element={element}
                 onPerformActionForItem={menuItem =>
-                  handlePerformAction(menuItem.action)
+                  handlePerformActions(menuItem.actions)
                 }
                 style={elementIndex > 0 && sharedStyles.mt}
               />

@@ -1,7 +1,7 @@
 import set from 'lodash.set';
 import startCase from 'lodash.startcase';
 import {useState} from 'react';
-import {View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import Button from '../../../components/Button';
 import Card from '../../../components/Card';
 import DropdownField from '../../../components/DropdownField';
@@ -215,17 +215,19 @@ export default function EditElementForm({
       )}
       {elementType === ELEMENT_TYPES.BUTTON.key && (
         <ActionInputs
-          action={elementAttributes.action}
-          updateActionAttribute={(path, value) =>
-            updateAttribute(`action.${path}`, value)
+          actions={elementAttributes.options?.actions ?? []}
+          updateActionsAttribute={(path, value) =>
+            updateAttribute(`options.actions${path}`, value)
           }
+          attributes={elementAttributes}
+          updateAttribute={updateAttribute}
           fields={fields}
         />
       )}
       {elementType === ELEMENT_TYPES.BUTTON_MENU.key && (
         <FormGroup title="Button Menu Items">
           {elementAttributes.options?.items?.map((menuItem, index) => (
-            <View key={index /* it's fine */}>
+            <View key={index /* it's fine */} testID={`menu-item-${index}`}>
               <View style={sharedStyles.row}>
                 <TextField
                   label="Menu Item Name"
@@ -243,10 +245,10 @@ export default function EditElementForm({
                 />
               </View>
               <ActionInputs
-                action={menuItem.action}
-                updateActionAttribute={(path, value) =>
+                actions={menuItem.actions ?? []}
+                updateActionsAttribute={(path, value) =>
                   updateAttribute(
-                    `options.items[${index}].action.${path}`,
+                    `options.items[${index}].actions${path}`,
                     value,
                   )
                 }
@@ -287,49 +289,86 @@ export default function EditElementForm({
   );
 }
 
-function ActionInputs({action, updateActionAttribute, fields}) {
+function ActionInputs({actions, updateActionsAttribute, fields}) {
   const commands = Object.values(COMMANDS);
   const valueOptions = Object.values(VALUES);
 
+  function addAction() {
+    updateActionsAttribute('', [...actions, {}]);
+  }
+
+  function removeActionAtIndex(index) {
+    const newActions = [...actions];
+    newActions.splice(index, 1);
+    updateActionsAttribute('', newActions);
+  }
+
   return (
-    <FormGroup title="Click Action">
-      <DropdownField
-        fieldLabel="Command"
-        emptyLabel="(choose)"
-        options={commands}
-        value={commands.find(c => c.key === action?.command)}
-        onValueChange={command => updateActionAttribute('command', command.key)}
+    <FormGroup title="Click Actions">
+      {actions.map((action, index) => (
+        <View key={`action-${index}`} style={styles.actionRow}>
+          <View style={[styles.actionElements, sharedStyles.mt]}>
+            <DropdownField
+              fieldLabel="Command"
+              emptyLabel="(choose)"
+              options={commands}
+              value={commands.find(c => c.key === action.command)}
+              onValueChange={command =>
+                updateActionsAttribute(`[${index}].command`, command.key)
+              }
+              style={styles.actionButton}
+            />
+            <DropdownField
+              fieldLabel="Action Field"
+              emptyLabel="(choose)"
+              options={fields}
+              value={fields.find(f => f.id === action.field)}
+              onValueChange={field =>
+                updateActionsAttribute(`[${index}].field`, field.id)
+              }
+              keyExtractor={field => field.id}
+              labelExtractor={field => field.attributes.name}
+              style={styles.actionButton}
+            />
+            {action.command !== COMMANDS.ADD_DAYS.key && (
+              <DropdownField
+                fieldLabel="Value"
+                emptyLabel="(choose)"
+                options={valueOptions}
+                value={valueOptions.find(o => o.key === action?.value)}
+                onValueChange={option =>
+                  updateActionsAttribute(`[${index}].value`, option.key)
+                }
+                style={styles.actionButton}
+              />
+            )}
+            {action.command === COMMANDS.ADD_DAYS.key && (
+              <NumberField
+                label="Days to Add"
+                testID="number-input-value"
+                value={action?.value ?? ''}
+                onChangeText={value =>
+                  updateActionsAttribute(`[${index}].value`, value)
+                }
+                style={styles.actionButton}
+              />
+            )}
+          </View>
+          <IconButton
+            icon="close-circle"
+            accessibilityLabel="Remove action"
+            onPress={() => removeActionAtIndex(index)}
+          />
+        </View>
+      ))}
+      <Button
+        icon="plus"
+        mode="link"
+        onPress={addAction}
         style={sharedStyles.mt}
-      />
-      <DropdownField
-        fieldLabel="Action Field"
-        emptyLabel="(choose)"
-        options={fields}
-        value={fields.find(f => f.id === action?.field)}
-        onValueChange={field => updateActionAttribute('field', field.id)}
-        keyExtractor={field => field.id}
-        labelExtractor={field => field.attributes.name}
-        style={sharedStyles.mt}
-      />
-      {action?.command !== COMMANDS.ADD_DAYS.key && (
-        <DropdownField
-          fieldLabel="Value"
-          emptyLabel="(choose)"
-          options={valueOptions}
-          value={valueOptions.find(o => o.key === action?.value)}
-          onValueChange={option => updateActionAttribute('value', option.key)}
-          style={sharedStyles.mt}
-        />
-      )}
-      {action?.command === COMMANDS.ADD_DAYS.key && (
-        <NumberField
-          label="Days to Add"
-          testID="number-input-value"
-          value={action?.value ?? ''}
-          onChangeText={value => updateActionAttribute('value', value)}
-          style={sharedStyles.mt}
-        />
-      )}
+      >
+        Add Action
+      </Button>
     </FormGroup>
   );
 }
@@ -370,3 +409,19 @@ function ShowConditionInputs({elementAttributes, updateAttribute, fields}) {
     </FormGroup>
   );
 }
+
+const styles = StyleSheet.create({
+  actionRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+  },
+  actionElements: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+  },
+  actionButton: {
+    marginRight: 8,
+  },
+});

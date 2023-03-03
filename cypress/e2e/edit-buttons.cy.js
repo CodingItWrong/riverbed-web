@@ -50,10 +50,14 @@ describe('edit buttons', () => {
     const greetButton = Factory.button(
       {
         name: buttonName,
-        action: {
-          command: COMMANDS.SET_VALUE.key,
-          field: greetingField.id,
-          value: VALUES.EMPTY.key,
+        options: {
+          actions: [
+            {
+              command: COMMANDS.SET_VALUE.key,
+              field: greetingField.id,
+              value: VALUES.EMPTY.key,
+            },
+          ],
         },
         'show-condition': {
           query: QUERIES.IS_NOT_EMPTY.key,
@@ -105,6 +109,7 @@ describe('edit buttons', () => {
       cy.get('[data-testid="text-input-element-name"]').type(buttonName);
 
       // action
+      cy.contains('Add Action').click();
       cy.contains('Command: (choose)').paperSelect('Set Value');
       // TODO: make this reliable to select when it's just the field name shown, not conflicting with other things on the page
       cy.contains('Action Field: (choose)').paperSelect('Greeting');
@@ -113,9 +118,7 @@ describe('edit buttons', () => {
       // show condition
       // TODO: why are these order dependent?
       cy.contains('Show Condition: (choose)').paperSelect('Not Empty');
-      // cy.contains(/^\(choose\)$/).should('not.exist');
       cy.contains('Query Field: (choose)').paperSelect('Greeting');
-      // cy.contains(/^\(choose\)$/).should('not.exist');
 
       cy.intercept('PATCH', `http://cypressapi/elements/${newButton.id}?`, {
         success: true,
@@ -162,18 +165,7 @@ describe('edit buttons', () => {
 
   it('allows updating buttons', () => {
     const buttonName = 'Quiet Down';
-    const greetButton = Factory.button({
-      name: buttonName,
-      action: {
-        command: COMMANDS.SET_VALUE.key,
-        field: greetingField.id,
-        value: VALUES.EMPTY.key,
-      },
-      'show-condition': {
-        query: QUERIES.IS_NOT_EMPTY.key,
-        field: greetingField.id,
-      },
-    });
+    const greetButton = Factory.button({name: buttonName});
 
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
       data: [greetingField, greetButton],
@@ -227,18 +219,7 @@ describe('edit buttons', () => {
 
   it('allows deleting buttons', () => {
     const buttonName = 'Quiet Down';
-    const greetButton = Factory.button({
-      name: buttonName,
-      action: {
-        command: COMMANDS.SET_VALUE.key,
-        field: greetingField.id,
-        value: VALUES.EMPTY.key,
-      },
-      'show-condition': {
-        query: QUERIES.IS_NOT_EMPTY.key,
-        field: greetingField.id,
-      },
-    });
+    const greetButton = Factory.button({name: buttonName});
 
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
       data: [greetingField, greetButton],
@@ -284,10 +265,14 @@ describe('edit buttons', () => {
     const deferButton = Factory.button(
       {
         name: buttonName,
-        action: {
-          command: COMMANDS.ADD_DAYS.key,
-          field: greetedAtField.id,
-          value: '2', // TODO: consider storing as number
+        options: {
+          actions: [
+            {
+              command: COMMANDS.ADD_DAYS.key,
+              field: greetedAtField.id,
+              value: '2', // TODO: consider storing as number
+            },
+          ],
         },
       },
       newButton,
@@ -337,7 +322,7 @@ describe('edit buttons', () => {
     cy.step('CONFIGURE BUTTON', () => {
       cy.get('[data-testid="text-input-element-name"]').type(buttonName);
 
-      // action
+      cy.contains('Add Action').click();
       cy.contains('Command: (choose)').paperSelect('Add Days');
       cy.contains('Action Field: (choose)').paperSelect('Greeted At');
       cy.get('[data-testid=number-input-value]').type(2);
@@ -444,6 +429,7 @@ describe('edit buttons', () => {
         completeItemName,
       );
 
+      cy.get('[data-testid=menu-item-0]').contains('Add Action').click();
       cy.contains('Command: (choose)').paperSelect('Set Value');
       cy.contains('Action Field: (choose)').paperSelect(completedAtFieldName);
       cy.contains('Value: (choose)').paperSelect('Now');
@@ -455,6 +441,7 @@ describe('edit buttons', () => {
         uncompleteItemName,
       );
 
+      cy.get('[data-testid=menu-item-1]').contains('Add Action').click();
       cy.contains('Command: (choose)').paperSelect('Set Value');
       cy.contains('Action Field: (choose)').paperSelect(completedAtFieldName);
       cy.contains('Value: (choose)').paperSelect('Empty');
@@ -468,19 +455,23 @@ describe('edit buttons', () => {
             items: [
               {
                 name: completeItemName,
-                action: {
-                  command: COMMANDS.SET_VALUE.key,
-                  field: completedAtField.id,
-                  value: VALUES.NOW.key,
-                },
+                actions: [
+                  {
+                    command: COMMANDS.SET_VALUE.key,
+                    field: completedAtField.id,
+                    value: VALUES.NOW.key,
+                  },
+                ],
               },
               {
                 name: uncompleteItemName,
-                action: {
-                  command: COMMANDS.SET_VALUE.key,
-                  field: completedAtField.id,
-                  value: VALUES.EMPTY.key,
-                },
+                actions: [
+                  {
+                    command: COMMANDS.SET_VALUE.key,
+                    field: completedAtField.id,
+                    value: VALUES.EMPTY.key,
+                  },
+                ],
               },
             ],
           },

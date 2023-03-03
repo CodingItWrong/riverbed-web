@@ -24,10 +24,14 @@ describe('buttons', () => {
     const releaseButton = Factory.button({
       name: 'Release',
       'show-in-summary': false,
-      action: {
-        command: 'SET_VALUE',
-        field: releasedAtField.id,
-        value: VALUES.NOW.key,
+      options: {
+        actions: [
+          {
+            command: 'SET_VALUE',
+            field: releasedAtField.id,
+            value: VALUES.NOW.key,
+          },
+        ],
       },
       'show-condition': {
         field: releasedAtField.id,
@@ -37,10 +41,14 @@ describe('buttons', () => {
     const unreleaseButton = Factory.button({
       name: 'Unrelease',
       'show-in-summary': false,
-      action: {
-        command: 'SET_VALUE',
-        field: releasedAtField.id,
-        value: VALUES.NOW.key,
+      options: {
+        actions: [
+          {
+            command: 'SET_VALUE',
+            field: releasedAtField.id,
+            value: VALUES.NOW.key,
+          },
+        ],
       },
       'show-condition': {
         field: releasedAtField.id,

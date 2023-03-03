@@ -166,7 +166,7 @@ function CardInclusionCondition({board, fields, attributes, updateAttribute}) {
   return (
     <FormGroup title="Cards to Include">
       {conditions.map((condition, index) => (
-        <View key={`condition-${index}`} style={[styles.conditionRow]}>
+        <View key={`condition-${index}`} style={styles.conditionRow}>
           <View style={[styles.conditionElements, sharedStyles.mt]}>
             <DropdownField
               fieldLabel={null}
