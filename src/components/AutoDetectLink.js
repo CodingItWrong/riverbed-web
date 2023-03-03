@@ -1,6 +1,6 @@
 import {A} from '@expo/html-elements';
 import * as Sharing from 'expo-sharing';
-import {Platform, StyleSheet} from 'react-native';
+import {Platform, StyleSheet, View} from 'react-native';
 import {useTheme} from 'react-native-paper';
 import {isValidURL} from '../utils/urlUtils';
 import Text from './Text';
@@ -11,15 +11,17 @@ export function AutoDetectLink({variant, children}) {
 
   if (isValidURL(children)) {
     return (
-      <A
-        href={children}
-        target="_blank"
-        onPress={preventParentClickBehavior}
-        onLongPress={() => share(children)}
-        style={[styles.link, {color: theme.colors.primary}]}
-      >
-        {children}
-      </A>
+      <View style={styles.linkContainer}>
+        <A
+          href={children}
+          target="_blank"
+          onPress={preventParentClickBehavior}
+          onLongPress={() => share(children)}
+          style={[styles.link, {color: theme.colors.primary}]}
+        >
+          {children}
+        </A>
+      </View>
     );
   } else {
     return <Text variant={variant}>{children}</Text>;
@@ -40,6 +42,9 @@ async function share(url) {
 }
 
 const styles = StyleSheet.create({
+  linkContainer: {
+    flexDirection: 'row',
+  },
   link: {
     textDecorationLine: 'underline',
   },
