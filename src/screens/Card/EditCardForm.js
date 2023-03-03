@@ -73,6 +73,8 @@ export default function EditCardForm({card, board, onClose}) {
 
     const fieldObject = elements.find(element => element.id === field);
 
+    const updatedAttributes = {};
+
     switch (command) {
       case COMMANDS.SET_VALUE.key:
         const valueObject = Object.values(VALUES).find(v => v.key === value);
@@ -80,7 +82,7 @@ export default function EditCardForm({card, board, onClose}) {
           const concreteValue = valueObject.call(
             fieldObject.attributes['data-type'],
           );
-          handleUpdateCard({[field]: concreteValue}, {onSuccess: onClose});
+          updatedAttributes[field] = concreteValue;
         } else {
           console.error(`unknown value: ${value}`);
           return;
@@ -100,11 +102,13 @@ export default function EditCardForm({card, board, onClose}) {
         const startDate = getStartDate();
         const updatedDate = dateUtils.addDays(startDate, Number(value));
         const concreteValue = dateUtils.objectToServerString(updatedDate);
-        handleUpdateCard({[field]: concreteValue}, {onSuccess: onClose});
+        updatedAttributes[field] = concreteValue;
         break;
       default:
         console.error(`unknown command: ${command}`);
     }
+
+    handleUpdateCard(updatedAttributes, {onSuccess: onClose});
   }
 
   const {mutate: updateCard, isError: isUpdateError} = useUpdateCard(
