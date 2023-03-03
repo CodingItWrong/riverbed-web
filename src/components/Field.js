@@ -1,4 +1,5 @@
 import {View} from 'react-native';
+import {AutoDetectLink} from './AutoDetectLink';
 import Text from './Text';
 import fieldTypes from './fieldTypes';
 
@@ -31,7 +32,7 @@ export default function Field({
 
     return (
       <View style={style} testID={`field-${field.id}`}>
-        <Text>{textToShow}</Text>
+        <AutoDetectLink>{textToShow}</AutoDetectLink>
       </View>
     );
   }
