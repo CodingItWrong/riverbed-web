@@ -21,12 +21,14 @@ export default function CardSummary({card, board, onPress, style}) {
       testID={`card-${card.id}`}
     >
       {fieldsToShow.length > 0 ? (
-        fieldsToShow.map(field => (
+        fieldsToShow.map((field, index) => (
           <View key={field.id} testID="field-value">
             <Field
               field={field}
               value={card.attributes['field-values'][field.id]}
               readOnly
+              summary
+              index={index}
             />
           </View>
         ))

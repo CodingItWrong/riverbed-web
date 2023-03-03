@@ -6,7 +6,9 @@ import fieldTypes from './fieldTypes';
 export default function Field({
   field,
   value,
+  index,
   readOnly,
+  summary,
   disabled,
   setValue,
   style,
@@ -30,9 +32,11 @@ export default function Field({
       textToShow = `${name}: ${textToShow ?? '(empty)'}`;
     }
 
+    const variant = summary && index === 0 ? 'bodyLarge' : 'bodySmall';
+
     return (
       <View style={style} testID={`field-${field.id}`}>
-        <AutoDetectLink>{textToShow}</AutoDetectLink>
+        <AutoDetectLink variant={variant}>{textToShow}</AutoDetectLink>
       </View>
     );
   }

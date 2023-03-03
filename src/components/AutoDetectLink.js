@@ -5,7 +5,7 @@ import {isValidURL} from '../utils/urlUtils';
 import Text from './Text';
 
 // Pass text to this and if it is a valid URL it will be rendered as a link
-export function AutoDetectLink({children}) {
+export function AutoDetectLink({variant, children}) {
   const theme = useTheme();
 
   if (isValidURL(children)) {
@@ -25,7 +25,7 @@ export function AutoDetectLink({children}) {
       </A>
     );
   } else {
-    return <Text>{children}</Text>;
+    return <Text variant={variant}>{children}</Text>;
   }
 }
 
