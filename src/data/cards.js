@@ -36,10 +36,12 @@ export function useCards(board) {
   );
 }
 
-export function useCard({boardId, cardId}) {
+export function useCard({boardId, cardId, options}) {
   const cardClient = useCardClient();
-  return useQuery(['cards', boardId, cardId], () =>
-    cardClient.find({id: cardId}).then(resp => resp.data ?? null),
+  return useQuery(
+    ['cards', boardId, cardId],
+    () => cardClient.find({id: cardId}).then(resp => resp.data ?? null),
+    options,
   );
 }
 
