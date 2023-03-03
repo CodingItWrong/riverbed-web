@@ -30,6 +30,11 @@ const QUERIES = {
     label: 'Future',
     match: (v, dataType) => VALUES.NOW.call(dataType) < v,
   },
+  IS_NOT_CURRENT_MONTH: {
+    key: 'IS_NOT_CURRENT_MONTH',
+    label: 'Not Current Month',
+    match: v => !QUERIES.IS_CURRENT_MONTH.match(v),
+  },
   IS_NOT_EMPTY: {
     key: 'IS_NOT_EMPTY',
     label: 'Not Empty',
