@@ -2,6 +2,10 @@ import sortBy from 'lodash.sortby';
 import SORT_DIRECTIONS from '../enums/sortDirections';
 
 export function groupCards(columnCards, cardGrouping) {
+  if (columnCards.length === 0) {
+    return [];
+  }
+
   let cardGroups = [];
 
   const applyGrouping = cardGrouping?.field && cardGrouping?.direction;
@@ -25,7 +29,5 @@ export function groupCards(columnCards, cardGrouping) {
     cardGroups = [{value: null, data: columnCards}];
   }
 
-  cardGroups = columnCards.length ? cardGroups : [];
-
-  return {cardGroups, applyGrouping};
+  return cardGroups;
 }

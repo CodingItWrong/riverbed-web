@@ -65,8 +65,9 @@ export default function Column({
     columnCards = filteredCards;
   }
 
-  let {cardGroups} = groupCards(columnCards, cardGrouping);
+  const cardGroups = groupCards(columnCards, cardGrouping);
 
+  // TODO: calculation duplicated in groupCards()
   const applyGrouping = cardGrouping?.field && cardGrouping?.direction;
 
   const groupFieldDataType =
