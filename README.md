@@ -33,7 +33,7 @@ If you need a custom dev client:
 <https://docs.expo.dev/development/create-development-builds/#on-emulatorsimulator>
 
 - Android dev client: `eas build --profile development --platform android`
-- iOS simulator dev client: `eas build --profile development-simulator --platform ios`
+- iOS simulator dev client: `eas build --profile development-simulator --platform ios` - note that the free Expo plan is limited to 15 iOS builds per month, and then you will begin to be charged.
 
 After this, run `yarn start` then press `a` or `i` to launch the app in the simulator/emulator.
 
@@ -43,7 +43,7 @@ The preview client requires an Apple Developer Account on the device.
 
 You can install past preview client builds from https://expo.dev
 
-To build a new preview client: `eas build --profile preview --platform ios`
+To build a new preview client: `eas build --profile preview --platform ios` - note that the free Expo plan is limited to 15 iOS builds per month, and then you will begin to be charged.
 
 The preview client loads the latest published `preview` build. This can be published with `bin/deploy`
 
