@@ -168,6 +168,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   favoriteStar: {
-    margin: 0,
+    margin: 5,
   },
 });
