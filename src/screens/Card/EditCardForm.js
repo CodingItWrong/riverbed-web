@@ -156,7 +156,7 @@ export default function EditCardForm({card, board, onClose}) {
                 key={element.id}
                 element={element}
                 onPerformAction={() =>
-                  handlePerformActions([element.attributes.action])
+                  handlePerformActions(element.attributes.options.actions)
                 }
                 style={elementIndex > 0 && sharedStyles.mt}
               />
@@ -167,7 +167,7 @@ export default function EditCardForm({card, board, onClose}) {
                 key={element.id}
                 element={element}
                 onPerformActionForItem={menuItem =>
-                  handlePerformActions([menuItem.action])
+                  handlePerformActions(menuItem.actions)
                 }
                 style={elementIndex > 0 && sharedStyles.mt}
               />
