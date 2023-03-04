@@ -33,7 +33,7 @@ jobs:
       - name: Install dependencies
         run: yarn install
       - name: Install Expo Go
-        run: npx expo install:client:ios
+        run: expo client:install:ios
 
       - name: Run app on simulator
         run: yarn ios
