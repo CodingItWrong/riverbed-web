@@ -11,7 +11,7 @@ import sharedStyles from '../../../components/sharedStyles';
 import {useBoardElements, useCreateElement} from '../../../data/elements';
 import ELEMENT_TYPES from '../../../enums/elementTypes';
 import FIELD_DATA_TYPES from '../../../enums/fieldDataTypes';
-import sortElements from '../../../utils/sortByDisplayOrder';
+import sortByDisplayOrder from '../../../utils/sortByDisplayOrder';
 import EditElementForm from './EditElementForm';
 
 export default function ElementList({board}) {
@@ -19,7 +19,7 @@ export default function ElementList({board}) {
   const [selectedElementId, setSelectedElementId] = useState(null);
 
   const {data: elements = []} = useBoardElements(board);
-  const sortedElements = sortElements(elements);
+  const sortedElements = sortByDisplayOrder(elements);
 
   const {mutate: createElement, isLoading: isAdding} = useCreateElement(board);
   const handleCreateElement = attributes =>

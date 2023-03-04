@@ -3,12 +3,12 @@ import Card from '../../../components/Card';
 import Field from '../../../components/Field';
 import Text from '../../../components/Text';
 import {useBoardElements} from '../../../data/elements';
-import sortElements from '../../../utils/sortByDisplayOrder';
+import sortByDisplayOrder from '../../../utils/sortByDisplayOrder';
 
 export default function CardSummary({card, board, onPress, style}) {
   const {data: elements = []} = useBoardElements(board);
 
-  const fieldsToShow = sortElements(
+  const fieldsToShow = sortByDisplayOrder(
     elements.filter(field => field.attributes['show-in-summary']),
   );
 
