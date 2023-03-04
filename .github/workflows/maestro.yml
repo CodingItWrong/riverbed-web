@@ -26,16 +26,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
 
-      - name: Install Expo CLI
-        run: npm install -g expo-cli
       - uses: futureware-tech/simulator-action@v2
         with:
           model: "iPhone 14"
-      - name: Install Expo Go
-        run: expo install:client:ios
 
       - name: Install dependencies
         run: yarn install
+      - name: Install Expo Go
+        run: expo install:client:ios
 
       - name: Run app on simulator
         run: yarn ios
