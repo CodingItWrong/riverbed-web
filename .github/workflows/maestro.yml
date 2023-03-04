@@ -27,7 +27,7 @@ jobs:
             ${{ runner.os }}-yarn-
 
       - name: Install Expo CLI
-        run: yarn global add expo-cli
+        run: npm install -g expo-cli
       - uses: futureware-tech/simulator-action@v2
         with:
           model: "iPhone 14"
