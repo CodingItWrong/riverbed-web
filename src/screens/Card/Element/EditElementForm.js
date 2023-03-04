@@ -23,6 +23,7 @@ import ELEMENT_TYPES from '../../../enums/elementTypes';
 import FIELD_DATA_TYPES from '../../../enums/fieldDataTypes';
 import QUERIES from '../../../enums/queries';
 import VALUES from '../../../enums/values';
+import sortByDisplayOrder from '../../../utils/sortByDisplayOrder';
 import uuid from '../../../utils/uuid';
 
 export default function EditElementForm({
@@ -34,8 +35,10 @@ export default function EditElementForm({
   style,
 }) {
   const {data: elements = []} = useBoardElements(board);
-  const fields = elements.filter(
-    e => e.attributes['element-type'] === ELEMENT_TYPES.FIELD.key,
+  const fields = sortByDisplayOrder(
+    elements.filter(
+      e => e.attributes['element-type'] === ELEMENT_TYPES.FIELD.key,
+    ),
   );
 
   const [elementAttributes, setElementAttributes] = useState(
