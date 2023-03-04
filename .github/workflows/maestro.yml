@@ -31,6 +31,8 @@ jobs:
       - uses: futureware-tech/simulator-action@v2
         with:
           model: "iPhone 14"
+      - name: Install Expo Go
+        run: expo install:client:ios
       - name: Run app on simulator
         run: yarn ios
       - uses: dniHze/maestro-test-action@v1
