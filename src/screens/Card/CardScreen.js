@@ -25,7 +25,7 @@ export default function CardScreen({route}) {
   // we use this instead of isLoading or isFetching because we do need the individual card to be newly loaded (so we need to wait on fetching), but we don't want to re-trigger the loading indicator any time we click back into the browser to fetch
   const [isFirstLoaded, setIsFirstLoaded] = useState(true);
 
-  const {data: board} = useBoard(boardId);
+  const {data: board, isLoading: isLoadingBoard} = useBoard(boardId);
   const {data: card} = useCard({
     boardId,
     cardId,
@@ -33,6 +33,13 @@ export default function CardScreen({route}) {
       onSuccess: () => setIsFirstLoaded(false),
     },
   });
+
+  useEffect(() => {
+    if (!isLoadingBoard) {
+      const title = board?.attributes?.name ?? '(unnamed board)';
+      navigation.setOptions({title});
+    }
+  }, [navigation, board, isLoadingBoard]);
 
   const closeModal = useCallback(() => {
     navigation.goBack();
