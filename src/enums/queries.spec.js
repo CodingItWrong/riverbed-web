@@ -25,4 +25,16 @@ describe('QUERIES', () => {
       });
     });
   });
+
+  test.todo('EMPTY_OR_EQUALS');
+
+  test.todo('CURRENT_MONTH');
+
+  test.todo('EQUALS_VALUE');
+
+  test.todo('FUTURE');
+
+  test.todo('PAST');
+
+  test.todo('PREVIOUS_MONTH');
 });
