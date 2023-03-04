@@ -10,9 +10,13 @@ jobs:
         with:
           distribution: "adopt"
           java-version: "11"
+      - name: Install dependencies
+        run: yarn install
       - uses: futureware-tech/simulator-action@v2
         with:
           model: "iPhone 14"
+      - name: Run app on simulator
+        run: yarn ios
       - uses: dniHze/maestro-test-action@v1
         with:
           flow: maestro/smoke-test.ios.yaml
