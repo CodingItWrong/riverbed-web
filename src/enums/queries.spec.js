@@ -135,8 +135,7 @@ describe('QUERIES', () => {
           },
         );
 
-        // TODO: incorrectly inverted
-        test.skip.each(INVALID_CASES)(
+        test.each(INVALID_CASES)(
           `when testing %j at ${now} returns %j`,
           (value, result) => {
             expect(QUERIES.IS_NOT_FUTURE.match(value, dataType)).toBe(result);
@@ -197,8 +196,7 @@ describe('QUERIES', () => {
           },
         );
 
-        // TODO: incorrectly inverted
-        test.skip.each(INVALID_CASES)(
+        test.each(INVALID_CASES)(
           `when testing %j at ${now} returns %j`,
           (value, result) => {
             expect(QUERIES.IS_NOT_FUTURE.match(value, dataType)).toBe(result);

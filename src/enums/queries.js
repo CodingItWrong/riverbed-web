@@ -43,7 +43,13 @@ const QUERIES = {
   IS_NOT_FUTURE: {
     key: 'IS_NOT_FUTURE',
     label: 'Not Future',
-    match: (v, dataType) => !QUERIES.IS_FUTURE.match(v, dataType),
+    match: (v, dataType) => {
+      if (!v) {
+        return false;
+      }
+      const now = VALUES.NOW.call(dataType);
+      return now === v || now > v;
+    },
   },
   IS_NOT_PAST: {
     key: 'IS_NOT_PAST',
