@@ -13,7 +13,7 @@ const dateUtils = {
   },
   isMonthOffset(dateString, offset) {
     if (!dateString) {
-      return true; // TODO: should this be the default?
+      return false;
     }
 
     const fieldObj = dayjs(dateString);

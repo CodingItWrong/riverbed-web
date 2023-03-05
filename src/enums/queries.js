@@ -6,7 +6,13 @@ const QUERIES = {
   IS_CURRENT_MONTH: {
     key: 'IS_CURRENT_MONTH',
     label: 'Current Month',
-    match: v => dateUtils.isCurrentMonth(v),
+    match: (v, dataType) => {
+      if (!fieldTypes[dataType]?.isTemporal) {
+        return false;
+      }
+
+      return dateUtils.isCurrentMonth(v);
+    },
   },
   IS_EMPTY: {
     key: 'IS_EMPTY',
@@ -44,7 +50,13 @@ const QUERIES = {
   IS_NOT_CURRENT_MONTH: {
     key: 'IS_NOT_CURRENT_MONTH',
     label: 'Not Current Month',
-    match: v => !QUERIES.IS_CURRENT_MONTH.match(v),
+    match: (v, dataType) => {
+      if (!fieldTypes[dataType]?.isTemporal) {
+        return false;
+      }
+
+      return !QUERIES.IS_CURRENT_MONTH.match(v, dataType);
+    },
   },
   IS_NOT_EMPTY: {
     key: 'IS_NOT_EMPTY',
