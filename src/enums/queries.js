@@ -1,3 +1,4 @@
+import fieldTypes from '../components/fieldTypes';
 import dateUtils from '../utils/dateUtils';
 import VALUES from './values';
 
@@ -28,7 +29,17 @@ const QUERIES = {
   IS_FUTURE: {
     key: 'IS_FUTURE',
     label: 'Future',
-    match: (v, dataType) => VALUES.NOW.call(dataType) < v,
+    match: (v, dataType) => {
+      if (!fieldTypes[dataType]?.isTemporal) {
+        return false;
+      }
+
+      if (!fieldTypes[dataType]?.isValidValue(v)) {
+        return false;
+      }
+
+      return VALUES.NOW.call(dataType) < v;
+    },
   },
   IS_NOT_CURRENT_MONTH: {
     key: 'IS_NOT_CURRENT_MONTH',
@@ -44,9 +55,14 @@ const QUERIES = {
     key: 'IS_NOT_FUTURE',
     label: 'Not Future',
     match: (v, dataType) => {
+      if (!fieldTypes[dataType]?.isTemporal) {
+        return false;
+      }
+
       if (!v) {
         return false;
       }
+
       const now = VALUES.NOW.call(dataType);
       return now === v || now > v;
     },
@@ -55,9 +71,18 @@ const QUERIES = {
     key: 'IS_NOT_PAST',
     label: 'Not Past',
     match: (v, dataType) => {
+      if (!fieldTypes[dataType]?.isTemporal) {
+        return false;
+      }
+
+      if (!fieldTypes[dataType]?.isValidValue(v)) {
+        return false;
+      }
+
       if (!v) {
         return false;
       }
+
       return !QUERIES.IS_PAST.match(v, dataType);
     },
   },
@@ -65,9 +90,18 @@ const QUERIES = {
     key: 'IS_PAST',
     label: 'Past',
     match: (v, dataType) => {
+      if (!fieldTypes[dataType]?.isTemporal) {
+        return false;
+      }
+
+      if (!fieldTypes[dataType]?.isValidValue(v)) {
+        return false;
+      }
+
       if (!v) {
         return false;
       }
+
       return v < VALUES.NOW.call(dataType);
     },
   },

@@ -13,7 +13,7 @@ const dateUtils = {
   },
   isMonthOffset(dateString, offset) {
     if (!dateString) {
-      return true; // should this be the default?
+      return true; // TODO: should this be the default?
     }
 
     const fieldObj = dayjs(dateString);
@@ -26,7 +26,16 @@ const dateUtils = {
     );
   },
   serverStringToObject(dateString) {
-    return dateString ? dayjs(dateString).toDate() : dateString;
+    if (!dateString) {
+      return dateString;
+    }
+    const dayjsObject = dayjs(dateString);
+
+    if (!dayjsObject.isValid()) {
+      return null;
+    }
+
+    return dayjsObject.toDate();
   },
   serverStringToHumanString(dateString) {
     return dateString ? dayjs(dateString).format(HUMAN_FORMAT) : dateString;

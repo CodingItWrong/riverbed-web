@@ -85,6 +85,39 @@ describe('QUERIES', () => {
   });
 
   describe('FUTURE', () => {
+    describe('non-date data types', () => {
+      const PLAUSIBLE_DATE_VALUE = '2999-03-04';
+      const CASES = [
+        FIELD_DATA_TYPES.CHOICE.key,
+        FIELD_DATA_TYPES.GEOLOCATION.key, // even though this value would be invalid
+        FIELD_DATA_TYPES.NUMBER,
+        FIELD_DATA_TYPES.TEXT,
+        'invalid_data_type',
+      ];
+
+      describe('IS_FUTURE', () => {
+        test.each(CASES)(
+          'when testing data type %j returns false',
+          dataType => {
+            expect(
+              QUERIES.IS_FUTURE.match(PLAUSIBLE_DATE_VALUE, dataType),
+            ).toBe(false);
+          },
+        );
+      });
+
+      describe('IS_NOT_FUTURE', () => {
+        test.each(CASES)(
+          'when testing data type %j returns false',
+          dataType => {
+            expect(
+              QUERIES.IS_NOT_FUTURE.match(PLAUSIBLE_DATE_VALUE, dataType),
+            ).toBe(false);
+          },
+        );
+      });
+    });
+
     describe('dates', () => {
       const now = new Date('2022-03-04T12:00:00.000Z');
       const dataType = FIELD_DATA_TYPES.DATE.key;
@@ -98,7 +131,7 @@ describe('QUERIES', () => {
         ['2021-12-31', false],
       ];
       const INVALID_CASES = [
-        // ['not a date', false], // TODO: erroring
+        ['not a date', false],
         ['', false],
         [null, false],
         [undefined, false],
@@ -159,7 +192,7 @@ describe('QUERIES', () => {
         ['2021-12-31T00:00:00.000Z', false],
       ];
       const INVALID_CASES = [
-        // ['not a date', false], // TODO: erroring
+        ['not a date', false],
         ['', false],
         [null, false],
         [undefined, false],
@@ -207,6 +240,39 @@ describe('QUERIES', () => {
   });
 
   describe('PAST', () => {
+    describe('non-date data types', () => {
+      const PLAUSIBLE_DATE_VALUE = '2999-03-04';
+      const CASES = [
+        FIELD_DATA_TYPES.CHOICE.key,
+        FIELD_DATA_TYPES.GEOLOCATION.key, // even though this value would be invalid
+        FIELD_DATA_TYPES.NUMBER,
+        FIELD_DATA_TYPES.TEXT,
+        'invalid_data_type',
+      ];
+
+      describe('IS_PAST', () => {
+        test.each(CASES)(
+          'when testing data type %j returns false',
+          dataType => {
+            expect(QUERIES.IS_PAST.match(PLAUSIBLE_DATE_VALUE, dataType)).toBe(
+              false,
+            );
+          },
+        );
+      });
+
+      describe('IS_NOT_PAST', () => {
+        test.each(CASES)(
+          'when testing data type %j returns false',
+          dataType => {
+            expect(
+              QUERIES.IS_NOT_PAST.match(PLAUSIBLE_DATE_VALUE, dataType),
+            ).toBe(false);
+          },
+        );
+      });
+    });
+
     describe('dates', () => {
       const now = new Date('2022-03-04T12:00:00.000Z');
       const dataType = FIELD_DATA_TYPES.DATE.key;
@@ -220,7 +286,7 @@ describe('QUERIES', () => {
         ['2021-12-31', true],
       ];
       const INVALID_CASES = [
-        // ['not a date', false], // TODO: erroring
+        ['not a date', false],
         ['', false],
         [null, false],
         [undefined, false],
@@ -281,7 +347,7 @@ describe('QUERIES', () => {
         ['2021-12-31T00:00:00.000Z', true],
       ];
       const INVALID_CASES = [
-        // ['not a date', false], // TODO: erroring
+        ['not a date', false],
         ['', false],
         [null, false],
         [undefined, false],

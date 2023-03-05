@@ -29,6 +29,18 @@ const dateTimeUtils = {
       ? dayjs(dateString).format(HUMAN_TIME_FORMAT)
       : dateString;
   },
+  serverStringToObject(dateString) {
+    if (!dateString) {
+      return dateString;
+    }
+    const dayjsObject = dayjs(dateString);
+
+    if (!dayjsObject.isValid()) {
+      return null;
+    }
+
+    return dayjsObject.toDate();
+  },
   setDate({oldDateObject, newDateObject}) {
     const time = dateTimeUtils.getTime(oldDateObject);
     return dayjs(newDateObject)
