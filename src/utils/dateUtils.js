@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import now from './now';
 
 const SERVER_DATE_FORMAT = 'YYYY-MM-DD';
 export const HUMAN_FORMAT = 'ddd MMM D, YYYY';
@@ -16,7 +17,8 @@ const dateUtils = {
     }
 
     const fieldObj = dayjs(dateString);
-    const nowObj = dayjs();
+    const n = now();
+    const nowObj = dayjs(n);
 
     return (
       fieldObj.year() === nowObj.year() &&
