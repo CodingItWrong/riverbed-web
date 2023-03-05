@@ -238,8 +238,7 @@ describe('QUERIES', () => {
           },
         );
 
-        // TODO: one incorrectly inverted
-        test.skip.each(INVALID_CASES)(
+        test.each(INVALID_CASES)(
           `when testing %j at ${now} returns %j`,
           (value, result) => {
             expect(QUERIES.IS_PAST.match(value, dataType)).toBe(result);
@@ -258,8 +257,7 @@ describe('QUERIES', () => {
           },
         );
 
-        // TODO: two incorrectly inverted
-        test.skip.each(INVALID_CASES)(
+        test.each(INVALID_CASES)(
           `when testing %j at ${now} returns %j`,
           (value, result) => {
             expect(QUERIES.IS_NOT_PAST.match(value, dataType)).toBe(result);
@@ -301,8 +299,7 @@ describe('QUERIES', () => {
           },
         );
 
-        // TODO: one incorrectly inverted
-        test.skip.each(INVALID_CASES)(
+        test.each(INVALID_CASES)(
           `when testing %j at ${now} returns %j`,
           (value, result) => {
             expect(QUERIES.IS_PAST.match(value, dataType)).toBe(result);
@@ -321,8 +318,7 @@ describe('QUERIES', () => {
           },
         );
 
-        // TODO: two incorrectly inverted
-        test.skip.each(INVALID_CASES)(
+        test.each(INVALID_CASES)(
           `when testing %j at ${now} returns %j`,
           (value, result) => {
             expect(QUERIES.IS_NOT_PAST.match(value, dataType)).toBe(result);

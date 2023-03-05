@@ -54,12 +54,22 @@ const QUERIES = {
   IS_NOT_PAST: {
     key: 'IS_NOT_PAST',
     label: 'Not Past',
-    match: (v, dataType) => !QUERIES.IS_PAST.match(v, dataType),
+    match: (v, dataType) => {
+      if (!v) {
+        return false;
+      }
+      return !QUERIES.IS_PAST.match(v, dataType);
+    },
   },
   IS_PAST: {
     key: 'IS_PAST',
     label: 'Past',
-    match: (v, dataType) => v < VALUES.NOW.call(dataType),
+    match: (v, dataType) => {
+      if (!v) {
+        return false;
+      }
+      return v < VALUES.NOW.call(dataType);
+    },
   },
   IS_PREVIOUS_MONTH: {
     key: 'IS_PREVIOUS_MONTH',
