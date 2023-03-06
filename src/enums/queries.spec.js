@@ -517,7 +517,7 @@ describe('QUERIES', () => {
       test.each(INVALID_CASES)(
         `when testing %j at ${now} returns %j`,
         (value, result) => {
-          expect(QUERIES.IS_CURRENT_MONTH.match(value, dataType)).toBe(result);
+          expect(QUERIES.IS_PREVIOUS_MONTH.match(value, dataType)).toBe(result);
         },
       );
     });
@@ -554,7 +554,7 @@ describe('QUERIES', () => {
       test.each(INVALID_CASES)(
         `when testing %j at ${now} returns %j`,
         (value, result) => {
-          expect(QUERIES.IS_CURRENT_MONTH.match(value, dataType)).toBe(result);
+          expect(QUERIES.IS_PREVIOUS_MONTH.match(value, dataType)).toBe(result);
         },
       );
     });
