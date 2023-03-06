@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import now from './now';
 
 const SERVER_DATE_FORMAT = 'YYYY-MM-DD';
 export const HUMAN_FORMAT = 'ddd MMM D, YYYY';
@@ -12,11 +13,12 @@ const dateUtils = {
   },
   isMonthOffset(dateString, offset) {
     if (!dateString) {
-      return true; // should this be the default?
+      return false;
     }
 
     const fieldObj = dayjs(dateString);
-    const nowObj = dayjs();
+    const n = now();
+    const nowObj = dayjs(n);
 
     return (
       fieldObj.year() === nowObj.year() &&
@@ -24,7 +26,16 @@ const dateUtils = {
     );
   },
   serverStringToObject(dateString) {
-    return dateString ? dayjs(dateString).toDate() : dateString;
+    if (!dateString) {
+      return dateString;
+    }
+    const dayjsObject = dayjs(dateString);
+
+    if (!dayjsObject.isValid()) {
+      return null;
+    }
+
+    return dayjsObject.toDate();
   },
   serverStringToHumanString(dateString) {
     return dateString ? dayjs(dateString).format(HUMAN_FORMAT) : dateString;

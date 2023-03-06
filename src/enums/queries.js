@@ -1,11 +1,22 @@
 import dateUtils from '../utils/dateUtils';
+import FIELD_DATA_TYPES from './fieldDataTypes';
 import VALUES from './values';
+
+function getDataTypeConfig(dataType) {
+  return Object.values(FIELD_DATA_TYPES).find(t => t.key === dataType);
+}
 
 const QUERIES = {
   IS_CURRENT_MONTH: {
     key: 'IS_CURRENT_MONTH',
     label: 'Current Month',
-    match: v => dateUtils.isCurrentMonth(v),
+    match: (v, dataType) => {
+      if (!getDataTypeConfig(dataType)?.isTemporal) {
+        return false;
+      }
+
+      return dateUtils.isCurrentMonth(v);
+    },
   },
   IS_EMPTY: {
     key: 'IS_EMPTY',
@@ -28,12 +39,28 @@ const QUERIES = {
   IS_FUTURE: {
     key: 'IS_FUTURE',
     label: 'Future',
-    match: (v, dataType) => VALUES.NOW.call(dataType) < v,
+    match: (v, dataType) => {
+      if (!getDataTypeConfig(dataType)?.isTemporal) {
+        return false;
+      }
+
+      if (!getDataTypeConfig(dataType)?.isValidValue(v)) {
+        return false;
+      }
+
+      return VALUES.NOW.call(dataType) < v;
+    },
   },
   IS_NOT_CURRENT_MONTH: {
     key: 'IS_NOT_CURRENT_MONTH',
     label: 'Not Current Month',
-    match: v => !QUERIES.IS_CURRENT_MONTH.match(v),
+    match: (v, dataType) => {
+      if (!getDataTypeConfig(dataType)?.isTemporal) {
+        return false;
+      }
+
+      return !QUERIES.IS_CURRENT_MONTH.match(v, dataType);
+    },
   },
   IS_NOT_EMPTY: {
     key: 'IS_NOT_EMPTY',
@@ -43,17 +70,43 @@ const QUERIES = {
   IS_NOT_FUTURE: {
     key: 'IS_NOT_FUTURE',
     label: 'Not Future',
-    match: (v, dataType) => !QUERIES.IS_FUTURE.match(v, dataType),
+    match: (v, dataType) => {
+      if (!getDataTypeConfig(dataType)?.isTemporal) {
+        return false;
+      }
+
+      return !QUERIES.IS_FUTURE.match(v, dataType);
+    },
   },
   IS_NOT_PAST: {
     key: 'IS_NOT_PAST',
     label: 'Not Past',
-    match: (v, dataType) => !QUERIES.IS_PAST.match(v, dataType),
+    match: (v, dataType) => {
+      if (!getDataTypeConfig(dataType)?.isTemporal) {
+        return false;
+      }
+
+      return !QUERIES.IS_PAST.match(v, dataType);
+    },
   },
   IS_PAST: {
     key: 'IS_PAST',
     label: 'Past',
-    match: (v, dataType) => v < VALUES.NOW.call(dataType),
+    match: (v, dataType) => {
+      if (!getDataTypeConfig(dataType)?.isTemporal) {
+        return false;
+      }
+
+      if (!getDataTypeConfig(dataType)?.isValidValue(v)) {
+        return false;
+      }
+
+      if (!v) {
+        return false;
+      }
+
+      return v < VALUES.NOW.call(dataType);
+    },
   },
   IS_PREVIOUS_MONTH: {
     key: 'IS_PREVIOUS_MONTH',
