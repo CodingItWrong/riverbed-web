@@ -71,12 +71,7 @@ const QUERIES = {
         return false;
       }
 
-      if (!v) {
-        return false;
-      }
-
-      const now = VALUES.NOW.call(dataType);
-      return now === v || now > v;
+      return !QUERIES.IS_FUTURE.match(v, dataType);
     },
   },
   IS_NOT_PAST: {
@@ -84,14 +79,6 @@ const QUERIES = {
     label: 'Not Past',
     match: (v, dataType) => {
       if (!fieldTypes[dataType]?.isTemporal) {
-        return false;
-      }
-
-      if (!fieldTypes[dataType]?.isValidValue(v)) {
-        return false;
-      }
-
-      if (!v) {
         return false;
       }
 

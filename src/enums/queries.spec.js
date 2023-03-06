@@ -129,8 +129,6 @@ describe('QUERIES', () => {
         ['2022-03-03', false],
         ['2022-02-28', false],
         ['2021-12-31', false],
-      ];
-      const INVALID_CASES = [
         ['not a date', false],
         ['', false],
         [null, false],
@@ -148,13 +146,6 @@ describe('QUERIES', () => {
             expect(QUERIES.IS_FUTURE.match(value, dataType)).toBe(result);
           },
         );
-
-        test.each(INVALID_CASES)(
-          `when testing %j at ${now} returns %j`,
-          (value, result) => {
-            expect(QUERIES.IS_FUTURE.match(value, dataType)).toBe(result);
-          },
-        );
       });
 
       describe('IS_NOT_FUTURE', () => {
@@ -165,13 +156,6 @@ describe('QUERIES', () => {
             expect(QUERIES.IS_NOT_FUTURE.match(value, dataType)).toBe(
               invertedResult,
             );
-          },
-        );
-
-        test.each(INVALID_CASES)(
-          `when testing %j at ${now} returns %j`,
-          (value, result) => {
-            expect(QUERIES.IS_NOT_FUTURE.match(value, dataType)).toBe(result);
           },
         );
       });
@@ -190,8 +174,6 @@ describe('QUERIES', () => {
         ['2022-03-03T00:00:00.000Z', false],
         ['2022-02-28T00:00:00.000Z', false],
         ['2021-12-31T00:00:00.000Z', false],
-      ];
-      const INVALID_CASES = [
         ['not a date', false],
         ['', false],
         [null, false],
@@ -209,13 +191,6 @@ describe('QUERIES', () => {
             expect(QUERIES.IS_FUTURE.match(value, dataType)).toBe(result);
           },
         );
-
-        test.each(INVALID_CASES)(
-          `when testing %j at ${now} returns %j`,
-          (value, result) => {
-            expect(QUERIES.IS_FUTURE.match(value, dataType)).toBe(result);
-          },
-        );
       });
 
       describe('IS_NOT_FUTURE', () => {
@@ -226,13 +201,6 @@ describe('QUERIES', () => {
             expect(QUERIES.IS_NOT_FUTURE.match(value, dataType)).toBe(
               invertedResult,
             );
-          },
-        );
-
-        test.each(INVALID_CASES)(
-          `when testing %j at ${now} returns %j`,
-          (value, result) => {
-            expect(QUERIES.IS_NOT_FUTURE.match(value, dataType)).toBe(result);
           },
         );
       });
@@ -284,8 +252,6 @@ describe('QUERIES', () => {
         ['2022-03-03', true],
         ['2022-02-28', true],
         ['2021-12-31', true],
-      ];
-      const INVALID_CASES = [
         ['not a date', false],
         ['', false],
         [null, false],
@@ -303,13 +269,6 @@ describe('QUERIES', () => {
             expect(QUERIES.IS_PAST.match(value, dataType)).toBe(result);
           },
         );
-
-        test.each(INVALID_CASES)(
-          `when testing %j at ${now} returns %j`,
-          (value, result) => {
-            expect(QUERIES.IS_PAST.match(value, dataType)).toBe(result);
-          },
-        );
       });
 
       describe('IS_NOT_PAST', () => {
@@ -320,13 +279,6 @@ describe('QUERIES', () => {
             expect(QUERIES.IS_NOT_PAST.match(value, dataType)).toBe(
               invertedResult,
             );
-          },
-        );
-
-        test.each(INVALID_CASES)(
-          `when testing %j at ${now} returns %j`,
-          (value, result) => {
-            expect(QUERIES.IS_NOT_PAST.match(value, dataType)).toBe(result);
           },
         );
       });
@@ -345,8 +297,6 @@ describe('QUERIES', () => {
         ['2022-03-03T00:00:00.000Z', true],
         ['2022-02-28T00:00:00.000Z', true],
         ['2021-12-31T00:00:00.000Z', true],
-      ];
-      const INVALID_CASES = [
         ['not a date', false],
         ['', false],
         [null, false],
@@ -364,13 +314,6 @@ describe('QUERIES', () => {
             expect(QUERIES.IS_PAST.match(value, dataType)).toBe(result);
           },
         );
-
-        test.each(INVALID_CASES)(
-          `when testing %j at ${now} returns %j`,
-          (value, result) => {
-            expect(QUERIES.IS_PAST.match(value, dataType)).toBe(result);
-          },
-        );
       });
 
       describe('IS_NOT_PAST', () => {
@@ -381,13 +324,6 @@ describe('QUERIES', () => {
             expect(QUERIES.IS_NOT_PAST.match(value, dataType)).toBe(
               invertedResult,
             );
-          },
-        );
-
-        test.each(INVALID_CASES)(
-          `when testing %j at ${now} returns %j`,
-          (value, result) => {
-            expect(QUERIES.IS_NOT_PAST.match(value, dataType)).toBe(result);
           },
         );
       });
