@@ -483,6 +483,23 @@ describe('QUERIES', () => {
   });
 
   describe('PREVIOUS_MONTH', () => {
+    describe('non-date data types', () => {
+      const PLAUSIBLE_DATE_VALUE = '2022-03-04';
+      const CASES = [
+        FIELD_DATA_TYPES.CHOICE.key,
+        FIELD_DATA_TYPES.GEOLOCATION.key, // even though this value would be invalid
+        FIELD_DATA_TYPES.NUMBER,
+        FIELD_DATA_TYPES.TEXT,
+        'invalid_data_type',
+      ];
+
+      test.each(CASES)('when testing data type %j returns false', dataType => {
+        expect(
+          QUERIES.IS_PREVIOUS_MONTH.match(PLAUSIBLE_DATE_VALUE, dataType),
+        ).toBe(false);
+      });
+    });
+
     describe('dates', () => {
       const now = new Date('2022-03-04T00:00:00.000Z');
       const dataType = FIELD_DATA_TYPES.DATE.key;
