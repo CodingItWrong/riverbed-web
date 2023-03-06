@@ -1,13 +1,17 @@
-import fieldTypes from '../components/fieldTypes';
 import dateUtils from '../utils/dateUtils';
+import FIELD_DATA_TYPES from './fieldDataTypes';
 import VALUES from './values';
+
+function getDataTypeConfig(dataType) {
+  return Object.values(FIELD_DATA_TYPES).find(t => t.key === dataType);
+}
 
 const QUERIES = {
   IS_CURRENT_MONTH: {
     key: 'IS_CURRENT_MONTH',
     label: 'Current Month',
     match: (v, dataType) => {
-      if (!fieldTypes[dataType]?.isTemporal) {
+      if (!getDataTypeConfig(dataType)?.isTemporal) {
         return false;
       }
 
@@ -36,11 +40,11 @@ const QUERIES = {
     key: 'IS_FUTURE',
     label: 'Future',
     match: (v, dataType) => {
-      if (!fieldTypes[dataType]?.isTemporal) {
+      if (!getDataTypeConfig(dataType)?.isTemporal) {
         return false;
       }
 
-      if (!fieldTypes[dataType]?.isValidValue(v)) {
+      if (!getDataTypeConfig(dataType)?.isValidValue(v)) {
         return false;
       }
 
@@ -51,7 +55,7 @@ const QUERIES = {
     key: 'IS_NOT_CURRENT_MONTH',
     label: 'Not Current Month',
     match: (v, dataType) => {
-      if (!fieldTypes[dataType]?.isTemporal) {
+      if (!getDataTypeConfig(dataType)?.isTemporal) {
         return false;
       }
 
@@ -67,7 +71,7 @@ const QUERIES = {
     key: 'IS_NOT_FUTURE',
     label: 'Not Future',
     match: (v, dataType) => {
-      if (!fieldTypes[dataType]?.isTemporal) {
+      if (!getDataTypeConfig(dataType)?.isTemporal) {
         return false;
       }
 
@@ -78,7 +82,7 @@ const QUERIES = {
     key: 'IS_NOT_PAST',
     label: 'Not Past',
     match: (v, dataType) => {
-      if (!fieldTypes[dataType]?.isTemporal) {
+      if (!getDataTypeConfig(dataType)?.isTemporal) {
         return false;
       }
 
@@ -89,11 +93,11 @@ const QUERIES = {
     key: 'IS_PAST',
     label: 'Past',
     match: (v, dataType) => {
-      if (!fieldTypes[dataType]?.isTemporal) {
+      if (!getDataTypeConfig(dataType)?.isTemporal) {
         return false;
       }
 
-      if (!fieldTypes[dataType]?.isValidValue(v)) {
+      if (!getDataTypeConfig(dataType)?.isValidValue(v)) {
         return false;
       }
 
