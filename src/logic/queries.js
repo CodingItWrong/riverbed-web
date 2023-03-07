@@ -10,6 +10,10 @@ function getDataTypeConfig(dataType) {
 const QUERIES = {
   [QUERIES_ENUM.CONTAINS.key]: {
     match: (v, _dataType, options) => {
+      if (options.value === '') {
+        return true;
+      }
+
       if (v == null) {
         return false;
       }
