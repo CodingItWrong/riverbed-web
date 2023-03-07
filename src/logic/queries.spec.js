@@ -84,6 +84,51 @@ describe('QUERIES', () => {
     );
   });
 
+  describe('CONTAINS', () => {
+    describe('when a string is configured', () => {
+      const CONFIGURED_VALUE = 'aB';
+      const CASES = [
+        ['ab', true],
+        ['abc', true],
+        ['zab', true],
+        ['zabc', true],
+        ['zaBC', true],
+        ['ba', false],
+        ['a', false],
+        ['', false],
+        [null, false],
+        [undefined, false],
+      ];
+
+      describe('CONTAINS', () => {
+        test.each(CASES)(
+          'when testing "a" against %j returns %j',
+          (value, result) => {
+            expect(
+              QUERIES.CONTAINS.match(value, null, {
+                value: CONFIGURED_VALUE,
+              }),
+            ).toBe(result);
+          },
+        );
+      });
+
+      describe('DOES_NOT_CONTAIN', () => {
+        test.each(CASES)(
+          'when testing "a" against %j returns %j',
+          (value, result) => {
+            const invertedResult = !result;
+            expect(
+              QUERIES.DOES_NOT_CONTAIN.match(value, null, {
+                value: CONFIGURED_VALUE,
+              }),
+            ).toBe(invertedResult);
+          },
+        );
+      });
+    });
+  });
+
   describe('FUTURE', () => {
     describe('non-date data types', () => {
       const PLAUSIBLE_DATE_VALUE = '2999-03-04';

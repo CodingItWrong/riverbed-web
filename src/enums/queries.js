@@ -1,4 +1,12 @@
 const QUERIES = {
+  CONTAINS: {
+    key: 'CONTAINS',
+    label: 'contains',
+  },
+  DOES_NOT_CONTAIN: {
+    key: 'DOES_NOT_CONTAIN',
+    label: 'does not contain',
+  },
   IS_CURRENT_MONTH: {
     key: 'IS_CURRENT_MONTH',
     label: 'current month',
