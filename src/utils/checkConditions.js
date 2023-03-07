@@ -1,4 +1,4 @@
-import QUERIES from '../enums/queries';
+import QUERIES from '../logic/queries';
 
 export default function checkConditions({fieldValues, conditions, elements}) {
   if (!conditions) {
