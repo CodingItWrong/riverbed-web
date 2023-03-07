@@ -211,7 +211,15 @@ describe('edit columns', () => {
 
       cy.contains('Add Filter').click();
       cy.contains('(field)').paperSelect('Purchase Date');
-      cy.contains('(condition)').paperSelect(QUERIES.IS_NOT_EMPTY.label);
+
+      // paper menu select; not sure why this is needed as it's the same code as paperSelect(), without a check at the end
+      // cy.contains('(condition)').paperSelect(QUERIES.IS_NOT_EMPTY.label);
+      cy.contains('(condition)').click();
+      cy.get('[role=menuitem]')
+        .contains(QUERIES.IS_NOT_EMPTY.label)
+        .should('be.visible')
+        .click({force: true});
+      // end paper menu select
 
       cy.contains('Add Filter').click();
       cy.contains('(field)').paperSelect('Complete Date');

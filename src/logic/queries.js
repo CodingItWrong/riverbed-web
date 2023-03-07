@@ -8,6 +8,22 @@ function getDataTypeConfig(dataType) {
 }
 
 const QUERIES = {
+  [QUERIES_ENUM.CONTAINS.key]: {
+    match: (v, _dataType, options) => {
+      if (options.value === '') {
+        return true;
+      }
+
+      if (v == null) {
+        return false;
+      }
+      return v.toLowerCase().includes(options.value.toLowerCase());
+    },
+  },
+  [QUERIES_ENUM.DOES_NOT_CONTAIN.key]: {
+    match: (v, dataType, options) =>
+      !QUERIES.CONTAINS.match(v, dataType, options),
+  },
   [QUERIES_ENUM.IS_CURRENT_MONTH.key]: {
     match: (v, dataType) => {
       if (!getDataTypeConfig(dataType)?.isTemporal) {

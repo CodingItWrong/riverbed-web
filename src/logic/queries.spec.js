@@ -73,7 +73,7 @@ describe('QUERIES', () => {
     ];
 
     test.each(CASES)(
-      'returns true when testing "a" against %j',
+      'when testing "a" against %j returns %j',
       (value, result) => {
         expect(
           QUERIES.IS_EMPTY_OR_EQUALS.match(value, null, {
@@ -82,6 +82,94 @@ describe('QUERIES', () => {
         ).toBe(result);
       },
     );
+  });
+
+  describe('CONTAINS', () => {
+    describe('when a string is configured', () => {
+      const CONFIGURED_VALUE = 'aB';
+      const CASES = [
+        ['ab', true],
+        ['abc', true],
+        ['zab', true],
+        ['zabc', true],
+        ['zaBC', true],
+        ['ba', false],
+        ['a', false],
+        ['', false],
+        [null, false],
+        [undefined, false],
+      ];
+
+      describe('CONTAINS', () => {
+        test.each(CASES)(
+          'when testing "a" against %j returns %j',
+          (value, result) => {
+            expect(
+              QUERIES.CONTAINS.match(value, null, {
+                value: CONFIGURED_VALUE,
+              }),
+            ).toBe(result);
+          },
+        );
+      });
+
+      describe('DOES_NOT_CONTAIN', () => {
+        test.each(CASES)(
+          'when testing "a" against %j returns %j',
+          (value, result) => {
+            const invertedResult = !result;
+            expect(
+              QUERIES.DOES_NOT_CONTAIN.match(value, null, {
+                value: CONFIGURED_VALUE,
+              }),
+            ).toBe(invertedResult);
+          },
+        );
+      });
+    });
+
+    describe('when an empty string is configured', () => {
+      const CONFIGURED_VALUE = '';
+      const CASES = [
+        ['ab', true],
+        ['abc', true],
+        ['zab', true],
+        ['zabc', true],
+        ['zaBC', true],
+        ['ba', true],
+        ['a', true],
+        ['', true],
+        [null, true],
+        [undefined, true],
+      ];
+
+      describe('CONTAINS', () => {
+        test.each(CASES)(
+          'when testing "a" against %j returns %j',
+          (value, result) => {
+            expect(
+              QUERIES.CONTAINS.match(value, null, {
+                value: CONFIGURED_VALUE,
+              }),
+            ).toBe(result);
+          },
+        );
+      });
+
+      describe('DOES_NOT_CONTAIN', () => {
+        test.each(CASES)(
+          'when testing "a" against %j returns %j',
+          (value, result) => {
+            const invertedResult = !result;
+            expect(
+              QUERIES.DOES_NOT_CONTAIN.match(value, null, {
+                value: CONFIGURED_VALUE,
+              }),
+            ).toBe(invertedResult);
+          },
+        );
+      });
+    });
   });
 
   describe('FUTURE', () => {
