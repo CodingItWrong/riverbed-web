@@ -444,7 +444,7 @@ describe('edit fields', () => {
     );
     cy.step('SET INITIAL DATE VALUE TO NOW', () => {
       cy.get('[aria-label="Edit Date field"]').click();
-      cy.contains('Initial Value: (choose)').paperSelect('Now');
+      cy.contains('Initial Value: (choose)').paperSelect(VALUES.NOW.label);
 
       cy.intercept('PATCH', `http://cypressapi/elements/${dateField.id}?`, {
         success: true,
@@ -465,7 +465,7 @@ describe('edit fields', () => {
     );
     cy.step('SET INITIAL DATETIME VALUE TO NOW', () => {
       cy.get('[aria-label="Edit Date and Time field"]').click();
-      cy.contains('Initial Value: (choose)').paperSelect('Now');
+      cy.contains('Initial Value: (choose)').paperSelect(VALUES.NOW.label);
 
       cy.intercept('PATCH', `http://cypressapi/elements/${dateTimeField.id}?`, {
         success: true,
