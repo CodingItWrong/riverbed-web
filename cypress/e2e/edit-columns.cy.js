@@ -211,11 +211,11 @@ describe('edit columns', () => {
 
       cy.contains('Add Filter').click();
       cy.contains('(field)').paperSelect('Purchase Date');
-      cy.contains('(condition)').paperSelect('Not Empty');
+      cy.contains('(condition)').paperSelect(QUERIES.IS_NOT_EMPTY.label);
 
       cy.contains('Add Filter').click();
       cy.contains('(field)').paperSelect('Complete Date');
-      cy.contains('(condition)').paperSelect('Empty');
+      cy.contains('(condition)').paperSelect(QUERIES.IS_EMPTY.label);
 
       const filteredColumn = Factory.column(
         {
@@ -268,7 +268,7 @@ describe('edit columns', () => {
 
       cy.contains('Add Filter').click();
       cy.contains('(field)').paperSelect('Title');
-      cy.contains('(condition)').paperSelect('Equals Value');
+      cy.contains('(condition)').paperSelect(QUERIES.EQUALS_VALUE.label);
       cy.get(`[data-testid="text-input-${titleField.id}`).type(unownedTitle);
 
       const filteredColumn = Factory.column(

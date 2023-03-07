@@ -117,7 +117,9 @@ describe('edit buttons', () => {
 
       // show condition
       // TODO: why are these order dependent?
-      cy.contains('Show Condition: (choose)').paperSelect('Not Empty');
+      cy.contains('Show Condition: (choose)').paperSelect(
+        QUERIES.IS_NOT_EMPTY.label,
+      );
       cy.contains('Query Field: (choose)').paperSelect('Greeting');
 
       cy.intercept('PATCH', `http://cypressapi/elements/${newButton.id}?`, {

@@ -1,49 +1,49 @@
 const QUERIES = {
   IS_CURRENT_MONTH: {
     key: 'IS_CURRENT_MONTH',
-    label: 'Current Month',
+    label: 'current month',
   },
   IS_EMPTY: {
     key: 'IS_EMPTY',
-    label: 'Empty',
+    label: 'empty',
   },
   IS_EMPTY_OR_EQUALS: {
     key: 'IS_EMPTY_OR_EQUALS',
-    label: 'Empty or Equals',
+    label: 'empty or equals',
     showConcreteValueField: true,
   },
   EQUALS_VALUE: {
     key: 'EQUALS_VALUE',
-    label: 'Equals Value',
+    label: 'equals value',
     showConcreteValueField: true,
   },
   IS_FUTURE: {
     key: 'IS_FUTURE',
-    label: 'Future',
+    label: 'future',
   },
   IS_NOT_CURRENT_MONTH: {
     key: 'IS_NOT_CURRENT_MONTH',
-    label: 'Not Current Month',
+    label: 'not current month',
   },
   IS_NOT_EMPTY: {
     key: 'IS_NOT_EMPTY',
-    label: 'Not Empty',
+    label: 'not empty',
   },
   IS_NOT_FUTURE: {
     key: 'IS_NOT_FUTURE',
-    label: 'Not Future',
+    label: 'not future',
   },
   IS_NOT_PAST: {
     key: 'IS_NOT_PAST',
-    label: 'Not Past',
+    label: 'not past',
   },
   IS_PAST: {
     key: 'IS_PAST',
-    label: 'Past',
+    label: 'past',
   },
   IS_PREVIOUS_MONTH: {
     key: 'IS_PREVIOUS_MONTH',
-    label: 'Previous Month',
+    label: 'previous month',
   },
 };
 
