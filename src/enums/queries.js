@@ -2,6 +2,7 @@ const QUERIES = {
   CONTAINS: {
     key: 'CONTAINS',
     label: 'contains',
+    showConcreteValueField: true,
   },
   DOES_NOT_CONTAIN: {
     key: 'DOES_NOT_CONTAIN',
