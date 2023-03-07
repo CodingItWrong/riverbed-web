@@ -163,7 +163,7 @@ describe('edit columns', () => {
       cy.get('[aria-label="Edit Column"]').click();
 
       cy.contains('Sort Field: (choose)').paperSelect('Title');
-      cy.contains('Sort Direction: (choose)').paperSelect('Descending');
+      cy.contains('Sort Direction: (choose)').paperSelect('descending');
 
       const sortedColumn = Factory.column(
         {
@@ -317,12 +317,12 @@ describe('edit columns', () => {
 
       cy.contains('Group Field: (choose)').paperSelect('Purchase Date');
       cy.contains(/^\(choose\)$/).should('not.exist'); // ensure modal is closed
-      cy.contains('Group Direction: (choose)').paperSelect('Descending');
+      cy.contains('Group Direction: (choose)').paperSelect('descending');
       cy.contains(/^\(choose\)$/).should('not.exist');
 
       cy.contains('Sort Field: (choose)').paperSelect('Title');
       cy.contains(/^\(choose\)$/).should('not.exist');
-      cy.contains('Sort Direction: (choose)').paperSelect('Ascending');
+      cy.contains('Sort Direction: (choose)').paperSelect('ascending');
       cy.contains(/^\(choose\)$/).should('not.exist');
 
       const groupedColumn = Factory.column(

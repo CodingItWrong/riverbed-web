@@ -1,6 +1,6 @@
 const SORT_DIRECTIONS = {
-  ASCENDING: {key: 'ASCENDING', label: 'Ascending'},
-  DESCENDING: {key: 'DESCENDING', label: 'Descending'},
+  ASCENDING: {key: 'ASCENDING', label: 'ascending'},
+  DESCENDING: {key: 'DESCENDING', label: 'descending'},
 };
 
 export default SORT_DIRECTIONS;
