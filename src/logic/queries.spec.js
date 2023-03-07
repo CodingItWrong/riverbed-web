@@ -73,7 +73,7 @@ describe('QUERIES', () => {
     ];
 
     test.each(CASES)(
-      'returns true when testing "a" against %j',
+      'when testing "a" against %j returns %j',
       (value, result) => {
         expect(
           QUERIES.IS_EMPTY_OR_EQUALS.match(value, null, {
