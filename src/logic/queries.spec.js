@@ -1,5 +1,5 @@
+import FIELD_DATA_TYPES from '../enums/fieldDataTypes';
 import nowFn from '../utils/now';
-import FIELD_DATA_TYPES from './fieldDataTypes';
 import QUERIES from './queries';
 
 jest.mock('../utils/now');
