@@ -113,11 +113,13 @@ describe('edit buttons', () => {
       cy.contains('Command: (choose)').paperSelect('Set Value');
       // TODO: make this reliable to select when it's just the field name shown, not conflicting with other things on the page
       cy.contains('Action Field: (choose)').paperSelect('Greeting');
-      cy.contains('Value: (choose)').paperSelect('Empty');
+      cy.contains('Value: (choose)').paperSelect(VALUES.EMPTY.label);
 
       // show condition
       // TODO: why are these order dependent?
-      cy.contains('Show Condition: (choose)').paperSelect('Not Empty');
+      cy.contains('Show Condition: (choose)').paperSelect(
+        QUERIES.IS_NOT_EMPTY.label,
+      );
       cy.contains('Query Field: (choose)').paperSelect('Greeting');
 
       cy.intercept('PATCH', `http://cypressapi/elements/${newButton.id}?`, {
@@ -432,7 +434,7 @@ describe('edit buttons', () => {
       cy.get('[data-testid=menu-item-0]').contains('Add Action').click();
       cy.contains('Command: (choose)').paperSelect('Set Value');
       cy.contains('Action Field: (choose)').paperSelect(completedAtFieldName);
-      cy.contains('Value: (choose)').paperSelect('Now');
+      cy.contains('Value: (choose)').paperSelect(VALUES.NOW.label);
     });
 
     cy.step('ADD A SECOND MENU ITEM', () => {
@@ -444,7 +446,7 @@ describe('edit buttons', () => {
       cy.get('[data-testid=menu-item-1]').contains('Add Action').click();
       cy.contains('Command: (choose)').paperSelect('Set Value');
       cy.contains('Action Field: (choose)').paperSelect(completedAtFieldName);
-      cy.contains('Value: (choose)').paperSelect('Empty');
+      cy.contains('Value: (choose)').paperSelect(VALUES.EMPTY.label);
     });
 
     cy.step('SAVE MENU', () => {

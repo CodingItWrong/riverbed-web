@@ -6,12 +6,12 @@ import FIELD_DATA_TYPES from './fieldDataTypes';
 const VALUES = {
   EMPTY: {
     key: 'empty',
-    label: 'Empty',
+    label: 'empty',
     call: () => null,
   },
   NOW: {
     key: 'now',
-    label: 'Now',
+    label: 'now',
     call: dataType => {
       switch (dataType) {
         case FIELD_DATA_TYPES.DATE.key:
