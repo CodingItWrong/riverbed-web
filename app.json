@@ -49,7 +49,18 @@
           "locationAlwaysAndWhenInUsePermission": "Allow you to use your current location to fill in location fields."
         }
       ],
-      "share-extension-expo-plugin"
+      [
+        "share-extension-expo-plugin",
+        {
+          "devTeam": "6283CFQE2Y",
+          "extensionPath": "ios/shareExtension",
+          "mainStoryboardName": "MainInterface",
+          "activationRule": [
+            "text",
+            "url"
+          ]
+        }
+      ]
     ]
   }
 }
