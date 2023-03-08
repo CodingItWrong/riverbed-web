@@ -1,118 +1,123 @@
-import SwiftUI
-import UniformTypeIdentifiers
+//
+//  ShareViewController.swift
+//  HydrantShare
+//
+//  Created by Josh Justice on 11/20/17.
+//  Copyright © 2017 NeedBee. All rights reserved.
+//
 
-class ShareViewController: UIViewController {
-  @IBOutlet var container: UIView!
+import UIKit
+import Social
 
-  override func viewDidLoad() {
-    super.viewDidLoad()
-
-    // Subscribe to swift UI events
-    NotificationCenter.default.addObserver(self, selector: #selector(didSelectDismiss), name: .dismiss, object: nil)
-
-    // Check that a single attachment is provided
-    guard let extensionItem = extensionContext?.inputItems.first as? NSExtensionItem,
-          let item = extensionItem.attachments?.first
-    else {
-      presentSwiftUIView(CustomErrorView(error: "Failed to get attachment"))
-      return
-    }
-
-    Task {
-      do {
-        // Create api client
-        let apiClient = try ApiClient()
-
-        // Get real attachment
-        let attachmentType = try getAttachmentType(from: item)
-        let attachment = try await getAttachment(from: item, withType: attachmentType)
-
-        // Get users to present
-        let users = try await apiClient.getUsers()
-
-        // Present Boards View
-        presentSwiftUIView(UsersView(users: users, attachment: attachment))
-      } catch CustomError.generic(let internalError) {
-        presentSwiftUIView(CustomErrorView(error: internalError))
-      } catch {
-        presentSwiftUIView(CustomErrorView(error: "\(error)"))
-      }
-    }
-  }
-
-  /**
-   Regarding the conforming types of the provided item, returns the handled identifier
-   */
-  private func getAttachmentType(from item: NSItemProvider) throws -> String {
-    if item.hasItemConformingToTypeIdentifier(UTType.text.identifier) {
-      return UTType.text.identifier
-    }
-    if item.hasItemConformingToTypeIdentifier(UTType.image.identifier) {
-      return UTType.image.identifier
-    }
-    if item.hasItemConformingToTypeIdentifier(UTType.url.identifier) {
-      // keep this as the last one otherwise it might prevent other url types to be detected as they should
-      // most of local files are also identified as file-url (which is an url)
-      return UTType.url.identifier
-    }
-    throw CustomError.generic("Cannot handle this type of attachments")
-  }
-
-  /**
-   Load data of the provided item and return them in the right format for later use
-   */
-  private func getAttachment(from item: NSItemProvider, withType type: String) async throws -> Attachment {
-    let data = try await item.loadItem(forTypeIdentifier: type)
-
-    switch type {
-      case UTType.text.identifier:
-        guard let message = data as? String else {
-          throw CustomError.generic("Failed to load item attached")
+enum ShareError: LocalizedError {
+    case urlNotFound
+    
+    var errorDescription: String? {
+        switch self {
+        case .urlNotFound: return "URL not found"
         }
-        return .text(message)
-
-      case UTType.image.identifier:
-        if let url = data as? URL {
-          return .image(url)
-        }
-        // if it is a "not saved yet" screenshot, the content is the image itself
-        if let image = data as? UIImage {
-          return .screenshot(image)
-        }
-        throw CustomError.generic("Failed to load item attached")
-
-      case UTType.url.identifier:
-        guard let url = data as? URL else {
-          throw CustomError.generic("Failed to load item attached")
-        }
-        return .url(url)
-
-      default:
-        throw CustomError.generic("Failed to handle attachment type '\(type)'")
     }
-  }
-
-  /**
-   Convenience method to present a swift UI view in the main storyboard
-   */
-  private func presentSwiftUIView<T>(_ view: T) where T : View {
-    let swiftUIView = UIHostingController(rootView: view)
-    self.addChild(swiftUIView)
-    swiftUIView.view.frame = self.container.bounds
-    self.container.addSubview(swiftUIView.view)
-    swiftUIView.didMove(toParent: self)
-  }
-
-  /**
-   This is called from notifications sent by Swift UI views
-   */
-  @objc private func didSelectDismiss(_ notification: Notification) {
-    var message = "Failed to get notification object"
-    if let object = notification.object as? NotificationObject {
-      message = object.message
-    }
-
-    print(message)
-    extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
-  }
 }
+
+class ShareViewController: SLComposeServiceViewController {
+
+    private let webhookURL = Config.webhookURL
+    private let apiKey = Config.apiKey
+    
+    private let attachmentHandler = AttachmentHandler()
+    
+    override func isContentValid() -> Bool {
+        // Do validation of contentText and/or NSExtensionContext attachments here
+        return true
+    }
+    
+    private func getURLAttachment(completion: @escaping (Result<URL>) -> Void) {
+        guard let context = extensionContext,
+            let items = context.inputItems as? [NSExtensionItem],
+            let item = items.first,
+            let attachments = item.attachments else
+        {
+                completion(.failure(ShareError.urlNotFound))
+                return
+        }
+
+        attachmentHandler.getURL(attachments: attachments, completion: completion)
+    }
+    
+    private func postWebhook(bodyDict: [String: String?], completion: @escaping () -> Void) {
+        let sessionConfig = URLSessionConfiguration.default
+        sessionConfig.timeoutIntervalForRequest = 5.0 // seconds
+        let session = URLSession(configuration: sessionConfig)
+        
+        var request = URLRequest(url: webhookURL)
+        var bodyData: Data
+        do {
+            bodyData = try JSONSerialization.data(withJSONObject: bodyDict, options: [])
+        } catch {
+            self.alert(message: "A service error occurred", completion: completion)
+            return
+        }
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
+        request.httpMethod = "POST";
+        request.httpBody = bodyData;
+        
+        let task = session.dataTask(with: request) { data, response, error in
+            if let error = error {
+                self.alert(message: error.localizedDescription, completion: completion)
+                return
+            }
+            
+            guard let response = response,
+                  let httpResponse = response as? HTTPURLResponse else {
+                self.alert(message: "Unexpected response type received", completion: completion)
+                return
+            }
+            
+            guard httpResponse.statusCode == 204 else {
+                self.alert(message: "Unexpected response: \(httpResponse.statusCode)", completion: completion)
+                return
+            }
+            
+            self.alert(message: "Link saved.", completion: completion)
+        }
+        task.resume()
+    }
+    
+    private func alert(message: String, completion: (() -> Void)?) {
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: message, message: nil, preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+                completion?();
+            }
+            alert.addAction(okAction)
+            self.present(alert, animated: true)
+        }
+    }
+    
+    private func done() {
+        self.extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
+    }
+    
+    override func didSelectPost() {
+        getURLAttachment() { result in
+            switch result {
+            case .success(let sharedURL):
+                let bodyDict = [
+                    "url": sharedURL.absoluteString,
+                    "title": self.contentText,
+                    ]
+                self.postWebhook(bodyDict: bodyDict, completion: self.done)
+            case .failure(let error):
+                self.alert(message: "An error occurred: \(error.localizedDescription)", completion: self.done)
+            }
+        }
+    }
+
+    override func configurationItems() -> [Any]! {
+        // To add configuration options via table cells at the bottom of the sheet, return an array of SLComposeSheetConfigurationItem here.
+        return []
+    }
+
+}
+
