@@ -21,7 +21,8 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.codingitwrong.listapp"
+      "bundleIdentifier": "com.codingitwrong.listapp",
+      "buildNumber": "1"
     },
     "android": {
       "adaptiveIcon": {
