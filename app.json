@@ -48,7 +48,8 @@
         {
           "locationAlwaysAndWhenInUsePermission": "Allow you to use your current location to fill in location fields."
         }
-      ]
+      ],
+      "share-extension-expo-plugin"
     ]
   }
 }
