@@ -54,8 +54,8 @@
         "share-extension-expo-plugin",
         {
           "devTeam": "6283CFQE2Y",
-          "extensionPath": "ios/shareExtension",
-          "mainStoryboardName": "MainInterface",
+          "extensionPath": "assets/ios/shareExtension",
+          "mainStoryboardName": "ShareView",
           "activationRule": [
             "text",
             "url"
