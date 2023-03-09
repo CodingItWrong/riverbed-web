@@ -37,9 +37,11 @@ If you need a custom dev client:
 
 After this, run `yarn start` then press `a` or `i` to launch the app in the simulator/emulator.
 
+You can also run `npx expo prebuild -p ios` to generate the Xcode project. This allows running it from Xcode to develop and test out the share extension in the simulator or attached physical device.
+
 ## Preview Client
 
-The preview client requires an Apple Developer Account on the device.
+The preview client uses published "preview" channel JS bundles, and can run on a physical device with an Apple Developer Account.
 
 You can install past preview client builds from https://expo.dev
 
