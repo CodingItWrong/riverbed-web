@@ -21,7 +21,8 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.codingitwrong.listapp"
+      "bundleIdentifier": "com.codingitwrong.listapp",
+      "buildNumber": "1"
     },
     "android": {
       "adaptiveIcon": {
@@ -47,6 +48,23 @@
         "expo-location",
         {
           "locationAlwaysAndWhenInUsePermission": "Allow you to use your current location to fill in location fields."
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "deploymentTarget": "15.0"
+          }
+        }
+      ],
+      [
+        "share-extension-expo-plugin",
+        {
+          "devTeam": "6283CFQE2Y",
+          "extensionPath": "assets/ios/shareExtension",
+          "mainStoryboardName": "ShareView",
+          "activationRule": "SUBQUERY (extensionItems, $extensionItem, SUBQUERY ($extensionItem.attachments, $attachment, (ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO \"public.plain-text\" || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO \"public.url\")).@count >= 1).@count == 1"
         }
       ]
     ]
