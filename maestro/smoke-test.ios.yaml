@@ -1,5 +1,6 @@
-appId: host.exp.Exponent
+appId: com.codingitwrong.listapp
 ---
 - launchApp
-- tapOn: "list-app"
+- tapOn:
+      text: "list-app http://localhost:19000"
 - assertVisible: "My Boards.*"
