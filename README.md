@@ -26,16 +26,24 @@ Dependencies are locked with `yarn.lock`; please use `yarn` rather than `npm` fo
 
 ## Development
 
+### Expo Go
+
 Expo Go is currently working for iOS Simulator and Android Emulator, due to using `runtimeVersion.policy = 'sdkVersion'` in `app.json`.
+
+### Custom Dev Client
 
 If you need a custom dev client:
 
 <https://docs.expo.dev/development/create-development-builds/#on-emulatorsimulator>
 
 - Android dev client: `eas build --profile development --platform android`
-- iOS simulator dev client: `eas build --profile development-simulator --platform ios` - note that the free Expo plan is limited to 15 iOS builds per month, and then you will begin to be charged.
+- iOS simulator dev client: `eas build --profile development-simulator --platform ios`
+
+You can add the `--local` flag to either to build locally.
 
 After this, run `yarn start` then press `a` or `i` to launch the app in the simulator/emulator.
+
+### Xcode Project
 
 You can also run `npx expo prebuild -p ios` to generate the Xcode project. This allows running it from Xcode to develop and test out the share extension in the simulator or attached physical device.
 
