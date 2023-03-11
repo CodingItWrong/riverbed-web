@@ -13,7 +13,10 @@ jobs:
           cache: "yarn"
 
       - name: Install Detox CLI
-        run: npm install -g detox-cli
+        run: |
+          brew tap wix/brew
+          brew install applesimutils
+          npm install -g detox-cli
 
       - name: Setup EAS
         uses: expo/expo-github-action@v8
