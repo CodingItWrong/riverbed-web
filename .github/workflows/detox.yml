@@ -12,8 +12,14 @@ jobs:
           node-version: 18
           cache: "yarn"
 
-      - name: Install global CLIs
-        run: npm install -g detox-cli eas-cli
+      - name: Install Detox CLI
+        run: npm install -g detox-cli
+
+      - name: Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
