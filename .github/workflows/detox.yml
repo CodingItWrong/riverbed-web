@@ -12,8 +12,8 @@ jobs:
           node-version: 18
           cache: "yarn"
 
-      - name: Install Detox
-        run: npm install -g detox-cli
+      - name: Install global CLIs
+        run: npm install -g detox-cli eas-cli
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
