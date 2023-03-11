@@ -15,7 +15,7 @@ jobs:
       # temporarily early just to fail early since it's new
       - uses: futureware-tech/simulator-action@v2
         with:
-          model: "iPhone 14"
+          model: "iPhone 12"
 
       - name: Install Detox CLI
         run: |
