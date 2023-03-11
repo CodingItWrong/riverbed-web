@@ -12,6 +12,11 @@ jobs:
           node-version: 16 # expo-cli preferred
           cache: "yarn"
 
+      # temporarily early just to fail early since it's new
+      - uses: futureware-tech/simulator-action@v2
+        with:
+          model: "iPhone 14"
+
       - name: Install Detox CLI
         run: |
           brew tap wix/brew
