@@ -12,10 +12,11 @@ jobs:
           node-version: 16 # expo-cli preferred
           cache: "yarn"
 
-      # temporarily early just to fail early since it's new
-      - uses: futureware-tech/simulator-action@v2
+      - name: Setup EAS
+        uses: expo/expo-github-action@v8
         with:
-          model: "iPhone 12"
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
 
       - name: Install Detox CLI
         run: |
@@ -23,17 +24,15 @@ jobs:
           brew install applesimutils
           npm install -g detox-cli
 
-      - name: Setup EAS
-        uses: expo/expo-github-action@v8
-        with:
-          eas-version: latest
-          token: ${{ secrets.EXPO_TOKEN }}
-
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
       - name: Build App for Detox
         run: detox build -c ios.sim.release
+
+      - uses: futureware-tech/simulator-action@v2
+        with:
+          model: "iPhone 12"
 
       - name: Run Detox
         run: detox test -c ios.sim.release
