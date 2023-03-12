@@ -8,6 +8,7 @@ describe('Example', () => {
   });
 
   it('should have welcome screen', async () => {
-    await expect(element(by.text('This should fail'))).toBeVisible();
+    // await element(by.text('http://localhost:8081')).tap();
+    await expect(element(by.text('ListApp'))).toBeVisible();
   });
 });
