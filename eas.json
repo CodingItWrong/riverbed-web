@@ -16,6 +16,13 @@
         "simulator": true
       }
     },
+    "development-detox": {
+      "distribution": "internal",
+      "channel": "development",
+      "ios": {
+        "simulator": true
+      }
+    },
     "preview": {
       "distribution": "internal",
       "channel": "preview"
