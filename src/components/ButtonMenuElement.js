@@ -13,6 +13,7 @@ export default function ButtonMenuElement({
     <DropdownMenu
       menuButton={props => (
         <Button
+          mode="primary"
           disabled={disabled}
           testID={`button-${element.id}`}
           style={style}

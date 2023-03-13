@@ -10,6 +10,7 @@ export default function ButtonElement({
 
   return (
     <Button
+      mode="primary"
       onPress={onPerformAction}
       disabled={disabled}
       testID={`button-${element.id}`}
