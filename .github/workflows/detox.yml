@@ -3,8 +3,8 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    types: [opened, synchronize, reopened]
+  pull_request_target: # https://github.com/dependabot/dependabot-core/issues/3253#issuecomment-797125425
+    types: [opened, edited]
 
 jobs:
   test:
