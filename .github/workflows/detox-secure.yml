@@ -1,7 +1,7 @@
-name: Detox 2
+name: Secure Detox Run
 on:
   workflow_run: # see https://github.com/dependabot/dependabot-core/issues/3253#issuecomment-852541544
-    workflows: ["Detox 1"]
+    workflows: ["Trigger Secure Detox Run"]
     types:
       - completed
 

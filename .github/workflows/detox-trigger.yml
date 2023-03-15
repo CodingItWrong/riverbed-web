@@ -1,4 +1,4 @@
-name: Detox 1
+name: Trigger Secure Detox Run
 on:
   push:
     branches:
@@ -11,4 +11,5 @@ jobs:
     name: Test
     runs-on: ubuntu-22.04
     steps:
+      # just a placeholder to get a succeeding run
       - uses: actions/checkout@v3
