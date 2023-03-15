@@ -9,6 +9,9 @@ jobs:
   test:
     runs-on: macos-12
     steps:
+      # update the status of the original PR
+      - uses: haya14busa/action-workflow_run-status@v1
+
       - uses: actions/checkout@v3
 
       - uses: actions/setup-node@v3
