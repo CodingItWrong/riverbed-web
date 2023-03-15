@@ -1,10 +1,9 @@
-name: Detox
+name: Detox 2
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    types: [opened, synchronize, reopened]
+  workflow_run: # see https://github.com/dependabot/dependabot-core/issues/3253#issuecomment-852541544
+    workflows: ["Detox 1"]
+    types:
+      - completed
 
 jobs:
   test:
