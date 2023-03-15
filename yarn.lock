@@ -11037,10 +11037,10 @@ shallow-clone@^3.0.0:
   dependencies:
     kind-of "^6.0.2"
 
-share-extension-expo-plugin@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/share-extension-expo-plugin/-/share-extension-expo-plugin-1.0.5.tgz#66786ac7c9f7097b2d65a92137a9f776866dada3"
-  integrity sha512-d51Laoc5xsfqFCy+aQIX+/oiYxToctjNzB51tRsJjaZjQwnnqAxyToOwPudnHT3lYU8MMWyWodQ3wBe6Xe3FRA==
+share-extension-expo-plugin@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/share-extension-expo-plugin/-/share-extension-expo-plugin-1.0.6.tgz#2de60c0b370c3fc5c27c364a0f4cf68142fbfbf2"
+  integrity sha512-1SOt9GE0QdjBeNOX1cxNjHl3NVTEQDGGBlFTc+Sgd282T2MUpnNvWtPo3vV2WjEXF43Say2UghCG+7zrsPLxTg==
   dependencies:
     fs-jetpack "^5.1.0"
     xcode "^3.0.1"
