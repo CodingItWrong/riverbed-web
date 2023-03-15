@@ -56,7 +56,7 @@
     "react-native-screens": "~3.20.0",
     "react-native-web": "~0.18.9",
     "react-native-web-maps": "^0.3.0",
-    "share-extension-expo-plugin": "^1.0.5"
+    "share-extension-expo-plugin": "^1.0.6"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
