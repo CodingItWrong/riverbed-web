@@ -19,6 +19,3 @@ cypress/videos
 
 # Local Netlify folder
 .netlify
-
-# Do not commit built iOS folder
-ios
