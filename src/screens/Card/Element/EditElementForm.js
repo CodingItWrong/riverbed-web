@@ -136,7 +136,7 @@ export default function EditElementForm({
             value={dataTypeOptions.find(
               o => o.key === elementAttributes['data-type'],
             )}
-            onValueChange={option => updateAttribute('data-type', option.key)}
+            onValueChange={option => updateAttribute('data-type', option?.key)}
             options={dataTypeOptions}
             style={sharedStyles.mt}
           />
@@ -147,7 +147,7 @@ export default function EditElementForm({
               o => o.key === elementAttributes['initial-value'],
             )}
             onValueChange={option =>
-              updateAttribute('initial-value', option.key)
+              updateAttribute('initial-value', option?.key)
             }
             options={valueOptions}
             style={sharedStyles.mt}
@@ -317,7 +317,7 @@ function ActionInputs({actions, updateActionsAttribute, fields}) {
               options={commands}
               value={commands.find(c => c.key === action.command)}
               onValueChange={command =>
-                updateActionsAttribute(`[${index}].command`, command.key)
+                updateActionsAttribute(`[${index}].command`, command?.key)
               }
               style={styles.actionButton}
             />
@@ -327,7 +327,7 @@ function ActionInputs({actions, updateActionsAttribute, fields}) {
               options={fields}
               value={fields.find(f => f.id === action.field)}
               onValueChange={field =>
-                updateActionsAttribute(`[${index}].field`, field.id)
+                updateActionsAttribute(`[${index}].field`, field?.id)
               }
               keyExtractor={field => field.id}
               labelExtractor={field => field.attributes.name}
@@ -340,7 +340,7 @@ function ActionInputs({actions, updateActionsAttribute, fields}) {
                 options={valueOptions}
                 value={valueOptions.find(o => o.key === action?.value)}
                 onValueChange={option =>
-                  updateActionsAttribute(`[${index}].value`, option.key)
+                  updateActionsAttribute(`[${index}].value`, option?.key)
                 }
                 style={styles.actionButton}
               />
@@ -389,7 +389,7 @@ function ShowConditionInputs({elementAttributes, updateAttribute, fields}) {
           f => f.id === elementAttributes['show-condition']?.field,
         )}
         onValueChange={field =>
-          updateAttribute('show-condition.field', field.id)
+          updateAttribute('show-condition.field', field?.id)
         }
         keyExtractor={field => field.id}
         labelExtractor={field => field.attributes.name}
@@ -403,7 +403,7 @@ function ShowConditionInputs({elementAttributes, updateAttribute, fields}) {
           query => query.key === elementAttributes['show-condition']?.query,
         )}
         onValueChange={query =>
-          updateAttribute('show-condition.query', query.key)
+          updateAttribute('show-condition.query', query?.key)
         }
         keyExtractor={query => query.key}
         labelExtractor={query => query.label}

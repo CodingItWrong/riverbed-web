@@ -176,7 +176,7 @@ function CardInclusionCondition({board, fields, attributes, updateAttribute}) {
               onValueChange={field =>
                 updateAttribute(
                   `card-inclusion-conditions[${index}].field`,
-                  field.id,
+                  field?.id,
                 )
               }
               keyExtractor={field => field.id}
@@ -191,7 +191,7 @@ function CardInclusionCondition({board, fields, attributes, updateAttribute}) {
               onValueChange={query =>
                 updateAttribute(
                   `card-inclusion-conditions[${index}].query`,
-                  query.key,
+                  query?.key,
                 )
               }
               keyExtractor={query => query.key}
@@ -243,7 +243,7 @@ function ColumnSortOrder({board, fields, attributes, updateAttribute}) {
         options={fields}
         value={fields.find(f => f.id === attributes['card-sort-order']?.field)}
         onValueChange={field =>
-          updateAttribute('card-sort-order.field', field.id)
+          updateAttribute('card-sort-order.field', field?.id)
         }
         keyExtractor={field => field.id}
         labelExtractor={field => field.attributes.name}
@@ -258,7 +258,7 @@ function ColumnSortOrder({board, fields, attributes, updateAttribute}) {
             direction.key === attributes['card-sort-order']?.direction,
         )}
         onValueChange={direction =>
-          updateAttribute('card-sort-order.direction', direction.key)
+          updateAttribute('card-sort-order.direction', direction?.key)
         }
         keyExtractor={direction => direction.key}
         labelExtractor={direction => direction.label}
@@ -279,7 +279,7 @@ function ColumnGrouping({board, fields, attributes, updateAttribute}) {
         options={fields}
         value={fields.find(f => f.id === attributes['card-grouping']?.field)}
         onValueChange={field =>
-          updateAttribute('card-grouping.field', field.id)
+          updateAttribute('card-grouping.field', field?.id)
         }
         keyExtractor={field => field.id}
         labelExtractor={field => field.attributes.name}
@@ -293,7 +293,7 @@ function ColumnGrouping({board, fields, attributes, updateAttribute}) {
           direction => direction.key === attributes['card-grouping']?.direction,
         )}
         onValueChange={direction =>
-          updateAttribute('card-grouping.direction', direction.key)
+          updateAttribute('card-grouping.direction', direction?.key)
         }
         keyExtractor={direction => direction.key}
         labelExtractor={direction => direction.label}
@@ -327,7 +327,7 @@ function ColumnSummary({board, fields, attributes, updateAttribute}) {
           options={fields}
           value={fields.find(f => f.id === attributes.summary?.options?.field)}
           onValueChange={field =>
-            updateAttribute('summary.options.field', field.id)
+            updateAttribute('summary.options.field', field?.id)
           }
           keyExtractor={field => field.id}
           labelExtractor={field => field.attributes.name}
