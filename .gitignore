@@ -19,3 +19,6 @@ cypress/videos
 
 # Local Netlify folder
 .netlify
+
+# Do NOT ignore ios folder; this somehow breaks the build
+# ios
