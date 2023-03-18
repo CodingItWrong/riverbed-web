@@ -167,37 +167,41 @@ function CardInclusionCondition({board, fields, attributes, updateAttribute}) {
     <FormGroup title="Cards to Include">
       {conditions.map((condition, index) => (
         <View key={`condition-${index}`} style={styles.conditionRow}>
-          <View style={[styles.conditionElements, sharedStyles.mt]}>
-            <DropdownField
-              fieldLabel={null}
-              emptyLabel="(field)"
-              options={fields}
-              value={fields.find(f => f.id === condition.field)}
-              onValueChange={field =>
-                updateAttribute(
-                  `card-inclusion-conditions[${index}].field`,
-                  field?.id,
-                )
-              }
-              keyExtractor={field => field.id}
-              labelExtractor={field => field.attributes.name}
-              style={styles.conditionButton}
-            />
-            <DropdownField
-              fieldLabel={null}
-              emptyLabel="(condition)"
-              options={queryOptions}
-              value={queryOptions.find(query => query.key === condition.query)}
-              onValueChange={query =>
-                updateAttribute(
-                  `card-inclusion-conditions[${index}].query`,
-                  query?.key,
-                )
-              }
-              keyExtractor={query => query.key}
-              labelExtractor={query => query.label}
-              style={styles.conditionButton}
-            />
+          <View style={styles.concreteFieldWrapper}>
+            <View style={[styles.conditionElements, sharedStyles.mt]}>
+              <DropdownField
+                fieldLabel={null}
+                emptyLabel="(field)"
+                options={fields}
+                value={fields.find(f => f.id === condition.field)}
+                onValueChange={field =>
+                  updateAttribute(
+                    `card-inclusion-conditions[${index}].field`,
+                    field?.id,
+                  )
+                }
+                keyExtractor={field => field.id}
+                labelExtractor={field => field.attributes.name}
+                style={styles.conditionButton}
+              />
+              <DropdownField
+                fieldLabel={null}
+                emptyLabel="(condition)"
+                options={queryOptions}
+                value={queryOptions.find(
+                  query => query.key === condition.query,
+                )}
+                onValueChange={query =>
+                  updateAttribute(
+                    `card-inclusion-conditions[${index}].query`,
+                    query?.key,
+                  )
+                }
+                keyExtractor={query => query.key}
+                labelExtractor={query => query.label}
+                style={styles.conditionButton}
+              />
+            </View>
             {queryOptions.find(query => query.key === condition.query)
               ?.showConcreteValueField &&
               condition.field && (
@@ -210,6 +214,7 @@ function CardInclusionCondition({board, fields, attributes, updateAttribute}) {
                       v,
                     )
                   }
+                  style={sharedStyles.mt}
                 />
               )}
           </View>
@@ -351,5 +356,10 @@ const styles = StyleSheet.create({
   },
   conditionButton: {
     marginRight: 8,
+  },
+  concreteFieldWrapper: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'stretch',
   },
 });
