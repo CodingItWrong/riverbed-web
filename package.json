@@ -76,7 +76,8 @@
   "jest": {
     "preset": "jest-expo",
     "modulePathIgnorePatterns": [
-      "cypress"
+      "cypress",
+      "e2e"
     ]
   }
 }
