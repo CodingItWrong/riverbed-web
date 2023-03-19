@@ -31,7 +31,11 @@ export default function groupCards({columnCards, cardGrouping, elements}) {
       cardGroups.reverse();
     }
   } else {
-    cardGroups = [{value: null, data: columnCards}];
+    if (columnCards.length === 0) {
+      cardGroups = [];
+    } else {
+      cardGroups = [{value: null, data: columnCards}];
+    }
   }
 
   return cardGroups;

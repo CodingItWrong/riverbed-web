@@ -51,9 +51,9 @@ describe('groupCards', () => {
     expect(result).toEqual([{value: null, data: columnCards}]);
   });
 
-  it('returns an empty group when there is no grouping and no cards', () => {
+  it('returns no groups when there is no grouping and no cards', () => {
     const columnCards = [];
     const result = groupCards({columnCards, cardGrouping: null});
-    expect(result).toEqual([{value: null, data: columnCards}]);
+    expect(result).toEqual([]);
   });
 });
