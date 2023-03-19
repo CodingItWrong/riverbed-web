@@ -1,8 +1,10 @@
 import {getCurrentPositionAsync, useForegroundPermissions} from 'expo-location';
+import {useState} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
 import MapView, {Marker as NativeMarker} from 'react-native-maps';
 import FIELD_DATA_TYPES from '../../enums/fieldDataTypes';
 import IconButton from '../IconButton';
+import LoadingIndicator from '../LoadingIndicator';
 import NumberField from '../NumberField';
 import Text from '../Text';
 import sharedStyles from '../sharedStyles';
@@ -48,6 +50,8 @@ function GeolocationEditorComponent({
   disabled,
 }) {
   const [status, requestPermission] = useForegroundPermissions();
+  const [isLoadingCurrentPosition, setIsLoadingCurrentPosition] =
+    useState(false);
 
   const {name} = field.attributes;
 
@@ -59,10 +63,17 @@ function GeolocationEditorComponent({
     }
 
     if (statusToUse.granted) {
-      const {
-        coords: {latitude, longitude},
-      } = await getCurrentPositionAsync({});
-      setValue({lat: String(latitude), lng: String(longitude)});
+      setIsLoadingCurrentPosition(true);
+      try {
+        const {
+          coords: {latitude, longitude},
+        } = await getCurrentPositionAsync({});
+        setValue({lat: String(latitude), lng: String(longitude)});
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setIsLoadingCurrentPosition(false);
+      }
     }
   }
 
@@ -104,12 +115,20 @@ function GeolocationEditorComponent({
             testID={`number-input-${field.id}-longitude`}
           />
         </View>
-        <IconButton
-          accessibilityLabel="Use current location"
-          icon="compass"
-          disabled={!status || (!status.granted && !status.canAskAgain)}
-          onPress={fillCurrentLocation}
-        />
+        <View>
+          <IconButton
+            accessibilityLabel="Use current location"
+            icon="compass"
+            disabled={!status || (!status.granted && !status.canAskAgain)}
+            onPress={fillCurrentLocation}
+            style={[isLoadingCurrentPosition && styles.hidden]}
+          />
+          {isLoadingCurrentPosition && (
+            <View style={styles.currentLocationLoadingContainer}>
+              <LoadingIndicator />
+            </View>
+          )}
+        </View>
       </View>
       {window.Cypress ? (
         <Text>(hiding map view in cypress)</Text>
@@ -139,6 +158,18 @@ const styles = StyleSheet.create({
   },
   coordsFieldContainer: {
     flex: 1,
+  },
+  hidden: {
+    opacity: 0,
+  },
+  currentLocationLoadingContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
