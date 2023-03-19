@@ -20,7 +20,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['e2e/**/*.e2e.js'],
+      files: ['e2e/**/*.test.js'],
       env: {
         'detox/detox': true,
         jest: true,
