@@ -60,7 +60,7 @@ describe('field data types', () => {
   ];
 
   const column = Factory.column({name: 'All'});
-  const atlantaGaLocation = {lat: '33.7489954', lng: '-84.3879824'};
+  const atlantaGaLocation = {lat: '33', lng: '-84'};
 
   const card = Factory.card({
     [choiceField.id]: 'fake_uuid_2',
@@ -98,7 +98,7 @@ describe('field data types', () => {
       cy.contains('Choice: Choice 2');
       cy.contains('Date: Sun Jan 1, 2023');
       cy.contains('Date and Time: Thu Feb 2, 2023 1:23:45 PM');
-      cy.contains('Location: (33.7489954, -84.3879824)');
+      cy.contains('Location: (33, -84)');
       cy.contains('Number: 42');
       cy.contains('Text: Hello, world!');
     });
@@ -157,7 +157,7 @@ describe('field data types', () => {
         .its(
           `request.body.data.attributes["field-values"][${geolocationField.id}]`,
         )
-        .should('deep.include', {lat: '27'});
+        .should('deep.equal', {lat: '27', lng: '-84'});
 
       cy.get(`[data-testid=number-input-${geolocationField.id}-longitude]`)
         .clear()
@@ -166,7 +166,7 @@ describe('field data types', () => {
         .its(
           `request.body.data.attributes["field-values"][${geolocationField.id}]`,
         )
-        .should('deep.include', {lng: '42'});
+        .should('deep.equal', {lat: '27', lng: '42'});
     });
 
     cy.step('TEST NUMBER FIELD', () => {
