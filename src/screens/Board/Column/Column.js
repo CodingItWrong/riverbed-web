@@ -13,6 +13,7 @@ import SORT_DIRECTIONS from '../../../enums/sortDirections';
 import calculateSummary from '../../../utils/calculateSummary';
 import checkConditions from '../../../utils/checkConditions';
 import CardSummary from './CardSummary';
+import groupCards from './groupCards';
 
 export default function Column({column, board, onEdit, onSelectCard}) {
   const insets = useSafeAreaInsets();
@@ -55,36 +56,10 @@ export default function Column({column, board, onEdit, onSelectCard}) {
     columnCards = filteredCards;
   }
 
-  let cardGroups;
-
   const applyGrouping = cardGrouping?.field && cardGrouping?.direction;
   const groupField =
     applyGrouping && elements.find(e => e.id === cardGrouping.field);
-  if (applyGrouping) {
-    cardGroups = [];
-    columnCards.forEach(card => {
-      const groupValue = card.attributes['field-values'][cardGrouping.field];
-      let group = cardGroups.find(g => g.value === groupValue);
-      if (!group) {
-        group = {value: groupValue, data: []};
-        cardGroups.push(group);
-      }
-      group.data.push(card);
-    });
-    const fieldType = fieldTypes[groupField.attributes['data-type']];
-    cardGroups = sortBy(cardGroups, [
-      group =>
-        fieldType.getSortValue({
-          value: group.value,
-          options: groupField.attributes.options,
-        }),
-    ]);
-    if (cardGrouping.direction === SORT_DIRECTIONS.DESCENDING.key) {
-      cardGroups.reverse();
-    }
-  } else {
-    cardGroups = [{value: null, data: columnCards}];
-  }
+  const cardGroups = groupCards({columnCards, cardGrouping, elements});
 
   return (
     <View
@@ -114,6 +89,7 @@ export default function Column({column, board, onEdit, onSelectCard}) {
         ]}
         scrollIndicatorInsets={{bottom: insets.bottom}}
         stickySectionHeadersEnabled={false}
+        ListEmptyComponent={<Text>(no cards)</Text>}
         renderSectionHeader={({section: group}) => {
           if (!applyGrouping) {
             return;
