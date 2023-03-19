@@ -89,6 +89,7 @@ export default function Column({column, board, onEdit, onSelectCard}) {
         ]}
         scrollIndicatorInsets={{bottom: insets.bottom}}
         stickySectionHeadersEnabled={false}
+        ListEmptyComponent={<Text>(no cards)</Text>}
         renderSectionHeader={({section: group}) => {
           if (!applyGrouping) {
             return;
