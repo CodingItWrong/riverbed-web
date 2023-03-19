@@ -5,6 +5,7 @@ import FIELD_DATA_TYPES from '../../enums/fieldDataTypes';
 import IconButton from '../IconButton';
 import NumberField from '../NumberField';
 import Text from '../Text';
+import sharedStyles from '../sharedStyles';
 
 const {Marker: WebMarker} = MapView;
 const Marker = Platform.select({web: WebMarker, default: NativeMarker});
@@ -99,6 +100,7 @@ function GeolocationEditorComponent({
             value={value?.lng ?? ''}
             onChangeText={newValue => setValue({...value, lng: newValue})}
             disabled={disabled}
+            style={sharedStyles.mt}
             testID={`number-input-${field.id}-longitude`}
           />
         </View>
@@ -113,7 +115,7 @@ function GeolocationEditorComponent({
         <Text>(hiding map view in cypress)</Text>
       ) : (
         <MapView
-          style={styles.detailMap}
+          style={[styles.detailMap, sharedStyles.mt]}
           region={region}
           onPress={handleMapPress}
           options={{
