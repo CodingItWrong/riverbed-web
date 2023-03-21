@@ -86,7 +86,7 @@ export default function ConditionInputs({
         onPress={addCondition}
         style={sharedStyles.mt}
       >
-        Add Filter
+        Add Condition
       </Button>
     </View>
   );
