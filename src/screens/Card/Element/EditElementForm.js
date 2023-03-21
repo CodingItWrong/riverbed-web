@@ -265,7 +265,7 @@ export default function EditElementForm({
         </FormGroup>
       )}
       <ShowConditionInputs
-        elementAttributes={elementAttributes}
+        attributes={elementAttributes}
         updateAttribute={updateAttribute}
         fields={fields}
       />
@@ -376,7 +376,7 @@ function ActionInputs({actions, updateActionsAttribute, fields}) {
   );
 }
 
-function ShowConditionInputs({elementAttributes, updateAttribute, fields}) {
+function ShowConditionInputs({attributes, updateAttribute, fields}) {
   const queryOptions = Object.values(QUERIES);
 
   return (
@@ -385,9 +385,7 @@ function ShowConditionInputs({elementAttributes, updateAttribute, fields}) {
         fieldLabel="Query Field"
         emptyLabel="(choose)"
         options={fields}
-        value={fields.find(
-          f => f.id === elementAttributes['show-condition']?.field,
-        )}
+        value={fields.find(f => f.id === attributes['show-condition']?.field)}
         onValueChange={field =>
           updateAttribute('show-condition.field', field?.id)
         }
@@ -400,7 +398,7 @@ function ShowConditionInputs({elementAttributes, updateAttribute, fields}) {
         emptyLabel="(choose)"
         options={queryOptions}
         value={queryOptions.find(
-          query => query.key === elementAttributes['show-condition']?.query,
+          query => query.key === attributes['show-condition']?.query,
         )}
         onValueChange={query =>
           updateAttribute('show-condition.query', query?.key)

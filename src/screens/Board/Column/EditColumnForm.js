@@ -146,7 +146,7 @@ export default function EditColumnForm({
   );
 }
 
-function CardInclusionCondition({board, fields, attributes, updateAttribute}) {
+function CardInclusionCondition({fields, attributes, updateAttribute}) {
   const queryOptions = Object.values(QUERIES);
   const conditions = attributes['card-inclusion-conditions'] ?? [];
 
