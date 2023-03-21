@@ -209,7 +209,7 @@ describe('edit columns', () => {
 
       cy.get('[data-testid="text-input-column-name"]').clear().type('To Play');
 
-      cy.contains('Add Filter').click();
+      cy.contains('Add Condition').click();
       cy.contains('(field)').paperSelect('Purchase Date');
 
       // paper menu select; not sure why this is needed as it's the same code as paperSelect(), without a check at the end
@@ -221,7 +221,7 @@ describe('edit columns', () => {
         .click({force: true});
       // end paper menu select
 
-      cy.contains('Add Filter').click();
+      cy.contains('Add Condition').click();
       cy.contains('(field)').paperSelect('Complete Date');
       cy.contains('(condition)').paperSelect(QUERIES.IS_EMPTY.label);
 
@@ -274,7 +274,7 @@ describe('edit columns', () => {
 
       cy.get('[data-testid="text-input-column-name"]').clear().type('To Play');
 
-      cy.contains('Add Filter').click();
+      cy.contains('Add Condition').click();
       cy.contains('(field)').paperSelect('Title');
       cy.contains('(condition)').paperSelect(QUERIES.EQUALS_VALUE.label);
       cy.get(`[data-testid="text-input-${titleField.id}`).type(unownedTitle);

@@ -1,21 +1,19 @@
 import set from 'lodash.set';
 import {useState} from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
+import {ScrollView} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Button from '../../../components/Button';
 import Card from '../../../components/Card';
+import ConditionInputs from '../../../components/ConditionsInputs';
 import DropdownField from '../../../components/DropdownField';
 import ErrorMessage from '../../../components/ErrorMessage';
-import Field from '../../../components/Field';
 import FormGroup from '../../../components/FormGroup';
-import IconButton from '../../../components/IconButton';
 import NumberField from '../../../components/NumberField';
 import TextField from '../../../components/TextField';
 import sharedStyles from '../../../components/sharedStyles';
 import {useDeleteColumn, useUpdateColumn} from '../../../data/columns';
 import {useBoardElements} from '../../../data/elements';
 import ELEMENT_TYPES from '../../../enums/elementTypes';
-import QUERIES from '../../../enums/queries';
 import SORT_DIRECTIONS from '../../../enums/sortDirections';
 import SUMMARY_FUNCTIONS from '../../../enums/summaryFunctions';
 
@@ -146,93 +144,18 @@ export default function EditColumnForm({
   );
 }
 
-function CardInclusionCondition({board, fields, attributes, updateAttribute}) {
-  const queryOptions = Object.values(QUERIES);
-  const conditions = attributes['card-inclusion-conditions'] ?? [];
-
-  function addCondition() {
-    updateAttribute('card-inclusion-conditions', [...conditions, {}]);
+function CardInclusionCondition({fields, attributes, updateAttribute}) {
+  function updateConditionsPath(path, value) {
+    updateAttribute(`card-inclusion-conditions${path}`, value);
   }
 
-  function removeConditionAtIndex(index) {
-    const newConditions = [...conditions];
-    newConditions.splice(index, 1);
-    updateAttribute('card-inclusion-conditions', newConditions);
-  }
-
-  // TODO:
-  // - test removing a filter
-  // - refactor visuals incl field names
   return (
     <FormGroup title="Cards to Include">
-      {conditions.map((condition, index) => (
-        <View key={`condition-${index}`} style={styles.conditionRow}>
-          <View style={styles.concreteFieldWrapper}>
-            <View style={[styles.conditionElements, sharedStyles.mt]}>
-              <DropdownField
-                fieldLabel={null}
-                emptyLabel="(field)"
-                options={fields}
-                value={fields.find(f => f.id === condition.field)}
-                onValueChange={field =>
-                  updateAttribute(
-                    `card-inclusion-conditions[${index}].field`,
-                    field?.id,
-                  )
-                }
-                keyExtractor={field => field.id}
-                labelExtractor={field => field.attributes.name}
-                style={styles.conditionButton}
-              />
-              <DropdownField
-                fieldLabel={null}
-                emptyLabel="(condition)"
-                options={queryOptions}
-                value={queryOptions.find(
-                  query => query.key === condition.query,
-                )}
-                onValueChange={query =>
-                  updateAttribute(
-                    `card-inclusion-conditions[${index}].query`,
-                    query?.key,
-                  )
-                }
-                keyExtractor={query => query.key}
-                labelExtractor={query => query.label}
-                style={styles.conditionButton}
-              />
-            </View>
-            {queryOptions.find(query => query.key === condition.query)
-              ?.showConcreteValueField &&
-              condition.field && (
-                <Field
-                  field={fields.find(f => f.id === condition.field)}
-                  value={condition.options?.value}
-                  setValue={v =>
-                    updateAttribute(
-                      `card-inclusion-conditions[${index}].options.value`,
-                      v,
-                    )
-                  }
-                  style={sharedStyles.mt}
-                />
-              )}
-          </View>
-          <IconButton
-            icon="close-circle"
-            accessibilityLabel="Remove condition"
-            onPress={() => removeConditionAtIndex(index)}
-          />
-        </View>
-      ))}
-      <Button
-        icon="plus"
-        mode="link"
-        onPress={addCondition}
-        style={sharedStyles.mt}
-      >
-        Add Filter
-      </Button>
+      <ConditionInputs
+        conditions={attributes['card-inclusion-conditions']}
+        updateConditionsPath={updateConditionsPath}
+        fields={fields}
+      />
     </FormGroup>
   );
 }
@@ -342,24 +265,3 @@ function ColumnSummary({board, fields, attributes, updateAttribute}) {
     </FormGroup>
   );
 }
-
-const styles = StyleSheet.create({
-  conditionRow: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-  },
-  conditionElements: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    flexWrap: 'wrap',
-  },
-  conditionButton: {
-    marginRight: 8,
-  },
-  concreteFieldWrapper: {
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'stretch',
-  },
-});
