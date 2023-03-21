@@ -212,7 +212,7 @@ describe('edit columns', () => {
       cy.contains('Add Condition').click();
       cy.contains('(field)').paperSelect('Purchase Date');
 
-      // paper menu select; not sure why this is needed as it's the same code as paperSelect(), without a check at the end
+      // paper menu select; not sure why this is needed as it's the same code as paperSelect(), without a check at the end. Is it because it's scrolled off the bottom?
       // cy.contains('(condition)').paperSelect(QUERIES.IS_NOT_EMPTY.label);
       cy.contains('(condition)').click();
       cy.get('[role=menuitem]')
