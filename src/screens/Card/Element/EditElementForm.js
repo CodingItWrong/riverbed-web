@@ -6,6 +6,7 @@ import Button from '../../../components/Button';
 import Card from '../../../components/Card';
 import DropdownField from '../../../components/DropdownField';
 import ErrorMessage from '../../../components/ErrorMessage';
+import Field from '../../../components/Field';
 import FormGroup from '../../../components/FormGroup';
 import IconButton from '../../../components/IconButton';
 import LabeledCheckbox from '../../../components/LabeledCheckbox';
@@ -378,6 +379,7 @@ function ActionInputs({actions, updateActionsAttribute, fields}) {
 
 function ShowConditionInputs({attributes, updateAttribute, fields}) {
   const queryOptions = Object.values(QUERIES);
+  const condition = attributes['show-condition'];
 
   return (
     <FormGroup title="Show Condition">
@@ -385,7 +387,7 @@ function ShowConditionInputs({attributes, updateAttribute, fields}) {
         fieldLabel="Query Field"
         emptyLabel="(choose)"
         options={fields}
-        value={fields.find(f => f.id === attributes['show-condition']?.field)}
+        value={fields.find(f => f.id === condition?.field)}
         onValueChange={field =>
           updateAttribute('show-condition.field', field?.id)
         }
@@ -397,9 +399,7 @@ function ShowConditionInputs({attributes, updateAttribute, fields}) {
         fieldLabel="Show Condition"
         emptyLabel="(choose)"
         options={queryOptions}
-        value={queryOptions.find(
-          query => query.key === attributes['show-condition']?.query,
-        )}
+        value={queryOptions.find(query => query.key === condition?.query)}
         onValueChange={query =>
           updateAttribute('show-condition.query', query?.key)
         }
@@ -407,6 +407,16 @@ function ShowConditionInputs({attributes, updateAttribute, fields}) {
         labelExtractor={query => query.label}
         style={sharedStyles.mt}
       />
+      {queryOptions.find(query => query.key === condition?.query)
+        ?.showConcreteValueField &&
+        condition?.field && (
+          <Field
+            field={fields.find(f => f.id === condition.field)}
+            value={condition.options?.value}
+            setValue={v => updateAttribute('show-condition.options.value', v)}
+            style={sharedStyles.mt}
+          />
+        )}
     </FormGroup>
   );
 }
