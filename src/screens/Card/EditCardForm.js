@@ -57,7 +57,7 @@ export default function EditCardForm({card, board, onClose}) {
     elements.filter(element =>
       checkConditions({
         fieldValues,
-        conditions: [element.attributes['show-condition']],
+        conditions: element.attributes['show-conditions'],
         elements,
       }),
     ),

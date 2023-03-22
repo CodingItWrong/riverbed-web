@@ -4,9 +4,9 @@ import {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import Button from '../../../components/Button';
 import Card from '../../../components/Card';
+import ConditionInputs from '../../../components/ConditionsInputs';
 import DropdownField from '../../../components/DropdownField';
 import ErrorMessage from '../../../components/ErrorMessage';
-import Field from '../../../components/Field';
 import FormGroup from '../../../components/FormGroup';
 import IconButton from '../../../components/IconButton';
 import LabeledCheckbox from '../../../components/LabeledCheckbox';
@@ -22,7 +22,6 @@ import {
 import COMMANDS from '../../../enums/commands';
 import ELEMENT_TYPES from '../../../enums/elementTypes';
 import FIELD_DATA_TYPES from '../../../enums/fieldDataTypes';
-import QUERIES from '../../../enums/queries';
 import VALUES from '../../../enums/values';
 import sortByDisplayOrder from '../../../utils/sortByDisplayOrder';
 import uuid from '../../../utils/uuid';
@@ -265,7 +264,7 @@ export default function EditElementForm({
           </Button>
         </FormGroup>
       )}
-      <ShowConditionInputs
+      <ShowConditionsInputs
         attributes={elementAttributes}
         updateAttribute={updateAttribute}
         fields={fields}
@@ -377,46 +376,18 @@ function ActionInputs({actions, updateActionsAttribute, fields}) {
   );
 }
 
-function ShowConditionInputs({attributes, updateAttribute, fields}) {
-  const queryOptions = Object.values(QUERIES);
-  const condition = attributes['show-condition'];
+function ShowConditionsInputs({attributes, updateAttribute, fields}) {
+  function updateConditionsPath(path, value) {
+    updateAttribute(`show-conditions${path}`, value);
+  }
 
   return (
-    <FormGroup title="Show Condition">
-      <DropdownField
-        fieldLabel="Query Field"
-        emptyLabel="(choose)"
-        options={fields}
-        value={fields.find(f => f.id === condition?.field)}
-        onValueChange={field =>
-          updateAttribute('show-condition.field', field?.id)
-        }
-        keyExtractor={field => field.id}
-        labelExtractor={field => field.attributes.name}
-        style={sharedStyles.mt}
+    <FormGroup title="Show Conditions">
+      <ConditionInputs
+        conditions={attributes['show-conditions']}
+        updateConditionsPath={updateConditionsPath}
+        fields={fields}
       />
-      <DropdownField
-        fieldLabel="Show Condition"
-        emptyLabel="(choose)"
-        options={queryOptions}
-        value={queryOptions.find(query => query.key === condition?.query)}
-        onValueChange={query =>
-          updateAttribute('show-condition.query', query?.key)
-        }
-        keyExtractor={query => query.key}
-        labelExtractor={query => query.label}
-        style={sharedStyles.mt}
-      />
-      {queryOptions.find(query => query.key === condition?.query)
-        ?.showConcreteValueField &&
-        condition?.field && (
-          <Field
-            field={fields.find(f => f.id === condition.field)}
-            value={condition.options?.value}
-            setValue={v => updateAttribute('show-condition.options.value', v)}
-            style={sharedStyles.mt}
-          />
-        )}
     </FormGroup>
   );
 }

@@ -33,10 +33,12 @@ describe('buttons', () => {
           },
         ],
       },
-      'show-condition': {
-        field: releasedAtField.id,
-        query: QUERIES.IS_EMPTY.key,
-      },
+      'show-conditions': [
+        {
+          field: releasedAtField.id,
+          query: QUERIES.IS_EMPTY.key,
+        },
+      ],
     });
     const unreleaseButton = Factory.button({
       name: 'Unrelease',
@@ -50,10 +52,12 @@ describe('buttons', () => {
           },
         ],
       },
-      'show-condition': {
-        field: releasedAtField.id,
-        query: QUERIES.IS_NOT_EMPTY.key,
-      },
+      'show-conditions': [
+        {
+          field: releasedAtField.id,
+          query: QUERIES.IS_NOT_EMPTY.key,
+        },
+      ],
     });
 
     const releasedColumn = Factory.column({

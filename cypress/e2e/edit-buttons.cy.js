@@ -59,10 +59,12 @@ describe('edit buttons', () => {
             },
           ],
         },
-        'show-condition': {
-          query: QUERIES.IS_NOT_EMPTY.key,
-          field: greetingField.id,
-        },
+        'show-conditions': [
+          {
+            query: QUERIES.IS_NOT_EMPTY.key,
+            field: greetingField.id,
+          },
+        ],
       },
       newButton,
     );
@@ -116,11 +118,12 @@ describe('edit buttons', () => {
       cy.contains('Value: (choose)').paperSelect(VALUES.EMPTY.label);
 
       // show condition
-      // TODO: why are these order dependent?
-      cy.contains('Show Condition: (choose)').paperSelect(
-        QUERIES.IS_NOT_EMPTY.label,
-      );
-      cy.contains('Query Field: (choose)').paperSelect('Greeting');
+      cy.contains('Add Condition').click();
+      cy.contains('(field)').paperSelect('Greeting');
+      cy.contains('(condition)').click();
+      cy.get('[role=menuitem]')
+        .contains(QUERIES.IS_NOT_EMPTY.label)
+        .click({force: true});
 
       cy.intercept('PATCH', `http://cypressapi/elements/${newButton.id}?`, {
         success: true,
