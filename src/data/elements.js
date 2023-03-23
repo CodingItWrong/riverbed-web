@@ -20,8 +20,10 @@ const refreshElements = (queryClient, board) =>
 
 export function useBoardElements(board) {
   const elementClient = useElementClient();
-  return useQuery(['elements', board.id], () =>
-    elementClient.related({parent: board}).then(resp => resp.data),
+  return useQuery(
+    ['elements', board?.id],
+    () => elementClient.related({parent: board}).then(resp => resp.data),
+    {enabled: !!board},
   );
 }
 

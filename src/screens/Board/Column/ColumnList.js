@@ -3,7 +3,6 @@ import {useState} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {large, useBreakpoint} from '../../../breakpoints';
 import Button from '../../../components/Button';
-import LoadingIndicator from '../../../components/LoadingIndicator';
 import sharedStyles, {useColumnStyle} from '../../../components/sharedStyles';
 import {useCards, useCreateCard} from '../../../data/cards';
 import {useColumns, useCreateColumn} from '../../../data/columns';
@@ -54,11 +53,7 @@ export default function ColumnList({board}) {
 
   const isLoading = isLoadingCards || isLoadingColumns || isLoadingElements;
   if (isLoading) {
-    return (
-      <View style={columnWidthStyle}>
-        <LoadingIndicator />
-      </View>
-    );
+    return null; // loading indicator is in header
   }
 
   const sortedColumns = sortByDisplayOrder(columns);
