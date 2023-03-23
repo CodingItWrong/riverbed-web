@@ -66,7 +66,7 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
           fieldLabel="Icon"
           emptyLabel="(none)"
           value={icon}
-          onValueChange={value => updateAttribute('icon', value.key)}
+          onValueChange={value => updateAttribute('icon', value?.key ?? null)}
           options={ICONS}
           style={sharedStyles.mt}
         />
