@@ -20,6 +20,9 @@ const sharedStyles = StyleSheet.create({
   mt: {
     marginTop: 8,
   },
+  mr: {
+    marginRight: 8,
+  },
   noPadding: {
     padding: 0,
   },

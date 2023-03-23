@@ -1,9 +1,11 @@
 import {StyleSheet} from 'react-native';
 import {Appbar} from 'react-native-paper';
+import {Icon} from './Icon';
 import LoadingIndicator from './LoadingIndicator';
+import sharedStyles from './sharedStyles';
 
 export default function NavigationBar({navigation, options, back}) {
-  const {title, onTitlePress, headerRight, isFetching} = options;
+  const {title, icon, onTitlePress, headerRight, isFetching} = options;
 
   return (
     <Appbar.Header elevated>
@@ -13,6 +15,7 @@ export default function NavigationBar({navigation, options, back}) {
           accessibilityLabel="Go back"
         />
       )}
+      {icon && <Icon name={icon} style={sharedStyles.mr} />}
       <Appbar.Content
         title={title}
         testID="navigation-bar-title"
