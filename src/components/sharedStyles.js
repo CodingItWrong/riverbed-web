@@ -33,6 +33,9 @@ const sharedStyles = StyleSheet.create({
   spacer: {
     flex: 1,
   },
+  hidden: {
+    opacity: 0,
+  },
   textInput: {
     // causes label overlap issues on web
     // backgroundColor: 'transparent',

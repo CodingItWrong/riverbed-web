@@ -87,8 +87,11 @@ export default function BoardList() {
                   >
                     <View style={styles.boardCard}>
                       <Icon
-                        name={board.attributes.icon}
-                        style={sharedStyles.mr}
+                        name={board.attributes.icon ?? 'square'}
+                        style={[
+                          sharedStyles.mr,
+                          board.attributes.icon ? null : sharedStyles.hidden,
+                        ]}
                       />
                       <View style={sharedStyles.fill}>
                         <Text variant="titleMedium">
