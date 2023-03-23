@@ -27,12 +27,14 @@ export default function Board(...args) {
     if (isLoadingBoard) {
       navigation.setOptions({
         title: null,
+        icon: null,
         onTitlePress: null,
         isFetching: true,
       });
     } else {
       navigation.setOptions({
         title: board?.attributes?.name ?? '(unnamed board)',
+        icon: board?.attributes?.icon,
         onTitlePress: () => setEditingBoard(true),
         isFetching,
       });

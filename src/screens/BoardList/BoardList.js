@@ -6,6 +6,7 @@ import {Card} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Button from '../../components/Button';
 import CenterColumn from '../../components/CenterColumn';
+import {Icon} from '../../components/Icon';
 import IconButton from '../../components/IconButton';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import ScreenBackground from '../../components/ScreenBackground';
@@ -85,6 +86,10 @@ export default function BoardList() {
                     style={sharedStyles.mt}
                   >
                     <View style={styles.boardCard}>
+                      <Icon
+                        name={board.attributes.icon ?? 'view-column'}
+                        style={sharedStyles.mr}
+                      />
                       <View style={sharedStyles.fill}>
                         <Text variant="titleMedium">
                           {board.attributes.name ?? '(unnamed board)'}

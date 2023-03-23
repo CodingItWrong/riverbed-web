@@ -20,6 +20,9 @@ const sharedStyles = StyleSheet.create({
   mt: {
     marginTop: 8,
   },
+  mr: {
+    marginRight: 8,
+  },
   noPadding: {
     padding: 0,
   },
@@ -29,6 +32,9 @@ const sharedStyles = StyleSheet.create({
   },
   spacer: {
     flex: 1,
+  },
+  hidden: {
+    opacity: 0,
   },
   textInput: {
     // causes label overlap issues on web

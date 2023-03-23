@@ -3,10 +3,12 @@ import {useState} from 'react';
 import {View} from 'react-native';
 import Button from '../../components/Button';
 import Card from '../../components/Card';
+import DropdownField from '../../components/DropdownField';
 import ErrorMessage from '../../components/ErrorMessage';
 import TextField from '../../components/TextField';
 import sharedStyles, {useColumnStyle} from '../../components/sharedStyles';
 import {useDeleteBoard, useUpdateBoard} from '../../data/boards';
+import ICONS from '../../enums/icons';
 
 export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
   const [attributes, setAttributes] = useState(board.attributes);
@@ -46,6 +48,10 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
     }
   }
 
+  const icon = attributes.icon
+    ? ICONS.find(i => i.key === attributes.icon)
+    : null;
+
   return (
     <View style={sharedStyles.columnPadding}>
       <Card style={columnStyle}>
@@ -54,6 +60,14 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
           value={attributes.name ?? ''}
           onChangeText={value => updateAttribute('name', value)}
           testID="text-input-board-name"
+          style={sharedStyles.mt}
+        />
+        <DropdownField
+          fieldLabel="Icon"
+          emptyLabel="(none)"
+          value={icon}
+          onValueChange={value => updateAttribute('icon', value?.key ?? null)}
+          options={ICONS}
           style={sharedStyles.mt}
         />
         <ErrorMessage>{getErrorMessage()}</ErrorMessage>
