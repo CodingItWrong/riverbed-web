@@ -52,11 +52,7 @@ const Boards = ({route}) => {
   }, [setBoardId, boardId]);
 
   return (
-    <BoardStack.Navigator
-      screenOptions={{
-        header: props => <NavigationBar {...props} />,
-      }}
-    >
+    <BoardStack.Navigator screenOptions={{headerShown: false}}>
       <BoardStack.Screen name="Board" component={Board} />
       <AppStack.Screen name="Card" component={Card} options={modalOptions} />
     </BoardStack.Navigator>

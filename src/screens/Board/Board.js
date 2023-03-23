@@ -1,5 +1,8 @@
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {useCallback, useEffect, useState} from 'react';
+import {Appbar} from 'react-native-paper';
+import {Icon} from '../../components/Icon';
+import LoadingIndicator from '../../components/LoadingIndicator';
 import ScreenBackground from '../../components/ScreenBackground';
 import sharedStyles from '../../components/sharedStyles';
 import {useBoard} from '../../data/boards';
@@ -65,8 +68,33 @@ export default function Board(...args) {
   }
 
   return (
-    <ScreenBackground style={sharedStyles.fullHeight}>
-      {renderContents()}
-    </ScreenBackground>
+    <>
+      <EmbeddedHeader
+        board={board}
+        isFetching={isFetching}
+        onPressTitle={() => setEditingBoard(true)}
+      />
+      <ScreenBackground style={sharedStyles.fullHeight}>
+        {renderContents()}
+      </ScreenBackground>
+    </>
+  );
+}
+
+// TODO: extract and remove duplication
+function EmbeddedHeader({board, isFetching, onPressTitle}) {
+  const navigation = useNavigation();
+  return (
+    <Appbar.Header elevated>
+      <Appbar.BackAction
+        onPress={navigation.goBack}
+        accessibilityLabel="Go back"
+      />
+      {board?.attributes?.icon && (
+        <Icon name={board?.attributes?.icon} style={sharedStyles.mr} />
+      )}
+      <Appbar.Content title={board?.attributes?.name} onPress={onPressTitle} />
+      <LoadingIndicator loading={Boolean(isFetching)} style={sharedStyles.mr} />
+    </Appbar.Header>
   );
 }
