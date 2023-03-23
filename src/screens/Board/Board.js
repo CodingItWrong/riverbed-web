@@ -20,7 +20,13 @@ export default function Board(...args) {
   const [editingBoard, setEditingBoard] = useState(false);
 
   useEffect(() => {
-    if (!isLoadingBoard) {
+    if (isLoadingBoard) {
+      navigation.setOptions({
+        title: null,
+        onTitlePress: null,
+        isFetching: false,
+      });
+    } else {
       navigation.setOptions({
         title: board?.attributes?.name ?? '(unnamed board)',
         onTitlePress: () => setEditingBoard(true),
