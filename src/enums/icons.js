@@ -9,6 +9,7 @@ const ICONS = [
   {key: 'link', label: 'Link'},
   {key: 'map-marker', label: 'Map Marker'},
   {key: 'medical-bag', label: 'Medical Bag'},
+  {key: 'scale-bathroom', label: 'Scale'},
   {key: 'television', label: 'Television'},
 ];
 
