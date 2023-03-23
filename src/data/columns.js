@@ -20,8 +20,10 @@ const refreshColumns = (queryClient, board) =>
 
 export function useColumns(board) {
   const columnClient = useColumnClient();
-  return useQuery(['columns', board.id], () =>
-    columnClient.related({parent: board}).then(resp => resp.data),
+  return useQuery(
+    ['columns', board?.id],
+    () => columnClient.related({parent: board}).then(resp => resp.data),
+    {enabled: !!board},
   );
 }
 
