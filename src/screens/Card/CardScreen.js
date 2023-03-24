@@ -1,8 +1,8 @@
 import {useNavigation} from '@react-navigation/native';
-import {useCallback, useEffect, useState} from 'react';
+import {useCallback, useState} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {Appbar, Provider} from 'react-native-paper';
+import {Appbar, Provider as PaperProvider} from 'react-native-paper';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Card from '../../components/Card';
 import CenterModal from '../../components/CenterModal';
@@ -12,6 +12,7 @@ import sharedStyles from '../../components/sharedStyles';
 import {useBoard} from '../../data/boards';
 import {useCard, useDeleteCard} from '../../data/cards';
 import {useCurrentBoard} from '../../data/currentBoard';
+import useColorSchemeTheme from '../../theme/useColorSchemeTheme';
 import EditCardForm from './EditCardForm';
 import ElementList from './Element/ElementList';
 
@@ -25,7 +26,7 @@ export default function CardScreen({route}) {
   // we use this instead of isLoading or isFetching because we do need the individual card to be newly loaded (so we need to wait on fetching), but we don't want to re-trigger the loading indicator any time we click back into the browser to fetch
   const [isFirstLoaded, setIsFirstLoaded] = useState(true);
 
-  const {data: board, isLoading: isLoadingBoard} = useBoard(boardId);
+  const {data: board} = useBoard(boardId);
   const {data: card} = useCard({
     boardId,
     cardId,
@@ -33,13 +34,6 @@ export default function CardScreen({route}) {
       onSuccess: () => setIsFirstLoaded(false),
     },
   });
-
-  useEffect(() => {
-    if (!isLoadingBoard) {
-      const title = board?.attributes?.name ?? '(unnamed board)';
-      navigation.setOptions({title});
-    }
-  }, [navigation, board, isLoadingBoard]);
 
   const closeModal = useCallback(() => {
     navigation.goBack();
@@ -78,12 +72,6 @@ export default function CardScreen({route}) {
     }
   }, [isEditingElements, handleDeleteCard]);
 
-  useEffect(() => {
-    navigation.setOptions({
-      headerRight: () => renderButtonControls(),
-    });
-  }, [navigation, renderButtonControls]);
-
   function renderContents() {
     if (isFirstLoaded) {
       return <LoadingIndicator />;
@@ -110,10 +98,17 @@ export default function CardScreen({route}) {
     }
   }
 
+  const colorTheme = useColorSchemeTheme(board?.attributes['color-theme']);
+
   return (
-    <CardWrapper closeModal={closeModal}>
-      {Platform.OS !== 'android' && (
-        <View style={styles.headerRow}>
+    <PaperProvider theme={colorTheme}>
+      <CardWrapper closeModal={closeModal}>
+        <View
+          style={[
+            styles.headerRow,
+            Platform.OS === 'android' && {paddingTop: insets.top},
+          ]}
+        >
           <Appbar.BackAction
             onPress={closeModal}
             accessibilityLabel="Close card"
@@ -121,9 +116,9 @@ export default function CardScreen({route}) {
           <View style={sharedStyles.spacer} />
           {renderButtonControls()}
         </View>
-      )}
-      {renderContents()}
-    </CardWrapper>
+        {renderContents()}
+      </CardWrapper>
+    </PaperProvider>
   );
 }
 
@@ -134,11 +129,7 @@ function CardWrapper({children, closeModal}) {
         <Card style={styles.wrapperCard}>{children}</Card>
       </CenterModal>
     ),
-    default: (
-      <Provider>
-        <ScreenBackground>{children}</ScreenBackground>
-      </Provider>
-    ),
+    default: <ScreenBackground>{children}</ScreenBackground>,
   });
 }
 
