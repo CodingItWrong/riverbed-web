@@ -54,7 +54,6 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
     : null;
 
   const colorTheme = COLOR_THEMES[attributes['color-theme']];
-  console.log({COLOR_THEMES, attributes, colorTheme});
 
   return (
     <View style={sharedStyles.columnPadding}>
