@@ -84,9 +84,14 @@ export default function BoardList() {
                   );
                 }}
                 renderItem={({item: board}) => {
-                  const colors = getBoardColors(board);
-                  const backgroundColor = colors.secondaryContainer;
-                  const foregroundColor = colors.onSecondaryContainer;
+                  let backgroundColor = null;
+                  let foregroundColor = null;
+
+                  if (board.attributes['color-theme']) {
+                    const colors = getBoardColors(board);
+                    backgroundColor = colors.secondaryContainer;
+                    foregroundColor = colors.onSecondaryContainer;
+                  }
 
                   return (
                     <Card
