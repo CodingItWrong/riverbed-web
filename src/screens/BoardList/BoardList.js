@@ -23,7 +23,7 @@ export default function BoardList() {
   const {clearToken} = useToken();
   const navigation = useNavigation();
   const linkTo = useLinkTo();
-  const colorScheme = useDebouncedColorScheme();
+  const getBoardColors = useBoardColors();
 
   useEffect(() => {
     navigation.setOptions({
@@ -84,14 +84,9 @@ export default function BoardList() {
                   );
                 }}
                 renderItem={({item: board}) => {
-                  let backgroundColor = null;
-                  let foregroundColor = null;
-                  if (board.attributes['color-theme']) {
-                    const {colors} =
-                      colorThemes[board.attributes['color-theme']][colorScheme];
-                    backgroundColor = colors.secondaryContainer;
-                    foregroundColor = colors.onSecondaryContainer;
-                  }
+                  const colors = getBoardColors(board);
+                  const backgroundColor = colors.secondaryContainer;
+                  const foregroundColor = colors.onSecondaryContainer;
 
                   return (
                     <Card
@@ -160,6 +155,9 @@ function groupBoards(boards) {
 }
 
 function FavoriteButton({board, onToggleFavorite}) {
+  const getBoardColors = useBoardColors();
+  const colors = getBoardColors(board);
+
   const {attributes} = board;
   const isFavorite = Boolean(attributes['favorited-at']);
 
@@ -179,11 +177,20 @@ function FavoriteButton({board, onToggleFavorite}) {
           : `${attributes.name} is not a favorite board`
       }
       icon={isFavorite ? 'star' : 'star-outline'}
-      iconColor={isFavorite ? 'orange' : 'gray'}
-      style={styles.favoriteStar}
+      iconColor={colors.onSecondaryContainer}
+      style={(styles.favoriteStar, {opacity: isFavorite ? 1.0 : 0.5})}
       onPress={handleUpdateBoard}
     />
   );
+}
+
+function useBoardColors() {
+  const colorScheme = useDebouncedColorScheme();
+
+  return function getBoardColors(board) {
+    const colorTheme = board?.attributes['color-theme'] ?? 'default';
+    return colorThemes[colorTheme][colorScheme].colors;
+  };
 }
 
 const styles = StyleSheet.create({
