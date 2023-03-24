@@ -96,7 +96,11 @@ function EmbeddedHeader({board, isFetching, onPressTitle}) {
       {board?.attributes?.icon && (
         <Icon name={board?.attributes?.icon} style={sharedStyles.mr} />
       )}
-      <Appbar.Content title={board?.attributes?.name} onPress={onPressTitle} />
+      <Appbar.Content
+        title={board?.attributes?.name ?? '(unnamed board)'}
+        onPress={onPressTitle}
+        testID="navigation-bar-title"
+      />
       <LoadingIndicator loading={Boolean(isFetching)} style={sharedStyles.mr} />
     </Appbar.Header>
   );

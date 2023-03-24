@@ -34,7 +34,7 @@ describe('edit boards', () => {
     cy.step('EDIT BOARD', () => {
       cy.get('[aria-label="Loading"] > div').should('be.visible');
       cy.get('[aria-label="Loading"] > div').should('not.be.visible');
-      cy.get('[data-testid=navigation-bar-title]').eq(1).click({force: true});
+      cy.get('[data-testid=navigation-bar-title]').click({force: true});
 
       cy.get('[data-testid="text-input-board-name"]').type(boardName);
 
@@ -65,7 +65,7 @@ describe('edit boards', () => {
 
       cy.get('[aria-label="Loading"] > div').should('be.visible');
       cy.get('[aria-label="Loading"] > div').should('not.be.visible');
-      cy.get('[data-testid=navigation-bar-title]').eq(1).click({force: true});
+      cy.get('[data-testid=navigation-bar-title]').click({force: true});
 
       cy.contains('Delete Board').click();
 
