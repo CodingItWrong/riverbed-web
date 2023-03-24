@@ -8,6 +8,7 @@ import ErrorMessage from '../../components/ErrorMessage';
 import TextField from '../../components/TextField';
 import sharedStyles, {useColumnStyle} from '../../components/sharedStyles';
 import {useDeleteBoard, useUpdateBoard} from '../../data/boards';
+import COLOR_THEMES from '../../enums/colorThemes';
 import ICONS from '../../enums/icons';
 
 export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
@@ -52,6 +53,9 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
     ? ICONS.find(i => i.key === attributes.icon)
     : null;
 
+  const colorTheme = COLOR_THEMES[attributes['color-theme']];
+  console.log({COLOR_THEMES, attributes, colorTheme});
+
   return (
     <View style={sharedStyles.columnPadding}>
       <Card style={columnStyle}>
@@ -60,6 +64,16 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
           value={attributes.name ?? ''}
           onChangeText={value => updateAttribute('name', value)}
           testID="text-input-board-name"
+          style={sharedStyles.mt}
+        />
+        <DropdownField
+          fieldLabel="Color Theme"
+          emptyLabel="(default)"
+          value={colorTheme}
+          onValueChange={value =>
+            updateAttribute('color-theme', value?.key ?? null)
+          }
+          options={Object.values(COLOR_THEMES)}
           style={sharedStyles.mt}
         />
         <DropdownField
