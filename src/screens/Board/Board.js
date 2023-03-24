@@ -73,7 +73,10 @@ export default function Board(...args) {
   return (
     <PaperProvider theme={colorTheme}>
       <EmbeddedHeader
-        board={board}
+        title={
+          board?.attributes?.name ?? (!isLoadingBoard && '(unnamed board)')
+        }
+        icon={board?.attributes?.icon}
         isFetching={isFetching}
         onPressTitle={() => setEditingBoard(true)}
       />
@@ -85,7 +88,7 @@ export default function Board(...args) {
 }
 
 // TODO: extract and remove duplication
-function EmbeddedHeader({board, isFetching, onPressTitle}) {
+function EmbeddedHeader({title, icon, isFetching, onPressTitle}) {
   const navigation = useNavigation();
   return (
     <Appbar.Header elevated>
@@ -93,11 +96,9 @@ function EmbeddedHeader({board, isFetching, onPressTitle}) {
         onPress={navigation.goBack}
         accessibilityLabel="Go back"
       />
-      {board?.attributes?.icon && (
-        <Icon name={board?.attributes?.icon} style={sharedStyles.mr} />
-      )}
+      {icon && <Icon name={icon} style={sharedStyles.mr} />}
       <Appbar.Content
-        title={board?.attributes?.name ?? '(unnamed board)'}
+        title={title}
         onPress={onPressTitle}
         testID="navigation-bar-title"
       />
