@@ -15,12 +15,15 @@ import Text from '../../components/Text';
 import sharedStyles from '../../components/sharedStyles';
 import {useBoards, useCreateBoard, useUpdateBoard} from '../../data/boards';
 import {useToken} from '../../data/token';
+import {colorThemes} from '../../theme/colorThemes';
+import useDebouncedColorScheme from '../../theme/useDebouncedColorScheme';
 import dateTimeUtils from '../../utils/dateTimeUtils';
 
 export default function BoardList() {
   const {clearToken} = useToken();
   const navigation = useNavigation();
   const linkTo = useLinkTo();
+  const getBoardColors = useBoardColors();
 
   useEffect(() => {
     navigation.setOptions({
@@ -80,25 +83,38 @@ export default function BoardList() {
                     </SectionHeader>
                   );
                 }}
-                renderItem={({item: board}) => (
-                  <Card
-                    onPress={() => goToBoard(board)}
-                    style={sharedStyles.mt}
-                  >
-                    <View style={styles.boardCard}>
-                      <Icon
-                        name={board.attributes.icon ?? 'view-column'}
-                        style={sharedStyles.mr}
-                      />
-                      <View style={sharedStyles.fill}>
-                        <Text variant="titleMedium">
-                          {board.attributes.name ?? '(unnamed board)'}
-                        </Text>
+                renderItem={({item: board}) => {
+                  const colors = getBoardColors(board);
+                  const backgroundColor = colors.secondaryContainer;
+                  const foregroundColor = colors.onSecondaryContainer;
+
+                  return (
+                    <Card
+                      onPress={() => goToBoard(board)}
+                      style={[
+                        sharedStyles.mt,
+                        backgroundColor && {backgroundColor},
+                      ]}
+                    >
+                      <View style={styles.boardCard}>
+                        <Icon
+                          name={board.attributes.icon ?? 'view-column'}
+                          style={sharedStyles.mr}
+                          color={foregroundColor}
+                        />
+                        <View style={sharedStyles.fill}>
+                          <Text
+                            variant="titleMedium"
+                            style={foregroundColor && {color: foregroundColor}}
+                          >
+                            {board.attributes.name ?? '(unnamed board)'}
+                          </Text>
+                        </View>
+                        <FavoriteButton board={board} />
                       </View>
-                      <FavoriteButton board={board} />
-                    </View>
-                  </Card>
-                )}
+                    </Card>
+                  );
+                }}
               />
               <View style={sharedStyles.columnPadding}>
                 <Button
@@ -139,6 +155,9 @@ function groupBoards(boards) {
 }
 
 function FavoriteButton({board, onToggleFavorite}) {
+  const getBoardColors = useBoardColors();
+  const colors = getBoardColors(board);
+
   const {attributes} = board;
   const isFavorite = Boolean(attributes['favorited-at']);
 
@@ -158,11 +177,20 @@ function FavoriteButton({board, onToggleFavorite}) {
           : `${attributes.name} is not a favorite board`
       }
       icon={isFavorite ? 'star' : 'star-outline'}
-      iconColor={isFavorite ? 'orange' : 'gray'}
-      style={styles.favoriteStar}
+      iconColor={colors.onSecondaryContainer}
+      style={(styles.favoriteStar, {opacity: isFavorite ? 1.0 : 0.5})}
       onPress={handleUpdateBoard}
     />
   );
+}
+
+function useBoardColors() {
+  const colorScheme = useDebouncedColorScheme();
+
+  return function getBoardColors(board) {
+    const colorTheme = board?.attributes['color-theme'] ?? 'default';
+    return colorThemes[colorTheme][colorScheme].colors;
+  };
 }
 
 const styles = StyleSheet.create({

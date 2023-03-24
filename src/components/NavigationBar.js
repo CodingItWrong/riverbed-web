@@ -16,11 +16,7 @@ export default function NavigationBar({navigation, options, back}) {
         />
       )}
       {icon && <Icon name={icon} style={sharedStyles.mr} />}
-      <Appbar.Content
-        title={title}
-        testID="navigation-bar-title"
-        onPress={onTitlePress}
-      />
+      <Appbar.Content title={title} onPress={onTitlePress} />
       <LoadingIndicator
         loading={Boolean(isFetching)}
         style={styles.navBarLoadingIndicator}

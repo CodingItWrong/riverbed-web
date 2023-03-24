@@ -1,12 +1,7 @@
-import {MD3DarkTheme, MD3LightTheme} from 'react-native-paper';
+import {colorThemes} from './colorThemes';
 import useDebouncedColorScheme from './useDebouncedColorScheme';
 
-const THEME_FOR_COLOR_SCHEME = {
-  dark: MD3DarkTheme,
-  light: MD3LightTheme,
-};
-
-export default function useColorSchemeTheme() {
+export default function useColorSchemeTheme(colorTheme) {
   const colorScheme = useDebouncedColorScheme();
-  return THEME_FOR_COLOR_SCHEME[colorScheme];
+  return colorThemes[colorTheme ?? 'default'][colorScheme];
 }

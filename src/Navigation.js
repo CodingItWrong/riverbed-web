@@ -30,6 +30,7 @@ const linking = {
 
 const modalOptions = Platform.select({
   android: {
+    headerShown: false,
     presentation: 'modal',
     title: 'Card',
   },
@@ -57,7 +58,11 @@ const Boards = ({route}) => {
         header: props => <NavigationBar {...props} />,
       }}
     >
-      <BoardStack.Screen name="Board" component={Board} />
+      <BoardStack.Screen
+        name="Board"
+        component={Board}
+        options={{headerShown: false}}
+      />
       <AppStack.Screen name="Card" component={Card} options={modalOptions} />
     </BoardStack.Navigator>
   );

@@ -1,5 +1,8 @@
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {useCallback, useEffect, useState} from 'react';
+import {Appbar, Provider as PaperProvider} from 'react-native-paper';
+import {Icon} from '../../components/Icon';
+import LoadingIndicator from '../../components/LoadingIndicator';
 import ScreenBackground from '../../components/ScreenBackground';
 import sharedStyles from '../../components/sharedStyles';
 import {useBoard} from '../../data/boards';
@@ -7,6 +10,7 @@ import {useCards, useRefreshCards} from '../../data/cards';
 import {useColumns} from '../../data/columns';
 import {useCurrentBoard} from '../../data/currentBoard';
 import {useBoardElements} from '../../data/elements';
+import useColorSchemeTheme from '../../theme/useColorSchemeTheme';
 import ColumnList from './Column/ColumnList';
 import EditBoardForm from './EditBoardForm';
 
@@ -64,9 +68,40 @@ export default function Board(...args) {
     }
   }
 
+  const colorTheme = useColorSchemeTheme(board?.attributes['color-theme']);
+
   return (
-    <ScreenBackground style={sharedStyles.fullHeight}>
-      {renderContents()}
-    </ScreenBackground>
+    <PaperProvider theme={colorTheme}>
+      <EmbeddedHeader
+        board={board}
+        isFetching={isFetching}
+        onPressTitle={() => setEditingBoard(true)}
+      />
+      <ScreenBackground style={sharedStyles.fullHeight}>
+        {renderContents()}
+      </ScreenBackground>
+    </PaperProvider>
+  );
+}
+
+// TODO: extract and remove duplication
+function EmbeddedHeader({board, isFetching, onPressTitle}) {
+  const navigation = useNavigation();
+  return (
+    <Appbar.Header elevated>
+      <Appbar.BackAction
+        onPress={navigation.goBack}
+        accessibilityLabel="Go back"
+      />
+      {board?.attributes?.icon && (
+        <Icon name={board?.attributes?.icon} style={sharedStyles.mr} />
+      )}
+      <Appbar.Content
+        title={board?.attributes?.name ?? '(unnamed board)'}
+        onPress={onPressTitle}
+        testID="navigation-bar-title"
+      />
+      <LoadingIndicator loading={Boolean(isFetching)} style={sharedStyles.mr} />
+    </Appbar.Header>
   );
 }
