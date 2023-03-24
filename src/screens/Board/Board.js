@@ -1,9 +1,11 @@
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {useCallback, useEffect, useState} from 'react';
+import {View} from 'react-native';
 import {Appbar, Provider as PaperProvider} from 'react-native-paper';
 import {Icon} from '../../components/Icon';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import ScreenBackground from '../../components/ScreenBackground';
+import Text from '../../components/Text';
 import sharedStyles from '../../components/sharedStyles';
 import {useBoard} from '../../data/boards';
 import {useCards, useRefreshCards} from '../../data/cards';
@@ -96,9 +98,13 @@ function EmbeddedHeader({title, icon, isFetching, onPressTitle}) {
         onPress={navigation.goBack}
         accessibilityLabel="Go back"
       />
-      {icon && <Icon name={icon} style={sharedStyles.mr} />}
       <Appbar.Content
-        title={title}
+        title={
+          <View style={sharedStyles.row}>
+            {icon && <Icon name={icon} style={sharedStyles.mr} />}
+            <Text variant="titleLarge">{title}</Text>
+          </View>
+        }
         onPress={onPressTitle}
         testID="navigation-bar-title"
       />
