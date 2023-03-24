@@ -1,6 +1,6 @@
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {useCallback, useEffect, useState} from 'react';
-import {Appbar} from 'react-native-paper';
+import {Appbar, Provider as PaperProvider} from 'react-native-paper';
 import {Icon} from '../../components/Icon';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import ScreenBackground from '../../components/ScreenBackground';
@@ -10,6 +10,7 @@ import {useCards, useRefreshCards} from '../../data/cards';
 import {useColumns} from '../../data/columns';
 import {useCurrentBoard} from '../../data/currentBoard';
 import {useBoardElements} from '../../data/elements';
+import useColorSchemeTheme from '../../theme/useColorSchemeTheme';
 import ColumnList from './Column/ColumnList';
 import EditBoardForm from './EditBoardForm';
 
@@ -67,8 +68,10 @@ export default function Board(...args) {
     }
   }
 
+  const colorTheme = useColorSchemeTheme(board?.attributes['color-theme']);
+
   return (
-    <>
+    <PaperProvider theme={colorTheme}>
       <EmbeddedHeader
         board={board}
         isFetching={isFetching}
@@ -77,7 +80,7 @@ export default function Board(...args) {
       <ScreenBackground style={sharedStyles.fullHeight}>
         {renderContents()}
       </ScreenBackground>
-    </>
+    </PaperProvider>
   );
 }
 
