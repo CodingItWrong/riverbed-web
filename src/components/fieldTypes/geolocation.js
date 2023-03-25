@@ -48,6 +48,7 @@ function GeolocationEditorComponent({
   setValue,
   readOnly,
   disabled,
+  style,
 }) {
   const [status, requestPermission] = useForegroundPermissions();
   const [isLoadingCurrentPosition, setIsLoadingCurrentPosition] =
@@ -97,7 +98,7 @@ function GeolocationEditorComponent({
 
   return (
     <>
-      <View style={styles.geoRow}>
+      <View style={[styles.geoRow, style]}>
         <View style={styles.coordsFieldContainer}>
           <NumberField
             label={`${name} latitude`}
