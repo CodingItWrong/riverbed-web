@@ -3,9 +3,6 @@
 import {MD3DarkTheme, MD3LightTheme} from 'react-native-paper';
 import COLOR_THEMES from '../enums/colorThemes';
 
-console.log('DARK');
-console.log(JSON.stringify(MD3DarkTheme));
-
 const lightGrayColors = {
   colors: {
     // to be tinted
