@@ -120,7 +120,9 @@ function GeolocationEditorComponent({
           <IconButton
             accessibilityLabel="Use current location"
             icon="compass"
-            disabled={!status || (!status.granted && !status.canAskAgain)}
+            disabled={
+              disabled || !status || (!status.granted && !status.canAskAgain)
+            }
             onPress={fillCurrentLocation}
             style={[isLoadingCurrentPosition && styles.hidden]}
           />
