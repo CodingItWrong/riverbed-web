@@ -48,6 +48,7 @@ function GeolocationEditorComponent({
   setValue,
   readOnly,
   disabled,
+  style,
 }) {
   const [status, requestPermission] = useForegroundPermissions();
   const [isLoadingCurrentPosition, setIsLoadingCurrentPosition] =
@@ -97,7 +98,7 @@ function GeolocationEditorComponent({
 
   return (
     <>
-      <View style={styles.geoRow}>
+      <View style={[styles.geoRow, style]}>
         <View style={styles.coordsFieldContainer}>
           <NumberField
             label={`${name} latitude`}
@@ -119,7 +120,9 @@ function GeolocationEditorComponent({
           <IconButton
             accessibilityLabel="Use current location"
             icon="compass"
-            disabled={!status || (!status.granted && !status.canAskAgain)}
+            disabled={
+              disabled || !status || (!status.granted && !status.canAskAgain)
+            }
             onPress={fillCurrentLocation}
             style={[isLoadingCurrentPosition && styles.hidden]}
           />
@@ -137,9 +140,13 @@ function GeolocationEditorComponent({
           style={[styles.detailMap, sharedStyles.mt]}
           region={region}
           onPress={handleMapPress}
-          options={{
-            disableDefaultUI: true,
-          }}
+          options={{disableDefaultUI: true}}
+          toolbarEnabled={false}
+          zoomEnabled={!disabled}
+          zoomControlEnabled={!disabled}
+          rotateEnabled={!disabled}
+          scrollEnabled={!disabled}
+          pitchEnabled={!disabled}
         >
           {markerCoords && <Marker coordinate={markerCoords} />}
         </MapView>
