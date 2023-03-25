@@ -81,6 +81,7 @@ export default function Board(...args) {
         icon={board?.attributes?.icon}
         isFetching={isFetching}
         onPressTitle={() => setEditingBoard(true)}
+        colorTheme={colorTheme}
       />
       <ScreenBackground style={sharedStyles.fullHeight}>
         {renderContents()}
@@ -90,10 +91,13 @@ export default function Board(...args) {
 }
 
 // TODO: extract and remove duplication
-function EmbeddedHeader({title, icon, isFetching, onPressTitle}) {
+function EmbeddedHeader({title, icon, isFetching, onPressTitle, colorTheme}) {
   const navigation = useNavigation();
   return (
-    <Appbar.Header elevated>
+    <Appbar.Header
+      elevated
+      style={{backgroundColor: colorTheme.colors.secondaryContainer}}
+    >
       <Appbar.BackAction
         onPress={navigation.goBack}
         accessibilityLabel="Go back"
@@ -101,8 +105,19 @@ function EmbeddedHeader({title, icon, isFetching, onPressTitle}) {
       <Appbar.Content
         title={
           <View style={sharedStyles.row}>
-            {icon && <Icon name={icon} style={sharedStyles.mr} />}
-            <Text variant="titleLarge">{title}</Text>
+            {icon && (
+              <Icon
+                name={icon}
+                color={colorTheme.colors.onSecondaryContainer}
+                style={sharedStyles.mr}
+              />
+            )}
+            <Text
+              variant="titleLarge"
+              style={{color: colorTheme.colors.onSecondaryContainer}}
+            >
+              {title}
+            </Text>
           </View>
         }
         onPress={onPressTitle}
