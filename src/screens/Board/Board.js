@@ -1,6 +1,5 @@
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
-import debounce from 'lodash.debounce';
-import {useCallback, useEffect, useMemo, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import {View} from 'react-native';
 import {Appbar, Provider as PaperProvider} from 'react-native-paper';
 import {Icon} from '../../components/Icon';
@@ -25,25 +24,7 @@ export default function Board(...args) {
   const {isFetching: isFetchingCards} = useCards(board);
   const {isFetching: isFetchingColumns} = useColumns(board);
   const {isFetching: isFetchingElements} = useBoardElements(board);
-  const [isFetching, setIsFetching] = useState(false);
-  const setIsFetchingDebounced = useMemo(
-    () => debounce(setIsFetching, 300),
-    [],
-  );
-
-  useEffect(() => {
-    if (isFetchingCards || isFetchingColumns || isFetchingElements) {
-      setIsFetching(true); // immediate
-    } else {
-      setIsFetchingDebounced(false);
-    }
-  }, [
-    setIsFetchingDebounced,
-    isFetchingCards,
-    isFetchingColumns,
-    isFetchingElements,
-  ]);
-
+  const isFetching = isFetchingCards || isFetchingColumns || isFetchingElements;
   const refreshCards = useRefreshCards(board);
 
   const [editingBoard, setEditingBoard] = useState(false);
