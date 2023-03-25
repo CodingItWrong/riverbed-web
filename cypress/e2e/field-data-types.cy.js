@@ -150,18 +150,26 @@ describe('field data types', () => {
     });
 
     cy.step('TEST GEOLCOATION FIELD', () => {
-      cy.get(`[data-testid=number-input-${geolocationField.id}-latitude]`)
-        .clear()
-        .type(27);
+      cy.get(
+        `[data-testid=number-input-${geolocationField.id}-latitude]`,
+      ).clear();
+      cy.wait('@updateCard');
+      cy.get(`[data-testid=number-input-${geolocationField.id}-latitude]`).type(
+        27,
+      );
       cy.wait('@updateCard')
         .its(
           `request.body.data.attributes["field-values"][${geolocationField.id}]`,
         )
         .should('deep.equal', {lat: '27', lng: '-84'});
 
-      cy.get(`[data-testid=number-input-${geolocationField.id}-longitude]`)
-        .clear()
-        .type(42);
+      cy.get(
+        `[data-testid=number-input-${geolocationField.id}-longitude]`,
+      ).clear();
+      cy.wait('@updateCard');
+      cy.get(
+        `[data-testid=number-input-${geolocationField.id}-longitude]`,
+      ).type(42);
       cy.wait('@updateCard')
         .its(
           `request.body.data.attributes["field-values"][${geolocationField.id}]`,

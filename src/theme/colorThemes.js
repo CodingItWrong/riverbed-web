@@ -3,6 +3,106 @@
 import {MD3DarkTheme, MD3LightTheme} from 'react-native-paper';
 import COLOR_THEMES from '../enums/colorThemes';
 
+const lightGrayColors = {
+  colors: {
+    // to be tinted
+    // primary: 'rgba(103, 80, 164, 1)',
+    // onPrimary: 'rgba(255, 255, 255, 1)',
+    // inversePrimary: 'rgba(208, 188, 255, 1)',
+    // secondary: 'rgba(98, 91, 113, 1)',
+    // onSecondary: 'rgba(255, 255, 255, 1)',
+    // secondaryContainer: 'rgba(226, 226, 226, 1)',
+    // onSecondaryContainer: 'rgba(27, 27, 27, 1)',
+    // tertiary: 'rgba(125, 82, 96, 1)',
+    // tertiaryContainer: 'rgba(255, 216, 228, 1)',
+
+    // unchanged
+    error: 'rgba(179, 38, 30, 1)',
+    onError: 'rgba(255, 255, 255, 1)',
+    errorContainer: 'rgba(249, 222, 220, 1)',
+    onErrorContainer: 'rgba(65, 14, 11, 1)',
+
+    // to be neutral
+    primaryContainer: 'rgba(226, 226, 226, 1)',
+    surface: 'rgba(252, 252, 252, 1)',
+    surfaceVariant: 'rgba(226, 226, 226, 1)',
+    surfaceDisabled: 'rgba(27, 27, 27, 0.12)',
+    background: 'rgba(252, 252, 252, 1)',
+    onPrimaryContainer: 'rgba(25, 25, 25, 1)',
+    onTertiary: 'rgba(255, 255, 255, 1)',
+    onTertiaryContainer: 'rgba(28, 28, 28, 1)',
+    onSurface: 'rgba(27, 27, 27, 1)',
+    onSurfaceVariant: 'rgba(71, 71, 71, 1)',
+    onSurfaceDisabled: 'rgba(27, 27, 27, 0.38)',
+    onBackground: 'rgba(27, 27, 27, 1)',
+    outline: 'rgba(118, 118, 118, 1)',
+    outlineVariant: 'rgba(198, 198, 198, 1)',
+    inverseSurface: 'rgba(48, 48, 48, 1)',
+    inverseOnSurface: 'rgba(240, 240, 240, 1)',
+    shadow: 'rgba(0, 0, 0, 1)',
+    scrim: 'rgba(0, 0, 0, 1)',
+    backdrop: 'rgba(48, 48, 48, 0.4)',
+    elevation: {
+      level0: 'transparent',
+      level1: 'rgb(244, 244, 244)',
+      level2: 'rgb(239, 239, 239)',
+      level3: 'rgb(234, 234, 234)',
+      level4: 'rgb(232, 232, 232)',
+      level5: 'rgb(229, 229, 229)',
+    },
+  },
+};
+
+const darkGrayColors = {
+  colors: {
+    // to be tinted
+    // primary: 'rgba(208, 188, 255, 1)',
+    // onPrimary: 'rgba(56, 30, 114, 1)',
+    // inversePrimary: 'rgba(103, 80, 164, 1)',
+    // secondary: 'rgba(204, 194, 220, 1)',
+    // onSecondary: 'rgba(51, 45, 65, 1)',
+    // secondaryContainer: 'rgba(74, 68, 88, 1)',
+    // onSecondaryContainer: 'rgba(232, 222, 248, 1)',
+    // tertiary: 'rgba(239, 184, 200, 1)',
+    // tertiaryContainer: 'rgba(99, 59, 72, 1)',
+
+    // unchnaged
+    error: 'rgba(242, 184, 181, 1)',
+    onError: 'rgba(96, 20, 16, 1)',
+    errorContainer: 'rgba(140, 29, 24, 1)',
+    onErrorContainer: 'rgba(242, 184, 181, 1)',
+
+    // to be neutral
+    primaryContainer: 'rgba(70, 70, 70, 1)',
+    surface: 'rgba(27, 27, 27, 1)',
+    surfaceVariant: 'rgba(71, 71, 71, 1)',
+    surfaceDisabled: 'rgba(226, 226, 226, 0.12)',
+    background: 'rgba(27, 27, 27, 1)',
+    onPrimaryContainer: 'rgba(226, 226, 226, 1)',
+    onTertiary: 'rgba(48, 48, 48, 1)',
+    onTertiaryContainer: 'rgba(226, 226, 226, 1)',
+    onSurface: 'rgba(226, 226, 226, 1)',
+    onSurfaceVariant: 'rgba(198, 198, 198, 1)',
+    onSurfaceDisabled: 'rgba(226, 226, 226, 0.38)',
+    onBackground: 'rgba(226, 226, 226, 1)',
+    outline: 'rgba(145, 145, 145, 1)',
+    outlineVariant: 'rgba(71, 71, 71, 1)',
+    inverseSurface: 'rgba(226, 226, 226, 1)',
+    inverseOnSurface: 'rgba(48, 48, 48, 1)',
+    shadow: 'rgba(0, 0, 0, 1)',
+    scrim: 'rgba(0, 0, 0, 1)',
+    backdrop: 'rgba(48, 48, 48, 0.4)',
+    elevation: {
+      level0: 'transparent',
+      level1: 'rgb(36, 36, 36)',
+      level2: 'rgb(42, 42, 42)',
+      level3: 'rgb(46, 46, 46)',
+      level4: 'rgb(48, 48, 48)',
+      level5: 'rgb(51, 51, 51)',
+    },
+  },
+};
+
 const lightPinkColors = {
   colors: {
     primary: 'rgb(154, 64, 87)',
@@ -45,6 +145,7 @@ const lightPinkColors = {
     surfaceDisabled: 'rgba(32, 26, 27, 0.12)',
     onSurfaceDisabled: 'rgba(32, 26, 27, 0.38)',
     backdrop: 'rgba(58, 45, 47, 0.4)',
+    ...lightGrayColors.colors,
   },
 };
 
@@ -90,6 +191,7 @@ const darkPinkColors = {
     surfaceDisabled: 'rgba(236, 224, 224, 0.12)',
     onSurfaceDisabled: 'rgba(236, 224, 224, 0.38)',
     backdrop: 'rgba(58, 45, 47, 0.4)',
+    ...darkGrayColors.colors,
   },
 };
 
@@ -135,6 +237,7 @@ const lightGreenColors = {
     surfaceDisabled: 'rgba(26, 28, 24, 0.12)',
     onSurfaceDisabled: 'rgba(26, 28, 24, 0.38)',
     backdrop: 'rgba(44, 50, 41, 0.4)',
+    ...lightGrayColors.colors,
   },
 };
 
@@ -180,6 +283,7 @@ const darkGreenColors = {
     surfaceDisabled: 'rgba(226, 227, 220, 0.12)',
     onSurfaceDisabled: 'rgba(226, 227, 220, 0.38)',
     backdrop: 'rgba(44, 50, 41, 0.4)',
+    ...darkGrayColors.colors,
   },
 };
 
@@ -225,6 +329,7 @@ const lightBlueColors = {
     surfaceDisabled: 'rgba(27, 27, 31, 0.12)',
     onSurfaceDisabled: 'rgba(27, 27, 31, 0.38)',
     backdrop: 'rgba(48, 48, 56, 0.4)',
+    ...lightGrayColors.colors,
   },
 };
 
@@ -270,6 +375,7 @@ const darkBlueColors = {
     surfaceDisabled: 'rgba(229, 225, 230, 0.12)',
     onSurfaceDisabled: 'rgba(229, 225, 230, 0.38)',
     backdrop: 'rgba(48, 48, 56, 0.4)',
+    ...darkGrayColors.colors,
   },
 };
 
@@ -315,6 +421,7 @@ const lightOrangeColors = {
     surfaceDisabled: 'rgba(31, 27, 22, 0.12)',
     onSurfaceDisabled: 'rgba(31, 27, 22, 0.38)',
     backdrop: 'rgba(56, 47, 36, 0.4)',
+    ...lightGrayColors.colors,
   },
 };
 
@@ -360,6 +467,7 @@ const darkOrangeColors = {
     surfaceDisabled: 'rgba(235, 225, 217, 0.12)',
     onSurfaceDisabled: 'rgba(235, 225, 217, 0.38)',
     backdrop: 'rgba(56, 47, 36, 0.4)',
+    ...darkGrayColors.colors,
   },
 };
 
@@ -405,6 +513,7 @@ const lightRedColors = {
     surfaceDisabled: 'rgba(32, 26, 25, 0.12)',
     onSurfaceDisabled: 'rgba(32, 26, 25, 0.38)',
     backdrop: 'rgba(59, 45, 43, 0.4)',
+    ...lightGrayColors.colors,
   },
 };
 
@@ -450,6 +559,7 @@ const darkRedColors = {
     surfaceDisabled: 'rgba(237, 224, 221, 0.12)',
     onSurfaceDisabled: 'rgba(237, 224, 221, 0.38)',
     backdrop: 'rgba(59, 45, 43, 0.4)',
+    ...darkGrayColors.colors,
   },
 };
 
@@ -495,6 +605,7 @@ const lightYellowColors = {
     surfaceDisabled: 'rgba(28, 28, 23, 0.12)',
     onSurfaceDisabled: 'rgba(28, 28, 23, 0.38)',
     backdrop: 'rgba(49, 49, 37, 0.4)',
+    ...lightGrayColors.colors,
   },
 };
 
@@ -540,6 +651,7 @@ const darkYellowColors = {
     surfaceDisabled: 'rgba(230, 226, 217, 0.12)',
     onSurfaceDisabled: 'rgba(230, 226, 217, 0.38)',
     backdrop: 'rgba(49, 49, 37, 0.4)',
+    ...darkGrayColors.colors,
   },
 };
 
@@ -585,6 +697,7 @@ const lightCyanColors = {
     surfaceDisabled: 'rgba(25, 28, 28, 0.12)',
     onSurfaceDisabled: 'rgba(25, 28, 28, 0.38)',
     backdrop: 'rgba(41, 50, 50, 0.4)',
+    ...lightGrayColors.colors,
   },
 };
 
@@ -630,6 +743,7 @@ const darkCyanColors = {
     surfaceDisabled: 'rgba(224, 227, 226, 0.12)',
     onSurfaceDisabled: 'rgba(224, 227, 226, 0.38)',
     backdrop: 'rgba(41, 50, 50, 0.4)',
+    ...darkGrayColors.colors,
   },
 };
 
