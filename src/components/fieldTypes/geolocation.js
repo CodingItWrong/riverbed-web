@@ -140,9 +140,13 @@ function GeolocationEditorComponent({
           style={[styles.detailMap, sharedStyles.mt]}
           region={region}
           onPress={handleMapPress}
-          options={{
-            disableDefaultUI: true,
-          }}
+          options={{disableDefaultUI: true}}
+          toolbarEnabled={false}
+          zoomEnabled={!disabled}
+          zoomControlEnabled={!disabled}
+          rotateEnabled={!disabled}
+          scrollEnabled={!disabled}
+          pitchEnabled={!disabled}
         >
           {markerCoords && <Marker coordinate={markerCoords} />}
         </MapView>
