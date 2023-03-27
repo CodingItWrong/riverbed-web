@@ -102,6 +102,7 @@ function EmbeddedHeader({title, icon, isFetching, onPressTitle, colorTheme}) {
       style={{backgroundColor: colorTheme?.colors?.secondaryContainer}}
     >
       <Appbar.BackAction
+        color={colorTheme?.colors?.onSecondaryContainer}
         onPress={navigation.goBack}
         accessibilityLabel="Go back"
       />
