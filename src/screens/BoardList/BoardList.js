@@ -61,7 +61,9 @@ export default function BoardList() {
       <CenterColumn>
         <View style={[sharedStyles.fullHeight, sharedStyles.noPadding]}>
           {isLoading ? (
-            <LoadingIndicator />
+            <View style={sharedStyles.columnPadding}>
+              <LoadingIndicator />
+            </View>
           ) : (
             <SafeAreaView
               style={sharedStyles.fullHeight}
@@ -83,7 +85,7 @@ export default function BoardList() {
                     </SectionHeader>
                   );
                 }}
-                renderItem={({item: board}) => {
+                renderItem={({item: board, index}) => {
                   let backgroundColor = null;
                   let foregroundColor = null;
 
@@ -97,7 +99,7 @@ export default function BoardList() {
                     <Card
                       onPress={() => goToBoard(board)}
                       style={[
-                        sharedStyles.mt,
+                        index > 0 && sharedStyles.mt,
                         backgroundColor && {backgroundColor},
                       ]}
                     >
