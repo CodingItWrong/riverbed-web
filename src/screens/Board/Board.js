@@ -72,6 +72,9 @@ export default function Board(...args) {
 
   const colorTheme = useColorSchemeTheme(board?.attributes['color-theme']);
 
+  // keep title bar gray until board loaded
+  const titleBarColorTheme = board ? colorTheme : null;
+
   return (
     <PaperProvider theme={colorTheme}>
       <EmbeddedHeader
@@ -81,7 +84,7 @@ export default function Board(...args) {
         icon={board?.attributes?.icon}
         isFetching={isFetching}
         onPressTitle={() => setEditingBoard(true)}
-        colorTheme={colorTheme}
+        colorTheme={titleBarColorTheme}
       />
       <ScreenBackground style={sharedStyles.fullHeight}>
         {renderContents()}
@@ -96,7 +99,7 @@ function EmbeddedHeader({title, icon, isFetching, onPressTitle, colorTheme}) {
   return (
     <Appbar.Header
       elevated
-      style={{backgroundColor: colorTheme.colors.secondaryContainer}}
+      style={{backgroundColor: colorTheme?.colors?.secondaryContainer}}
     >
       <Appbar.BackAction
         onPress={navigation.goBack}
@@ -108,13 +111,13 @@ function EmbeddedHeader({title, icon, isFetching, onPressTitle, colorTheme}) {
             {icon && (
               <Icon
                 name={icon}
-                color={colorTheme.colors.onSecondaryContainer}
+                color={colorTheme?.colors?.onSecondaryContainer}
                 style={sharedStyles.mr}
               />
             )}
             <Text
               variant="titleLarge"
-              style={{color: colorTheme.colors.onSecondaryContainer}}
+              style={{color: colorTheme?.colors?.onSecondaryContainer}}
             >
               {title}
             </Text>
