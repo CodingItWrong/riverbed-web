@@ -4779,10 +4779,10 @@ detect-node@^2.0.4:
   resolved "https://registry.yarnpkg.com/detect-node/-/detect-node-2.1.0.tgz#c9c70775a49c3d03bc2c06d9a73be550f978f8b1"
   integrity sha512-T0NIuQpnTvFDATNuHN5roPwSBG83rFsuO+MXXH9/3N1eFbn4wcPjttvjMLEPWJ0RGUYgQE7cGgS3tNxbqCGM7g==
 
-detox@^20.5.0:
-  version "20.5.0"
-  resolved "https://registry.yarnpkg.com/detox/-/detox-20.5.0.tgz#70f1aa7ed4a2b652b5787a806e680fafaab2fcb3"
-  integrity sha512-iFDqU5UZ5f1usgRowyiauO83ffMqvN7qFdF5+TVJelfcHTIVHRbZwI/D4MjtAnpuowljfwBhN0tYhTSEOMjCmg==
+detox@^20.6.0:
+  version "20.6.0"
+  resolved "https://registry.yarnpkg.com/detox/-/detox-20.6.0.tgz#9aef5d7d17c5a0e8a96592570a510881ac59c249"
+  integrity sha512-89YxptnkvyQazN2I8EDRkH8tWqiOvqsGXZCZwUKP5lsulBSTJka7SS5Fd8AnQGUd5vPs+tTqO+zb0FgCRcV/Tg==
   dependencies:
     ajv "^8.6.3"
     bunyan "^1.8.12"
@@ -10215,10 +10215,10 @@ react-native-paper-dates@^0.15.1:
   dependencies:
     color "^3.2.1"
 
-react-native-paper@^5.4.1:
-  version "5.4.1"
-  resolved "https://registry.yarnpkg.com/react-native-paper/-/react-native-paper-5.4.1.tgz#6731ef573464c4ef00b0a046db5771720a34d73a"
-  integrity sha512-eh2fh/dr+j/8V9FDHGhc0/tyXjyYSJLBrSGx/4lr2qPK+92QvH2mTNwFc280NiehCkfRSW2u3LMgUuyrkkQjjw==
+react-native-paper@^5.5.1:
+  version "5.5.1"
+  resolved "https://registry.yarnpkg.com/react-native-paper/-/react-native-paper-5.5.1.tgz#21ffd0f83f3dc8761f4a836f5e99b5ebeebc7838"
+  integrity sha512-IEk7fJwQp5+8sY8+zPTie2wbKrS72vOyFCJdatjoYGuiz55BiTn8JJanqKIu0IQFKZjiGAZPlzM44cCWrEkTPw==
   dependencies:
     "@callstack/react-theme-provider" "^3.0.8"
     color "^3.1.2"
