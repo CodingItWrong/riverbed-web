@@ -18,6 +18,9 @@ function useCardClient() {
 const refreshCards = (queryClient, board) =>
   queryClient.invalidateQueries(['cards', board.id]);
 
+const refreshCard = (queryClient, board, card) =>
+  queryClient.invalidateQueries(['cards', board.id, card.id]);
+
 export function useRefreshCards(board) {
   const queryClient = useQueryClient();
   const returnedRefreshCards = useCallback(
@@ -71,6 +74,9 @@ export function useUpdateCard(card, board, mountedRef) {
         attributes,
       }),
     onSuccess: () => {
+      // always refresh the individual card
+      refreshCard(queryClient, board, card);
+
       if (!mountedRef.current) {
         // if card form was unloaded while card saving, reload cards.
         // cards are refreshed upon card form unload, but this handles when a change was saved after that.

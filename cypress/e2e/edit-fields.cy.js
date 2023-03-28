@@ -136,32 +136,99 @@ describe('edit fields', () => {
     }).as('updateField');
 
     cy.get(`[data-testid=card-${card.id}]`).click();
-    cy.get('[aria-label="Edit Elements"]').click();
 
-    cy.get(`[aria-label="Edit ${greetingFieldName} field"]`).click();
-    cy.get('[data-testid="text-input-element-name"]')
-      .invoke('val')
-      .should('eq', greetingFieldName);
-
-    cy.contains('Cancel').click();
-    cy.get('[data-testid="text-input-element-name"]').should('not.exist');
-    cy.get(`[aria-label="Edit ${greetingFieldName} field"]`).click();
-
-    const updatedFieldName = 'Salutation';
-    cy.get('[data-testid="text-input-element-name"]')
-      .clear()
-      .type(updatedFieldName);
-    const updatedGreetingField = Factory.field(
-      {name: updatedFieldName},
-      greetingField,
-    );
-    cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
-      data: [updatedGreetingField],
+    cy.step('EDIT ELEMENTS', () => {
+      cy.get('[aria-label="Edit Elements"]').click();
     });
-    cy.contains('Save Field').click();
-    cy.wait('@updateField');
-    cy.contains('Save Field').should('not.exist');
-    cy.contains(updatedFieldName);
+
+    cy.step('CANCEL FIELD EDIT', () => {
+      cy.get(`[aria-label="Edit ${greetingFieldName} field"]`).click();
+      cy.get('[data-testid="text-input-element-name"]')
+        .invoke('val')
+        .should('eq', greetingFieldName);
+      cy.contains('Cancel').click();
+      cy.get('[data-testid="text-input-element-name"]').should('not.exist');
+    });
+
+    cy.step('EDIT FIELD', () => {
+      cy.get(`[aria-label="Edit ${greetingFieldName} field"]`).click();
+
+      const updatedFieldName = 'Salutation';
+      cy.get('[data-testid="text-input-element-name"]')
+        .clear()
+        .type(updatedFieldName);
+      const updatedGreetingField = Factory.field(
+        {name: updatedFieldName},
+        greetingField,
+      );
+      cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
+        data: [updatedGreetingField],
+      });
+      cy.contains('Save Field').click();
+      cy.wait('@updateField');
+      cy.contains('Save Field').should('not.exist');
+      cy.contains(updatedFieldName);
+    });
+
+    cy.step('FINISH ELEMENTS EDIT', () => {
+      cy.get('[aria-label="Done Editing Elements"]').click();
+    });
+  });
+
+  it('restores the latest field values after editing fields', () => {
+    const updatedGreeting = 'Salutation';
+
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
+      data: [greetingField],
+    });
+    const card = Factory.card({});
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
+      data: [card],
+    });
+    cy.intercept('GET', `http://cypressapi/cards/${card.id}?`, {
+      data: card,
+    });
+
+    goToBoard();
+
+    cy.intercept('PATCH', `http://cypressapi/elements/${greetingField.id}?`, {
+      success: true,
+    }).as('updateField');
+
+    cy.get(`[data-testid=card-${card.id}]`).click();
+
+    cy.step('EDIT FIELD VALUE', () => {
+      const updatedCard = Factory.card(
+        {[greetingField.id]: updatedGreeting},
+        card,
+      );
+      cy.intercept('PATCH', `http://cypressapi/cards/${card.id}?`, {
+        success: true,
+      }).as('updateCard');
+      cy.intercept('GET', `http://cypressapi/cards/${card.id}?`, {
+        data: updatedCard,
+      });
+
+      cy.get(`[data-testid=text-input-${greetingField.id}]`)
+        .clear()
+        .type(updatedGreeting)
+        .blur();
+      cy.wait('@updateCard');
+    });
+
+    cy.step('EDIT ELEMENTS', () => {
+      cy.get('[aria-label="Edit Elements"]').click();
+    });
+
+    cy.step('FINISH ELEMENTS EDIT', () => {
+      cy.get('[aria-label="Done Editing Elements"]').click();
+    });
+
+    cy.step('CONFIRM FIELD VALUE RESTORED', () => {
+      cy.get(`[data-testid=text-input-${greetingField.id}]`)
+        .invoke('val')
+        .should('eq', updatedGreeting);
+    });
   });
 
   it('allows deleting fields', () => {
