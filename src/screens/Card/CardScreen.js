@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import {useCallback, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Appbar, Provider as PaperProvider} from 'react-native-paper';
@@ -27,13 +27,14 @@ export default function CardScreen({route}) {
   const [isFirstLoaded, setIsFirstLoaded] = useState(true);
 
   const {data: board} = useBoard(boardId);
-  const {data: card} = useCard({
-    boardId,
-    cardId,
-    options: {
-      onSuccess: () => setIsFirstLoaded(false),
-    },
-  });
+  const {data: card} = useCard({boardId, cardId});
+
+  useEffect(() => {
+    if (card) {
+      // do not do this in useCard onSuccess because we want it to happen even if the card is cached
+      setIsFirstLoaded(false);
+    }
+  }, [card]);
 
   const closeModal = useCallback(() => {
     navigation.goBack();
