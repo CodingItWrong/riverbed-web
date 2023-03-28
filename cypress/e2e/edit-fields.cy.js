@@ -136,32 +136,39 @@ describe('edit fields', () => {
     }).as('updateField');
 
     cy.get(`[data-testid=card-${card.id}]`).click();
-    cy.get('[aria-label="Edit Elements"]').click();
 
-    cy.get(`[aria-label="Edit ${greetingFieldName} field"]`).click();
-    cy.get('[data-testid="text-input-element-name"]')
-      .invoke('val')
-      .should('eq', greetingFieldName);
-
-    cy.contains('Cancel').click();
-    cy.get('[data-testid="text-input-element-name"]').should('not.exist');
-    cy.get(`[aria-label="Edit ${greetingFieldName} field"]`).click();
-
-    const updatedFieldName = 'Salutation';
-    cy.get('[data-testid="text-input-element-name"]')
-      .clear()
-      .type(updatedFieldName);
-    const updatedGreetingField = Factory.field(
-      {name: updatedFieldName},
-      greetingField,
-    );
-    cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
-      data: [updatedGreetingField],
+    cy.step('EDIT ELEMENTS', () => {
+      cy.get('[aria-label="Edit Elements"]').click();
     });
-    cy.contains('Save Field').click();
-    cy.wait('@updateField');
-    cy.contains('Save Field').should('not.exist');
-    cy.contains(updatedFieldName);
+
+    cy.step('CANCEL FIELD EDIT', () => {
+      cy.get(`[aria-label="Edit ${greetingFieldName} field"]`).click();
+      cy.get('[data-testid="text-input-element-name"]')
+        .invoke('val')
+        .should('eq', greetingFieldName);
+      cy.contains('Cancel').click();
+      cy.get('[data-testid="text-input-element-name"]').should('not.exist');
+    });
+
+    cy.step('EDIT FIELD', () => {
+      cy.get(`[aria-label="Edit ${greetingFieldName} field"]`).click();
+
+      const updatedFieldName = 'Salutation';
+      cy.get('[data-testid="text-input-element-name"]')
+        .clear()
+        .type(updatedFieldName);
+      const updatedGreetingField = Factory.field(
+        {name: updatedFieldName},
+        greetingField,
+      );
+      cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
+        data: [updatedGreetingField],
+      });
+      cy.contains('Save Field').click();
+      cy.wait('@updateField');
+      cy.contains('Save Field').should('not.exist');
+      cy.contains(updatedFieldName);
+    });
   });
 
   it('allows deleting fields', () => {
