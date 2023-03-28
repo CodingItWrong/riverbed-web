@@ -169,6 +169,10 @@ describe('edit fields', () => {
       cy.contains('Save Field').should('not.exist');
       cy.contains(updatedFieldName);
     });
+
+    cy.step('FINISH ELEMENTS EDIT', () => {
+      cy.get('[aria-label="Done Editing Elements"]').click();
+    });
   });
 
   it('allows deleting fields', () => {
