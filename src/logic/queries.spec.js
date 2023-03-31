@@ -470,6 +470,8 @@ describe('QUERIES', () => {
         FIELD_DATA_TYPES.NUMBER,
         FIELD_DATA_TYPES.TEXT,
         'invalid_data_type',
+        '',
+        null,
       ];
 
       describe('IS_PAST', () => {
