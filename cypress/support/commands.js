@@ -8,8 +8,8 @@ Cypress.Commands.add(
 
     cy.get('[role=menuitem]')
       .contains(optionLabel)
-      .should('be.visible') // wait until it's visible before clicking
-      .click({force: true}); // still click with force: true because of a parent pointer-events: none
+      // .should('be.visible') // may help timing, but also requires you to scroll down to it
+      .click({force: true}); // needed whether or not visible because of a parent pointer-events: none
     cy.get('[role=menuitem]').should('not.exist');
   },
 );
