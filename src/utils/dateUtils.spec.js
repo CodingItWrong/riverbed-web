@@ -116,4 +116,45 @@ describe('dateUtils', () => {
       expect(dateUtils.serverStringToObject('whatev')).toEqual(null);
     });
   });
+
+  describe('serverStringToHumanString', () => {
+    it('formats dates', () => {
+      expect(dateUtils.serverStringToHumanString('2023-03-04')).toEqual(
+        'Sat Mar 4, 2023',
+      );
+    });
+
+    it('returns null for null', () => {
+      expect(dateUtils.serverStringToHumanString(null)).toEqual(null);
+    });
+
+    it('returns empty string for empty string', () => {
+      expect(dateUtils.serverStringToHumanString('')).toEqual('');
+    });
+
+    it('returns "Invalid Date" for non-date strings', () => {
+      expect(dateUtils.serverStringToHumanString('whatev')).toEqual(
+        'Invalid Date',
+      );
+    });
+  });
+
+  describe('objectToServerString', () => {
+    it('returns null for null', () => {
+      expect(dateUtils.objectToServerString(null)).toEqual(null);
+    });
+
+    it('returns empty string for empty string', () => {
+      expect(dateUtils.objectToServerString('')).toEqual('');
+    });
+
+    it('parses YYYY-MM-DD format', () => {
+      const date = new Date(2023, 2, 4);
+      expect(dateUtils.objectToServerString(date)).toEqual('2023-03-04');
+    });
+
+    it('returns "Invalid Date" for non-dates', () => {
+      expect(dateUtils.objectToServerString('whatev')).toEqual('Invalid Date');
+    });
+  });
 });
