@@ -97,4 +97,23 @@ describe('dateUtils', () => {
       },
     );
   });
+
+  describe('serverStringToObject', () => {
+    it('returns null for null', () => {
+      expect(dateUtils.serverStringToObject(null)).toEqual(null);
+    });
+
+    it('returns null for empty string', () => {
+      expect(dateUtils.serverStringToObject('')).toEqual(null);
+    });
+
+    it('parses YYYY-MM-DD format', () => {
+      const result = dateUtils.serverStringToObject('2023-03-04');
+      expect(getComponents(result)).toEqual([2023, 2, 4]);
+    });
+
+    it('returns null for non-date strings', () => {
+      expect(dateUtils.serverStringToObject('whatev')).toEqual(null);
+    });
+  });
 });

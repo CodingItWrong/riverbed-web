@@ -27,7 +27,7 @@ const dateUtils = {
   },
   serverStringToObject(dateString) {
     if (!dateString) {
-      return dateString;
+      return null;
     }
     const dayjsObject = dayjs(dateString);
 
