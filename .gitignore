@@ -22,3 +22,5 @@ cypress/videos
 
 # Do NOT ignore ios folder; this somehow breaks the build
 # ios
+
+coverage
