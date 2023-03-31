@@ -22,17 +22,31 @@ describe('QUERIES', () => {
       [undefined, false],
     ];
 
-    test.each(CASES)(
-      'when testing "a" against %j returns %j',
-      (value, result) => {
-        expect(
-          QUERIES.EQUALS_VALUE.match(value, null, {value: CONFIGURED_VALUE}),
-        ).toBe(result);
-      },
-    );
-  });
+    describe('EQUALS_VALUE', () => {
+      test.each(CASES)(
+        'when testing "a" against %j returns %j',
+        (value, result) => {
+          expect(
+            QUERIES.EQUALS_VALUE.match(value, null, {value: CONFIGURED_VALUE}),
+          ).toBe(result);
+        },
+      );
+    });
 
-  test.todo('DOES_NOT_EQUAL_VALUE');
+    describe('DOES_NOT_EQUAL_VALUE', () => {
+      test.each(CASES)(
+        'when testing "a" against %j returns %j',
+        (value, result) => {
+          const invertedResult = !result;
+          expect(
+            QUERIES.DOES_NOT_EQUAL_VALUE.match(value, null, {
+              value: CONFIGURED_VALUE,
+            }),
+          ).toBe(invertedResult);
+        },
+      );
+    });
+  });
 
   describe('EMPTY', () => {
     const EMPTY_CASES = [
