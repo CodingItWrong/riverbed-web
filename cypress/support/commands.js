@@ -6,6 +6,8 @@ Cypress.Commands.add(
   (subject, optionLabel) => {
     subject.click();
 
+    cy.get('[role=menuitem]').contains(optionLabel).scrollIntoView();
+
     cy.get('[role=menuitem]')
       .contains(optionLabel)
       .should('be.visible') // wait until it's visible before clicking
