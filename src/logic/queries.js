@@ -24,10 +24,10 @@ const QUERIES = {
     match: (v, dataType, options) =>
       !QUERIES.CONTAINS.match(v, dataType, options),
   },
-  [QUERIES_ENUM.DOES_NOT_EQUAL_VALUE.key]: {
-    match: (v, dataType, options) =>
-      !QUERIES.EQUALS_VALUE.match(v, dataType, options),
-  },
+  // [QUERIES_ENUM.DOES_NOT_EQUAL_VALUE.key]: {
+  //   match: (v, dataType, options) =>
+  //     !QUERIES.EQUALS_VALUE.match(v, dataType, options),
+  // },
   [QUERIES_ENUM.IS_CURRENT_MONTH.key]: {
     match: (v, dataType) => {
       if (!getDataTypeConfig(dataType)?.isTemporal) {

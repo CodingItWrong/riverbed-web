@@ -8,10 +8,10 @@ const QUERIES = {
     key: 'DOES_NOT_CONTAIN',
     label: 'does not contain',
   },
-  DOES_NOT_EQUAL_VALUE: {
-    key: 'DOES_NOT_EQUAL_VALUE',
-    label: 'does not equal value',
-  },
+  // DOES_NOT_EQUAL_VALUE: {
+  //   key: 'DOES_NOT_EQUAL_VALUE',
+  //   label: 'does not equal value',
+  // },
   IS_CURRENT_MONTH: {
     key: 'IS_CURRENT_MONTH',
     label: 'current month',
