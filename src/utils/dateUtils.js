@@ -6,7 +6,7 @@ export const HUMAN_FORMAT = 'ddd MMM D, YYYY';
 
 const dateUtils = {
   addDays(dateObject, numDays) {
-    return dayjs(dateObject).add(numDays, 'day');
+    return dayjs(dateObject).add(numDays, 'day').toDate();
   },
   isCurrentMonth(dateString) {
     return dateUtils.isMonthOffset(dateString, 0);
