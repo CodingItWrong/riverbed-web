@@ -102,10 +102,6 @@ const QUERIES = {
         return false;
       }
 
-      if (!v) {
-        return false;
-      }
-
       return v < VALUES.NOW.call(dataType);
     },
   },
