@@ -34,11 +34,15 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Build App for Maestro
-        run: export FAKE_API=true && eas build --local --profile development-detox --platform ios && tar -xvzf build-*.tar.gz && rm build-*.tar.gz
+        run: export FAKE_API=true && eas build --local --profile development-detox --platform ios
 
-      - uses: futureware-tech/simulator-action@v2
+      - name: Start Simulator
+        uses: futureware-tech/simulator-action@v2
         with:
           model: "iPhone 12"
+
+      - name: Launch App on Simulator
+        run: eas build:run --platform=ios --path=$(ls build-*.tar.gz)
 
       - name: Run Maestro
         run: maestro test maestro/smoke-test.yaml
