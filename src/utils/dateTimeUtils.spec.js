@@ -1,6 +1,18 @@
 import dateTimeUtils from './dateTimeUtils';
 
 describe('dateTimeUtils', () => {
+  function getComponents(date) {
+    return [
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+      date.getHours(),
+      date.getMinutes(),
+      date.getSeconds(),
+      date.getMilliseconds(),
+    ];
+  }
+
   describe('getTime', () => {
     it('returns the time components', () => {
       const date = new Date(2023, 0, 1, 13, 23, 45, 678);
@@ -23,6 +35,29 @@ describe('dateTimeUtils', () => {
 
     it('returns null for a non-date', () => {
       expect(dateTimeUtils.getTime('not a date')).toBeNull();
+    });
+  });
+
+  describe('objectToServerString', () => {
+    it('returns null for null', () => {
+      expect(dateTimeUtils.objectToServerString(null)).toEqual(null);
+    });
+
+    it('returns empty string for empty string', () => {
+      expect(dateTimeUtils.objectToServerString('')).toEqual('');
+    });
+
+    it('parses YYYY-MM-DD format', () => {
+      const date = new Date(Date.UTC(2023, 2, 4, 13, 23, 45, 678));
+      expect(dateTimeUtils.objectToServerString(date)).toEqual(
+        '2023-03-04T13:23:45.678Z',
+      );
+    });
+
+    it('returns "Invalid Date" for non-dates', () => {
+      expect(dateTimeUtils.objectToServerString('whatev')).toEqual(
+        'Invalid Date',
+      );
     });
   });
 });

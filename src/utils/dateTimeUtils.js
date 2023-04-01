@@ -22,7 +22,13 @@ const dateTimeUtils = {
     return time;
   },
   objectToServerString(dateObject) {
-    return dateObject ? dateObject.toISOString() : dateObject;
+    if (dateObject?.toISOString) {
+      return dateObject.toISOString();
+    } else if (!dateObject) {
+      return dateObject;
+    } else {
+      return 'Invalid Date';
+    }
   },
   serverStringToHumanString(dateString) {
     return dateString ? dayjs(dateString).format(HUMAN_FORMAT) : dateString;
