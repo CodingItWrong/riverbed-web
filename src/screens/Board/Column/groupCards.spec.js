@@ -20,17 +20,37 @@ describe('groupCards', () => {
     id: '2',
     attributes: {'field-values': {[textField.id]: 'b'}},
   };
+  const cardC1 = {
+    id: '4',
+    attributes: {'field-values': {[textField.id]: 'c'}},
+  };
+  const columnCards = [cardC1, cardA1, cardB1, cardA2];
 
   it('returns cards grouped by the configured field', () => {
     const cardGrouping = {
       field: textField.id,
-      direction: SORT_DIRECTIONS.DESCENDING.key,
+      direction: SORT_DIRECTIONS.ASCENDING.key,
     };
-    const columnCards = [cardA1, cardB1, cardA2];
 
     const result = groupCards({columnCards, cardGrouping, elements});
 
     expect(result).toEqual([
+      {value: 'a', data: [cardA1, cardA2]},
+      {value: 'b', data: [cardB1]},
+      {value: 'c', data: [cardC1]},
+    ]);
+  });
+
+  it('supports descending order', () => {
+    const cardGrouping = {
+      field: textField.id,
+      direction: SORT_DIRECTIONS.DESCENDING.key,
+    };
+
+    const result = groupCards({columnCards, cardGrouping, elements});
+
+    expect(result).toEqual([
+      {value: 'c', data: [cardC1]},
       {value: 'b', data: [cardB1]},
       {value: 'a', data: [cardA1, cardA2]},
     ]);
@@ -46,14 +66,12 @@ describe('groupCards', () => {
   });
 
   it('returns one group with all cards when there is no grouping config', () => {
-    const columnCards = ['a', 'b', 'c'];
     const result = groupCards({columnCards, cardGrouping: null});
     expect(result).toEqual([{value: null, data: columnCards}]);
   });
 
   it('returns no groups when there is no grouping and no cards', () => {
-    const columnCards = [];
-    const result = groupCards({columnCards, cardGrouping: null});
+    const result = groupCards({columnCards: [], cardGrouping: null});
     expect(result).toEqual([]);
   });
 });
