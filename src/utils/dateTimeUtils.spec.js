@@ -129,6 +129,24 @@ describe('dateTimeUtils', () => {
     });
   });
 
+  describe('setDate', () => {
+    it('overwrites the month day and year of the date', () => {
+      const oldDateObject = new Date(2023, 2, 4, 13, 23, 45, 678);
+      const newDateObject = new Date(2021, 8, 9, 14, 0, 0);
+      const result = dateTimeUtils.setDate({oldDateObject, newDateObject});
+      expect(getComponents(result)).toEqual([2021, 8, 9, 13, 23, 45, 678]);
+    });
+
+    it('uses zero time values if the old date is null', () => {
+      const newDateObject = new Date(2021, 8, 9, 13, 45, 678);
+      const result = dateTimeUtils.setDate({
+        oldDateObject: null,
+        newDateObject,
+      });
+      expect(getComponents(result)).toEqual([2021, 8, 9, 0, 0, 0, 0]);
+    });
+  });
+
   describe('setTime', () => {
     const now = new Date(2023, 0, 1, 0, 0, 0);
     beforeEach(() => {

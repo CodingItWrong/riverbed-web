@@ -57,7 +57,8 @@ const dateTimeUtils = {
       .hour(time.hour)
       .minute(time.minute)
       .second(time.second)
-      .millisecond(time.millisecond);
+      .millisecond(time.millisecond)
+      .toDate();
   },
   setTime({dateObject, hour, minute}) {
     return dayjs(dateObject || now())
