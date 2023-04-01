@@ -18,7 +18,9 @@ export function AutoDetectLink({link, enableLinking, variant, children}) {
           onLongPress={() => share(link)}
           style={[styles.link, {color: theme.colors.primary}]}
         >
-          {children}
+          <Text variant={variant} style={{color: theme.colors.primary}}>
+            {children}
+          </Text>
         </A>
       </View>
     );
