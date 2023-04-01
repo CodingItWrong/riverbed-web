@@ -5,17 +5,17 @@ import {isValidURL} from '../utils/urlUtils';
 import Text from './Text';
 
 // Pass text to this and if it is a valid URL it will be rendered as a link
-export function AutoDetectLink({enableLinking, variant, children}) {
+export function AutoDetectLink({link, enableLinking, variant, children}) {
   const theme = useTheme();
 
-  if (enableLinking && isValidURL(children)) {
+  if (enableLinking && isValidURL(link)) {
     return (
       <View style={styles.linkContainer}>
         <A
-          href={children}
+          href={link}
           target="_blank"
           onPress={preventParentClickBehavior}
-          onLongPress={() => share(children)}
+          onLongPress={() => share(link)}
           style={[styles.link, {color: theme.colors.primary}]}
         >
           {children}

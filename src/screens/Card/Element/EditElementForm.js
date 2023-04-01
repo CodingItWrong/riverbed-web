@@ -223,6 +223,14 @@ export default function EditElementForm({
               }
               style={sharedStyles.mt}
             />
+            <LabeledCheckbox
+              label="Abbreviate URLs"
+              checked={elementAttributes.options['abbreviate-urls']}
+              onChangeChecked={newChecked =>
+                updateAttribute('options["abbreviate-urls"]', newChecked)
+              }
+              style={sharedStyles.mt}
+            />
           </FormGroup>
         </>
       )}
