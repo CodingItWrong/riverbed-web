@@ -82,4 +82,25 @@ describe('dateTimeUtils', () => {
       );
     });
   });
+
+  describe('serverStringToObject', () => {
+    it('returns null for null', () => {
+      expect(dateTimeUtils.serverStringToObject(null)).toEqual(null);
+    });
+
+    it('returns empty string for empty string', () => {
+      expect(dateTimeUtils.serverStringToObject('')).toEqual('');
+    });
+
+    it('parses YYYY-MM-DD format', () => {
+      const result = dateTimeUtils.serverStringToObject(
+        '2023-03-04T13:23:45.678Z',
+      );
+      expect(getComponents(result)).toEqual([2023, 2, 4, 8, 23, 45, 678]); // TODO: make not time zone specific somehow
+    });
+
+    it('returns null for non-date strings', () => {
+      expect(dateTimeUtils.serverStringToObject('whatev')).toEqual(null);
+    });
+  });
 });
