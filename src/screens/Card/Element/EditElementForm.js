@@ -215,6 +215,14 @@ export default function EditElementForm({
               style={sharedStyles.mt}
               testID="checkbox-show-in-summary"
             />
+            <LabeledCheckbox
+              label="Link URLs"
+              checked={elementAttributes.options['link-urls']}
+              onChangeChecked={newChecked =>
+                updateAttribute('options["link-urls"]', newChecked)
+              }
+              style={sharedStyles.mt}
+            />
           </FormGroup>
         </>
       )}

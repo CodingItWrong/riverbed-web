@@ -36,7 +36,9 @@ export default function Field({
 
     return (
       <View style={style} testID={`field-${field.id}`}>
-        <AutoDetectLink variant={variant}>{textToShow}</AutoDetectLink>
+        <AutoDetectLink enableLinking={options['link-urls']} variant={variant}>
+          {textToShow}
+        </AutoDetectLink>
       </View>
     );
   }

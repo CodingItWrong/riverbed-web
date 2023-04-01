@@ -5,10 +5,10 @@ import {isValidURL} from '../utils/urlUtils';
 import Text from './Text';
 
 // Pass text to this and if it is a valid URL it will be rendered as a link
-export function AutoDetectLink({variant, children}) {
+export function AutoDetectLink({enableLinking, variant, children}) {
   const theme = useTheme();
 
-  if (isValidURL(children)) {
+  if (enableLinking && isValidURL(children)) {
     return (
       <View style={styles.linkContainer}>
         <A
