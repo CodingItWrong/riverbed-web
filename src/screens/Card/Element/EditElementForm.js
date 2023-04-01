@@ -153,15 +153,6 @@ export default function EditElementForm({
             style={sharedStyles.mt}
           />
           <LabeledCheckbox
-            label="Show in Summary"
-            checked={elementAttributes['show-in-summary']}
-            onChangeChecked={newChecked =>
-              updateAttribute('show-in-summary', newChecked)
-            }
-            style={sharedStyles.mt}
-            testID="checkbox-show-in-summary"
-          />
-          <LabeledCheckbox
             label="Show Label When Read-Only"
             checked={elementAttributes.options['show-label-when-read-only']}
             onChangeChecked={newChecked =>
@@ -214,6 +205,17 @@ export default function EditElementForm({
               </Button>
             </>
           )}
+          <FormGroup title="Summary View">
+            <LabeledCheckbox
+              label="Show Field"
+              checked={elementAttributes['show-in-summary']}
+              onChangeChecked={newChecked =>
+                updateAttribute('show-in-summary', newChecked)
+              }
+              style={sharedStyles.mt}
+              testID="checkbox-show-in-summary"
+            />
+          </FormGroup>
         </>
       )}
       {elementType === ELEMENT_TYPES.BUTTON.key && (
