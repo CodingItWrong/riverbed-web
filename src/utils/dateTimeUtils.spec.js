@@ -83,6 +83,28 @@ describe('dateTimeUtils', () => {
     });
   });
 
+  describe('serverStringToHumanTimeString', () => {
+    it('formats the time portion of dates', () => {
+      expect(
+        dateTimeUtils.serverStringToHumanTimeString('2023-03-04Z13:23:45.678Z'),
+      ).toEqual('8:23:45 AM'); // TODO: make not time zone specific somehow
+    });
+
+    it('returns null for null', () => {
+      expect(dateTimeUtils.serverStringToHumanTimeString(null)).toEqual(null);
+    });
+
+    it('returns empty string for empty string', () => {
+      expect(dateTimeUtils.serverStringToHumanTimeString('')).toEqual('');
+    });
+
+    it('returns "Invalid Date" for non-date strings', () => {
+      expect(dateTimeUtils.serverStringToHumanTimeString('whatev')).toEqual(
+        'Invalid Date',
+      );
+    });
+  });
+
   describe('serverStringToObject', () => {
     it('returns null for null', () => {
       expect(dateTimeUtils.serverStringToObject(null)).toEqual(null);
