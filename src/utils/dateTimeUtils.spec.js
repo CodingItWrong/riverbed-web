@@ -60,4 +60,26 @@ describe('dateTimeUtils', () => {
       );
     });
   });
+
+  describe('serverStringToHumanString', () => {
+    it('formats dates', () => {
+      expect(
+        dateTimeUtils.serverStringToHumanString('2023-03-04Z13:23:45.678Z'),
+      ).toEqual('Sat Mar 4, 2023 8:23:45 AM'); // TODO: make not time zone specific somehow
+    });
+
+    it('returns null for null', () => {
+      expect(dateTimeUtils.serverStringToHumanString(null)).toEqual(null);
+    });
+
+    it('returns empty string for empty string', () => {
+      expect(dateTimeUtils.serverStringToHumanString('')).toEqual('');
+    });
+
+    it('returns "Invalid Date" for non-date strings', () => {
+      expect(dateTimeUtils.serverStringToHumanString('whatev')).toEqual(
+        'Invalid Date',
+      );
+    });
+  });
 });
