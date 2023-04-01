@@ -1,7 +1,7 @@
-import {domainForUrl, isValidURL} from './urlUtils';
+import {domainForUrl, isValidUrl} from './urlUtils';
 
 describe('urlUtils', () => {
-  describe('isValidURL', () => {
+  describe('isValidUrl', () => {
     const URLS = [
       'https://reactnative.dev',
       'http://reactnative.dev',
@@ -17,13 +17,13 @@ describe('urlUtils', () => {
 
     describe('valid URLs', () => {
       test.each(URLS)('when testing %j returns true', url => {
-        expect(isValidURL(url)).toBe(true);
+        expect(isValidUrl(url)).toBe(true);
       });
     });
 
     describe('non-URLs', () => {
       test.each(NON_URLS)('when testing %j returns false', url => {
-        expect(isValidURL(url)).toBe(false);
+        expect(isValidUrl(url)).toBe(false);
       });
     });
   });

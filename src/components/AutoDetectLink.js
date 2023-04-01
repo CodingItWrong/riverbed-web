@@ -1,14 +1,14 @@
 import {A} from '@expo/html-elements';
 import {Share, StyleSheet, View} from 'react-native';
 import {useTheme} from 'react-native-paper';
-import {isValidURL} from '../utils/urlUtils';
+import {isValidUrl} from '../utils/urlUtils';
 import Text from './Text';
 
 // Pass text to this and if it is a valid URL it will be rendered as a link
 export function AutoDetectLink({link, enableLinking, variant, children}) {
   const theme = useTheme();
 
-  if (enableLinking && isValidURL(link)) {
+  if (enableLinking && isValidUrl(link)) {
     return (
       <View style={styles.linkContainer}>
         <A
