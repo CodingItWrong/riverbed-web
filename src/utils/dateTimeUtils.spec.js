@@ -1,4 +1,7 @@
+import nowFn from '../utils/now';
 import dateTimeUtils from './dateTimeUtils';
+
+jest.mock('../utils/now');
 
 describe('dateTimeUtils', () => {
   function getComponents(date) {
@@ -123,6 +126,32 @@ describe('dateTimeUtils', () => {
 
     it('returns null for non-date strings', () => {
       expect(dateTimeUtils.serverStringToObject('whatev')).toEqual(null);
+    });
+  });
+
+  describe('setTime', () => {
+    const now = new Date(2023, 0, 1, 0, 0, 0);
+    beforeEach(() => {
+      nowFn.mockReturnValue(now);
+    });
+
+    it('overwrites the hours and minutes of the date, and clears seconds and millis', () => {
+      const dateObject = new Date(Date.UTC(2023, 2, 4, 13, 23, 45, 678));
+      const newDateObject = dateTimeUtils.setTime({
+        dateObject,
+        hour: 2,
+        minute: 27,
+      });
+      expect(getComponents(newDateObject)).toEqual([2023, 2, 4, 2, 27, 0, 0]);
+    });
+
+    it('uses the current date if null', () => {
+      const newDateObject = dateTimeUtils.setTime({
+        dateObject: null,
+        hour: 2,
+        minute: 27,
+      });
+      expect(getComponents(newDateObject)).toEqual([2023, 0, 1, 2, 27, 0, 0]);
     });
   });
 });
