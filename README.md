@@ -90,3 +90,14 @@ TestFlight builds can be used by any device added as internal testers.
 
 - Boot the app in Expo Go in a simulator or emulator
 - Run `maestro test maestro/[some test name].yaml`
+
+## Updating Xcode
+
+Xcode updates can introduce build failures for React Native. To avoid not being able to build the app:
+
+- Do not overwrite your existing working Xcode version
+- Manually download the new Xcode version from the [Apple Developer > Downloads > Applications](https://developer.apple.com/download/applications/) page.
+- Expand the download and rename it to add the Xcode version to the name.
+- Prebuild the Xcode project (see command above)
+- Build the app from within Xcode and see if it succeeds
+- If it does, you can replace the old Xcode version
