@@ -1,0 +1,38 @@
+name: Maestro
+on:
+  push:
+    branches:
+      - maestro-ci
+
+jobs:
+  test:
+    runs-on: macos-12
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16 # expo-cli preferred
+          cache: "yarn"
+
+      - name: Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Install Maestro CLI
+        run: curl -Ls "https://get.maestro.mobile.dev" | bash
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build App for Maestro
+        run: export FAKE_API=true && eas build --local --profile development-detox --platform ios && tar -xvzf build-*.tar.gz && rm build-*.tar.gz
+
+      - uses: futureware-tech/simulator-action@v2
+        with:
+          model: "iPhone 12"
+
+      - name: Run Maestro
+        run: maestro test maestro/smoke-test.yaml
