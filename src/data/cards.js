@@ -39,6 +39,14 @@ export function useCards(board) {
   );
 }
 
+// TODO: not sure if this is the cleanest API
+export function usePrimeCard({board}) {
+  const queryClient = useQueryClient();
+  return function primeCard(card) {
+    queryClient.setQueryData(['cards', board.id, card.id], card);
+  };
+}
+
 export function useCard({boardId, cardId, options}) {
   const cardClient = useCardClient();
   return useQuery(

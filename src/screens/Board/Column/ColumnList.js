@@ -4,7 +4,7 @@ import {ScrollView, StyleSheet, View} from 'react-native';
 import {large, useBreakpoint} from '../../../breakpoints';
 import Button from '../../../components/Button';
 import sharedStyles, {useColumnStyle} from '../../../components/sharedStyles';
-import {useCards, useCreateCard} from '../../../data/cards';
+import {useCards, useCreateCard, usePrimeCard} from '../../../data/cards';
 import {useColumns, useCreateColumn} from '../../../data/columns';
 import {useBoardElements} from '../../../data/elements';
 import ELEMENT_TYPES from '../../../enums/elementTypes';
@@ -21,6 +21,7 @@ export default function ColumnList({board}) {
     useBoardElements(board);
   const {data: columns = [], isLoading: isLoadingColumns} = useColumns(board);
   const {isLoading: isLoadingCards} = useCards(board);
+  const primeCard = usePrimeCard({board});
 
   const {mutate: createColumn, isLoading: isAddingColumn} =
     useCreateColumn(board);
@@ -37,11 +38,14 @@ export default function ColumnList({board}) {
   const handleCreateCard = () =>
     createCard(
       {'field-values': getInitialFieldValues(elements)},
-      {onSuccess: ({data: newCard}) => showDetail(newCard.id)},
+      {onSuccess: ({data: newCard}) => showDetail(newCard)},
     );
 
-  function showDetail(cardId) {
-    navigation.navigate('Card', {cardId});
+  function showDetail(card) {
+    primeCard(card);
+    // TODO: may want to make sure card form data does reload if it changes from server
+
+    navigation.navigate('Card', {cardId: card.id});
   }
 
   const breakpoint = useBreakpoint();
@@ -94,7 +98,7 @@ export default function ColumnList({board}) {
                 column={column}
                 board={board}
                 onEdit={() => setSelectedColumnId(column.id)}
-                onSelectCard={card => showDetail(card.id)}
+                onSelectCard={card => showDetail(card)}
               />
             );
           }
