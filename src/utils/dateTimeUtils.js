@@ -9,6 +9,9 @@ const dateTimeUtils = {
     let time = {hour: 0, minute: 0, second: 0, millisecond: 0};
     if (dateObject) {
       const date = dayjs(dateObject);
+      if (!date.isValid()) {
+        return null;
+      }
       time = {
         hour: date.hour(),
         minute: date.minute(),
