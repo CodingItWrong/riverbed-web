@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import {HUMAN_FORMAT as HUMAN_DATE_FORMAT} from './dateUtils';
+import now from './now';
 
 const HUMAN_TIME_FORMAT = 'h:mm:ss A';
 const HUMAN_FORMAT = `${HUMAN_DATE_FORMAT} ${HUMAN_TIME_FORMAT}`;
@@ -9,6 +10,9 @@ const dateTimeUtils = {
     let time = {hour: 0, minute: 0, second: 0, millisecond: 0};
     if (dateObject) {
       const date = dayjs(dateObject);
+      if (!date.isValid()) {
+        return null;
+      }
       time = {
         hour: date.hour(),
         minute: date.minute(),
@@ -19,7 +23,13 @@ const dateTimeUtils = {
     return time;
   },
   objectToServerString(dateObject) {
-    return dateObject ? dateObject.toISOString() : dateObject;
+    if (dateObject?.toISOString) {
+      return dateObject.toISOString();
+    } else if (!dateObject) {
+      return dateObject;
+    } else {
+      return 'Invalid Date';
+    }
   },
   serverStringToHumanString(dateString) {
     return dateString ? dayjs(dateString).format(HUMAN_FORMAT) : dateString;
@@ -47,10 +57,11 @@ const dateTimeUtils = {
       .hour(time.hour)
       .minute(time.minute)
       .second(time.second)
-      .millisecond(time.millisecond);
+      .millisecond(time.millisecond)
+      .toDate();
   },
   setTime({dateObject, hour, minute}) {
-    return dayjs(dateObject || new Date())
+    return dayjs(dateObject || now())
       .hour(hour)
       .minute(minute)
       .second(0)
