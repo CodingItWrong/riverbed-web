@@ -38,7 +38,7 @@ export default function Field({
       textToShow = `${name}: ${textToShow ?? '(empty)'}`;
     }
 
-    const variant = summary && index === 0 ? 'bodyLarge' : 'bodySmall';
+    const variant = options['text-size'] ?? 'bodyLarge';
 
     return (
       <View style={style} testID={`field-${field.id}`}>

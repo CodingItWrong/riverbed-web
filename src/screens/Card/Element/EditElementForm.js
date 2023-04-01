@@ -11,6 +11,7 @@ import FormGroup from '../../../components/FormGroup';
 import IconButton from '../../../components/IconButton';
 import LabeledCheckbox from '../../../components/LabeledCheckbox';
 import NumberField from '../../../components/NumberField';
+import Text from '../../../components/Text';
 import TextField from '../../../components/TextField';
 import fieldTypes from '../../../components/fieldTypes';
 import sharedStyles from '../../../components/sharedStyles';
@@ -22,6 +23,7 @@ import {
 import COMMANDS from '../../../enums/commands';
 import ELEMENT_TYPES from '../../../enums/elementTypes';
 import FIELD_DATA_TYPES from '../../../enums/fieldDataTypes';
+import TEXT_SIZES from '../../../enums/textSizes';
 import VALUES from '../../../enums/values';
 import sortByDisplayOrder from '../../../utils/sortByDisplayOrder';
 import uuid from '../../../utils/uuid';
@@ -214,6 +216,21 @@ export default function EditElementForm({
               }
               style={sharedStyles.mt}
               testID="checkbox-show-in-summary"
+            />
+            <DropdownField
+              fieldLabel="Text Size"
+              emptyLabel="(choose)"
+              value={TEXT_SIZES.find(
+                o => o.key === elementAttributes.options['text-size'],
+              )}
+              onValueChange={option =>
+                updateAttribute('options["text-size"]', option?.key)
+              }
+              options={TEXT_SIZES}
+              labelExtractor={option => (
+                <Text variant={option.key}>{option.label}</Text>
+              )}
+              style={sharedStyles.mt}
             />
             <LabeledCheckbox
               label="Link URLs"
