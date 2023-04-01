@@ -101,3 +101,7 @@ Xcode updates can introduce build failures for React Native. To avoid not being 
 - Prebuild the Xcode project (see command above)
 - Build the app from within Xcode and see if it succeeds
 - If it does, you can replace the old Xcode version
+
+## License
+
+MIT
