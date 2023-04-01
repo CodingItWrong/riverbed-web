@@ -1,5 +1,5 @@
 import {View} from 'react-native';
-import {domainForUrl, trimPath} from '../utils/urlUtils';
+import {domainForUrl} from '../utils/urlUtils';
 import {AutoDetectLink} from './AutoDetectLink';
 import Text from './Text';
 import fieldTypes from './fieldTypes';
