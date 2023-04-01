@@ -1,7 +1,7 @@
-import {isValidURL} from './urlUtils';
+import {domainForUrl, isValidUrl} from './urlUtils';
 
 describe('urlUtils', () => {
-  describe('isValidURL', () => {
+  describe('isValidUrl', () => {
     const URLS = [
       'https://reactnative.dev',
       'http://reactnative.dev',
@@ -17,14 +17,43 @@ describe('urlUtils', () => {
 
     describe('valid URLs', () => {
       test.each(URLS)('when testing %j returns true', url => {
-        expect(isValidURL(url)).toBe(true);
+        expect(isValidUrl(url)).toBe(true);
       });
     });
 
     describe('non-URLs', () => {
       test.each(NON_URLS)('when testing %j returns false', url => {
-        expect(isValidURL(url)).toBe(false);
+        expect(isValidUrl(url)).toBe(false);
       });
+    });
+  });
+
+  describe('domainForUrl', () => {
+    it('returns null for null', () => {
+      expect(domainForUrl(null)).toEqual(null);
+    });
+
+    it('returns non-URLs unchanged', () => {
+      const string = 'My hovercraft is full of eels';
+      expect(domainForUrl(string)).toEqual(string);
+    });
+
+    it('returns only the protocol and domain of the URL', () => {
+      expect(domainForUrl('https://reactnative.dev/docs/magic')).toEqual(
+        'reactnative.dev',
+      );
+    });
+
+    it('trims www subdomains', () => {
+      expect(domainForUrl('https://www.codingitwrong.com/about')).toEqual(
+        'codingitwrong.com',
+      );
+    });
+
+    it('does not trim subdomains other than www', () => {
+      expect(domainForUrl('https://listapp.codingitwrong.com/todos')).toEqual(
+        'listapp.codingitwrong.com',
+      );
     });
   });
 });

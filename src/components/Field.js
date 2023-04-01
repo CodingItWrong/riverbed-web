@@ -1,4 +1,5 @@
 import {View} from 'react-native';
+import {domainForUrl} from '../utils/urlUtils';
 import {AutoDetectLink} from './AutoDetectLink';
 import Text from './Text';
 import fieldTypes from './fieldTypes';
@@ -22,21 +23,32 @@ export default function Field({
   }
 
   if (readOnly) {
-    let textToShow = fieldType.formatValue({value, options});
+    let originalText = fieldType.formatValue({value, options});
+    let textToShow = originalText;
 
     if (!textToShow) {
       return null;
+    }
+
+    if (options['abbreviate-urls']) {
+      textToShow = domainForUrl(textToShow);
     }
 
     if (options['show-label-when-read-only']) {
       textToShow = `${name}: ${textToShow ?? '(empty)'}`;
     }
 
-    const variant = summary && index === 0 ? 'bodyLarge' : 'bodySmall';
+    const variant = options['text-size'] ?? 'bodyLarge';
 
     return (
       <View style={style} testID={`field-${field.id}`}>
-        <AutoDetectLink variant={variant}>{textToShow}</AutoDetectLink>
+        <AutoDetectLink
+          enableLinking={options['link-urls']}
+          variant={variant}
+          link={originalText}
+        >
+          {textToShow}
+        </AutoDetectLink>
       </View>
     );
   }
