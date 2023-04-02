@@ -3,6 +3,7 @@ import {useState} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {large, useBreakpoint} from '../../../breakpoints';
 import Button from '../../../components/Button';
+import ErrorSnackbar from '../../../components/ErrorSnackbar';
 import sharedStyles, {useColumnStyle} from '../../../components/sharedStyles';
 import {useCards, useCreateCard, usePrimeCard} from '../../../data/cards';
 import {useColumns, useCreateColumn} from '../../../data/columns';
@@ -19,12 +20,19 @@ export default function ColumnList({board}) {
 
   const {data: elements, isLoading: isLoadingElements} =
     useBoardElements(board);
-  const {data: columns = [], isLoading: isLoadingColumns} = useColumns(board);
+  const {
+    data: columns = [],
+    isLoading: isLoadingColumns,
+    error: columnsError,
+  } = useColumns(board);
   const {isLoading: isLoadingCards} = useCards(board);
   const primeCard = usePrimeCard({board});
 
-  const {mutate: createColumn, isLoading: isAddingColumn} =
-    useCreateColumn(board);
+  const {
+    mutate: createColumn,
+    isLoading: isAddingColumn,
+    error: createColumnError,
+  } = useCreateColumn(board);
   const handleCreateColumn = () =>
     createColumn(null, {
       onSuccess: ({data: column}) => setSelectedColumnId(column.id),
@@ -34,7 +42,11 @@ export default function ColumnList({board}) {
     setSelectedColumnId(null);
   }
 
-  const {mutate: createCard, isLoading: isAddingCard} = useCreateCard(board);
+  const {
+    mutate: createCard,
+    isLoading: isAddingCard,
+    error: createCardError,
+  } = useCreateCard(board);
   const handleCreateCard = () =>
     createCard(
       {'field-values': getInitialFieldValues(elements)},
@@ -116,6 +128,15 @@ export default function ColumnList({board}) {
           </View>
         </View>
       </ScrollView>
+      <ErrorSnackbar error={columnsError}>
+        An error occurred loading columns.
+      </ErrorSnackbar>
+      <ErrorSnackbar error={createColumnError}>
+        An error occurred adding a column.
+      </ErrorSnackbar>
+      <ErrorSnackbar error={createCardError}>
+        An error occurred adding a card.
+      </ErrorSnackbar>
     </View>
   );
 }

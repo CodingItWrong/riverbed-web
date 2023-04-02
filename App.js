@@ -24,6 +24,11 @@ const queryClient = new QueryClient({
       staleTime: 5000,
     },
   },
+  logger: {
+    log: console.log,
+    warn: console.warn,
+    error: Platform.OS === 'web' ? console.error : () => {},
+  },
 });
 
 function onAppStateChange(status) {

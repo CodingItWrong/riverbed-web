@@ -6,6 +6,7 @@ import {Card} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Button from '../../components/Button';
 import CenterColumn from '../../components/CenterColumn';
+import ErrorSnackbar from '../../components/ErrorSnackbar';
 import {Icon} from '../../components/Icon';
 import IconButton from '../../components/IconButton';
 import LoadingIndicator from '../../components/LoadingIndicator';
@@ -42,13 +43,17 @@ export default function BoardList() {
     [clearToken],
   );
 
-  const {data: boards = [], isLoading} = useBoards();
+  const {data: boards = [], isLoading, error: loadError} = useBoards();
 
   function goToBoard(board) {
     linkTo(`/boards/${board.id}`);
   }
 
-  const {mutate: createBoard, isLoading: isAdding} = useCreateBoard();
+  const {
+    mutate: createBoard,
+    isLoading: isAdding,
+    error: createError,
+  } = useCreateBoard();
   const handleCreateBoard = () =>
     createBoard(null, {
       onSuccess: ({data: board}) => goToBoard(board),
@@ -137,6 +142,12 @@ export default function BoardList() {
           )}
         </View>
       </CenterColumn>
+      <ErrorSnackbar error={loadError}>
+        An error occurred loading the boards.
+      </ErrorSnackbar>
+      <ErrorSnackbar error={createError}>
+        An error occurred adding a new board.
+      </ErrorSnackbar>
     </ScreenBackground>
   );
 }

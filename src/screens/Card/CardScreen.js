@@ -6,6 +6,7 @@ import {Appbar, Provider as PaperProvider} from 'react-native-paper';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Card from '../../components/Card';
 import CenterModal from '../../components/CenterModal';
+import ErrorSnackbar from '../../components/ErrorSnackbar';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import ScreenBackground from '../../components/ScreenBackground';
 import sharedStyles from '../../components/sharedStyles';
@@ -40,7 +41,7 @@ export default function CardScreen({route}) {
     navigation.goBack();
   }, [navigation]);
 
-  const {mutate: deleteCard} = useDeleteCard(card, board);
+  const {mutate: deleteCard, error: deleteError} = useDeleteCard(card, board);
   const handleDeleteCard = useCallback(
     () => deleteCard(null, {onSuccess: closeModal}),
     [closeModal, deleteCard],
@@ -119,6 +120,9 @@ export default function CardScreen({route}) {
         </View>
         {renderContents()}
       </CardWrapper>
+      <ErrorSnackbar error={deleteError}>
+        An error occurred deleting the card.
+      </ErrorSnackbar>
     </PaperProvider>
   );
 }

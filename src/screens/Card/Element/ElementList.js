@@ -4,6 +4,7 @@ import {KeyboardAwareFlatList} from 'react-native-keyboard-aware-scroll-view';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Button from '../../../components/Button';
 import DropdownMenu from '../../../components/DropdownMenu';
+import ErrorSnackbar from '../../../components/ErrorSnackbar';
 import Field from '../../../components/Field';
 import IconButton from '../../../components/IconButton';
 import Text from '../../../components/Text';
@@ -21,7 +22,11 @@ export default function ElementList({board}) {
   const {data: elements = []} = useBoardElements(board);
   const sortedElements = sortByDisplayOrder(elements);
 
-  const {mutate: createElement, isLoading: isAdding} = useCreateElement(board);
+  const {
+    mutate: createElement,
+    isLoading: isAdding,
+    error: createElementError,
+  } = useCreateElement(board);
   const handleCreateElement = attributes =>
     createElement(attributes, {
       onSuccess: newElement => setSelectedElementId(newElement.data.id),
@@ -95,6 +100,9 @@ export default function ElementList({board}) {
           />
         }
       />
+      <ErrorSnackbar error={createElementError}>
+        An error occurred adding an element.
+      </ErrorSnackbar>
     </View>
   );
 }
