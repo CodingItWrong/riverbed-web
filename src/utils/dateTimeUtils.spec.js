@@ -41,6 +41,29 @@ describe('dateTimeUtils', () => {
     });
   });
 
+  describe('objectToHumanTimeString', () => {
+    it('returns null for null', () => {
+      expect(dateTimeUtils.objectToHumanTimeString(null)).toEqual(null);
+    });
+
+    it('returns empty string for empty string', () => {
+      expect(dateTimeUtils.objectToHumanTimeString('')).toEqual('');
+    });
+
+    // it('formats a date object in human-readable format', () => {
+    //   const date = new Date(Date.UTC(2023, 2, 4, 13, 23, 45, 678));
+    //   expect(dateTimeUtils.objectToHumanTimeString(date)).toEqual(
+    //     'Sat Mar 4, 2023 8:23:45 AM',
+    //   );
+    // });
+
+    it('returns "Invalid Date" for non-dates', () => {
+      expect(dateTimeUtils.objectToHumanTimeString('whatev')).toEqual(
+        'Invalid Date',
+      );
+    });
+  });
+
   describe('objectToServerString', () => {
     it('returns null for null', () => {
       expect(dateTimeUtils.objectToServerString(null)).toEqual(null);

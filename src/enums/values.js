@@ -18,8 +18,11 @@ const VALUES = {
           return dateUtils.objectToServerString(now());
         case FIELD_DATA_TYPES.DATETIME.key:
           return dateTimeUtils.objectToServerString(now());
+        case FIELD_DATA_TYPES.TEXT.key:
+          return dateTimeUtils.objectToHumanTimeString(now());
         default:
-          console.error(`invalid data type for value: ${dataType}`);
+          console.error(`VALUES.NOW is not valid for data type "${dataType}"`);
+          return null;
       }
     },
   },

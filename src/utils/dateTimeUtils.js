@@ -22,6 +22,9 @@ const dateTimeUtils = {
     }
     return time;
   },
+  objectToHumanTimeString(dateObject) {
+    return dateObject ? dayjs(dateObject).format(HUMAN_FORMAT) : dateObject;
+  },
   objectToServerString(dateObject) {
     if (dateObject?.toISOString) {
       return dateObject.toISOString();
