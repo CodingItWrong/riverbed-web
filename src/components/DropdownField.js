@@ -1,4 +1,5 @@
 import {useState} from 'react';
+import {StyleSheet} from 'react-native';
 import {Button, Menu} from 'react-native-paper';
 import sharedStyles from './sharedStyles';
 
@@ -31,7 +32,7 @@ export default function DropdownField({
           mode="outlined"
           icon="chevron-down"
           accessibilityLabel={fieldLabel}
-          style={style}
+          style={[styles.dropdownButton, style]}
           contentStyle={sharedStyles.flexReverse}
           disabled={disabled}
           onPress={() => setIsMenuShown(true)}
@@ -58,3 +59,9 @@ export default function DropdownField({
     </Menu>
   );
 }
+
+const styles = StyleSheet.create({
+  dropdownButton: {
+    borderRadius: 4,
+  },
+});
