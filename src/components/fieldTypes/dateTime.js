@@ -5,6 +5,7 @@ import FIELD_DATA_TYPES from '../../enums/fieldDataTypes';
 import dateTimeUtils from '../../utils/dateTimeUtils';
 import dateUtils from '../../utils/dateUtils';
 import Button from '../Button';
+import Text from '../Text';
 import sharedStyles from '../sharedStyles';
 
 const dateTimeFieldDataType = {
@@ -24,6 +25,7 @@ const MODAL_SHOWN = {
 };
 
 function DateTimeEditorComponent({field, value, setValue, style, disabled}) {
+  const {name} = field.attributes;
   const [modalShown, setModalShown] = useState(MODAL_SHOWN.NONE);
 
   const date = dateUtils.serverStringToObject(value);
@@ -55,8 +57,9 @@ function DateTimeEditorComponent({field, value, setValue, style, disabled}) {
 
   // TODO: how to show field label
   return (
-    <>
-      <View style={[sharedStyles.row, style]}>
+    <View style={style}>
+      <Text variant="bodySmall">{name}</Text>
+      <View style={sharedStyles.row}>
         <Button
           style={sharedStyles.fill}
           disabled={disabled}
@@ -91,7 +94,7 @@ function DateTimeEditorComponent({field, value, setValue, style, disabled}) {
         onConfirm={handleChangeTime}
         testID="time-picker-modal"
       />
-    </>
+    </View>
   );
 }
 
