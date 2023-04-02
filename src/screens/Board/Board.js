@@ -2,6 +2,7 @@ import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {useCallback, useEffect, useState} from 'react';
 import {View} from 'react-native';
 import {Appbar, Provider as PaperProvider} from 'react-native-paper';
+import ErrorSnackbar from '../../components/ErrorSnackbar';
 import {Icon} from '../../components/Icon';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import ScreenBackground from '../../components/ScreenBackground';
@@ -19,12 +20,19 @@ import EditBoardForm from './EditBoardForm';
 export default function Board(...args) {
   const {boardId} = useCurrentBoard();
   const navigation = useNavigation();
-  const {data: board, isLoading: isLoadingBoard} = useBoard(boardId);
+  const {
+    data: board,
+    isLoading: isLoadingBoard,
+    error: boardError,
+  } = useBoard(boardId);
 
-  const {isFetching: isFetchingCards} = useCards(board);
-  const {isFetching: isFetchingColumns} = useColumns(board);
-  const {isFetching: isFetchingElements} = useBoardElements(board);
+  const {isFetching: isFetchingCards, error: cardsError} = useCards(board);
+  const {isFetching: isFetchingColumns, error: columnsError} =
+    useColumns(board);
+  const {isFetching: isFetchingElements, error: elementsError} =
+    useBoardElements(board);
   const isFetching = isFetchingCards || isFetchingColumns || isFetchingElements;
+  const error = boardError ?? cardsError ?? columnsError ?? elementsError;
   const refreshCards = useRefreshCards(board);
 
   const [editingBoard, setEditingBoard] = useState(false);
@@ -79,7 +87,8 @@ export default function Board(...args) {
     <PaperProvider theme={colorTheme}>
       <EmbeddedHeader
         title={
-          board?.attributes?.name ?? (!isLoadingBoard && '(unnamed board)')
+          board?.attributes?.name ??
+          (!isLoadingBoard && !error && '(unnamed board)')
         }
         icon={board?.attributes?.icon}
         isFetching={isFetching}
@@ -88,6 +97,9 @@ export default function Board(...args) {
       />
       <ScreenBackground style={sharedStyles.fullHeight}>
         {renderContents()}
+        <ErrorSnackbar error={error}>
+          An error occurred loading the board.
+        </ErrorSnackbar>
       </ScreenBackground>
     </PaperProvider>
   );
