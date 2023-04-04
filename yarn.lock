@@ -10247,10 +10247,10 @@ react-native-paper-dates@^0.15.1:
   dependencies:
     color "^3.2.1"
 
-react-native-paper@^5.5.1:
-  version "5.5.1"
-  resolved "https://registry.yarnpkg.com/react-native-paper/-/react-native-paper-5.5.1.tgz#21ffd0f83f3dc8761f4a836f5e99b5ebeebc7838"
-  integrity sha512-IEk7fJwQp5+8sY8+zPTie2wbKrS72vOyFCJdatjoYGuiz55BiTn8JJanqKIu0IQFKZjiGAZPlzM44cCWrEkTPw==
+react-native-paper@^5.6.0:
+  version "5.6.0"
+  resolved "https://registry.yarnpkg.com/react-native-paper/-/react-native-paper-5.6.0.tgz#5ac94fcc451706ff5efc0690efe7ba6acdbac485"
+  integrity sha512-X/MhAN/k1iwsp8N42MoSUfGbgCt4Lw8IlsoToIPoSoYRxbEq2OYOPRH7JsktPtFY0a1SAJPqVHFFS76FU8eSFg==
   dependencies:
     "@callstack/react-theme-provider" "^3.0.8"
     color "^3.1.2"
