@@ -3,6 +3,7 @@ import {useState} from 'react';
 import {View} from 'react-native';
 import Button from '../../components/Button';
 import Card from '../../components/Card';
+import ConfirmationDialog from '../../components/ConfirmationDialog';
 import DropdownField from '../../components/DropdownField';
 import ErrorMessage from '../../components/ErrorMessage';
 import TextField from '../../components/TextField';
@@ -57,6 +58,15 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
 
   return (
     <View style={sharedStyles.columnPadding}>
+      <ConfirmationDialog
+        destructive
+        open={confirmingDelete}
+        title="Delete Board?"
+        message={`Are you sure you want to delete board "${attributes.name}"? Data will not be able to be recovered.`}
+        confirmButtonLabel="Yes, Delete Board"
+        onConfirm={handleDeleteBoard}
+        onDismiss={() => setConfirmingDelete(false)}
+      />
       <Card style={columnStyle}>
         <TextField
           label="Name"
@@ -87,23 +97,13 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
         <Button onPress={onCancel} disabled={isLoading} style={sharedStyles.mt}>
           Cancel
         </Button>
-        {confirmingDelete ? (
-          <Button
-            onPress={handleDeleteBoard}
-            disabled={isLoading}
-            style={sharedStyles.mt}
-          >
-            Confirm Delete Board
-          </Button>
-        ) : (
-          <Button
-            onPress={() => setConfirmingDelete(true)}
-            disabled={isLoading}
-            style={sharedStyles.mt}
-          >
-            Delete Board
-          </Button>
-        )}
+        <Button
+          onPress={() => setConfirmingDelete(true)}
+          disabled={isLoading}
+          style={sharedStyles.mt}
+        >
+          Delete Board
+        </Button>
         <Button
           mode="primary"
           onPress={handleUpdateBoard}

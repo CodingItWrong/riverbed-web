@@ -72,7 +72,7 @@ describe('edit boards', () => {
       cy.intercept('DELETE', `http://cypressapi/boards/${updatedBoard.id}`, {
         success: true,
       }).as('deleteBoard');
-      cy.contains('Confirm Delete Board').click();
+      cy.contains('Yes, Delete Board').click();
       cy.wait('@deleteBoard');
 
       cy.contains('Add Board');
