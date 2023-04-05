@@ -13,16 +13,17 @@ const choiceFieldDataType = {
 
 function ChoiceEditorComponent({
   field,
+  label,
   value,
   setValue,
   readOnly,
   disabled,
   style,
 }) {
-  const {name, options: {choices} = {}} = field.attributes;
+  const {options: {choices} = {}} = field.attributes;
   return (
     <DropdownField
-      fieldLabel={name}
+      fieldLabel={label}
       emptyLabel="(choose)"
       value={choices?.find(c => c.id === value)}
       onValueChange={choice => setValue(choice?.id)}

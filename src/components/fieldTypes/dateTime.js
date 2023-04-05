@@ -24,8 +24,14 @@ const MODAL_SHOWN = {
   TIME: 'TIME',
 };
 
-function DateTimeEditorComponent({field, value, setValue, style, disabled}) {
-  const {name} = field.attributes;
+function DateTimeEditorComponent({
+  field,
+  label,
+  value,
+  setValue,
+  style,
+  disabled,
+}) {
   const [modalShown, setModalShown] = useState(MODAL_SHOWN.NONE);
 
   const date = dateUtils.serverStringToObject(value);
@@ -58,7 +64,7 @@ function DateTimeEditorComponent({field, value, setValue, style, disabled}) {
   // TODO: how to show field label
   return (
     <View style={style}>
-      <Text variant="bodySmall">{name}</Text>
+      <Text variant="bodySmall">{label}</Text>
       <View style={sharedStyles.row}>
         <Button
           style={sharedStyles.fill}

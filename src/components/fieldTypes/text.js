@@ -12,16 +12,17 @@ const textFieldDataType = {
 
 function TextEditorComponent({
   field,
+  label,
   value,
   setValue,
   readOnly,
   disabled,
   style,
 }) {
-  const {name, options: {multiline} = {}} = field.attributes;
+  const {options: {multiline} = {}} = field.attributes;
   return (
     <TextField
-      label={name}
+      label={label}
       value={value ?? ''}
       onChangeText={setValue}
       disabled={disabled}
