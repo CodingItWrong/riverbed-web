@@ -7,6 +7,7 @@ import Card from '../../../components/Card';
 import ConditionInputs from '../../../components/ConditionsInputs';
 import DropdownField from '../../../components/DropdownField';
 import ErrorMessage from '../../../components/ErrorMessage';
+import Field from '../../../components/Field';
 import FormGroup from '../../../components/FormGroup';
 import IconButton from '../../../components/IconButton';
 import LabeledCheckbox from '../../../components/LabeledCheckbox';
@@ -154,6 +155,17 @@ export default function EditElementForm({
             options={valueOptions}
             style={sharedStyles.mt}
           />
+          {elementAttributes['initial-value'] === VALUES.SPECIFIC_VALUE.key && (
+            <Field
+              field={element}
+              label="Initial value"
+              value={elementAttributes.options?.['initial-specific-value']}
+              setValue={v =>
+                updateAttribute("options['initial-specific-value']", v)
+              }
+              style={sharedStyles.mt}
+            />
+          )}
           <LabeledCheckbox
             label="Show Label When Read-Only"
             checked={elementAttributes.options['show-label-when-read-only']}
