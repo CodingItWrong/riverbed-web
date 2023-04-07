@@ -13,6 +13,7 @@ export default function Field({
   disabled,
   setValue,
   style,
+  label,
 }) {
   const {name, 'data-type': dataType, options} = field.attributes;
 
@@ -57,6 +58,7 @@ export default function Field({
   return (
     <EditorComponent
       field={field}
+      label={label ?? field.attributes.name}
       value={value ?? ''}
       setValue={setValue}
       disabled={disabled}

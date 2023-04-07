@@ -154,11 +154,14 @@ function getInitialFieldValues(elements) {
       e.attributes['initial-value'] !== null,
   );
   const initialValueEntries = fieldsWithInitialValues.map(field => {
-    const {'data-type': dataType, 'initial-value': initialValue} =
-      field.attributes;
+    const {
+      'data-type': dataType,
+      'initial-value': initialValue,
+      options: elementOptions,
+    } = field.attributes;
     const resolvedValue = Object.values(VALUES)
       .find(v => v.key === initialValue)
-      ?.call(dataType);
+      ?.call(dataType, elementOptions);
     return [field.id, resolvedValue];
   });
   return Object.fromEntries(initialValueEntries);

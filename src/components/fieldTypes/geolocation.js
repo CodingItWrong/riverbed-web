@@ -44,6 +44,7 @@ const valueToRegion = value => ({
 
 function GeolocationEditorComponent({
   field,
+  label,
   value,
   setValue,
   readOnly,
@@ -53,8 +54,6 @@ function GeolocationEditorComponent({
   const [status, requestPermission] = useForegroundPermissions();
   const [isLoadingCurrentPosition, setIsLoadingCurrentPosition] =
     useState(false);
-
-  const {name} = field.attributes;
 
   async function fillCurrentLocation() {
     let statusToUse = status;
@@ -101,14 +100,14 @@ function GeolocationEditorComponent({
       <View style={[styles.geoRow, style]}>
         <View style={styles.coordsFieldContainer}>
           <NumberField
-            label={`${name} latitude`}
+            label={`${label} latitude`}
             value={value?.lat ?? ''}
             onChangeText={newValue => setValue({...value, lat: newValue})}
             disabled={disabled}
             testID={`number-input-${field.id}-latitude`}
           />
           <NumberField
-            label={`${name} longitude`}
+            label={`${label} longitude`}
             value={value?.lng ?? ''}
             onChangeText={newValue => setValue({...value, lng: newValue})}
             disabled={disabled}

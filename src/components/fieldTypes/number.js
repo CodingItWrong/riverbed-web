@@ -11,17 +11,17 @@ const numberFieldDataType = {
 
 function NumberEditorComponent({
   field,
+  label,
   value,
   setValue,
   readOnly,
   disabled,
   style,
 }) {
-  const {name} = field.attributes;
   return (
     <NumberField
       key={field.id}
-      label={name}
+      label={label}
       testID={`number-input-${field.id}`}
       value={value ?? ''}
       onChangeText={setValue}
