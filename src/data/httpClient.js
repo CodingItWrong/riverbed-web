@@ -36,14 +36,7 @@ class HttpClient {
       headers: {...this.headers, ...headers},
       body: JSON.stringify(body),
     });
-    if (response.status >= 400) {
-      const responseText = await response.text();
-      console.error(response, responseText);
-      throw new ResponseError(response);
-    } else {
-      const data = await response.json();
-      return {data};
-    }
+    return this._processResponse(response);
   }
 
   async patch(url, body, {headers} = {}) {
@@ -52,8 +45,7 @@ class HttpClient {
       headers: {...this.headers, ...headers},
       body: JSON.stringify(body),
     });
-    const data = await response.json();
-    return {data};
+    return this._processResponse(response);
   }
 
   async delete(url, body, {headers} = {}) {
@@ -63,8 +55,9 @@ class HttpClient {
       body: JSON.stringify(body),
     });
     try {
-      const data = await response.json();
-      return {data};
+      // have to await so the try/catch catches a rejection
+      const data = await this._processResponse(response);
+      return data;
     } catch {
       return {data: null};
     }
@@ -76,5 +69,16 @@ class HttpClient {
     }
 
     return `${this.baseUrl}/${url}`;
+  }
+
+  async _processResponse(response) {
+    if (response.status >= 400) {
+      const responseText = await response.text();
+      console.error(response, responseText);
+      throw new ResponseError(response);
+    } else {
+      const data = await response.json();
+      return {data};
+    }
   }
 }
