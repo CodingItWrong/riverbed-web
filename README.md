@@ -47,7 +47,7 @@ To build a custom dev client:
 
 (Or omit the `--local` flag to build on EAS servers, but note that the free Expo plan is limited to 15 iOS buidls per month, and then you will begin to be charged.)
 
-When the build finishes, you will be prompted to install it on the Simulator/Emulator.
+When the build finishes, a built app file will be generated. Run `eas build:run -p ios --path=build-[date].tar.gz` (or Android equivalent) to install it on the device.
 
 You can download a custom dev client previously built on EAS servers from expo.dev. If it is compressed, expand the archive. Then drag-and-drop the app file onto the window of the running Simulator or Emulator, and it should be transferred.
 
