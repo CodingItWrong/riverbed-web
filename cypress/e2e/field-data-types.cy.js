@@ -185,9 +185,9 @@ describe('field data types', () => {
     });
 
     cy.step('TEST TEXT FIELD', () => {
-      cy.get(`[data-testid=text-input-${textField.id}]`)
-        .clear()
-        .type('Greetings');
+      cy.get(`[data-testid=text-input-${textField.id}]`).clear();
+      cy.wait('@updateCard');
+      cy.get(`[data-testid=text-input-${textField.id}]`).type('Greetings');
       cy.wait('@updateCard')
         .its('request.body.data.attributes["field-values"]')
         .should('deep.include', {[textField.id]: 'Greetings'});
