@@ -1,6 +1,6 @@
 import debounce from 'lodash.debounce';
 import {useCallback, useEffect, useRef, useState} from 'react';
-import {View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import ButtonElement from '../../components/ButtonElement';
 import ButtonMenuElement from '../../components/ButtonMenuElement';
 import ErrorMessage from '../../components/ErrorMessage';
@@ -53,7 +53,7 @@ export default function EditCardForm({card, board, onClose}) {
 
   const {data: elements = []} = useBoardElements(board);
 
-  const elementsToShow = sortByDisplayOrder(
+  const sortedElements = sortByDisplayOrder(
     elements.filter(element =>
       checkConditions({
         fieldValues,
@@ -136,7 +136,14 @@ export default function EditCardForm({card, board, onClose}) {
   return (
     <View>
       <ErrorMessage>{getErrorMessage()}</ErrorMessage>
-      {elementsToShow.map((element, elementIndex) => {
+      {sortedElements.length === 0 && (
+        <View style={styles.startMessage}>
+          <Text variant="titleMedium">
+            Add a field to the card by clicking the wrench icon above!
+          </Text>
+        </View>
+      )}
+      {sortedElements.map((element, elementIndex) => {
         switch (element.attributes['element-type']) {
           case ELEMENT_TYPES.FIELD.key:
             return (
@@ -183,3 +190,9 @@ export default function EditCardForm({card, board, onClose}) {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  startMessage: {
+    alignItems: 'center',
+  },
+});
