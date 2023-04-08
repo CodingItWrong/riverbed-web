@@ -12,6 +12,25 @@ export default function CardSummary({card, board, onPress, style}) {
     elements.filter(field => field.attributes['show-in-summary']),
   );
 
+  function contents() {
+    if (elements.length === 0) {
+      return <Text variant="titleMedium">Click this card to get started!</Text>;
+    } else if (fieldsToShow.length === 0) {
+      return <Text>(no fields to show!)</Text>;
+    }
+    return fieldsToShow.map((field, index) => (
+      <View key={field.id} testID="field-value">
+        <Field
+          field={field}
+          value={card.attributes['field-values'][field.id]}
+          readOnly
+          summary
+          index={index}
+        />
+      </View>
+    ));
+  }
+
   // TODO: field wrapper test ID should be in Field component
   return (
     <Card
@@ -20,23 +39,7 @@ export default function CardSummary({card, board, onPress, style}) {
       onPress={onPress}
       testID={`card-${card.id}`}
     >
-      <View style={styles.cardContent}>
-        {fieldsToShow.length > 0 ? (
-          fieldsToShow.map((field, index) => (
-            <View key={field.id} testID="field-value">
-              <Field
-                field={field}
-                value={card.attributes['field-values'][field.id]}
-                readOnly
-                summary
-                index={index}
-              />
-            </View>
-          ))
-        ) : (
-          <Text>(no fields to show!)</Text>
-        )}
-      </View>
+      <View style={styles.cardContent}>{contents()}</View>
     </Card>
   );
 }
