@@ -88,7 +88,7 @@ export default function Board(...args) {
       <EmbeddedHeader
         title={
           board?.attributes?.name ??
-          (!isLoadingBoard && !error && '(unnamed board)')
+          (!isLoadingBoard && !error && '(click to name board)')
         }
         icon={board?.attributes?.icon}
         isFetching={isFetching}
