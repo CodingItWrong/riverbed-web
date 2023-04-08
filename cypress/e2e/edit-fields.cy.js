@@ -245,8 +245,6 @@ describe('edit fields', () => {
 
     goToBoard();
 
-    cy.log('DELETE FIELD');
-
     cy.get(`[data-testid=card-${card.id}]`).click();
     cy.get('[aria-label="Edit Elements"]').click();
 
@@ -258,6 +256,7 @@ describe('edit fields', () => {
       data: [],
     });
     cy.contains('Delete Field').click();
+    cy.contains('Yes, Delete Field').click();
     cy.wait('@deleteField');
     cy.contains(greetingFieldName).should('not.exist');
   });

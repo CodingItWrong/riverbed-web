@@ -251,6 +251,7 @@ describe('edit buttons', () => {
         success: true,
       }).as('deleteButton');
       cy.contains('Delete Button').click();
+      cy.contains('Yes, Delete Button').click();
       cy.wait('@deleteButton');
     });
 

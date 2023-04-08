@@ -5,6 +5,7 @@ import {StyleSheet, View} from 'react-native';
 import Button from '../../../components/Button';
 import Card from '../../../components/Card';
 import ConditionInputs from '../../../components/ConditionsInputs';
+import ConfirmationDialog from '../../../components/ConfirmationDialog';
 import DropdownField from '../../../components/DropdownField';
 import ErrorMessage from '../../../components/ErrorMessage';
 import Field from '../../../components/Field';
@@ -67,6 +68,7 @@ export default function EditElementForm({
   const handleUpdateElement = () =>
     updateElement(elementAttributes, {onSuccess: onSave});
 
+  const [confirmingDelete, setConfirmingDelete] = useState(false);
   const {
     mutate: deleteElement,
     isLoading: isDeleting,
@@ -107,6 +109,14 @@ export default function EditElementForm({
       return `An error occurred while saving the ${elementType}`;
     } else if (isDeleteError) {
       return `An error occurred while deleting the ${elementType}`;
+    }
+  }
+
+  function getDeleteConfirmationMessageExtraContent() {
+    if (elementType === ELEMENT_TYPES.FIELD.key) {
+      return 'Values on all cards will be lost. ';
+    } else {
+      return '';
     }
   }
 
@@ -317,11 +327,22 @@ export default function EditElementForm({
         fields={fields}
       />
       <ErrorMessage>{getErrorMessage()}</ErrorMessage>
+      <ConfirmationDialog
+        destructive
+        open={confirmingDelete}
+        title={`Delete ${startCase(elementType)}?`}
+        message={`Are you sure you want to delete ${elementType} "${
+          elementAttributes.name
+        }"? ${getDeleteConfirmationMessageExtraContent()}Data will not be able to be recovered.`}
+        confirmButtonLabel={`Yes, Delete ${startCase(elementType)}`}
+        onConfirm={handleDeleteElement}
+        onDismiss={() => setConfirmingDelete(false)}
+      />
       <Button onPress={onCancel} disabled={isLoading} style={sharedStyles.mt}>
         Cancel
       </Button>
       <Button
-        onPress={handleDeleteElement}
+        onPress={() => setConfirmingDelete(true)}
         disabled={isLoading}
         style={sharedStyles.mt}
       >
