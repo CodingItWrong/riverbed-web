@@ -91,6 +91,7 @@ export default function CardScreen({route}) {
             {paddingBottom: insets.bottom},
           ]}
           scrollIndicatorInsets={{bottom: insets.bottom}}
+          extraHeight={EXPERIMENTAL_EXTRA_HEIGHT}
         >
           {card && (
             <EditCardForm card={card} board={board} onClose={closeModal} />
@@ -126,6 +127,8 @@ export default function CardScreen({route}) {
     </PaperProvider>
   );
 }
+
+const EXPERIMENTAL_EXTRA_HEIGHT = 150;
 
 function CardWrapper({children, closeModal}) {
   return Platform.select({
