@@ -16,6 +16,7 @@ import {useBoardElements} from '../../../data/elements';
 import ELEMENT_TYPES from '../../../enums/elementTypes';
 import SORT_DIRECTIONS from '../../../enums/sortDirections';
 import SUMMARY_FUNCTIONS from '../../../enums/summaryFunctions';
+import sortByDisplayOrder from '../../../utils/sortByDisplayOrder';
 
 export default function EditColumnForm({
   column,
@@ -28,8 +29,10 @@ export default function EditColumnForm({
   const [attributes, setAttributes] = useState(column.attributes);
 
   const {data: elements = []} = useBoardElements(board);
-  const fields = elements.filter(
-    e => e.attributes['element-type'] === ELEMENT_TYPES.FIELD.key,
+  const fields = sortByDisplayOrder(
+    elements.filter(
+      e => e.attributes['element-type'] === ELEMENT_TYPES.FIELD.key,
+    ),
   );
 
   function updateAttribute(path, value) {
