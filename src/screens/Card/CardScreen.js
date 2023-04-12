@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import {useCallback, useEffect, useState} from 'react';
-import {Platform, StyleSheet, View} from 'react-native';
+import {Platform, ScrollView, StyleSheet, View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Appbar, Provider as PaperProvider} from 'react-native-paper';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -134,7 +134,9 @@ function CardWrapper({children, closeModal}) {
   return Platform.select({
     web: (
       <CenterModal onDismiss={closeModal}>
-        <Card style={styles.wrapperCard}>{children}</Card>
+        <Card style={styles.wrapperCard} contentStyle={styles.cardContent}>
+          <ScrollView>{children}</ScrollView>
+        </Card>
       </CenterModal>
     ),
     default: <ScreenBackground>{children}</ScreenBackground>,
@@ -148,6 +150,10 @@ const styles = StyleSheet.create({
   },
   wrapperCard: {
     marginTop: 8,
+    maxHeight: '90%',
+  },
+  cardContent: {
+    flex: 1,
   },
   container: {
     padding: 16,
