@@ -7,6 +7,7 @@ export default function Card({
   style,
   mode,
   testID,
+  contentStyle,
 }) {
   return (
     <PaperCard
@@ -16,7 +17,7 @@ export default function Card({
       testID={testID}
       accessible={false}
     >
-      <PaperCard.Content>{children}</PaperCard.Content>
+      <PaperCard.Content style={contentStyle}>{children}</PaperCard.Content>
       <PaperCard.Actions>{buttons}</PaperCard.Actions>
     </PaperCard>
   );
