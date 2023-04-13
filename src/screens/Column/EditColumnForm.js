@@ -1,31 +1,22 @@
 import set from 'lodash.set';
 import {useState} from 'react';
-import {ScrollView} from 'react-native';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import Button from '../../../components/Button';
-import Card from '../../../components/Card';
-import ConditionInputs from '../../../components/ConditionsInputs';
-import DropdownField from '../../../components/DropdownField';
-import ErrorMessage from '../../../components/ErrorMessage';
-import FormGroup from '../../../components/FormGroup';
-import NumberField from '../../../components/NumberField';
-import TextField from '../../../components/TextField';
-import sharedStyles from '../../../components/sharedStyles';
-import {useDeleteColumn, useUpdateColumn} from '../../../data/columns';
-import {useBoardElements} from '../../../data/elements';
-import ELEMENT_TYPES from '../../../enums/elementTypes';
-import SORT_DIRECTIONS from '../../../enums/sortDirections';
-import SUMMARY_FUNCTIONS from '../../../enums/summaryFunctions';
-import sortByDisplayOrder from '../../../utils/sortByDisplayOrder';
+import {View} from 'react-native';
+import Button from '../../components/Button';
+import ConditionInputs from '../../components/ConditionsInputs';
+import DropdownField from '../../components/DropdownField';
+import ErrorMessage from '../../components/ErrorMessage';
+import FormGroup from '../../components/FormGroup';
+import NumberField from '../../components/NumberField';
+import TextField from '../../components/TextField';
+import sharedStyles from '../../components/sharedStyles';
+import {useDeleteColumn, useUpdateColumn} from '../../data/columns';
+import {useBoardElements} from '../../data/elements';
+import ELEMENT_TYPES from '../../enums/elementTypes';
+import SORT_DIRECTIONS from '../../enums/sortDirections';
+import SUMMARY_FUNCTIONS from '../../enums/summaryFunctions';
+import sortByDisplayOrder from '../../utils/sortByDisplayOrder';
 
-export default function EditColumnForm({
-  column,
-  board,
-  onChange,
-  onCancel,
-  style,
-}) {
-  const insets = useSafeAreaInsets();
+export default function EditColumnForm({column, board, onChange, onCancel}) {
   const [attributes, setAttributes] = useState(column.attributes);
 
   const {data: elements = []} = useBoardElements(board);
@@ -69,81 +60,70 @@ export default function EditColumnForm({
   }
 
   return (
-    <ScrollView
-      contentContainerStyle={[
-        sharedStyles.columnPadding,
-        {paddingBottom: insets.bottom},
-      ]}
-      scrollIndicatorInsets={{bottom: insets.bottom}}
-    >
-      <Card style={style}>
-        <TextField
-          label="Column Name"
-          value={attributes.name ?? ''}
-          onChangeText={value => updateAttribute('name', value)}
-          testID="text-input-column-name"
-        />
-        <NumberField
-          keyboard-type="number-pad"
-          label="Order"
-          value={
-            attributes['display-order'] == null
-              ? ''
-              : String(attributes['display-order'])
-          }
-          onChangeText={value =>
-            updateAttribute(
-              'display-order',
-              value === '' ? null : Number(value),
-            )
-          }
-          testID="number-input-order"
-        />
-        <CardInclusionCondition
-          board={board}
-          fields={fields}
-          attributes={attributes}
-          updateAttribute={updateAttribute}
-        />
-        <ColumnSortOrder
-          board={board}
-          fields={fields}
-          attributes={attributes}
-          updateAttribute={updateAttribute}
-        />
-        <ColumnGrouping
-          board={board}
-          fields={fields}
-          attributes={attributes}
-          updateAttribute={updateAttribute}
-        />
-        <ColumnSummary
-          board={board}
-          fields={fields}
-          attributes={attributes}
-          updateAttribute={updateAttribute}
-        />
-        <ErrorMessage>{getErrorMessage()}</ErrorMessage>
-        <Button onPress={onCancel} disabled={isLoading} style={sharedStyles.mt}>
-          Cancel
-        </Button>
-        <Button
-          onPress={handleDeleteColumn}
-          disabled={isLoading}
-          style={sharedStyles.mt}
-        >
-          Delete Column
-        </Button>
-        <Button
-          mode="primary"
-          onPress={handleUpdateColumn}
-          disabled={isLoading}
-          style={sharedStyles.mt}
-        >
-          Save Column
-        </Button>
-      </Card>
-    </ScrollView>
+    <View>
+      <TextField
+        label="Column Name"
+        value={attributes.name ?? ''}
+        onChangeText={value => updateAttribute('name', value)}
+        testID="text-input-column-name"
+      />
+      <NumberField
+        keyboard-type="number-pad"
+        label="Order"
+        value={
+          attributes['display-order'] == null
+            ? ''
+            : String(attributes['display-order'])
+        }
+        onChangeText={value =>
+          updateAttribute('display-order', value === '' ? null : Number(value))
+        }
+        testID="number-input-order"
+      />
+      <CardInclusionCondition
+        board={board}
+        fields={fields}
+        attributes={attributes}
+        updateAttribute={updateAttribute}
+      />
+      <ColumnSortOrder
+        board={board}
+        fields={fields}
+        attributes={attributes}
+        updateAttribute={updateAttribute}
+      />
+      <ColumnGrouping
+        board={board}
+        fields={fields}
+        attributes={attributes}
+        updateAttribute={updateAttribute}
+      />
+      <ColumnSummary
+        board={board}
+        fields={fields}
+        attributes={attributes}
+        updateAttribute={updateAttribute}
+      />
+      <ErrorMessage>{getErrorMessage()}</ErrorMessage>
+      <Button onPress={onCancel} disabled={isLoading} style={sharedStyles.mt}>
+        Cancel
+      </Button>
+      <Button
+        onPress={handleDeleteColumn}
+        disabled={isLoading}
+        style={sharedStyles.mt}
+      >
+        Delete Column
+      </Button>
+      <Button
+        mode="primary"
+        onPress={handleUpdateColumn}
+        disabled={isLoading}
+        style={sharedStyles.mt}
+      >
+        Save Column
+      </Button>
+    </View>
   );
 }
 

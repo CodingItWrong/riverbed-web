@@ -1,4 +1,4 @@
-import {Platform, ScrollView} from 'react-native';
+import {Platform, ScrollView, StyleSheet} from 'react-native';
 import Card from './Card';
 import CenterModal from './CenterModal';
 import ScreenBackground from './ScreenBackground';

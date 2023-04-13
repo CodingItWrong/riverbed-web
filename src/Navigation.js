@@ -8,6 +8,7 @@ import {useToken} from './data/token';
 import Board from './screens/Board';
 import BoardList from './screens/BoardList';
 import Card from './screens/Card';
+import Column from './screens/Column';
 import SignIn from './screens/SignIn';
 
 const linking = {
@@ -20,6 +21,7 @@ const linking = {
         initialRouteName: 'Board',
         screens: {
           Board: '/',
+          Column: 'columns/:columnId',
           Card: 'cards/:cardId',
         },
       },
@@ -62,6 +64,11 @@ const Boards = ({route}) => {
         name="Board"
         component={Board}
         options={{headerShown: false}}
+      />
+      <AppStack.Screen
+        name="Column"
+        component={Column}
+        options={modalOptions}
       />
       <AppStack.Screen name="Card" component={Card} options={modalOptions} />
     </BoardStack.Navigator>

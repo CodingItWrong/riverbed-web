@@ -81,6 +81,9 @@ describe('edit columns', () => {
       cy.intercept('GET', `${apiUrl}/boards/${board.id}/columns?`, {
         data: [allColumn],
       });
+      cy.intercept('GET', `${apiUrl}/columns/${allColumn.id}?`, {
+        data: allColumn,
+      });
     }
   }
 
@@ -107,6 +110,9 @@ describe('edit columns', () => {
       }).as('addColumn');
       cy.intercept('GET', `${apiUrl}/boards/${board.id}/columns?`, {
         data: [newColumn],
+      });
+      cy.intercept('GET', `${apiUrl}/columns/${newColumn.id}?`, {
+        data: newColumn,
       });
       cy.contains('Add Column').click();
       cy.wait('@addColumn')
@@ -430,8 +436,14 @@ describe('edit columns', () => {
 
     const columnA = Factory.column({name: 'Column A', displayOrder: 1});
     const columnB = Factory.column({name: 'Column B', displayOrder: 2});
-    cy.intercept(`${apiUrl}/boards/${board.id}/columns?`, {
+    cy.intercept('GET', `${apiUrl}/boards/${board.id}/columns?`, {
       data: [columnA, columnB],
+    });
+    cy.intercept('GET', `${apiUrl}/columns/${columnA.id}?`, {
+      data: columnA,
+    });
+    cy.intercept('GET', `${apiUrl}/columns/${columnB.id}?`, {
+      data: columnB,
     });
 
     goToBoard();

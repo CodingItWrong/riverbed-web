@@ -1,15 +1,12 @@
 import {useNavigation} from '@react-navigation/native';
 import {useCallback, useEffect, useState} from 'react';
-import {Platform, ScrollView, StyleSheet, View} from 'react-native';
+import {Platform, StyleSheet, View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Appbar, Provider as PaperProvider} from 'react-native-paper';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import Card from '../../components/Card';
-import CenterModal from '../../components/CenterModal';
 import ErrorSnackbar from '../../components/ErrorSnackbar';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import ModalScreenWrapper from '../../components/ModalScreenWrapper';
-import ScreenBackground from '../../components/ScreenBackground';
 import sharedStyles from '../../components/sharedStyles';
 import {useBoard} from '../../data/boards';
 import {useCard, useDeleteCard} from '../../data/cards';
