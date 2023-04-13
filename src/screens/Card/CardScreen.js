@@ -1,14 +1,12 @@
 import {useNavigation} from '@react-navigation/native';
 import {useCallback, useEffect, useState} from 'react';
-import {Platform, ScrollView, StyleSheet, View} from 'react-native';
+import {Platform, StyleSheet, View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Appbar, Provider as PaperProvider} from 'react-native-paper';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import Card from '../../components/Card';
-import CenterModal from '../../components/CenterModal';
 import ErrorSnackbar from '../../components/ErrorSnackbar';
 import LoadingIndicator from '../../components/LoadingIndicator';
-import ScreenBackground from '../../components/ScreenBackground';
+import ModalScreenWrapper from '../../components/ModalScreenWrapper';
 import sharedStyles from '../../components/sharedStyles';
 import {useBoard} from '../../data/boards';
 import {useCard, useDeleteCard} from '../../data/cards';
@@ -105,7 +103,7 @@ export default function CardScreen({route}) {
 
   return (
     <PaperProvider theme={colorTheme}>
-      <CardWrapper closeModal={closeModal}>
+      <ModalScreenWrapper closeModal={closeModal}>
         <View
           style={[
             styles.headerRow,
@@ -120,7 +118,7 @@ export default function CardScreen({route}) {
           {renderButtonControls()}
         </View>
         {renderContents()}
-      </CardWrapper>
+      </ModalScreenWrapper>
       <ErrorSnackbar error={deleteError}>
         An error occurred deleting the card.
       </ErrorSnackbar>
@@ -130,30 +128,10 @@ export default function CardScreen({route}) {
 
 const EXPERIMENTAL_EXTRA_HEIGHT = 150;
 
-function CardWrapper({children, closeModal}) {
-  return Platform.select({
-    web: (
-      <CenterModal onDismiss={closeModal}>
-        <Card style={styles.wrapperCard} contentStyle={styles.cardContent}>
-          <ScrollView>{children}</ScrollView>
-        </Card>
-      </CenterModal>
-    ),
-    default: <ScreenBackground>{children}</ScreenBackground>,
-  });
-}
-
 const styles = StyleSheet.create({
   headerRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-  },
-  wrapperCard: {
-    marginTop: 8,
-    maxHeight: '90%',
-  },
-  cardContent: {
-    flex: 1,
   },
   container: {
     padding: 16,

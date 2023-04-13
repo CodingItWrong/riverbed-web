@@ -1,5 +1,4 @@
 import {useNavigation} from '@react-navigation/native';
-import {useState} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {large, useBreakpoint} from '../../../breakpoints';
 import Button from '../../../components/Button';
@@ -12,11 +11,9 @@ import ELEMENT_TYPES from '../../../enums/elementTypes';
 import VALUES from '../../../enums/values';
 import sortByDisplayOrder from '../../../utils/sortByDisplayOrder';
 import Column from './Column';
-import EditColumnForm from './EditColumnForm';
 
 export default function ColumnList({board}) {
   const navigation = useNavigation();
-  const [selectedColumnId, setSelectedColumnId] = useState(null);
 
   const {data: elements, isLoading: isLoadingElements} =
     useBoardElements(board);
@@ -35,12 +32,8 @@ export default function ColumnList({board}) {
   } = useCreateColumn(board);
   const handleCreateColumn = () =>
     createColumn(null, {
-      onSuccess: ({data: column}) => setSelectedColumnId(column.id),
+      onSuccess: ({data: column}) => showColumn(column),
     });
-
-  function onChangeColumn() {
-    setSelectedColumnId(null);
-  }
 
   const {
     mutate: createCard,
@@ -52,6 +45,10 @@ export default function ColumnList({board}) {
       {'field-values': getInitialFieldValues(elements)},
       {onSuccess: ({data: newCard}) => showDetail(newCard)},
     );
+
+  function showColumn(column) {
+    navigation.navigate('Column', {columnId: column.id});
+  }
 
   function showDetail(card) {
     primeCard(card);
@@ -91,30 +88,15 @@ export default function ColumnList({board}) {
         pagingEnabled={pagingEnabled}
         style={sharedStyles.fullHeight}
       >
-        {sortedColumns.map((column, columnIndex) => {
-          if (selectedColumnId === column.id) {
-            return (
-              <EditColumnForm
-                key={column.id}
-                column={column}
-                board={board}
-                onChange={onChangeColumn}
-                onCancel={() => setSelectedColumnId(null)}
-                style={columnWidthStyle}
-              />
-            );
-          } else {
-            return (
-              <Column
-                key={column.id}
-                column={column}
-                board={board}
-                onEdit={() => setSelectedColumnId(column.id)}
-                onSelectCard={card => showDetail(card)}
-              />
-            );
-          }
-        })}
+        {sortedColumns.map((column, columnIndex) => (
+          <Column
+            key={column.id}
+            column={column}
+            board={board}
+            onEdit={() => showColumn(column)}
+            onSelectCard={card => showDetail(card)}
+          />
+        ))}
         <View style={[columnWidthStyle, sharedStyles.columnPadding]}>
           <View style={responsiveButtonContainerStyle}>
             <Button

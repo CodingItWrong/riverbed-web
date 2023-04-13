@@ -27,6 +27,13 @@ export function useColumns(board) {
   );
 }
 
+export function useColumn({boardId, columnId}) {
+  const columnClient = useColumnClient();
+  return useQuery(['columns', boardId, columnId], () =>
+    columnClient.find({id: columnId}).then(resp => resp.data),
+  );
+}
+
 export function useCreateColumn(board) {
   const columnClient = useColumnClient();
   const queryClient = useQueryClient();
