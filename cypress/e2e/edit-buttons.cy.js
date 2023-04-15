@@ -91,6 +91,9 @@ describe('edit buttons', () => {
       cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
         data: [greetingField, newButton],
       });
+      cy.intercept('GET', `http://cypressapi/elements/${newButton.id}?`, {
+        data: newButton,
+      });
 
       cy.contains('Add Element').paperSelect('Button');
 
@@ -175,6 +178,9 @@ describe('edit buttons', () => {
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
       data: [greetingField, greetButton],
     });
+    cy.intercept('GET', `http://cypressapi/elements/${greetButton.id}?`, {
+      data: greetButton,
+    });
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
       data: [greetingCard],
     });
@@ -228,6 +234,9 @@ describe('edit buttons', () => {
 
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
       data: [greetingField, greetButton],
+    });
+    cy.intercept('GET', `http://cypressapi/elements/${greetButton.id}?`, {
+      data: greetButton,
     });
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
       data: [greetingCard],
@@ -308,6 +317,9 @@ describe('edit buttons', () => {
       }).as('addButton');
       cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
         data: [greetedAtField, newButton],
+      });
+      cy.intercept('GET', `http://cypressapi/elements/${newButton.id}?`, {
+        data: newButton,
       });
 
       cy.contains('Add Element').paperSelect('Button');
@@ -408,6 +420,9 @@ describe('edit buttons', () => {
       }).as('addButtonMenu');
       cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
         data: [completedAtField, newButtonMenu],
+      });
+      cy.intercept('GET', `http://cypressapi/elements/${newButtonMenu.id}?`, {
+        data: newButtonMenu,
       });
 
       cy.contains('Add Element').paperSelect('Button Menu');

@@ -73,6 +73,9 @@ describe('edit fields', () => {
       cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
         data: [newField],
       });
+      cy.intercept('GET', `http://cypressapi/elements/${newField.id}?`, {
+        data: newField,
+      });
 
       cy.contains('Add Element').paperSelect('Field');
 
@@ -120,6 +123,9 @@ describe('edit fields', () => {
   it('allows updating fields', () => {
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
       data: [greetingField],
+    });
+    cy.intercept('GET', `http://cypressapi/elements/${greetingField.id}?`, {
+      data: greetingField,
     });
     const card = Factory.card({});
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
@@ -181,6 +187,9 @@ describe('edit fields', () => {
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
       data: [greetingField],
     });
+    cy.intercept('GET', `http://cypressapi/elements/${greetingField.id}?`, {
+      data: greetingField,
+    });
     const card = Factory.card({});
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
       data: [card],
@@ -234,6 +243,9 @@ describe('edit fields', () => {
   it('allows deleting fields', () => {
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
       data: [greetingField],
+    });
+    cy.intercept('GET', `http://cypressapi/elements/${greetingField.id}?`, {
+      data: greetingField,
     });
     const card = Factory.card({});
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
@@ -303,6 +315,9 @@ describe('edit fields', () => {
       }).as('addField');
       cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
         data: [newField],
+      });
+      cy.intercept('GET', `http://cypressapi/elements/${newField.id}?`, {
+        data: newField,
       });
 
       cy.contains('Add Element').paperSelect('Field');
@@ -393,6 +408,12 @@ describe('edit fields', () => {
 
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
       data: [fieldA, fieldB],
+    });
+    cy.intercept('GET', `http://cypressapi/elements/${fieldA.id}?`, {
+      data: fieldA,
+    });
+    cy.intercept('GET', `http://cypressapi/elements/${fieldB.id}?`, {
+      data: fieldB,
     });
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
       data: [card],
@@ -488,6 +509,12 @@ describe('edit fields', () => {
     });
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
       data: [dateField, dateTimeField],
+    });
+    cy.intercept('GET', `http://cypressapi/elements/${dateField.id}?`, {
+      data: dateField,
+    });
+    cy.intercept('GET', `http://cypressapi/elements/${dateTimeField.id}?`, {
+      data: dateTimeField,
     });
     const card = Factory.card({});
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {

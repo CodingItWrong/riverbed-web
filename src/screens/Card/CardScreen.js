@@ -11,7 +11,7 @@ import {useCard, useDeleteCard} from '../../data/cards';
 import {useCurrentBoard} from '../../data/currentBoard';
 import BaseModalScreen from '../BaseModalScreen';
 import EditCardForm from './EditCardForm';
-import ElementList from './Element/ElementList';
+import ElementList from './ElementList';
 
 export default function CardScreen({route}) {
   const insets = useSafeAreaInsets();
