@@ -1,17 +1,15 @@
 import {useNavigation} from '@react-navigation/native';
 import {useCallback, useEffect, useState} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {Appbar, Provider as PaperProvider} from 'react-native-paper';
+import {Appbar} from 'react-native-paper';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import ErrorSnackbar from '../../components/ErrorSnackbar';
 import LoadingIndicator from '../../components/LoadingIndicator';
-import ModalScreenWrapper from '../../components/ModalScreenWrapper';
 import sharedStyles from '../../components/sharedStyles';
 import {useBoard} from '../../data/boards';
 import {useCard, useDeleteCard} from '../../data/cards';
 import {useCurrentBoard} from '../../data/currentBoard';
-import useColorSchemeTheme from '../../theme/useColorSchemeTheme';
+import BaseModalScreen from '../BaseModalScreen';
 import EditCardForm from './EditCardForm';
 import ElementList from './Element/ElementList';
 
@@ -81,29 +79,16 @@ export default function CardScreen({route}) {
           <ElementList board={board} />
         </View>
       );
+    } else if (card) {
+      return <EditCardForm card={card} board={board} onClose={closeModal} />;
     } else {
-      return (
-        <KeyboardAwareScrollView
-          contentContainerStyle={[
-            styles.container,
-            {paddingBottom: insets.bottom},
-          ]}
-          scrollIndicatorInsets={{bottom: insets.bottom}}
-          extraHeight={EXPERIMENTAL_EXTRA_HEIGHT}
-        >
-          {card && (
-            <EditCardForm card={card} board={board} onClose={closeModal} />
-          )}
-        </KeyboardAwareScrollView>
-      );
+      return null;
     }
   }
 
-  const colorTheme = useColorSchemeTheme(board?.attributes['color-theme']);
-
   return (
-    <PaperProvider theme={colorTheme}>
-      <ModalScreenWrapper closeModal={closeModal}>
+    <>
+      <BaseModalScreen>
         <View
           style={[
             styles.headerRow,
@@ -118,22 +103,17 @@ export default function CardScreen({route}) {
           {renderButtonControls()}
         </View>
         {renderContents()}
-      </ModalScreenWrapper>
+      </BaseModalScreen>
       <ErrorSnackbar error={deleteError}>
         An error occurred deleting the card.
       </ErrorSnackbar>
-    </PaperProvider>
+    </>
   );
 }
-
-const EXPERIMENTAL_EXTRA_HEIGHT = 150;
 
 const styles = StyleSheet.create({
   headerRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-  },
-  container: {
-    padding: 16,
   },
 });
