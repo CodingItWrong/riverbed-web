@@ -1,4 +1,4 @@
-name: Trigger Secure Detox Run
+name: Trigger Secure E2E Workflows
 on:
   push:
     branches:

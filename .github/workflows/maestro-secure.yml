@@ -1,0 +1,49 @@
+name: Secure Maestro Run
+on:
+  workflow_run: # see https://github.com/dependabot/dependabot-core/issues/3253#issuecomment-852541544
+    workflows: ["Trigger Secure Detox Run"]
+    types:
+      - completed
+
+jobs:
+  test:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16 # expo-cli preferred
+          cache: "yarn"
+
+      - name: Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Install Maestro CLI
+        run: |
+          curl -Ls "https://get.maestro.mobile.dev" | bash
+          brew tap facebook/fb
+          brew install facebook/fb/idb-companion
+
+      - name: Add Maestro to path
+        run: echo "${HOME}/.maestro/bin" >> $GITHUB_PATH
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build App for Maestro
+        run: export FAKE_API=true && eas build --local --profile development-detox --platform ios
+
+      - name: Start Simulator
+        uses: futureware-tech/simulator-action@v2
+        with:
+          model: "iPhone 12"
+
+      - name: Launch App on Simulator
+        run: eas build:run --platform=ios --path=$(ls build-*.tar.gz)
+
+      - name: Run Maestro
+        run: maestro test maestro/smoke-test.yaml
