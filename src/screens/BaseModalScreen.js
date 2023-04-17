@@ -23,10 +23,7 @@ export default function BaseModalScreen({children}) {
     <PaperProvider theme={colorTheme}>
       <ModalScreenWrapper closeModal={() => navigation.goBack()}>
         <KeyboardAwareScrollView
-          contentContainerStyle={[
-            styles.container,
-            {paddingBottom: insets.bottom},
-          ]}
+          contentContainerStyle={{paddingBottom: insets.bottom}}
           scrollIndicatorInsets={{bottom: insets.bottom}}
           extraHeight={EXPERIMENTAL_EXTRA_HEIGHT}
         >
