@@ -123,10 +123,12 @@ describe('edit buttons', () => {
       // show condition
       cy.contains('Add Condition').click();
       cy.contains('(field)').paperSelect('Greeting');
+      cy.get('[role=menuitem]').should('not.exist');
       cy.contains('(condition)').click();
       cy.get('[role=menuitem]')
         .contains(QUERIES.IS_NOT_EMPTY.label)
         .click({force: true});
+      cy.get('[role=menuitem]').should('not.exist');
 
       cy.intercept('PATCH', `http://cypressapi/elements/${newButton.id}?`, {
         success: true,
