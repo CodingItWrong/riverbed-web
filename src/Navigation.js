@@ -9,6 +9,7 @@ import Board from './screens/Board';
 import BoardList from './screens/BoardList';
 import Card from './screens/Card';
 import Column from './screens/Column';
+import Element from './screens/Element';
 import SignIn from './screens/SignIn';
 
 const linking = {
@@ -23,6 +24,7 @@ const linking = {
           Board: '/',
           Column: 'columns/:columnId',
           Card: 'cards/:cardId',
+          Element: 'elements/:elementId',
         },
       },
       SignIn: '/',
@@ -71,6 +73,11 @@ const Boards = ({route}) => {
         options={modalOptions}
       />
       <AppStack.Screen name="Card" component={Card} options={modalOptions} />
+      <AppStack.Screen
+        name="Element"
+        component={Element}
+        options={modalOptions}
+      />
     </BoardStack.Navigator>
   );
 };

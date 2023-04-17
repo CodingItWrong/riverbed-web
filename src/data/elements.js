@@ -27,15 +27,24 @@ export function useBoardElements(board) {
   );
 }
 
+export function useBoardElement({boardId, elementId}) {
+  const elementClient = useElementClient();
+  return useQuery(['elements', boardId, elementId], () =>
+    elementClient.find({id: elementId}).then(resp => resp.data),
+  );
+}
+
 export function useCreateElement(board) {
   const elementClient = useElementClient();
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: attributes =>
-      elementClient.create({
-        relationships: {board: {data: {type: 'boards', id: board.id}}},
-        attributes,
-      }),
+      elementClient
+        .create({
+          relationships: {board: {data: {type: 'boards', id: board.id}}},
+          attributes,
+        })
+        .then(({data}) => data),
     onSuccess: () => refreshElements(queryClient, board),
   });
 }

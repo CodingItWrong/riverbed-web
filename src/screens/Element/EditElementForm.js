@@ -2,33 +2,33 @@ import set from 'lodash.set';
 import startCase from 'lodash.startcase';
 import {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import Button from '../../../components/Button';
-import Card from '../../../components/Card';
-import ConditionInputs from '../../../components/ConditionsInputs';
-import ConfirmationDialog from '../../../components/ConfirmationDialog';
-import DropdownField from '../../../components/DropdownField';
-import ErrorMessage from '../../../components/ErrorMessage';
-import Field from '../../../components/Field';
-import FormGroup from '../../../components/FormGroup';
-import IconButton from '../../../components/IconButton';
-import LabeledCheckbox from '../../../components/LabeledCheckbox';
-import NumberField from '../../../components/NumberField';
-import Text from '../../../components/Text';
-import TextField from '../../../components/TextField';
-import fieldTypes from '../../../components/fieldTypes';
-import sharedStyles from '../../../components/sharedStyles';
+import Button from '../../components/Button';
+import Card from '../../components/Card';
+import ConditionInputs from '../../components/ConditionsInputs';
+import ConfirmationDialog from '../../components/ConfirmationDialog';
+import DropdownField from '../../components/DropdownField';
+import ErrorMessage from '../../components/ErrorMessage';
+import Field from '../../components/Field';
+import FormGroup from '../../components/FormGroup';
+import IconButton from '../../components/IconButton';
+import LabeledCheckbox from '../../components/LabeledCheckbox';
+import NumberField from '../../components/NumberField';
+import Text from '../../components/Text';
+import TextField from '../../components/TextField';
+import fieldTypes from '../../components/fieldTypes';
+import sharedStyles from '../../components/sharedStyles';
 import {
   useBoardElements,
   useDeleteElement,
   useUpdateElement,
-} from '../../../data/elements';
-import COMMANDS from '../../../enums/commands';
-import ELEMENT_TYPES from '../../../enums/elementTypes';
-import FIELD_DATA_TYPES from '../../../enums/fieldDataTypes';
-import TEXT_SIZES from '../../../enums/textSizes';
-import VALUES from '../../../enums/values';
-import sortByDisplayOrder from '../../../utils/sortByDisplayOrder';
-import uuid from '../../../utils/uuid';
+} from '../../data/elements';
+import COMMANDS from '../../enums/commands';
+import ELEMENT_TYPES from '../../enums/elementTypes';
+import FIELD_DATA_TYPES from '../../enums/fieldDataTypes';
+import TEXT_SIZES from '../../enums/textSizes';
+import VALUES from '../../enums/values';
+import sortByDisplayOrder from '../../utils/sortByDisplayOrder';
+import uuid from '../../utils/uuid';
 
 export default function EditElementForm({
   element,

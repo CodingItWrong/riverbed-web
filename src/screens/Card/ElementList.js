@@ -1,23 +1,22 @@
-import {useState} from 'react';
+import {useNavigation} from '@react-navigation/native';
 import {StyleSheet, View} from 'react-native';
 import {KeyboardAwareFlatList} from 'react-native-keyboard-aware-scroll-view';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import Button from '../../../components/Button';
-import DropdownMenu from '../../../components/DropdownMenu';
-import ErrorSnackbar from '../../../components/ErrorSnackbar';
-import Field from '../../../components/Field';
-import IconButton from '../../../components/IconButton';
-import Text from '../../../components/Text';
-import sharedStyles from '../../../components/sharedStyles';
-import {useBoardElements, useCreateElement} from '../../../data/elements';
-import ELEMENT_TYPES from '../../../enums/elementTypes';
-import FIELD_DATA_TYPES from '../../../enums/fieldDataTypes';
-import sortByDisplayOrder from '../../../utils/sortByDisplayOrder';
-import EditElementForm from './EditElementForm';
+import Button from '../../components/Button';
+import DropdownMenu from '../../components/DropdownMenu';
+import ErrorSnackbar from '../../components/ErrorSnackbar';
+import Field from '../../components/Field';
+import IconButton from '../../components/IconButton';
+import Text from '../../components/Text';
+import sharedStyles from '../../components/sharedStyles';
+import {useBoardElements, useCreateElement} from '../../data/elements';
+import ELEMENT_TYPES from '../../enums/elementTypes';
+import FIELD_DATA_TYPES from '../../enums/fieldDataTypes';
+import sortByDisplayOrder from '../../utils/sortByDisplayOrder';
 
 export default function ElementList({board}) {
+  const navigation = useNavigation();
   const insets = useSafeAreaInsets();
-  const [selectedElementId, setSelectedElementId] = useState(null);
 
   const {data: elements = []} = useBoardElements(board);
   const sortedElements = sortByDisplayOrder(elements);
@@ -29,7 +28,7 @@ export default function ElementList({board}) {
   } = useCreateElement(board);
   const handleCreateElement = attributes =>
     createElement(attributes, {
-      onSuccess: newElement => setSelectedElementId(newElement.data.id),
+      onSuccess: newElement => editElement(newElement),
     });
 
   const addField = () =>
@@ -44,12 +43,8 @@ export default function ElementList({board}) {
   const addButtonMenu = () =>
     handleCreateElement({'element-type': ELEMENT_TYPES.BUTTON_MENU.key});
 
-  function onChange() {
-    hideEditForm();
-  }
-
-  function hideEditForm() {
-    setSelectedElementId(null);
+  function editElement(element) {
+    navigation.navigate('Element', {elementId: element.id});
   }
 
   return (
@@ -60,25 +55,14 @@ export default function ElementList({board}) {
         keyExtractor={element => element.id}
         contentContainerStyle={{paddingBottom: insets.bottom}}
         scrollIndicatorInsets={{bottom: insets.bottom}}
-        renderItem={({item: element, index: elementIndex}) =>
-          selectedElementId === element.id ? (
-            <EditElementForm
-              element={element}
-              board={board}
-              onSave={onChange}
-              onDelete={onChange}
-              onCancel={hideEditForm}
-              style={elementIndex > 0 && sharedStyles.mt}
-            />
-          ) : (
-            <EditableElement
-              element={element}
-              onEdit={() => setSelectedElementId(element.id)}
-              testID={`element-${element.id}`}
-              style={elementIndex > 0 && sharedStyles.mt}
-            />
-          )
-        }
+        renderItem={({item: element, index: elementIndex}) => (
+          <EditableElement
+            element={element}
+            onEdit={() => editElement(element)}
+            testID={`element-${element.id}`}
+            style={elementIndex > 0 && sharedStyles.mt}
+          />
+        )}
         ListFooterComponent={
           <DropdownMenu
             menuButton={props => (
