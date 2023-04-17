@@ -3,7 +3,6 @@ import startCase from 'lodash.startcase';
 import {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import Button from '../../components/Button';
-import Card from '../../components/Card';
 import ConditionInputs from '../../components/ConditionsInputs';
 import ConfirmationDialog from '../../components/ConfirmationDialog';
 import DropdownField from '../../components/DropdownField';
@@ -121,7 +120,7 @@ export default function EditElementForm({
   }
 
   return (
-    <Card style={style}>
+    <View>
       <TextField
         label={`${startCase(elementType)} Name`}
         value={elementAttributes.name ?? ''}
@@ -356,7 +355,7 @@ export default function EditElementForm({
       >
         Save {startCase(elementType)}
       </Button>
-    </Card>
+    </View>
   );
 }
 
