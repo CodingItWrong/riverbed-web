@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import {Platform, StyleSheet} from 'react-native';
+import {Platform, StyleSheet, View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Provider as PaperProvider} from 'react-native-paper';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -49,7 +49,11 @@ function ModalScreenWrapper({children, closeModal}) {
         </Card>
       </CenterModal>
     ),
-    default: <ScreenBackground>{children}</ScreenBackground>,
+    default: (
+      <ScreenBackground>
+        <View style={styles.container}>{children}</View>
+      </ScreenBackground>
+    ),
   });
 }
 
