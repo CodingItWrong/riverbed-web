@@ -93,7 +93,7 @@ const AppNav = () => {
         <AppStack.Screen
           name="SignIn"
           component={SignIn}
-          options={{title: 'ListApp'}}
+          options={{title: 'Riverbed'}}
         />
       )}
       {isLoggedIn && (
