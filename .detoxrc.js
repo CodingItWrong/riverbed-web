@@ -17,7 +17,7 @@ module.exports = {
     },
     'ios.release': {
       type: 'ios.app',
-      binaryPath: 'listapp.app',
+      binaryPath: 'Riverbed.app',
       build: 'export FAKE_API=true && eas build --local --profile development-detox --platform ios && tar -xvzf build-*.tar.gz && rm build-*.tar.gz'
     },
     'android.debug': {
