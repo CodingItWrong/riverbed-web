@@ -6,6 +6,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Card from '../components/Card';
 import CenterModal from '../components/CenterModal';
 import ScreenBackground from '../components/ScreenBackground';
+import sharedStyles from '../components/sharedStyles';
 import {useBoard} from '../data/boards';
 import {useCurrentBoard} from '../data/currentBoard';
 import useColorSchemeTheme from '../theme/useColorSchemeTheme';
@@ -27,7 +28,9 @@ export default function BaseModalScreen({children}) {
           scrollIndicatorInsets={{bottom: insets.bottom}}
           extraHeight={EXPERIMENTAL_EXTRA_HEIGHT}
         >
-          {children}
+          <View style={Platform.OS === 'ios' && styles.container}>
+            {children}
+          </View>
         </KeyboardAwareScrollView>
       </ModalScreenWrapper>
     </PaperProvider>
@@ -44,29 +47,25 @@ function ModalScreenWrapper({children, closeModal}) {
   return Platform.select({
     web: (
       <CenterModal onDismiss={closeModal}>
-        <Card style={styles.wrapperCard} contentStyle={styles.cardContent}>
+        <Card style={styles.wrapperCard} contentStyle={sharedStyles.fill}>
           {children}
         </Card>
       </CenterModal>
     ),
     default: (
       <ScreenBackground>
-        <View style={styles.container}>{children}</View>
+        <View style={sharedStyles.fill}>{children}</View>
       </ScreenBackground>
     ),
   });
 }
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 16,
-    flex: 1,
-  },
   wrapperCard: {
     marginTop: 8,
     maxHeight: '90%',
   },
-  cardContent: {
-    flex: 1,
+  container: {
+    padding: 16,
   },
 });
