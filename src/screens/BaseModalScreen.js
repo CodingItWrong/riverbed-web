@@ -60,6 +60,7 @@ function ModalScreenWrapper({children, closeModal}) {
 const styles = StyleSheet.create({
   container: {
     padding: 16,
+    flex: 1,
   },
   wrapperCard: {
     marginTop: 8,
