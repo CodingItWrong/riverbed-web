@@ -63,11 +63,13 @@ To prebuild the Xcode project, run `npx expo prebuild -p ios`. Then, open the wo
 
 The preview client is useful to have a running app on a physical device with an Apple Developer account, without being connected to a Metro dev server. The JS bundle can be updated without rebuilding a preview client.
 
-Before building a preview client, edit `assets/ios/shareExtension/Config.swift` to uncomment the production URL and add a production key. Do not commit these changes to CI.
+Before building a preview client, edit `assets/ios/shareExtension/Config.swift` to uncomment the production URL and add a production key. Do not commit these changes to CI. (Confirm if this sends that version to EAS's servers)
 
-To build a new preview client: `eas build --profile preview --platform ios --local`.
+To build a new preview client: `eas build --profile preview --platform ios`.
 
-(Or omit the `--local` flag to build on EAS servers, but note that the free Expo plan is limited to 15 iOS buidls per month, and then you will begin to be charged.)
+To install on the device, load the expo.dev build page on the device and tap Install.
+
+(This command supports the `--local` flag, but I'm not sure how to install on a device from a local build. Note that the free Expo plan is limited to 15 iOS builds per month, and then you will begin to be charged.)
 
 The preview client uses the latest published "preview" channel JS bundles. This can be published with `bin/deploy`
 
