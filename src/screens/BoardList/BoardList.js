@@ -198,8 +198,8 @@ function FavoriteButton({board, onToggleFavorite}) {
     <IconButton
       accessibilityLabel={
         isFavorite
-          ? `${attributes.name} is a favorite board`
-          : `${attributes.name} is not a favorite board`
+          ? `${attributes.name} is a favorite board. Tap to unfavorite`
+          : `${attributes.name} is not a favorite board. Tap to favorite`
       }
       icon={isFavorite ? 'star' : 'star-outline'}
       iconColor={colors.onSecondaryContainer}
