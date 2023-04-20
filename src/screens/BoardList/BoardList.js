@@ -24,7 +24,6 @@ export default function BoardList() {
   const {clearToken} = useToken();
   const navigation = useNavigation();
   const linkTo = useLinkTo();
-  const getBoardColors = useBoardColors();
 
   useEffect(() => {
     navigation.setOptions({
@@ -90,43 +89,13 @@ export default function BoardList() {
                     </SectionHeader>
                   );
                 }}
-                renderItem={({item: board, index}) => {
-                  let backgroundColor = null;
-                  let foregroundColor = null;
-
-                  if (board.attributes['color-theme']) {
-                    const colors = getBoardColors(board);
-                    backgroundColor = colors.secondaryContainer;
-                    foregroundColor = colors.onSecondaryContainer;
-                  }
-
-                  return (
-                    <Card
-                      onPress={() => goToBoard(board)}
-                      style={[
-                        index > 0 && sharedStyles.mt,
-                        backgroundColor && {backgroundColor},
-                      ]}
-                    >
-                      <View style={styles.boardCard}>
-                        <Icon
-                          name={board.attributes.icon ?? 'view-column'}
-                          style={sharedStyles.mr}
-                          color={foregroundColor}
-                        />
-                        <View style={sharedStyles.fill}>
-                          <Text
-                            variant="titleMedium"
-                            style={foregroundColor && {color: foregroundColor}}
-                          >
-                            {board.attributes.name ?? '(unnamed board)'}
-                          </Text>
-                        </View>
-                        <FavoriteButton board={board} />
-                      </View>
-                    </Card>
-                  );
-                }}
+                renderItem={({item: board, index}) => (
+                  <BoardCard
+                    board={board}
+                    onPress={() => goToBoard(board)}
+                    style={index > 0 && sharedStyles.mt}
+                  />
+                )}
               />
               <View style={sharedStyles.columnPadding}>
                 <Button
@@ -149,6 +118,44 @@ export default function BoardList() {
         An error occurred adding a new board.
       </ErrorSnackbar>
     </ScreenBackground>
+  );
+}
+
+function BoardCard({board, onPress, style}) {
+  const getBoardColors = useBoardColors();
+
+  let backgroundColor = null;
+  let foregroundColor = null;
+
+  if (board.attributes['color-theme']) {
+    const colors = getBoardColors(board);
+    backgroundColor = colors.secondaryContainer;
+    foregroundColor = colors.onSecondaryContainer;
+  }
+
+  return (
+    <View style={style}>
+      <Card onPress={onPress} style={[backgroundColor && {backgroundColor}]}>
+        <View style={styles.boardCard}>
+          <Icon
+            name={board.attributes.icon ?? 'view-column'}
+            style={sharedStyles.mr}
+            color={foregroundColor}
+          />
+          <View style={sharedStyles.fill}>
+            <Text
+              variant="titleMedium"
+              style={foregroundColor && {color: foregroundColor}}
+            >
+              {board.attributes.name ?? '(unnamed board)'}
+            </Text>
+          </View>
+        </View>
+      </Card>
+      <View style={styles.favoriteContainer}>
+        <FavoriteButton board={board} />
+      </View>
+    </View>
   );
 }
 
@@ -191,8 +198,8 @@ function FavoriteButton({board, onToggleFavorite}) {
     <IconButton
       accessibilityLabel={
         isFavorite
-          ? `${attributes.name} is a favorite board`
-          : `${attributes.name} is not a favorite board`
+          ? `${attributes.name} is a favorite board. Tap to unfavorite`
+          : `${attributes.name} is not a favorite board. Tap to favorite`
       }
       icon={isFavorite ? 'star' : 'star-outline'}
       iconColor={colors.onSecondaryContainer}
@@ -214,9 +221,17 @@ function useBoardColors() {
 const styles = StyleSheet.create({
   boardCard: {
     paddingLeft: 16,
-    paddingRight: 8,
+    paddingRight: 50,
+    paddingVertical: 12,
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  favoriteContainer: {
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    bottom: 0,
+    justifyContent: 'center',
   },
   favoriteStar: {
     margin: 5,
