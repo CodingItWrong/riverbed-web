@@ -22,6 +22,7 @@ export default function TextField({
       // TODO: see if removing "multiline" helps with scrolling
       // multiline
       label={label}
+      accessibilityLabel={label}
       testID={testID}
       value={value}
       onChangeText={onChangeText}
