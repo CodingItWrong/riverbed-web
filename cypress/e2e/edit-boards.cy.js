@@ -91,15 +91,18 @@ describe('edit boards', () => {
 
     cy.step('CHECK WHAT IS SHOWN WHEN NO BOARDS ARE FAVORITES', () => {
       // unfavorite boards are sorted alphabetically
-      cy.assertOrder('[aria-label$="a favorite board"]', [
+      cy.assertOrder('[aria-label*="a favorite board"]', [
         e =>
           e
             .invoke('attr', 'aria-label')
-            .should('eq', 'Games is not a favorite board'),
+            .should('eq', 'Games is not a favorite board. Tap to favorite'),
         e =>
           e
             .invoke('attr', 'aria-label')
-            .should('eq', 'Vegetables is not a favorite board'),
+            .should(
+              'eq',
+              'Vegetables is not a favorite board. Tap to favorite',
+            ),
       ]);
 
       cy.contains('Favorites').should('not.exist');
@@ -119,11 +122,15 @@ describe('edit boards', () => {
       cy.intercept('GET', 'http://cypressapi/boards?', {
         data: [gamesBoard, favoriteVegetablesBoard],
       });
-      cy.get('[aria-label="Vegetables is not a favorite board"]').click();
+      cy.get(
+        '[aria-label="Vegetables is not a favorite board. Tap to favorite"]',
+      ).click();
       cy.wait('@updateVegetables')
         .its('request.body.data.attributes["favorited-at"]')
         .should('be.a', 'string');
-      cy.get('[aria-label="Vegetables is a favorite board"]');
+      cy.get(
+        '[aria-label="Vegetables is a favorite board. Tap to unfavorite"]',
+      );
 
       cy.contains('Favorites').should('exist');
       cy.contains('Other Boards').should('exist');
@@ -142,21 +149,23 @@ describe('edit boards', () => {
       cy.intercept('GET', 'http://cypressapi/boards?', {
         data: [favoriteGamesBoard, favoriteVegetablesBoard],
       });
-      cy.get('[aria-label="Games is not a favorite board"]').click();
+      cy.get(
+        '[aria-label="Games is not a favorite board. Tap to favorite"]',
+      ).click();
       cy.wait('@updateGames')
         .its('request.body.data.attributes["favorited-at"]')
         .should('be.a', 'string');
 
       // favorite boards are sorted by time added
-      cy.assertOrder('[aria-label$="a favorite board"]', [
+      cy.assertOrder('[aria-label*="a favorite board"]', [
         e =>
           e
             .invoke('attr', 'aria-label')
-            .should('eq', 'Vegetables is a favorite board'),
+            .should('eq', 'Vegetables is a favorite board. Tap to unfavorite'),
         e =>
           e
             .invoke('attr', 'aria-label')
-            .should('eq', 'Games is a favorite board'),
+            .should('eq', 'Games is a favorite board. Tap to unfavorite'),
       ]);
 
       cy.contains('Favorites').should('exist');
@@ -170,11 +179,15 @@ describe('edit boards', () => {
       cy.intercept('GET', 'http://cypressapi/boards?', {
         data: [favoriteGamesBoard, vegetablesBoard],
       });
-      cy.get('[aria-label="Vegetables is a favorite board"]').click();
+      cy.get(
+        '[aria-label="Vegetables is a favorite board. Tap to unfavorite"]',
+      ).click();
       cy.wait('@updateVegetables')
         .its('request.body.data.attributes["favorited-at"]')
         .should('be.null');
-      cy.get('[aria-label="Vegetables is not a favorite board"]');
+      cy.get(
+        '[aria-label="Vegetables is not a favorite board. Tap to favorite"]',
+      );
     });
   });
 });
