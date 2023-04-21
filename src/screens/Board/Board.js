@@ -1,5 +1,5 @@
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
-import {useCallback, useEffect, useState} from 'react';
+import {useCallback, useEffect} from 'react';
 import {View} from 'react-native';
 import {Appbar, Provider as PaperProvider} from 'react-native-paper';
 import ErrorSnackbar from '../../components/ErrorSnackbar';
@@ -15,9 +15,8 @@ import {useCurrentBoard} from '../../data/currentBoard';
 import {useBoardElements} from '../../data/elements';
 import useColorSchemeTheme from '../../theme/useColorSchemeTheme';
 import ColumnList from './Column/ColumnList';
-import EditBoardForm from './EditBoardForm';
 
-export default function Board(...args) {
+export default function Board() {
   const {boardId} = useCurrentBoard();
   const navigation = useNavigation();
   const {
@@ -35,7 +34,10 @@ export default function Board(...args) {
   const error = boardError ?? cardsError ?? columnsError ?? elementsError;
   const refreshCards = useRefreshCards(board);
 
-  const [editingBoard, setEditingBoard] = useState(false);
+  const editBoard = useCallback(
+    () => navigation.navigate('BoardEdit', {boardId: board?.id}),
+    [navigation, board?.id],
+  );
 
   useEffect(() => {
     if (isLoadingBoard) {
@@ -49,11 +51,11 @@ export default function Board(...args) {
       navigation.setOptions({
         title: board?.attributes?.name ?? '(unnamed board)',
         icon: board?.attributes?.icon,
-        onTitlePress: () => setEditingBoard(true),
+        onTitlePress: () => editBoard(),
         isFetching,
       });
     }
-  }, [navigation, board, isLoadingBoard, isFetching, editingBoard]);
+  }, [navigation, board, isLoadingBoard, isFetching, editBoard]);
 
   useFocusEffect(
     useCallback(() => {
@@ -64,15 +66,6 @@ export default function Board(...args) {
   function renderContents() {
     if (!board) {
       return null;
-    } else if (editingBoard) {
-      return (
-        <EditBoardForm
-          board={board}
-          onSave={() => setEditingBoard(false)}
-          onDelete={() => navigation.goBack()}
-          onCancel={() => setEditingBoard(false)}
-        />
-      );
     } else {
       return <ColumnList board={board} />;
     }
@@ -92,7 +85,7 @@ export default function Board(...args) {
         }
         icon={board?.attributes?.icon}
         isFetching={isFetching}
-        onPressTitle={() => setEditingBoard(true)}
+        onPressTitle={() => editBoard()}
         colorTheme={titleBarColorTheme}
       />
       <ScreenBackground style={sharedStyles.fullHeight}>

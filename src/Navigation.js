@@ -6,6 +6,7 @@ import NavigationBar from './components/NavigationBar';
 import {useCurrentBoard} from './data/currentBoard';
 import {useToken} from './data/token';
 import Board from './screens/Board';
+import BoardEdit from './screens/BoardEdit';
 import BoardList from './screens/BoardList';
 import Card from './screens/Card';
 import Column from './screens/Column';
@@ -22,6 +23,7 @@ const linking = {
         initialRouteName: 'Board',
         screens: {
           Board: '/',
+          BoardEdit: '/edit',
           Column: 'columns/:columnId',
           Card: 'cards/:cardId',
           Element: 'elements/:elementId',
@@ -66,6 +68,11 @@ const Boards = ({route}) => {
         name="Board"
         component={Board}
         options={{headerShown: false}}
+      />
+      <BoardStack.Screen
+        name="BoardEdit"
+        component={BoardEdit}
+        options={modalOptions}
       />
       <AppStack.Screen
         name="Column"
