@@ -105,17 +105,20 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
   );
 }
 
-const COLOR_THEME_OPTIONS = Object.values(COLOR_THEMES).map(colorTheme => ({
+const COLOR_THEME_OPTIONS = [
+  {key: null, label: 'Default'},
+  ...Object.values(COLOR_THEMES),
+].map(colorTheme => ({
   key: colorTheme.key,
   label: colorTheme.label,
   icon: 'square',
-  iconColor: colorTheme.key,
+  iconColor: colorTheme.key ?? 'purple', // TODO: this is not quite the right purple
 }));
 
-const ICON_OPTIONS = ICONS.map(icon => ({
+const ICON_OPTIONS = [{key: null, label: 'None'}, ...ICONS].map(icon => ({
   key: icon.key,
   label: icon.label,
-  icon: icon.key,
+  icon: icon.key ?? 'dots-square',
 }));
 
 console.log({COLOR_THEME_OPTIONS, ICON_OPTIONS});
