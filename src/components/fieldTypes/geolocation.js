@@ -1,7 +1,11 @@
+import * as Linking from 'expo-linking';
 import {getCurrentPositionAsync, useForegroundPermissions} from 'expo-location';
 import {useState} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
-import MapView, {Marker as NativeMarker} from 'react-native-maps';
+import MapView, {
+  Marker as NativeMarker,
+  PROVIDER_GOOGLE,
+} from 'react-native-maps';
 import FIELD_DATA_TYPES from '../../enums/fieldDataTypes';
 import IconButton from '../IconButton';
 import LoadingIndicator from '../LoadingIndicator';
@@ -95,6 +99,12 @@ function GeolocationEditorComponent({
     setValue(newValue);
   }
 
+  function openMapsApp() {
+    const daddr = `${value.lat},${value.lng}`;
+    const company = Platform.OS === 'ios' ? 'apple' : 'google';
+    Linking.openURL(`http://maps.${company}.com/maps?daddr=${daddr}`);
+  }
+
   return (
     <>
       <View style={[styles.geoRow, style]}>
@@ -116,26 +126,38 @@ function GeolocationEditorComponent({
           />
         </View>
         <View>
+          <View>
+            <IconButton
+              accessibilityLabel="Use current location"
+              icon="compass"
+              disabled={
+                disabled || !status || (!status.granted && !status.canAskAgain)
+              }
+              onPress={fillCurrentLocation}
+              style={[isLoadingCurrentPosition && styles.hidden]}
+            />
+            {isLoadingCurrentPosition && (
+              <View style={styles.currentLocationLoadingContainer}>
+                <LoadingIndicator />
+              </View>
+            )}
+          </View>
           <IconButton
-            accessibilityLabel="Use current location"
-            icon="compass"
-            disabled={
-              disabled || !status || (!status.granted && !status.canAskAgain)
-            }
-            onPress={fillCurrentLocation}
-            style={[isLoadingCurrentPosition && styles.hidden]}
+            accessibilityLabel="Get directions"
+            icon="directions"
+            disabled={value.lat === null || value.lng === null}
+            onPress={openMapsApp}
           />
-          {isLoadingCurrentPosition && (
-            <View style={styles.currentLocationLoadingContainer}>
-              <LoadingIndicator />
-            </View>
-          )}
         </View>
       </View>
       {window.Cypress ? (
         <Text>(hiding map view in cypress)</Text>
       ) : (
         <MapView
+          provider={Platform.select({
+            android: PROVIDER_GOOGLE,
+            default: undefined,
+          })}
           style={[styles.detailMap, sharedStyles.mt]}
           region={region}
           onPress={handleMapPress}
