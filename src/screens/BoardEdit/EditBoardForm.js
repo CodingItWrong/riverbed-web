@@ -48,7 +48,7 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
   }
 
   return (
-    <View style={sharedStyles.columnPadding}>
+    <View>
       <ConfirmationDialog
         destructive
         open={confirmingDelete}
