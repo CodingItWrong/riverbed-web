@@ -48,8 +48,6 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
     }
   }
 
-  const colorTheme = COLOR_THEMES[attributes['color-theme']];
-
   return (
     <View style={sharedStyles.columnPadding}>
       <ConfirmationDialog
@@ -68,16 +66,28 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
         testID="text-input-board-name"
         style={sharedStyles.mt}
       />
-      <DropdownField
-        fieldLabel="Color Theme"
-        emptyLabel="(default)"
-        value={colorTheme}
-        onValueChange={value =>
-          updateAttribute('color-theme', value?.key ?? null)
-        }
-        options={Object.values(COLOR_THEMES)}
-        style={sharedStyles.mt}
-      />
+
+      <View style={sharedStyles.mt}>
+        <Text variant="bodySmall">Color Theme</Text>
+        <View style={styles.toggleButtonList}>
+          {Object.values(COLOR_THEMES).map(colorTheme => (
+            <ToggleButton
+              key={colorTheme.key}
+              icon="square"
+              iconColor={colorTheme.key}
+              value={colorTheme.key}
+              accessibilityLabel={colorTheme.label}
+              status={
+                attributes['color-theme'] === colorTheme.key
+                  ? 'checked'
+                  : 'unchecked'
+              }
+              onPress={() => updateAttribute('color-theme', colorTheme.key)}
+            />
+          ))}
+        </View>
+      </View>
+
       <View style={sharedStyles.mt}>
         <Text variant="bodySmall">Icon</Text>
         <View style={styles.toggleButtonList}>
@@ -93,6 +103,7 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
           ))}
         </View>
       </View>
+
       <ErrorMessage>{getErrorMessage()}</ErrorMessage>
       <Button onPress={onCancel} disabled={isLoading} style={sharedStyles.mt}>
         Cancel
