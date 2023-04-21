@@ -2,8 +2,8 @@ import set from 'lodash.set';
 import {useState} from 'react';
 import {View} from 'react-native';
 import Button from '../../components/Button';
+import ButtonGroup from '../../components/ButtonGroup';
 import ConfirmationDialog from '../../components/ConfirmationDialog';
-import DropdownField from '../../components/DropdownField';
 import ErrorMessage from '../../components/ErrorMessage';
 import TextField from '../../components/TextField';
 import sharedStyles from '../../components/sharedStyles';
@@ -47,12 +47,6 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
     }
   }
 
-  const icon = attributes.icon
-    ? ICONS.find(i => i.key === attributes.icon)
-    : null;
-
-  const colorTheme = COLOR_THEMES[attributes['color-theme']];
-
   return (
     <View style={sharedStyles.columnPadding}>
       <ConfirmationDialog
@@ -71,24 +65,23 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
         testID="text-input-board-name"
         style={sharedStyles.mt}
       />
-      <DropdownField
-        fieldLabel="Color Theme"
-        emptyLabel="(default)"
-        value={colorTheme}
-        onValueChange={value =>
-          updateAttribute('color-theme', value?.key ?? null)
-        }
-        options={Object.values(COLOR_THEMES)}
+
+      <ButtonGroup
+        label="Color Theme"
+        value={attributes['color-theme']}
+        onChangeValue={value => updateAttribute('color-theme', value)}
+        options={COLOR_THEME_OPTIONS}
         style={sharedStyles.mt}
       />
-      <DropdownField
-        fieldLabel="Icon"
-        emptyLabel="(none)"
-        value={icon}
-        onValueChange={value => updateAttribute('icon', value?.key ?? null)}
-        options={ICONS}
+
+      <ButtonGroup
+        label="Icon"
+        value={attributes.icon}
+        onChangeValue={value => updateAttribute('icon', value)}
+        options={ICON_OPTIONS}
         style={sharedStyles.mt}
       />
+
       <ErrorMessage>{getErrorMessage()}</ErrorMessage>
       <Button onPress={onCancel} disabled={isLoading} style={sharedStyles.mt}>
         Cancel
@@ -111,3 +104,21 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
     </View>
   );
 }
+
+const COLOR_THEME_OPTIONS = [
+  {key: null, label: 'Default'},
+  ...Object.values(COLOR_THEMES),
+].map(colorTheme => ({
+  key: colorTheme.key,
+  label: colorTheme.label,
+  icon: 'square',
+  iconColor: colorTheme.key ?? 'purple', // TODO: this is not quite the right purple
+}));
+
+const ICON_OPTIONS = [{key: null, label: 'None'}, ...ICONS].map(icon => ({
+  key: icon.key,
+  label: icon.label,
+  icon: icon.key ?? 'dots-square',
+}));
+
+console.log({COLOR_THEME_OPTIONS, ICON_OPTIONS});
