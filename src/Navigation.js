@@ -38,7 +38,6 @@ const modalOptions = Platform.select({
   android: {
     headerShown: false,
     presentation: 'modal',
-    title: 'Card',
   },
   ios: {
     headerShown: false,
@@ -72,7 +71,7 @@ const Boards = ({route}) => {
       <BoardStack.Screen
         name="BoardEdit"
         component={BoardEdit}
-        options={modalOptions}
+        options={{...modalOptions, title: 'Edit Board'}}
       />
       <AppStack.Screen
         name="Column"
