@@ -1,10 +1,9 @@
 import set from 'lodash.set';
 import {useState} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {Text, ToggleButton} from 'react-native-paper';
+import {View} from 'react-native';
 import Button from '../../components/Button';
+import ButtonGroup from '../../components/ButtonGroup';
 import ConfirmationDialog from '../../components/ConfirmationDialog';
-import DropdownField from '../../components/DropdownField';
 import ErrorMessage from '../../components/ErrorMessage';
 import TextField from '../../components/TextField';
 import sharedStyles from '../../components/sharedStyles';
@@ -67,42 +66,21 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
         style={sharedStyles.mt}
       />
 
-      <View style={sharedStyles.mt}>
-        <Text variant="bodySmall">Color Theme</Text>
-        <View style={styles.toggleButtonList}>
-          {Object.values(COLOR_THEMES).map(colorTheme => (
-            <ToggleButton
-              key={colorTheme.key}
-              icon="square"
-              iconColor={colorTheme.key}
-              value={colorTheme.key}
-              accessibilityLabel={colorTheme.label}
-              status={
-                attributes['color-theme'] === colorTheme.key
-                  ? 'checked'
-                  : 'unchecked'
-              }
-              onPress={() => updateAttribute('color-theme', colorTheme.key)}
-            />
-          ))}
-        </View>
-      </View>
+      <ButtonGroup
+        label="Color Theme"
+        value={attributes['color-theme']}
+        onChangeValue={value => updateAttribute('color-theme', value)}
+        options={COLOR_THEME_OPTIONS}
+        style={sharedStyles.mt}
+      />
 
-      <View style={sharedStyles.mt}>
-        <Text variant="bodySmall">Icon</Text>
-        <View style={styles.toggleButtonList}>
-          {ICONS.map(icon => (
-            <ToggleButton
-              key={icon.key}
-              icon={icon.key}
-              value={icon.key}
-              accessibilityLabel={icon.label}
-              status={attributes.icon === icon.key ? 'checked' : 'unchecked'}
-              onPress={() => updateAttribute('icon', icon.key)}
-            />
-          ))}
-        </View>
-      </View>
+      <ButtonGroup
+        label="Icon"
+        value={attributes.icon}
+        onChangeValue={value => updateAttribute('icon', value)}
+        options={ICON_OPTIONS}
+        style={sharedStyles.mt}
+      />
 
       <ErrorMessage>{getErrorMessage()}</ErrorMessage>
       <Button onPress={onCancel} disabled={isLoading} style={sharedStyles.mt}>
@@ -127,9 +105,17 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
   );
 }
 
-const styles = StyleSheet.create({
-  toggleButtonList: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
-});
+const COLOR_THEME_OPTIONS = Object.values(COLOR_THEMES).map(colorTheme => ({
+  key: colorTheme.key,
+  label: colorTheme.label,
+  icon: 'square',
+  iconColor: colorTheme.key,
+}));
+
+const ICON_OPTIONS = ICONS.map(icon => ({
+  key: icon.key,
+  label: icon.label,
+  icon: icon.key,
+}));
+
+console.log({COLOR_THEME_OPTIONS, ICON_OPTIONS});
