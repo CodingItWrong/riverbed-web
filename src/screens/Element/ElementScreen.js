@@ -59,7 +59,7 @@ export default function ElementScreen({route}) {
       >
         <Appbar.BackAction
           onPress={closeModal}
-          accessibilityLabel="Close column"
+          accessibilityLabel="Close element"
         />
       </View>
       {renderContents()}
