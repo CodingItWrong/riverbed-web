@@ -120,5 +120,3 @@ const ICON_OPTIONS = [{key: null, label: 'None'}, ...ICONS].map(icon => ({
   label: icon.label,
   icon: icon.key ?? 'dots-square',
 }));
-
-console.log({COLOR_THEME_OPTIONS, ICON_OPTIONS});
