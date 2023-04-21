@@ -17,7 +17,7 @@ import useColorSchemeTheme from '../../theme/useColorSchemeTheme';
 import ColumnList from './Column/ColumnList';
 import EditBoardForm from './EditBoardForm';
 
-export default function Board(...args) {
+export default function Board() {
   const {boardId} = useCurrentBoard();
   const navigation = useNavigation();
   const {
