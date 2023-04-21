@@ -1,6 +1,7 @@
 import set from 'lodash.set';
 import {useState} from 'react';
-import {View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
+import {Text, ToggleButton} from 'react-native-paper';
 import Button from '../../components/Button';
 import ConfirmationDialog from '../../components/ConfirmationDialog';
 import DropdownField from '../../components/DropdownField';
@@ -47,10 +48,6 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
     }
   }
 
-  const icon = attributes.icon
-    ? ICONS.find(i => i.key === attributes.icon)
-    : null;
-
   const colorTheme = COLOR_THEMES[attributes['color-theme']];
 
   return (
@@ -81,14 +78,21 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
         options={Object.values(COLOR_THEMES)}
         style={sharedStyles.mt}
       />
-      <DropdownField
-        fieldLabel="Icon"
-        emptyLabel="(none)"
-        value={icon}
-        onValueChange={value => updateAttribute('icon', value?.key ?? null)}
-        options={ICONS}
-        style={sharedStyles.mt}
-      />
+      <View style={sharedStyles.mt}>
+        <Text variant="bodySmall">Icon</Text>
+        <View style={styles.toggleButtonList}>
+          {ICONS.map(icon => (
+            <ToggleButton
+              key={icon.key}
+              icon={icon.key}
+              value={icon.key}
+              accessibilityLabel={icon.label}
+              status={attributes.icon === icon.key ? 'checked' : 'unchecked'}
+              onPress={() => updateAttribute('icon', icon.key)}
+            />
+          ))}
+        </View>
+      </View>
       <ErrorMessage>{getErrorMessage()}</ErrorMessage>
       <Button onPress={onCancel} disabled={isLoading} style={sharedStyles.mt}>
         Cancel
@@ -111,3 +115,10 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  toggleButtonList: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+});
