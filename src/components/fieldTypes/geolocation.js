@@ -2,19 +2,12 @@ import * as Linking from 'expo-linking';
 import {getCurrentPositionAsync, useForegroundPermissions} from 'expo-location';
 import {useState} from 'react';
 import {Platform, StyleSheet, View} from 'react-native';
-import MapView, {
-  Marker as NativeMarker,
-  PROVIDER_GOOGLE,
-} from 'react-native-maps';
 import FIELD_DATA_TYPES from '../../enums/fieldDataTypes';
 import IconButton from '../IconButton';
 import LoadingIndicator from '../LoadingIndicator';
+import Map from '../Map';
 import NumberField from '../NumberField';
-import Text from '../Text';
 import sharedStyles from '../sharedStyles';
-
-const {Marker: WebMarker} = MapView;
-const Marker = Platform.select({web: WebMarker, default: NativeMarker});
 
 const geolocationFieldDataType = {
   key: FIELD_DATA_TYPES.GEOLOCATION.key,
@@ -24,27 +17,6 @@ const geolocationFieldDataType = {
   getSortValue: ({value}) => value.lat, // arbitrarily chose to sort by latitude
   EditorComponent: GeolocationEditorComponent,
 };
-
-const defaultValue = {lat: '33.7489954', lng: '-84.3879824'}; // Atlanta GA
-
-const valueToCoords = value =>
-  value
-    ? {
-        latitude: Number(value.lat),
-        longitude: Number(value.lng),
-      }
-    : null;
-const coordsToValue = coords => ({
-  lat: String(coords.latitude),
-  lng: String(coords.longitude),
-});
-
-const valueToRegion = value => ({
-  ...valueToCoords(value ? value : defaultValue),
-  // TODO: figure out good values for deltas
-  latitudeDelta: 0.0147,
-  longitudeDelta: 0.0404,
-});
 
 function GeolocationEditorComponent({
   field,
@@ -81,22 +53,8 @@ function GeolocationEditorComponent({
     }
   }
 
-  const markerCoords = valueToCoords(value);
-  const region = valueToRegion(value);
-
-  function handleMapPress(event) {
-    let newValue;
-
-    if (event.nativeEvent) {
-      const {
-        nativeEvent: {coordinate},
-      } = event;
-      newValue = coordsToValue(coordinate);
-    } else {
-      newValue = {lat: event.latLng.lat(), lng: event.latLng.lng()};
-    }
-
-    setValue(newValue);
+  function handlePressLocation(newLocation) {
+    setValue(newLocation);
   }
 
   function openMapsApp() {
@@ -150,28 +108,11 @@ function GeolocationEditorComponent({
           />
         </View>
       </View>
-      {window.Cypress ? (
-        <Text>(hiding map view in cypress)</Text>
-      ) : (
-        <MapView
-          provider={Platform.select({
-            android: PROVIDER_GOOGLE,
-            default: undefined,
-          })}
-          style={[styles.detailMap, sharedStyles.mt]}
-          region={region}
-          onPress={handleMapPress}
-          options={{disableDefaultUI: true}}
-          toolbarEnabled={false}
-          zoomEnabled={!disabled}
-          zoomControlEnabled={!disabled}
-          rotateEnabled={!disabled}
-          scrollEnabled={!disabled}
-          pitchEnabled={!disabled}
-        >
-          {markerCoords && <Marker coordinate={markerCoords} />}
-        </MapView>
-      )}
+      <Map
+        location={value}
+        onPressLocation={handlePressLocation}
+        style={[styles.detailMap, sharedStyles.mt]}
+      />
     </>
   );
 }
