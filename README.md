@@ -17,12 +17,13 @@ Optional:
 
 - Clone the repo
 - Run `yarn install`
+- Copy `.env.sample` to `.env.local` and `.env.production`, and fill in API key values from Google Cloud
 
 Dependencies are locked with `yarn.lock`; please use `yarn` rather than `npm` for installing.
 
 ## Running
 
-- Run `yarn web` (starts both Metro and Webpack)
+- Run `bin/serve` (starts both Metro and Webpack)
 
 ## Development
 

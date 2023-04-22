@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+export $(xargs <./.env.production)
+
 # deploy to web
 yarn deploy:web
 
