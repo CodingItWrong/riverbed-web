@@ -1,3 +1,4 @@
+import Constants from 'expo-constants';
 import {GoogleApiWrapper, Map as GoogleMap, Marker} from 'google-maps-react';
 import {View} from 'react-native';
 import Text from './Text';
@@ -38,5 +39,5 @@ function Map({style, location, disabled, onPressLocation, google}) {
 }
 
 export default GoogleApiWrapper({
-  apiKey: 'AIzaSyD0F5EfnIXH4iQo6lgN8-nW_z8pQl2WSuE',
+  apiKey: Constants.expoConfig.extra.googleMapsApiKeyWeb,
 })(Map);
