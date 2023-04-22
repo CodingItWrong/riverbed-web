@@ -29,12 +29,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.codingitwrong.listapp",
-      "config": {
-        "googleMaps": {
-          "apiKey": "AIzaSyD0F5EfnIXH4iQo6lgN8-nW_z8pQl2WSuE"
-        }
-      }
+      "package": "com.codingitwrong.listapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
