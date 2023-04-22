@@ -24,3 +24,6 @@ cypress/videos
 # ios
 
 coverage
+
+.env.local
+.env.production
