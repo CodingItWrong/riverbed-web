@@ -80,6 +80,14 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
         style={sharedStyles.mt}
       />
       <TextField
+        label="Card Create Webhook"
+        value={attributes.options.webhooks?.['card-create'] ?? ''}
+        onChangeText={value =>
+          updateAttribute('options.webhooks["card-create"]', value || null)
+        }
+        style={sharedStyles.mt}
+      />
+      <TextField
         label="Card Update Webhook"
         value={attributes.options.webhooks?.['card-update'] ?? ''}
         onChangeText={value =>
