@@ -2,7 +2,7 @@ import Factory from '../support/Factory';
 
 describe('edit boards', () => {
   it('allows editing boards', () => {
-    const newBoard = Factory.board({});
+    const newBoard = Factory.board({options: {}});
 
     cy.intercept('GET', 'http://cypressapi/boards?', {
       data: [],

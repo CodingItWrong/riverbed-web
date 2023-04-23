@@ -65,7 +65,6 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
         testID="text-input-board-name"
         style={sharedStyles.mt}
       />
-
       <ButtonGroup
         label="Color Theme"
         value={attributes['color-theme']}
@@ -73,7 +72,6 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
         options={COLOR_THEME_OPTIONS}
         style={sharedStyles.mt}
       />
-
       <ButtonGroup
         label="Icon"
         value={attributes.icon}
@@ -81,7 +79,14 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
         options={ICON_OPTIONS}
         style={sharedStyles.mt}
       />
-
+      <TextField
+        label="Card Update Webhook"
+        value={attributes.options.webhooks?.['card-update'] ?? ''}
+        onChangeText={value =>
+          updateAttribute('options.webhooks["card-update"]', value || null)
+        }
+        style={sharedStyles.mt}
+      />
       <ErrorMessage>{getErrorMessage()}</ErrorMessage>
       <Button onPress={onCancel} disabled={isLoading} style={sharedStyles.mt}>
         Cancel
