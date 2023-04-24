@@ -66,7 +66,7 @@ The preview client is useful to have a running app on a physical device with an 
 
 Before building a preview client, edit `assets/ios/shareExtension/Config.swift` to uncomment the production URL and add a production key. Do not commit these changes to CI. (Confirm if this sends that version to EAS's servers)
 
-To build a new preview client: `eas build --profile preview --platform ios`.
+To build a new preview client, **first set the production share extension URL in `Config.swift`**, then run: `eas build --profile preview --platform ios`.
 
 To install on the device, load the expo.dev build page on the device and tap Install.
 
