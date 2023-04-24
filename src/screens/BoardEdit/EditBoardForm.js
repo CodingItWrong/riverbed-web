@@ -4,16 +4,27 @@ import {View} from 'react-native';
 import Button from '../../components/Button';
 import ButtonGroup from '../../components/ButtonGroup';
 import ConfirmationDialog from '../../components/ConfirmationDialog';
+import DropdownField from '../../components/DropdownField';
 import ErrorMessage from '../../components/ErrorMessage';
 import TextField from '../../components/TextField';
 import sharedStyles from '../../components/sharedStyles';
 import {useDeleteBoard, useUpdateBoard} from '../../data/boards';
+import {useBoardElements} from '../../data/elements';
 import COLOR_THEMES from '../../enums/colorThemes';
+import ELEMENT_TYPES from '../../enums/elementTypes';
 import ICONS from '../../enums/icons';
+import sortByDisplayOrder from '../../utils/sortByDisplayOrder';
 
 export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
   const [attributes, setAttributes] = useState(board.attributes);
   const [confirmingDelete, setConfirmingDelete] = useState(false);
+
+  const {data: elements = []} = useBoardElements(board);
+  const fields = sortByDisplayOrder(
+    elements.filter(
+      e => e.attributes['element-type'] === ELEMENT_TYPES.FIELD.key,
+    ),
+  );
 
   const {
     mutate: updateBoard,
@@ -95,6 +106,35 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
         }
         style={sharedStyles.mt}
       />
+      <DropdownField
+        fieldLabel="Share URL Field"
+        emptyLabel="(field)"
+        options={fields}
+        value={fields.find(
+          f => f.id === attributes.options.share?.['url-field'],
+        )}
+        onValueChange={field =>
+          updateAttribute('options.share["url-field"]', field?.id)
+        }
+        keyExtractor={field => field.id}
+        labelExtractor={field => field.attributes.name}
+        style={sharedStyles.mt}
+      />
+      <DropdownField
+        fieldLabel="Share Title Field"
+        emptyLabel="(field)"
+        options={fields}
+        value={fields.find(
+          f => f.id === attributes.options.share?.['title-field'],
+        )}
+        onValueChange={field =>
+          updateAttribute('options.share["title-field"]', field?.id)
+        }
+        keyExtractor={field => field.id}
+        labelExtractor={field => field.attributes.name}
+        style={sharedStyles.mt}
+      />
+
       <ErrorMessage>{getErrorMessage()}</ErrorMessage>
       <Button onPress={onCancel} disabled={isLoading} style={sharedStyles.mt}>
         Cancel
