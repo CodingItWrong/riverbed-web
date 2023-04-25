@@ -39,7 +39,7 @@ jobs:
 
       - uses: futureware-tech/simulator-action@v2
         with:
-          model: "iPhone 12"
+          model: "iPhone 14"
 
       - name: Run Detox
         run: detox test -c ios.sim.release
