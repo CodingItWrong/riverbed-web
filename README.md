@@ -91,8 +91,15 @@ TestFlight builds can be used by any device added as internal testers.
 
 ### Native: Maestro
 
+(Only runs locally, not on CI)
+
 - Boot the app in Expo Go in a simulator or emulator
 - Run `maestro test maestro/[some test name].yaml`
+
+### Native: Detox
+
+- Build the Detox client with `detox build -c ios.sim.release`
+- Run the Detox tests with `detox test -c ios.sim.release`
 
 ## Updating Xcode
 
