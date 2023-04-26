@@ -14,6 +14,7 @@ describe('Create and Use Board', () => {
     // rename board
     await element(by.text('(click to name board)')).tap();
     await element(by.label('Board Name')).atIndex(0).typeText('De Tox Board');
+    await element(by.id('scroll-view')).scrollTo('bottom');
     await element(by.text('Save Board')).tap();
     await expect(element(by.text('Save Board'))).not.toBeVisible();
     await expect(element(by.text('De Tox Board'))).toBeVisible();
