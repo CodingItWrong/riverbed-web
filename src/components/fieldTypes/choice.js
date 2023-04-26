@@ -16,7 +16,6 @@ function ChoiceEditorComponent({
   label,
   value,
   setValue,
-  readOnly,
   disabled,
   style,
 }) {

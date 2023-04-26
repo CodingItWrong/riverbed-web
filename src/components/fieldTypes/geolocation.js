@@ -23,7 +23,6 @@ function GeolocationEditorComponent({
   label,
   value,
   setValue,
-  readOnly,
   disabled,
   style,
 }) {

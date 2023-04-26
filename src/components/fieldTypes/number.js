@@ -14,7 +14,6 @@ function NumberEditorComponent({
   label,
   value,
   setValue,
-  readOnly,
   disabled,
   style,
 }) {

@@ -13,15 +13,7 @@ const dateFieldDataType = {
   EditorComponent: DateEditorComponent,
 };
 
-function DateEditorComponent({
-  field,
-  label,
-  value,
-  setValue,
-  readOnly,
-  disabled,
-  style,
-}) {
+function DateEditorComponent({field, label, value, setValue, disabled, style}) {
   // TODO: should onChangeText always update? Like if you type?
   return (
     <DatePickerInput
