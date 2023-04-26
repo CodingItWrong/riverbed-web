@@ -24,5 +24,8 @@ describe('Create and Use Board', () => {
     await element(by.text('Save Column')).tap();
     await expect(element(by.text('Save Column'))).not.toBeVisible();
     await expect(element(by.text('All'))).toBeVisible();
+
+    // create card
+    await element(by.text('Add Card')).tap();
   });
 });

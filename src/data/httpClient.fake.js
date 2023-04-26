@@ -9,6 +9,7 @@ function jsonApiData(data) {
 }
 
 const boards = [];
+const cards = [];
 const columns = [];
 
 class FakeHttpClient {
@@ -56,6 +57,17 @@ class FakeHttpClient {
         };
         boards.push(newBoard);
         return jsonApiData(newBoard);
+
+      case 'cards?':
+        const newCard = {
+          type: 'cards',
+          id: getId(),
+          attributes: {
+            'field-values': {},
+          },
+        };
+        cards.push(newCard);
+        return jsonApiData(newCard);
 
       case 'columns?':
         const newColumn = {
