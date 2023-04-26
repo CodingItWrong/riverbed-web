@@ -70,7 +70,7 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
         onDismiss={() => setConfirmingDelete(false)}
       />
       <TextField
-        label="Name"
+        label="Board Name"
         value={attributes.name ?? ''}
         onChangeText={value => updateAttribute('name', value)}
         testID="text-input-board-name"
