@@ -27,6 +27,7 @@ export default function BaseModalScreen({children}) {
           contentContainerStyle={{paddingBottom: insets.bottom}}
           scrollIndicatorInsets={{bottom: insets.bottom}}
           extraHeight={EXPERIMENTAL_EXTRA_HEIGHT}
+          testID="scroll-view"
         >
           <View style={Platform.OS === 'ios' && styles.container}>
             {children}
