@@ -25,8 +25,6 @@ export default function BaseModalScreen({children}) {
       <ModalScreenWrapper closeModal={() => navigation.goBack()}>
         <KeyboardAwareScrollView
           contentContainerStyle={{paddingBottom: insets.bottom}}
-          scrollIndicatorInsets={{bottom: insets.bottom}}
-          extraHeight={EXPERIMENTAL_EXTRA_HEIGHT}
           testID="scroll-view"
         >
           <View style={Platform.OS === 'ios' && styles.container}>
@@ -37,8 +35,6 @@ export default function BaseModalScreen({children}) {
     </PaperProvider>
   );
 }
-
-const EXPERIMENTAL_EXTRA_HEIGHT = 150;
 
 /**
  * Wrapper around a modal screen.
