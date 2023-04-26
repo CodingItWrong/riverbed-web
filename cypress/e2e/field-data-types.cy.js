@@ -178,7 +178,9 @@ describe('field data types', () => {
     });
 
     cy.step('TEST NUMBER FIELD', () => {
-      cy.get(`[data-testid=number-input-${numberField.id}]`).clear().type(27);
+      cy.get(`[data-testid=number-input-${numberField.id}]`).clear();
+      cy.wait('@updateCard');
+      cy.get(`[data-testid=number-input-${numberField.id}]`).type(27);
       cy.wait('@updateCard')
         .its('request.body.data.attributes["field-values"]')
         .should('deep.include', {[numberField.id]: '27'});
