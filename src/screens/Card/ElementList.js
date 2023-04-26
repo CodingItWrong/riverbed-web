@@ -1,7 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
 import {StyleSheet, View} from 'react-native';
-import {KeyboardAwareFlatList} from 'react-native-keyboard-aware-scroll-view';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Button from '../../components/Button';
 import DropdownMenu from '../../components/DropdownMenu';
 import ErrorSnackbar from '../../components/ErrorSnackbar';
@@ -16,7 +14,6 @@ import sortByDisplayOrder from '../../utils/sortByDisplayOrder';
 
 export default function ElementList({board}) {
   const navigation = useNavigation();
-  const insets = useSafeAreaInsets();
 
   const {data: elements = []} = useBoardElements(board);
   const sortedElements = sortByDisplayOrder(elements);
@@ -49,40 +46,32 @@ export default function ElementList({board}) {
 
   return (
     <View style={[sharedStyles.fullHeight]}>
-      <KeyboardAwareFlatList
-        extraScrollHeight={EXPERIMENTAL_EXTRA_SCROLL_HEIGHT}
-        data={sortedElements}
-        keyExtractor={element => element.id}
-        contentContainerStyle={{paddingBottom: insets.bottom}}
-        scrollIndicatorInsets={{bottom: insets.bottom}}
-        renderItem={({item: element, index: elementIndex}) => (
-          <EditableElement
-            element={element}
-            onEdit={() => editElement(element)}
-            testID={`element-${element.id}`}
-            style={elementIndex > 0 && sharedStyles.mt}
-          />
+      {sortedElements.map((element, elementIndex) => (
+        <EditableElement
+          key={element.id}
+          element={element}
+          onEdit={() => editElement(element)}
+          testID={`element-${element.id}`}
+          style={elementIndex > 0 && sharedStyles.mt}
+        />
+      ))}
+      <DropdownMenu
+        menuButton={props => (
+          <Button
+            icon="plus"
+            mode="link"
+            disabled={isAdding}
+            style={sharedStyles.mt}
+            {...props}
+          >
+            Add Element
+          </Button>
         )}
-        ListFooterComponent={
-          <DropdownMenu
-            menuButton={props => (
-              <Button
-                icon="plus"
-                mode="link"
-                disabled={isAdding}
-                style={sharedStyles.mt}
-                {...props}
-              >
-                Add Element
-              </Button>
-            )}
-            menuItems={[
-              {title: 'Field', onPress: addField},
-              {title: 'Button', onPress: addButton},
-              {title: 'Button Menu', onPress: addButtonMenu},
-            ]}
-          />
-        }
+        menuItems={[
+          {title: 'Field', onPress: addField},
+          {title: 'Button', onPress: addButton},
+          {title: 'Button Menu', onPress: addButtonMenu},
+        ]}
       />
       <ErrorSnackbar error={createElementError}>
         An error occurred adding an element.
@@ -90,8 +79,6 @@ export default function ElementList({board}) {
     </View>
   );
 }
-
-const EXPERIMENTAL_EXTRA_SCROLL_HEIGHT = 120;
 
 function EditableElement({element, onEdit, testID, style}) {
   const {name, 'element-type': elementType} = element.attributes;
