@@ -23,7 +23,6 @@ function GeolocationEditorComponent({
   label,
   value,
   setValue,
-  readOnly,
   disabled,
   style,
 }) {
@@ -103,7 +102,7 @@ function GeolocationEditorComponent({
           <IconButton
             accessibilityLabel="Get directions"
             icon="directions"
-            disabled={value.lat === null || value.lng === null}
+            disabled={disabled || value.lat == null || value.lng == null}
             onPress={openMapsApp}
           />
         </View>

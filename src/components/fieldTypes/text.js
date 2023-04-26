@@ -10,15 +10,7 @@ const textFieldDataType = {
   EditorComponent: TextEditorComponent,
 };
 
-function TextEditorComponent({
-  field,
-  label,
-  value,
-  setValue,
-  readOnly,
-  disabled,
-  style,
-}) {
+function TextEditorComponent({field, label, value, setValue, disabled, style}) {
   const {options: {multiline} = {}} = field.attributes;
   return (
     <TextField

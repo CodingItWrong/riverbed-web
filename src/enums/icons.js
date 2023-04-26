@@ -11,6 +11,7 @@ const ICONS = [
   {key: 'medical-bag', label: 'Medical Bag'},
   {key: 'scale-bathroom', label: 'Scale'},
   {key: 'television', label: 'Television'},
+  {key: 'tree', label: 'Tree'},
 ];
 
 export default ICONS;
