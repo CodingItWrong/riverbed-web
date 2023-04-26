@@ -42,4 +42,11 @@ jobs:
           model: "iPhone 14"
 
       - name: Run Detox
-        run: detox test -c ios.sim.release
+        run: detox test -c ios.sim.release --take-screenshots=all --record-videos=all
+
+      - name: Upload artifacts
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: detox-artifacts
+          path: artifacts
