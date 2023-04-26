@@ -17,5 +17,12 @@ describe('Create and Use Board', () => {
     await element(by.text('Save Board')).tap();
     await expect(element(by.text('Save Board'))).not.toBeVisible();
     await expect(element(by.text('De Tox Board'))).toBeVisible();
+
+    // create column
+    await element(by.text('Add Column')).tap();
+    await element(by.id('text-input-column-name')).typeText('All');
+    await element(by.text('Save Column')).tap();
+    await expect(element(by.text('Save Column'))).not.toBeVisible();
+    await expect(element(by.text('All'))).toBeVisible();
   });
 });

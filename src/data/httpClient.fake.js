@@ -9,6 +9,7 @@ function jsonApiData(data) {
 }
 
 const boards = [];
+const columns = [];
 
 class FakeHttpClient {
   async get(path) {
@@ -18,12 +19,15 @@ class FakeHttpClient {
     } else if ((match = path.match(/^boards\/(\d+)\?$/))) {
       const id = match[1];
       return jsonApiData(boards.find(b => b.id === id));
-    } else if (path.match(/^boards\/(\d+)\/elements\?$/)) {
-      return jsonApiData([]);
-    } else if (path.match(/^boards\/(\d+)\/columns\?$/)) {
-      return jsonApiData([]);
     } else if (path.match(/^boards\/(\d+)\/cards\?$/)) {
       return jsonApiData([]);
+    } else if ((match = path.match(/^boards\/(\d+)\/columns\?$/))) {
+      return jsonApiData(columns);
+    } else if (path.match(/^boards\/(\d+)\/elements\?$/)) {
+      return jsonApiData([]);
+    } else if ((match = path.match(/^columns\/(\d+)\?$/))) {
+      const id = match[1];
+      return jsonApiData(columns.find(b => b.id === id));
     } else {
       const message = `GET request not faked: ${path}`;
       console.error(message);
@@ -53,6 +57,22 @@ class FakeHttpClient {
         boards.push(newBoard);
         return jsonApiData(newBoard);
 
+      case 'columns?':
+        const newColumn = {
+          type: 'columns',
+          id: getId(),
+          attributes: {
+            name: null,
+            'display-order': null,
+            'card-grouping': {},
+            'card-inclusion-conditions': [],
+            'card-sort-order': {},
+            summary: {},
+          },
+        };
+        columns.push(newColumn);
+        return jsonApiData(newColumn);
+
       default:
         const message = `POST request not faked: ${path}`;
         console.error(message);
@@ -66,6 +86,11 @@ class FakeHttpClient {
       const board = boards.find(b => b.id === id);
       board.attributes = attributes;
       return jsonApiData(board);
+    } else if (path.match(/^columns\/(\d+)\?$/)) {
+      const {id, attributes} = body.data;
+      const column = columns.find(b => b.id === id);
+      column.attributes = attributes;
+      return jsonApiData(column);
     } else {
       const message = `PATCH request not faked: ${path}`;
       console.error(message);
