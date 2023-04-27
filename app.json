@@ -21,7 +21,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.codingitwrong.listapp",
+      "bundleIdentifier": "com.codingitwrong.riverbed",
       "buildNumber": "1"
     },
     "android": {
@@ -29,7 +29,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.codingitwrong.listapp"
+      "package": "com.codingitwrong.riverbed"
     },
     "web": {
       "favicon": "./assets/favicon.png"
