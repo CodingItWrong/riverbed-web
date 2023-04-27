@@ -43,14 +43,10 @@ To build a custom dev client:
 
 <https://docs.expo.dev/development/create-development-builds/#on-emulatorsimulator>
 
-- Android dev client: `eas build --profile development --platform android --local`
-- iOS simulator dev client: `eas build --profile development-simulator --platform ios --local`
+- Android dev client: `eas build --profile development --platform android --local` then `eas build:run -p android --path=build-[date].apk`
+- iOS simulator dev client: `eas build --profile development-simulator --platform ios --local` then `eas build:run -p ios --path=build-[date].tar.gz`
 
 (Or omit the `--local` flag to build on EAS servers, but note that the free Expo plan is limited to 15 iOS buidls per month, and then you will begin to be charged.)
-
-When the build finishes, a built app file will be generated. Run `eas build:run -p ios --path=build-[date].tar.gz` (or Android equivalent) to install it on the device.
-
-You can download a custom dev client previously built on EAS servers from expo.dev. If it is compressed, expand the archive. Then drag-and-drop the app file onto the window of the running Simulator or Emulator, and it should be transferred.
 
 After this, run `yarn start` then press `a` or `i` to launch the app in the simulator/emulator. If Expo Go is also installed, you will get to choose which to run.
 
