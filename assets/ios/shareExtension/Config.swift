@@ -14,6 +14,6 @@ enum Config {
     static let apiKey = "KAhbB18D0QZBFXBCJKE4xJZYyaWkUTK25LWrqNMIXI2-FSqT5NgJpA-ermcllZG3s8mqioWkfZWNlUVwcOIGrw"
 
     // production
-//    static let webhookURL = URL(string: "https://ciw-list.herokuapp.com/shares")!
+//    static let webhookURL = URL(string: "https://api.riverbed.app/shares")!
 //    static let apiKey = "fake_api_key"
 }
