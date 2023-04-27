@@ -14,6 +14,7 @@ describe('Create and Use Board', () => {
     // rename board
     await element(by.text('(click to name board)')).tap();
     await element(by.label('Board Name')).atIndex(0).typeText('De Tox Board');
+    await element(by.label('Board Name')).atIndex(0).tapReturnKey();
     await element(by.id('scroll-view')).scrollTo('bottom');
     await element(by.text('Save Board')).tap();
     await expect(element(by.text('Save Board'))).not.toBeVisible();
@@ -22,6 +23,7 @@ describe('Create and Use Board', () => {
     // create column
     await element(by.text('Add Column')).tap();
     await element(by.label('Column Name')).atIndex(0).typeText('All');
+    await element(by.label('Column Name')).atIndex(0).tapReturnKey();
     await element(by.id('scroll-view')).scrollTo('bottom');
     await element(by.text('Save Column')).tap();
     await expect(element(by.text('Save Column'))).not.toBeVisible();
@@ -37,6 +39,7 @@ describe('Create and Use Board', () => {
 
     // edit field
     await element(by.label('Field Name')).atIndex(0).typeText('Greeting');
+    await element(by.label('Field Name')).atIndex(0).tapReturnKey();
     await element(by.label('Show Field')).tap();
     await element(by.id('scroll-view')).atIndex(1).scrollTo('bottom');
     await element(by.text('Save Field')).tap();
@@ -44,6 +47,7 @@ describe('Create and Use Board', () => {
 
     // edit card
     await element(by.label('Greeting')).atIndex(0).typeText('Hello!');
+    await element(by.label('Greeting')).atIndex(0).tapReturnKey();
     await element(by.label('Close card')).atIndex(0).tap();
     await expect(element(by.label('Close card'))).not.toBeVisible();
 
