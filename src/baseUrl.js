@@ -19,7 +19,7 @@ function getBaseUrl() {
       return 'http://localhost:3000';
     }
   } else {
-    return 'https://ciw-list.herokuapp.com';
+    return 'https://api.riverbed.app';
   }
 }
 
