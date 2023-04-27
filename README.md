@@ -1,4 +1,4 @@
-# List App Expo
+# Riverbed Expo
 
 An app for creating CRUD apps with interactivity with no programming.
 
