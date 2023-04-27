@@ -12,8 +12,8 @@ module.exports = {
   apps: {
     'ios.debug': {
       type: 'ios.app',
-      binaryPath: 'ios/build/Build/Products/Debug-iphonesimulator/listapp.app',
-      build: 'xcodebuild -workspace ios/listapp.xcworkspace -scheme listapp -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build'
+      binaryPath: 'ios/build/Build/Products/Debug-iphonesimulator/Riverbed.app',
+      build: 'xcodebuild -workspace ios/Riverbed.xcworkspace -scheme Riverbed -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build'
     },
     'ios.release': {
       type: 'ios.app',
