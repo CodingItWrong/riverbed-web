@@ -1,8 +1,8 @@
 import {useLinkTo, useNavigation} from '@react-navigation/native';
 import sortBy from 'lodash.sortby';
-import {useCallback, useEffect} from 'react';
-import {SectionList, StyleSheet, View} from 'react-native';
-import {Card} from 'react-native-paper';
+import {useCallback, useEffect, useState} from 'react';
+import {Platform, SectionList, StyleSheet, View} from 'react-native';
+import {Card, Menu} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Button from '../../components/Button';
 import CenterColumn from '../../components/CenterColumn';
@@ -25,6 +25,8 @@ export default function BoardList() {
   const navigation = useNavigation();
   const linkTo = useLinkTo();
 
+  const [menuOpen, setMenuOpen] = useState(false);
+
   useEffect(() => {
     navigation.setOptions({
       headerRight: renderMenu,
@@ -34,12 +36,12 @@ export default function BoardList() {
   const renderMenu = useCallback(
     () => (
       <IconButton
-        icon="logout"
-        accessibilityLabel="Sign Out"
-        onPress={clearToken}
+        icon="dots-vertical"
+        accessibilityLabel="App Menu"
+        onPress={() => setMenuOpen(true)}
       />
     ),
-    [clearToken],
+    [],
   );
 
   const {data: boards = [], isLoading, error: loadError} = useBoards();
@@ -62,6 +64,20 @@ export default function BoardList() {
 
   return (
     <ScreenBackground>
+      <View style={styles.menuAnchorContainer}>
+        <Menu
+          visible={menuOpen}
+          onDismiss={() => setMenuOpen(false)}
+          anchor={<MenuAnchor />}
+          anchorPosition="bottom"
+        >
+          <Menu.Item
+            onPress={clearToken}
+            title="Sign Out"
+            accessibilityLabel="Sign Out"
+          />
+        </Menu>
+      </View>
       <CenterColumn>
         <View style={[sharedStyles.fullHeight, sharedStyles.noPadding]}>
           {isLoading ? (
@@ -119,6 +135,13 @@ export default function BoardList() {
       </ErrorSnackbar>
     </ScreenBackground>
   );
+}
+
+function MenuAnchor() {
+  // see https://github.com/callstack/react-native-paper/issues/3854
+  // web needs the menu not to go off the edge, so we add extra width
+  const width = Platform.select({web: 150, default: 1});
+  return <View style={[styles.menuAnchor, {width}]} />;
 }
 
 function BoardCard({board, onPress, style}) {
@@ -219,6 +242,13 @@ function useBoardColors() {
 }
 
 const styles = StyleSheet.create({
+  menuAnchorContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
+  menuAnchor: {
+    height: 1,
+  },
   boardCard: {
     paddingLeft: 16,
     paddingRight: 50,
