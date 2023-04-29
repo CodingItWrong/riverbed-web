@@ -4,7 +4,7 @@ const fakeNativeStorage = {
 
   async getStringAsync(key) {
     switch (key) {
-      case 'LIST_APP_ACCESS_TOKEN':
+      case 'RIVERBED_ACCESS_TOKEN':
         return 'fake_access_token';
       default:
         const message = `Storage key not faked: ${key}`;
