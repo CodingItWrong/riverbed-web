@@ -12,6 +12,7 @@ import Card from './screens/Card';
 import Column from './screens/Column';
 import Element from './screens/Element';
 import SignIn from './screens/SignIn';
+import UserSettings from './screens/UserSettings';
 
 const linking = {
   config: {
@@ -29,6 +30,7 @@ const linking = {
           Element: 'elements/:elementId',
         },
       },
+      UserSettings: '/user-settings',
       SignIn: '/',
     },
   },
@@ -113,6 +115,11 @@ const AppNav = () => {
             name="BoardStack"
             component={Boards}
             options={{headerShown: false}}
+          />
+          <AppStack.Screen
+            name="UserSettings"
+            component={UserSettings}
+            options={modalOptions}
           />
         </>
       )}

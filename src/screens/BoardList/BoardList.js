@@ -72,6 +72,11 @@ export default function BoardList() {
           anchorPosition="bottom"
         >
           <Menu.Item
+            onPress={() => navigation.navigate('UserSettings')}
+            title="User Settings"
+            accessibilityLabel="User Settings"
+          />
+          <Menu.Item
             onPress={clearToken}
             title="Sign Out"
             accessibilityLabel="Sign Out"
