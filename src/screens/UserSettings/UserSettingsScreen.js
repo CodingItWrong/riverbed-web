@@ -5,19 +5,33 @@ import {StyleSheet, View} from 'react-native';
 import {Appbar} from 'react-native-paper';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import LoadingIndicator from '../../components/LoadingIndicator';
-import Text from '../../components/Text';
+import {useCurrentUser} from '../../data/user';
 import BaseModalScreen from '../BaseModalScreen';
+import EditSettingsForm from './EditSettingsForm';
 
 export default function UserSettingsScreen() {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
+
+  const {data: user} = useCurrentUser();
 
   const closeModal = useCallback(() => {
     navigation.goBack();
   }, [navigation]);
 
   function renderContents() {
-    return <Text>HI</Text>;
+    if (!user) {
+      return <LoadingIndicator />;
+    } else {
+      return (
+        <EditSettingsForm
+          user={user}
+          onSave={closeModal}
+          onDelete={() => navigation.popToTop()}
+          onCancel={closeModal}
+        />
+      );
+    }
   }
 
   return (
