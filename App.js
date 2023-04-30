@@ -3,6 +3,7 @@ import {
   QueryClientProvider,
   focusManager,
 } from '@tanstack/react-query';
+import {ReactQueryDevtools} from '@tanstack/react-query-devtools';
 import {StatusBar} from 'expo-status-bar';
 import {useEffect} from 'react';
 import {AppState, Platform} from 'react-native';
@@ -54,6 +55,9 @@ export default function App() {
             <StatusBar />
             <PaperProvider theme={theme}>
               <QueryClientProvider client={queryClient}>
+                {Platform.OS === 'web' && __DEV__ && (
+                  <ReactQueryDevtools initialIsOpen={false} />
+                )}
                 <Navigation />
               </QueryClientProvider>
             </PaperProvider>
