@@ -13,7 +13,10 @@ const oauthLogin = ({httpClient, path = DEFAULT_PATH, username, password}) =>
       },
       {headers: {'Content-Type': 'application/json'}},
     )
-    .then(response => response.data.access_token)
+    .then(response => ({
+      accessToken: response.data.access_token,
+      userId: response.data.user_id,
+    }))
     .catch(handleErrorResponse);
 
 function handleErrorResponse(error) {

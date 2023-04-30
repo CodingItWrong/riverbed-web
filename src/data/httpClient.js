@@ -3,7 +3,7 @@ import appBaseUrl from '../baseUrl';
 export default function httpClient({token} = {}) {
   const headers = {};
   if (token) {
-    headers.Authorization = `Bearer ${token}`;
+    headers.Authorization = `Bearer ${token.accessToken}`;
   }
   return new HttpClient({baseUrl: appBaseUrl, headers});
 }
