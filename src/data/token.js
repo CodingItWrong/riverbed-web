@@ -41,7 +41,7 @@ export function useToken() {
     if (!isTokenLoaded) {
       getStringAsync(ACCESS_TOKEN_KEY).then(newToken => {
         if (newToken) {
-          setToken(newToken).then(() => {
+          setToken(JSON.parse(newToken)).then(() => {
             setIsTokenLoaded(true);
           });
         } else {
@@ -53,7 +53,7 @@ export function useToken() {
 
   const setToken = useCallback(
     async function (newToken) {
-      await setStringAsync(ACCESS_TOKEN_KEY, newToken);
+      await setStringAsync(ACCESS_TOKEN_KEY, JSON.stringify(newToken));
       setTokenInternal(newToken);
     },
     [setTokenInternal],

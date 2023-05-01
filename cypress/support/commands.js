@@ -26,6 +26,9 @@ Cypress.Commands.add('step', (name, callback) => {
 });
 
 Cypress.Commands.add('signIn', () => {
-  window.localStorage.setItem('RIVERBED_ACCESS_TOKEN', 'FAKE_ACCESS_TOKEN');
+  window.localStorage.setItem(
+    'RIVERBED_ACCESS_TOKEN',
+    JSON.stringify({accessToken: 'FAKE_ACCESS_TOKEN', userId: 27}),
+  );
   cy.visit('/');
 });
