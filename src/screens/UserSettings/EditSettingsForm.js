@@ -46,7 +46,7 @@ export default function EditSettingsForm({user, onSave, onDelete, onCancel}) {
           b => b.id === String(attributes['ios-share-board-id']),
         )}
         onValueChange={board =>
-          updateAttribute('ios-share-board-id', String(board?.id))
+          updateAttribute('ios-share-board-id', board && String(board?.id))
         }
         keyExtractor={board => board.id}
         labelExtractor={board => `${board.id} - ${board.attributes.name}`}
