@@ -49,7 +49,7 @@ export default function EditSettingsForm({user, onSave, onDelete, onCancel}) {
           updateAttribute('ios-share-board-id', board && String(board?.id))
         }
         keyExtractor={board => board.id}
-        labelExtractor={board => `${board.id} - ${board.attributes.name}`}
+        labelExtractor={board => board.attributes.name}
         style={sharedStyles.mt}
       />
 
