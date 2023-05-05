@@ -59,7 +59,7 @@ export default function Field({
     <EditorComponent
       field={field}
       label={label ?? field.attributes.name}
-      value={value ?? ''}
+      value={value}
       setValue={setValue}
       disabled={disabled}
       style={style}

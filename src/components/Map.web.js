@@ -17,13 +17,16 @@ function Map({style, location, disabled, onPressLocation, google}) {
     onPressLocation(clickLocation);
   }
 
+  const mapLocation = valueToCoords(location ?? defaultLocation);
+  const markerLocation = valueToCoords(location);
+
   return (
     <View style={style}>
       <GoogleMap
         google={google}
-        zoom={14}
-        initialCenter={location}
-        center={location}
+        zoom={13}
+        initialCenter={mapLocation}
+        center={mapLocation}
         onClick={handleClick}
         zoomControl={false}
         scaleControl={false}
@@ -32,12 +35,23 @@ function Map({style, location, disabled, onPressLocation, google}) {
         streetViewControl={false}
         fullscreenControl={false}
       >
-        <Marker position={location} />
+        <Marker position={markerLocation} />
       </GoogleMap>
     </View>
   );
 }
 
+// TODO: remove duplication with native map
+const defaultLocation = {lat: '33.7489954', lng: '-84.3879824'}; // Atlanta GA
+
 export default GoogleApiWrapper({
   apiKey: Constants.expoConfig.extra.googleMapsApiKeyWeb,
 })(Map);
+
+const valueToCoords = value =>
+  value
+    ? {
+        lat: Number(value.lat),
+        lng: Number(value.lng),
+      }
+    : null;
