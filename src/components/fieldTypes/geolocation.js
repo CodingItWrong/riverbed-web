@@ -111,6 +111,7 @@ function GeolocationEditorComponent({
         location={value}
         onPressLocation={handlePressLocation}
         style={[styles.detailMap, sharedStyles.mt]}
+        disabled={disabled}
       />
     </>
   );

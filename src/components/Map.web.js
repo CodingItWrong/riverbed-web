@@ -9,6 +9,10 @@ function Map({style, location, disabled, onPressLocation, google}) {
   }
 
   function handleClick(_props, _marker, event) {
+    if (disabled) {
+      return;
+    }
+
     const {latLng} = event;
     const clickLocation = {
       lat: String(latLng.lat()),
@@ -28,6 +32,7 @@ function Map({style, location, disabled, onPressLocation, google}) {
         initialCenter={mapLocation}
         center={mapLocation}
         onClick={handleClick}
+        draggable={!disabled}
         zoomControl={false}
         scaleControl={false}
         panControl={false}
