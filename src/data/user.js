@@ -21,7 +21,6 @@ export function useCurrentUser(options) {
     token: {userId},
   } = useToken();
 
-  console.log('fetching', userId);
   return useQuery(
     ['user', String(userId)],
     () => userClient.find({id: userId}).then(resp => resp.data),
@@ -39,9 +38,7 @@ export function useUpdateUser(user) {
         id: user.id,
         attributes,
       }),
-    onSuccess: () => {
-      console.log('removing', user.id);
-      queryClient.removeQueries({queryKey: ['user', String(user.id)]});
-    },
+    onSuccess: () =>
+      queryClient.removeQueries({queryKey: ['user', String(user.id)]}),
   });
 }
