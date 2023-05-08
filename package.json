@@ -67,7 +67,7 @@
     "@react-native-community/eslint-config": "^3.2.0",
     "@tanstack/react-query-devtools": "^4.29.6",
     "cypress": "^12.11.0",
-    "detox": "^20.7.0",
+    "detox": "^20.8.0",
     "eslint": "^8.39",
     "eslint-plugin-cypress": "^2.13.3",
     "eslint-plugin-detox": "^1.0.0",
