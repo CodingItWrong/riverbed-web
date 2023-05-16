@@ -323,9 +323,7 @@ describe('QUERIES', () => {
       );
     });
 
-    // skipping until I can get menu scrolling working in Cypress
-    // eslint-disable-next-line jest/no-disabled-tests
-    describe.skip('DOES_NOT_EQUAL_VALUE', () => {
+    describe('DOES_NOT_EQUAL_VALUE', () => {
       test.each(CASES)(
         'when testing "a" against %j returns %j',
         (value, result) => {
