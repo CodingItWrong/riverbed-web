@@ -11,6 +11,7 @@ const QUERIES = {
   DOES_NOT_EQUAL_VALUE: {
     key: 'DOES_NOT_EQUAL_VALUE',
     label: 'does not equal value',
+    showConcreteValueField: true,
   },
   IS_CURRENT_MONTH: {
     key: 'IS_CURRENT_MONTH',
