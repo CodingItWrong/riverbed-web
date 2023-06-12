@@ -10265,10 +10265,10 @@ react-native-maps@1.3.2:
   dependencies:
     "@types/geojson" "^7946.0.8"
 
-react-native-paper-dates@^0.16.1:
-  version "0.16.1"
-  resolved "https://registry.yarnpkg.com/react-native-paper-dates/-/react-native-paper-dates-0.16.1.tgz#750532b20c429d8c5eb730813f350c5135181345"
-  integrity sha512-7V1Oeq/E4gwAsGeAGDSbiPDk9TGybmf48LnAPBdNRJa7/VIziop0dFgtMOOUqAd9L3IzU/msKvo9gq1T7Ui8OQ==
+react-native-paper-dates@^0.18.1:
+  version "0.18.1"
+  resolved "https://registry.yarnpkg.com/react-native-paper-dates/-/react-native-paper-dates-0.18.1.tgz#59bd20f183806c43e72a03861c8e15a8aecba802"
+  integrity sha512-/S/dXJDPrpjFIotq5XZdTOgEEbYNUYqjIGAY60bBfMTC6lQQK/K3Br2SpG4ew06jQjn7LIQnVwmEet6+2q6j9g==
   dependencies:
     color "^3.2.1"
 
