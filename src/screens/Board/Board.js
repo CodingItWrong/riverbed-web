@@ -3,7 +3,7 @@ import {useCallback, useEffect} from 'react';
 import {View} from 'react-native';
 import {Appbar, Provider as PaperProvider} from 'react-native-paper';
 import ErrorSnackbar from '../../components/ErrorSnackbar';
-import {Icon} from '../../components/Icon';
+import Icon from '../../components/Icon';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import ScreenBackground from '../../components/ScreenBackground';
 import Text from '../../components/Text';

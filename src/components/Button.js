@@ -1,5 +1,5 @@
-import AddIcon from '@mui/icons-material/Add';
 import MuiButton from '@mui/material/Button';
+import Icon from './Icon';
 
 export default function Button({
   icon,
@@ -12,25 +12,21 @@ export default function Button({
   testID,
 }) {
   const muiVariant = MODE_MAP[mode];
-  const iconComponent = ICON_MAP[icon];
+  const renderedIcon = icon && <Icon name={icon} />;
   return (
     <MuiButton
       variant={muiVariant}
       onClick={onPress}
       disabled={disabled}
       style={style}
-      startIcon={rightIcon ? null : iconComponent}
-      endIcon={rightIcon ? iconComponent : null}
+      startIcon={rightIcon ? null : renderedIcon}
+      endIcon={rightIcon ? renderedIcon : null}
       data-testid={testID}
     >
       {children}
     </MuiButton>
   );
 }
-
-const ICON_MAP = {
-  plus: <AddIcon />,
-};
 
 const MODE_MAP = {
   primary: 'contained',

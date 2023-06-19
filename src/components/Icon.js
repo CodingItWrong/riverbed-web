@@ -1,12 +1,12 @@
 import {useTheme} from 'react-native-paper';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import getMuiIcon from './getMuiIcon';
 
-export function Icon({name, color, style}) {
+export default function Icon({name, color, style}) {
   const theme = useTheme();
+  const IconComponent = getMuiIcon(name);
+  console.log({name, IconComponent});
   return (
-    <MaterialCommunityIcons
-      name={name}
-      size={25}
+    <IconComponent
       color={color ?? theme.colors.onPrimaryContainer}
       style={style}
     />

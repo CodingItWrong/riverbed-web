@@ -1,7 +1,9 @@
-import {IconButton as PaperIconButton} from 'react-native-paper';
+import MuiIconButton from '@mui/material/IconButton';
+import Icon from './Icon';
 
 export default function IconButton({
   icon,
+  iconColor,
   onPress,
   accessibilityLabel,
   ...props
@@ -11,11 +13,13 @@ export default function IconButton({
   }
 
   return (
-    <PaperIconButton
+    <MuiIconButton
       icon={icon}
-      onPress={onPress}
-      accessibilityLabel={accessibilityLabel}
+      onClick={onPress}
+      aria-label={accessibilityLabel}
       {...props}
-    />
+    >
+      <Icon name={icon} color={iconColor} />
+    </MuiIconButton>
   );
 }

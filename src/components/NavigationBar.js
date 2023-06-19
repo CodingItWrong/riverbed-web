@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
 import {Appbar} from 'react-native-paper';
-import {Icon} from './Icon';
+import Icon from './Icon';
 import LoadingIndicator from './LoadingIndicator';
 import sharedStyles from './sharedStyles';
 
