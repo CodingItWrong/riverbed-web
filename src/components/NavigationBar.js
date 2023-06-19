@@ -4,6 +4,8 @@ import Icon from './Icon';
 import LoadingIndicator from './LoadingIndicator';
 import sharedStyles from './sharedStyles';
 
+// TODO: positioned after contents in React Navigation, so may need to
+// switch off that first before switching this off Paper
 export default function NavigationBar({navigation, options, back}) {
   const {title, icon, onTitlePress, headerRight, isFetching} = options;
 

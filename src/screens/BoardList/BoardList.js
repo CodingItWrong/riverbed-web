@@ -1,8 +1,11 @@
+import {CardActionArea as MuiCardActionArea} from '@mui/material';
+import MuiCard from '@mui/material/Card';
+import MuiCardContent from '@mui/material/CardContent';
 import {useLinkTo, useNavigation} from '@react-navigation/native';
 import sortBy from 'lodash.sortby';
 import {useCallback, useEffect, useState} from 'react';
 import {SectionList, StyleSheet, View} from 'react-native';
-import {Card, Menu} from 'react-native-paper';
+import {Menu} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Button from '../../components/Button';
 import CenterColumn from '../../components/CenterColumn';
@@ -155,26 +158,27 @@ function BoardCard({board, onPress, style}) {
 
   return (
     <View style={style}>
-      <Card
-        onPress={onPress}
-        style={backgroundColor ? {backgroundColor} : null}
-      >
-        <View style={styles.boardCard}>
-          <Icon
-            name={board.attributes.icon ?? 'view-column'}
-            style={sharedStyles.mr}
-            color={foregroundColor}
-          />
-          <View style={sharedStyles.fill}>
-            <Text
-              variant="titleMedium"
-              style={foregroundColor ? {color: foregroundColor} : null}
-            >
-              {board.attributes.name ?? '(unnamed board)'}
-            </Text>
-          </View>
-        </View>
-      </Card>
+      <MuiCard style={backgroundColor ? {backgroundColor} : null}>
+        <MuiCardActionArea onClick={onPress}>
+          <MuiCardContent>
+            <View style={styles.boardCard}>
+              <Icon
+                name={board.attributes.icon ?? 'view-column'}
+                style={sharedStyles.mr}
+                color={foregroundColor}
+              />
+              <View style={sharedStyles.fill}>
+                <Text
+                  variant="titleMedium"
+                  style={foregroundColor ? {color: foregroundColor} : null}
+                >
+                  {board.attributes.name ?? '(unnamed board)'}
+                </Text>
+              </View>
+            </View>
+          </MuiCardContent>
+        </MuiCardActionArea>
+      </MuiCard>
       <View style={styles.favoriteContainer}>
         <FavoriteButton board={board} />
       </View>
@@ -243,15 +247,13 @@ function useBoardColors() {
 
 const styles = StyleSheet.create({
   boardCard: {
-    paddingLeft: 16,
     paddingRight: 50,
-    paddingVertical: 12,
     flexDirection: 'row',
     alignItems: 'center',
   },
   favoriteContainer: {
     position: 'absolute',
-    right: 0,
+    right: 10,
     top: 0,
     bottom: 0,
     justifyContent: 'center',
