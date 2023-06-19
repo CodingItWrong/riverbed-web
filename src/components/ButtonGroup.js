@@ -11,14 +11,18 @@ export default function ButtonGroup({
   options,
   style,
 }) {
-  function handleChange(newValue) {
+  function handleChange(event, newValue) {
     onChangeValue(newValue === EMPTY_VALUE ? null : newValue);
   }
 
   return (
     <View style={style}>
       <Text variant="bodySmall">{label}</Text>
-      <ToggleButtonGroup value={value ?? EMPTY_VALUE} onChange={handleChange}>
+      <ToggleButtonGroup
+        exclusive
+        value={value ?? EMPTY_VALUE}
+        onChange={handleChange}
+      >
         {options.map(option => (
           <ToggleButton
             key={option.key}
