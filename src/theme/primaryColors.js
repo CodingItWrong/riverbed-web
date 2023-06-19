@@ -1,17 +1,17 @@
 import {
   blue,
   cyan,
+  deepPurple,
   green,
   orange,
   pink,
-  purple,
   red,
   yellow,
 } from '@mui/material/colors';
 import COLOR_THEMES from '../enums/colorThemes';
 
 export const primaryColors = {
-  default: purple[500],
+  default: deepPurple[500],
   [COLOR_THEMES.pink.key]: pink[500],
   [COLOR_THEMES.green.key]: green[500],
   [COLOR_THEMES.blue.key]: blue[500],
