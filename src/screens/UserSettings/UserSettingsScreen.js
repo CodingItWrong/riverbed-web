@@ -1,16 +1,13 @@
 import {useNavigation} from '@react-navigation/native';
-import {Platform} from 'expo-modules-core';
 import {useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Appbar} from 'react-native-paper';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import {useCurrentUser} from '../../data/user';
 import BaseModalScreen from '../BaseModalScreen';
 import EditSettingsForm from './EditSettingsForm';
 
 export default function UserSettingsScreen() {
-  const insets = useSafeAreaInsets();
   const navigation = useNavigation();
 
   const {data: user} = useCurrentUser();
@@ -36,12 +33,7 @@ export default function UserSettingsScreen() {
 
   return (
     <BaseModalScreen>
-      <View
-        style={[
-          styles.headerRow,
-          Platform.OS === 'android' && {paddingTop: insets.top},
-        ]}
-      >
+      <View style={styles.headerRow}>
         <Appbar.BackAction
           onPress={closeModal}
           accessibilityLabel="Close user settings"

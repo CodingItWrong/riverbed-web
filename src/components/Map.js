@@ -1,59 +1,61 @@
-import {Platform} from 'react-native';
-import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
+import Constants from 'expo-constants';
+import {GoogleApiWrapper, Map as GoogleMap, Marker} from 'google-maps-react';
+import {View} from 'react-native';
+import Text from './Text';
 
-export default function Map({style, location, disabled, onPressLocation}) {
-  const markerCoords = valueToCoords(location);
-  const region = valueToRegion(location);
-
-  function handlePress(event) {
-    const {
-      nativeEvent: {
-        coordinate: {latitude, longitude},
-      },
-    } = event;
-    const newLocation = {
-      lat: String(latitude),
-      lng: String(longitude),
-    };
-
-    onPressLocation(newLocation);
+function Map({style, location, disabled, onPressLocation, google}) {
+  if (window.Cypress) {
+    return <Text>(hiding map view in cypress)</Text>;
   }
 
+  function handleClick(_props, _marker, event) {
+    if (disabled) {
+      return;
+    }
+
+    const {latLng} = event;
+    const clickLocation = {
+      lat: String(latLng.lat()),
+      lng: String(latLng.lng()),
+    };
+    onPressLocation(clickLocation);
+  }
+
+  const mapLocation = valueToCoords(location ?? defaultLocation);
+  const markerLocation = valueToCoords(location);
+
   return (
-    <MapView
-      provider={Platform.select({
-        android: PROVIDER_GOOGLE,
-        default: undefined,
-      })}
-      style={style}
-      region={region}
-      onPress={handlePress}
-      options={{disableDefaultUI: true}}
-      toolbarEnabled={false}
-      zoomEnabled={!disabled}
-      zoomControlEnabled={!disabled}
-      rotateEnabled={!disabled}
-      scrollEnabled={!disabled}
-      pitchEnabled={!disabled}
-    >
-      {markerCoords && <Marker coordinate={markerCoords} />}
-    </MapView>
+    <View style={style}>
+      <GoogleMap
+        google={google}
+        zoom={13}
+        initialCenter={mapLocation}
+        center={mapLocation}
+        onClick={handleClick}
+        draggable={!disabled}
+        zoomControl={false}
+        scaleControl={false}
+        panControl={false}
+        rotateControl={false}
+        streetViewControl={false}
+        fullscreenControl={false}
+      >
+        <Marker position={markerLocation} />
+      </GoogleMap>
+    </View>
   );
 }
 
-const defaultValue = {lat: '33.7489954', lng: '-84.3879824'}; // Atlanta GA
+const defaultLocation = {lat: '33.7489954', lng: '-84.3879824'}; // Atlanta GA
+
+export default GoogleApiWrapper({
+  apiKey: Constants.expoConfig.extra.googleMapsApiKeyWeb,
+})(Map);
 
 const valueToCoords = value =>
   value
     ? {
-        latitude: Number(value.lat),
-        longitude: Number(value.lng),
+        lat: Number(value.lat),
+        lng: Number(value.lng),
       }
     : null;
-
-const valueToRegion = value => ({
-  ...valueToCoords(value ? value : defaultValue),
-  // TODO: figure out good values for deltas
-  latitudeDelta: 0.0147,
-  longitudeDelta: 0.0404,
-});

@@ -1,8 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import {useCallback, useEffect, useState} from 'react';
-import {Platform, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {Appbar} from 'react-native-paper';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import ErrorSnackbar from '../../components/ErrorSnackbar';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import sharedStyles from '../../components/sharedStyles';
@@ -14,7 +13,6 @@ import EditCardForm from './EditCardForm';
 import ElementList from './ElementList';
 
 export default function CardScreen({route}) {
-  const insets = useSafeAreaInsets();
   const {boardId} = useCurrentBoard();
   const {cardId} = route.params;
   const navigation = useNavigation();
