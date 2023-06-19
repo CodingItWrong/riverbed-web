@@ -27,9 +27,7 @@ export default function BaseModalScreen({children}) {
           contentContainerStyle={{paddingBottom: insets.bottom}}
           testID="scroll-view"
         >
-          <View style={Platform.OS === 'ios' && styles.container}>
-            {children}
-          </View>
+          <View>{children}</View>
         </KeyboardAwareScrollView>
       </ModalScreenWrapper>
     </PaperProvider>

@@ -33,7 +33,7 @@ export default function SignIn({navigation}) {
           onChangeText={handleChange('username')}
           keyboardType="email-address"
           autoCapitalize="none"
-          autoCorrect={false}
+          autoCorrect="off"
         />
         <TextField
           label="Password"

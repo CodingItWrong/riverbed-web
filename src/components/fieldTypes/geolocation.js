@@ -91,7 +91,7 @@ function GeolocationEditorComponent({
                 disabled || !status || (!status.granted && !status.canAskAgain)
               }
               onPress={fillCurrentLocation}
-              style={[isLoadingCurrentPosition && styles.hidden]}
+              style={isLoadingCurrentPosition ? styles.hidden : null}
             />
             {isLoadingCurrentPosition && (
               <View style={styles.currentLocationLoadingContainer}>

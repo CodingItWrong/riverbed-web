@@ -3,7 +3,7 @@ import {large, useBreakpoint} from '../breakpoints';
 
 const sharedStyles = StyleSheet.create({
   columnPadding: {
-    padding: 8,
+    padding: '8px',
   },
   fill: {
     flex: 1,
@@ -15,13 +15,13 @@ const sharedStyles = StyleSheet.create({
     flex: 1,
   },
   mb: {
-    marginBottom: 8,
+    marginBottom: '8px',
   },
   mt: {
-    marginTop: 8,
+    marginTop: '8px',
   },
   mr: {
-    marginRight: 8,
+    marginRight: '8px',
   },
   noPadding: {
     padding: 0,
@@ -35,11 +35,6 @@ const sharedStyles = StyleSheet.create({
   },
   hidden: {
     opacity: 0,
-  },
-  textInput: {
-    // causes label overlap issues on web
-    // backgroundColor: 'transparent',
-    // paddingHorizontal: 0,
   },
 });
 

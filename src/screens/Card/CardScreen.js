@@ -89,12 +89,7 @@ export default function CardScreen({route}) {
   return (
     <>
       <BaseModalScreen>
-        <View
-          style={[
-            styles.headerRow,
-            Platform.OS === 'android' && {paddingTop: insets.top},
-          ]}
-        >
+        <View style={styles.headerRow}>
           <Appbar.BackAction
             onPress={closeModal}
             accessibilityLabel="Close card"

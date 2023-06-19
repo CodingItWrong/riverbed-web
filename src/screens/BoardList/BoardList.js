@@ -113,7 +113,7 @@ export default function BoardList() {
                   <BoardCard
                     board={board}
                     onPress={() => goToBoard(board)}
-                    style={index > 0 && sharedStyles.mt}
+                    style={index > 0 ? sharedStyles.mt : null}
                   />
                 )}
               />
@@ -162,7 +162,10 @@ function BoardCard({board, onPress, style}) {
 
   return (
     <View style={style}>
-      <Card onPress={onPress} style={[backgroundColor && {backgroundColor}]}>
+      <Card
+        onPress={onPress}
+        style={backgroundColor ? {backgroundColor} : null}
+      >
         <View style={styles.boardCard}>
           <Icon
             name={board.attributes.icon ?? 'view-column'}
@@ -172,7 +175,7 @@ function BoardCard({board, onPress, style}) {
           <View style={sharedStyles.fill}>
             <Text
               variant="titleMedium"
-              style={foregroundColor && {color: foregroundColor}}
+              style={foregroundColor ? {color: foregroundColor} : null}
             >
               {board.attributes.name ?? '(unnamed board)'}
             </Text>
