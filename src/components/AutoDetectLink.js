@@ -1,5 +1,5 @@
-import {A} from '@expo/html-elements';
-import {Share, StyleSheet, View} from 'react-native';
+import Link from '@mui/material/Link';
+import {StyleSheet, View} from 'react-native';
 import {useTheme} from 'react-native-paper';
 import {isValidUrl} from '../utils/urlUtils';
 import Text from './Text';
@@ -11,17 +11,16 @@ export function AutoDetectLink({link, enableLinking, variant, children}) {
   if (enableLinking && isValidUrl(link)) {
     return (
       <View style={styles.linkContainer}>
-        <A
+        <Link
           href={link}
           target="_blank"
-          onPress={preventParentClickBehavior}
-          onLongPress={() => share(link)}
-          style={[styles.link, {color: theme.colors.primary}]}
+          onClick={preventParentClickBehavior}
+          style={{color: theme.colors.primary}}
         >
           <Text variant={variant} style={{color: theme.colors.primary}}>
             {children}
           </Text>
-        </A>
+        </Link>
       </View>
     );
   } else {
@@ -30,19 +29,11 @@ export function AutoDetectLink({link, enableLinking, variant, children}) {
 }
 
 function preventParentClickBehavior(e) {
-  // only seems necessary on web, but works on both
   e.stopPropagation();
-}
-
-async function share(url) {
-  return Share.share({url});
 }
 
 const styles = StyleSheet.create({
   linkContainer: {
     flexDirection: 'row',
-  },
-  link: {
-    textDecorationLine: 'underline',
   },
 });
