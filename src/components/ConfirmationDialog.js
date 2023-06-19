@@ -1,5 +1,6 @@
 import {StyleSheet} from 'react-native';
-import {Button, Dialog, Portal, Text, useTheme} from 'react-native-paper';
+import {Button, Dialog, Portal, useTheme} from 'react-native-paper';
+import Text from './Text';
 
 export default function ConfirmationDialog({
   open,
@@ -16,7 +17,7 @@ export default function ConfirmationDialog({
       <Dialog visible={open} onDismiss={onDismiss}>
         <Dialog.Title>{title}</Dialog.Title>
         <Dialog.Content>
-          <Text>{message}</Text>
+          <Text variant="bodyLarge">{message}</Text>
         </Dialog.Content>
         <Dialog.Actions>
           <Button mode="outlined" onPress={onDismiss} style={styles.button}>

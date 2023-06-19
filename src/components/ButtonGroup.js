@@ -1,5 +1,6 @@
 import {StyleSheet, View} from 'react-native';
-import {Text, ToggleButton} from 'react-native-paper';
+import {ToggleButton} from 'react-native-paper';
+import Text from './Text';
 
 export default function ButtonGroup({
   label,

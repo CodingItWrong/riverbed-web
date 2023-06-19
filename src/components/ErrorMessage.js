@@ -1,5 +1,6 @@
 import {View} from 'react-native';
-import {Text, withTheme} from 'react-native-paper';
+import {withTheme} from 'react-native-paper';
+import Text from './Text';
 
 function ErrorMessage({theme, children, style}) {
   const errorMessageStyle = {
