@@ -18,7 +18,7 @@ export default function NumberField({
   return (
     <MuiTextField
       type="number"
-      inputmode={getInputMode({keyboardType})}
+      inputMode={getInputMode({keyboardType})}
       variant="filled"
       label={label}
       inputProps={{
