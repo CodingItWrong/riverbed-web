@@ -1,5 +1,4 @@
-import {TextInput as PaperTextInput} from 'react-native-paper';
-import sharedStyles from './sharedStyles';
+import MuiTextField from '@mui/material/TextField';
 
 export default function NumberField({
   label,
@@ -17,14 +16,29 @@ export default function NumberField({
   }
 
   return (
-    <PaperTextInput
+    <MuiTextField
+      type="number"
+      inputmode={getInputMode({keyboardType})}
+      variant="filled"
       label={label}
-      testID={testID}
+      inputProps={{
+        'data-testid': testID,
+      }}
       value={value}
-      keyboardType={keyboardType}
-      onChangeText={handleChangeText}
+      onChange={e => handleChangeText(e.target.value)}
       disabled={disabled}
-      style={[sharedStyles.textInput, style]}
+      style={style}
     />
   );
+}
+
+function getInputMode({keyboardType}) {
+  switch (keyboardType) {
+    case 'decimal-pad':
+      return 'decimal';
+    case 'number-pad':
+      return 'number';
+    default:
+      return null;
+  }
 }
