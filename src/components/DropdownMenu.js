@@ -1,27 +1,34 @@
+import MuiMenu from '@mui/material/Menu';
+import MuiMenuItem from '@mui/material/MenuItem';
 import {useState} from 'react';
-import {Menu} from 'react-native-paper';
 
 export default function DropdownMenu({menuButton, menuItems}) {
-  const [isMenuShown, setIsMenuShown] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const isOpen = Boolean(anchorEl);
+
+  function openMenu(event) {
+    setAnchorEl(event.currentTarget);
+  }
+
+  function closeMenu() {
+    setAnchorEl(null);
+  }
 
   function handlePress(item) {
-    setIsMenuShown(false);
+    closeMenu();
     item.onPress();
   }
 
   return (
-    <Menu
-      visible={isMenuShown}
-      onDismiss={() => setIsMenuShown(false)}
-      anchor={menuButton({onPress: () => setIsMenuShown(true)})}
-    >
-      {menuItems.map(item => (
-        <Menu.Item
-          key={item.title}
-          title={item.title}
-          onPress={() => handlePress(item)}
-        />
-      ))}
-    </Menu>
+    <>
+      {menuButton({onPress: openMenu})}
+      <MuiMenu anchorEl={anchorEl} open={isOpen} onClose={closeMenu}>
+        {menuItems.map(item => (
+          <MuiMenuItem key={item.title} onClick={() => handlePress(item)}>
+            {item.title}
+          </MuiMenuItem>
+        ))}
+      </MuiMenu>
+    </>
   );
 }
