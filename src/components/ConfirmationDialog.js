@@ -1,6 +1,9 @@
-import {StyleSheet} from 'react-native';
-import {Button, Dialog, Portal, useTheme} from 'react-native-paper';
-import Text from './Text';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 export default function ConfirmationDialog({
   open,
@@ -11,34 +14,24 @@ export default function ConfirmationDialog({
   onDismiss,
   destructive,
 }) {
-  const theme = useTheme();
   return (
-    <Portal>
-      <Dialog visible={open} onDismiss={onDismiss}>
-        <Dialog.Title>{title}</Dialog.Title>
-        <Dialog.Content>
-          <Text variant="bodyLarge">{message}</Text>
-        </Dialog.Content>
-        <Dialog.Actions>
-          <Button mode="outlined" onPress={onDismiss} style={styles.button}>
-            Cancel
-          </Button>
-          <Button
-            mode="contained"
-            onPress={onConfirm}
-            style={styles.button}
-            buttonColor={destructive ? theme.colors.error : null}
-          >
-            {confirmButtonLabel}
-          </Button>
-        </Dialog.Actions>
-      </Dialog>
-    </Portal>
+    <Dialog open={open} onClose={onDismiss}>
+      <DialogTitle>{title}</DialogTitle>
+      <DialogContent>
+        <DialogContentText>{message}</DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button variant="outlined" onClick={onDismiss}>
+          Cancel
+        </Button>
+        <Button
+          variant="contained"
+          onClick={onConfirm}
+          color={destructive ? 'error' : null}
+        >
+          {confirmButtonLabel}
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 }
-
-const styles = StyleSheet.create({
-  button: {
-    paddingHorizontal: 16,
-  },
-});
