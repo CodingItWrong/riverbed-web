@@ -1,5 +1,5 @@
-import {Button as PaperButton} from 'react-native-paper';
-import sharedStyles from './sharedStyles';
+import AddIcon from '@mui/icons-material/Add';
+import MuiButton from '@mui/material/Button';
 
 export default function Button({
   icon,
@@ -11,21 +11,26 @@ export default function Button({
   style,
   testID,
 }) {
-  const paperMode = MODE_MAP[mode];
+  const muiVariant = MODE_MAP[mode];
+  const iconComponent = ICON_MAP[icon];
   return (
-    <PaperButton
-      icon={icon}
-      mode={paperMode}
-      onPress={onPress}
+    <MuiButton
+      variant={muiVariant}
+      onClick={onPress}
       disabled={disabled}
       style={style}
-      contentStyle={rightIcon ? sharedStyles.flexReverse : null}
-      testID={testID}
+      startIcon={rightIcon ? null : iconComponent}
+      endIcon={rightIcon ? iconComponent : null}
+      data-testid={testID}
     >
       {children}
-    </PaperButton>
+    </MuiButton>
   );
 }
+
+const ICON_MAP = {
+  plus: <AddIcon />,
+};
 
 const MODE_MAP = {
   primary: 'contained',
