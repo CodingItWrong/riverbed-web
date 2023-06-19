@@ -141,13 +141,6 @@ export default function BoardList() {
   );
 }
 
-function MenuAnchor() {
-  // see https://github.com/callstack/react-native-paper/issues/3854
-  // web needs the menu not to go off the edge, so we add extra width
-  const width = Platform.select({web: 150, default: 1});
-  return <View style={[styles.menuAnchor, {width}]} />;
-}
-
 function BoardCard({board, onPress, style}) {
   const getBoardColors = useBoardColors();
 
