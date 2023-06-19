@@ -1,3 +1,4 @@
+import {ThemeProvider as MuiProvider} from '@mui/material/styles';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {useCallback, useEffect} from 'react';
 import {View} from 'react-native';
@@ -13,7 +14,9 @@ import {useCards, useRefreshCards} from '../../data/cards';
 import {useColumns} from '../../data/columns';
 import {useCurrentBoard} from '../../data/currentBoard';
 import {useBoardElements} from '../../data/elements';
-import useColorSchemeTheme from '../../theme/useColorSchemeTheme';
+import useColorSchemeTheme, {
+  usePaperColorSchemeTheme,
+} from '../../theme/useColorSchemeTheme';
 import ColumnList from './Column/ColumnList';
 
 export default function Board() {
@@ -72,28 +75,33 @@ export default function Board() {
   }
 
   const colorTheme = useColorSchemeTheme(board?.attributes['color-theme']);
+  const paperColorTheme = usePaperColorSchemeTheme(
+    board?.attributes['color-theme'],
+  );
 
   // keep title bar gray until board loaded
   const titleBarColorTheme = board ? colorTheme : null;
 
   return (
-    <PaperProvider theme={colorTheme}>
-      <EmbeddedHeader
-        title={
-          board?.attributes?.name ??
-          (!isLoadingBoard && !error && '(click to name board)')
-        }
-        icon={board?.attributes?.icon}
-        isFetching={isFetching}
-        onPressTitle={() => editBoard()}
-        colorTheme={titleBarColorTheme}
-      />
-      <ScreenBackground style={sharedStyles.fullHeight}>
-        {renderContents()}
-        <ErrorSnackbar error={error}>
-          An error occurred loading the board.
-        </ErrorSnackbar>
-      </ScreenBackground>
+    <PaperProvider theme={paperColorTheme}>
+      <MuiProvider theme={colorTheme}>
+        <EmbeddedHeader
+          title={
+            board?.attributes?.name ??
+            (!isLoadingBoard && !error && '(click to name board)')
+          }
+          icon={board?.attributes?.icon}
+          isFetching={isFetching}
+          onPressTitle={() => editBoard()}
+          colorTheme={titleBarColorTheme}
+        />
+        <ScreenBackground style={sharedStyles.fullHeight}>
+          {renderContents()}
+          <ErrorSnackbar error={error}>
+            An error occurred loading the board.
+          </ErrorSnackbar>
+        </ScreenBackground>
+      </MuiProvider>
     </PaperProvider>
   );
 }

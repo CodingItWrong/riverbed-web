@@ -1,3 +1,4 @@
+import {ThemeProvider as MuiProvider} from '@mui/material/styles';
 import {
   QueryClient,
   QueryClientProvider,
@@ -14,7 +15,9 @@ import Navigation from './src/Navigation';
 import TokenLoadBuffer from './src/components/TokenLoadBuffer';
 import {CurrentBoardProvider} from './src/data/currentBoard';
 import {TokenProvider} from './src/data/token';
-import useColorSchemeTheme from './src/theme/useColorSchemeTheme';
+import useColorSchemeTheme, {
+  usePaperColorSchemeTheme,
+} from './src/theme/useColorSchemeTheme';
 
 registerTranslation('en', en);
 
@@ -40,6 +43,7 @@ function onAppStateChange(status) {
 
 export default function App() {
   const theme = useColorSchemeTheme();
+  const paperTheme = usePaperColorSchemeTheme();
 
   useEffect(() => {
     const subscription = AppState.addEventListener('change', onAppStateChange);
@@ -53,13 +57,15 @@ export default function App() {
         <TokenLoadBuffer>
           <SafeAreaProvider>
             <StatusBar />
-            <PaperProvider theme={theme}>
-              <QueryClientProvider client={queryClient}>
-                {Platform.OS === 'web' && __DEV__ && (
-                  <ReactQueryDevtools initialIsOpen={false} />
-                )}
-                <Navigation />
-              </QueryClientProvider>
+            <PaperProvider theme={paperTheme}>
+              <MuiProvider theme={theme}>
+                <QueryClientProvider client={queryClient}>
+                  {Platform.OS === 'web' && __DEV__ && (
+                    <ReactQueryDevtools initialIsOpen={false} />
+                  )}
+                  <Navigation />
+                </QueryClientProvider>
+              </MuiProvider>
             </PaperProvider>
           </SafeAreaProvider>
         </TokenLoadBuffer>
