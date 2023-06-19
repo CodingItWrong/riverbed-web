@@ -27,22 +27,40 @@ export default function BoardList() {
 
   const [menuOpen, setMenuOpen] = useState(false);
 
+  const renderMenu = useCallback(
+    () => (
+      <Menu
+        anchor={
+          <IconButton
+            icon="dots-vertical"
+            accessibilityLabel="App Menu"
+            onPress={() => setMenuOpen(true)}
+          />
+        }
+        visible={menuOpen}
+        onDismiss={() => setMenuOpen(false)}
+        anchorPosition="bottom"
+      >
+        <Menu.Item
+          onPress={() => navigation.navigate('UserSettings')}
+          title="User Settings"
+          accessibilityLabel="User Settings"
+        />
+        <Menu.Item
+          onPress={clearToken}
+          title="Sign Out"
+          accessibilityLabel="Sign Out"
+        />
+      </Menu>
+    ),
+    [menuOpen, clearToken, navigation],
+  );
+
   useEffect(() => {
     navigation.setOptions({
       headerRight: renderMenu,
     });
   }, [navigation, renderMenu]);
-
-  const renderMenu = useCallback(
-    () => (
-      <IconButton
-        icon="dots-vertical"
-        accessibilityLabel="App Menu"
-        onPress={() => setMenuOpen(true)}
-      />
-    ),
-    [],
-  );
 
   const {data: boards = [], isLoading, error: loadError} = useBoards();
 
@@ -64,25 +82,6 @@ export default function BoardList() {
 
   return (
     <ScreenBackground>
-      <View style={styles.menuAnchorContainer}>
-        <Menu
-          visible={menuOpen}
-          onDismiss={() => setMenuOpen(false)}
-          anchor={<MenuAnchor />}
-          anchorPosition="bottom"
-        >
-          <Menu.Item
-            onPress={() => navigation.navigate('UserSettings')}
-            title="User Settings"
-            accessibilityLabel="User Settings"
-          />
-          <Menu.Item
-            onPress={clearToken}
-            title="Sign Out"
-            accessibilityLabel="Sign Out"
-          />
-        </Menu>
-      </View>
       <CenterColumn>
         <View style={[sharedStyles.fullHeight, sharedStyles.noPadding]}>
           {isLoading ? (
@@ -247,13 +246,6 @@ function useBoardColors() {
 }
 
 const styles = StyleSheet.create({
-  menuAnchorContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-  },
-  menuAnchor: {
-    height: 1,
-  },
   boardCard: {
     paddingLeft: 16,
     paddingRight: 50,
