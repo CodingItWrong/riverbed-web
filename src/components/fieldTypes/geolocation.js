@@ -1,4 +1,3 @@
-import * as Linking from 'expo-linking';
 import {getCurrentPositionAsync, useForegroundPermissions} from 'expo-location';
 import {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
@@ -59,7 +58,7 @@ function GeolocationEditorComponent({
   function openMapsApp() {
     const daddr = `${value.lat},${value.lng}`;
     const company = 'google';
-    Linking.openURL(`http://maps.${company}.com/maps?daddr=${daddr}`);
+    window.open(`http://maps.${company}.com/maps?daddr=${daddr}`);
   }
 
   return (
