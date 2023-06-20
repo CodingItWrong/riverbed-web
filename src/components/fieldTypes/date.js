@@ -14,20 +14,22 @@ const dateFieldDataType = {
 };
 
 function DateEditorComponent({field, label, value, setValue, disabled, style}) {
-  console.log({valueObject: dateUtils.serverStringToObject(value)});
-  // TODO: should onChangeText always update? Like if you type?
   return (
     <DatePicker
       label={label}
       value={dayjs(value)}
       onChange={dayJsObject => {
         const string = dateUtils.objectToServerString(dayJsObject);
-        console.log({string});
         setValue(string);
       }}
       disabled={disabled}
       data-testid={`date-input-${field.id}`}
       style={style}
+      slotProps={{
+        textField: {
+          variant: 'filled',
+        },
+      }}
     />
   );
 }
