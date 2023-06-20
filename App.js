@@ -11,7 +11,6 @@ import {StatusBar} from 'expo-status-bar';
 import {useEffect} from 'react';
 import {AppState, Platform} from 'react-native';
 import {Provider as PaperProvider} from 'react-native-paper';
-import {en, registerTranslation} from 'react-native-paper-dates';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import Navigation from './src/Navigation';
 import TokenLoadBuffer from './src/components/TokenLoadBuffer';
@@ -20,8 +19,6 @@ import {TokenProvider} from './src/data/token';
 import useColorSchemeTheme, {
   usePaperColorSchemeTheme,
 } from './src/theme/useColorSchemeTheme';
-
-registerTranslation('en', en);
 
 const queryClient = new QueryClient({
   defaultOptions: {
