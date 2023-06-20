@@ -12,7 +12,7 @@ import ELEMENT_TYPES from '../../enums/elementTypes';
 import FIELD_DATA_TYPES from '../../enums/fieldDataTypes';
 import sortByDisplayOrder from '../../utils/sortByDisplayOrder';
 
-export default function ElementList({board}) {
+export default function ElementList({board, card}) {
   const navigate = useNavigate();
 
   const {data: elements = []} = useBoardElements(board);
@@ -41,7 +41,7 @@ export default function ElementList({board}) {
     handleCreateElement({'element-type': ELEMENT_TYPES.BUTTON_MENU.key});
 
   function editElement(element) {
-    navigate(`/boards/${board.id}/elements/${element.id}`);
+    navigate(`/boards/${board.id}/cards/${card.id}/elements/${element.id}`);
   }
 
   return (

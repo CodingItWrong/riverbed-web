@@ -1,18 +1,16 @@
-import {useNavigation} from '@react-navigation/native';
 import {useCallback, useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
+import {useNavigate, useParams} from 'react-router-dom';
 import BackButton from '../../components/BackButton';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import {useBoard} from '../../data/boards';
-import {useCurrentBoard} from '../../data/currentBoard';
 import {useBoardElement} from '../../data/elements';
 import BaseModalScreen from '../BaseModalScreen';
 import EditElementForm from './EditElementForm';
 
-export default function ElementScreen({route}) {
-  const navigation = useNavigation();
-  const {boardId} = useCurrentBoard();
-  const {elementId} = route.params;
+export default function ElementScreen() {
+  const navigate = useNavigate();
+  const {boardId, cardId, elementId} = useParams();
 
   const {data: board} = useBoard(boardId);
   const {data: element} = useBoardElement({boardId, elementId});
@@ -24,9 +22,12 @@ export default function ElementScreen({route}) {
     }
   }, [element]);
 
+  // TODO: does not go back to editing mode; maybe should be in the route
+  const backPath = `/boards/${boardId}/cards/${cardId}`;
+
   const closeModal = useCallback(() => {
-    navigation.goBack();
-  }, [navigation]);
+    navigate(backPath);
+  }, [navigate, backPath]);
 
   function renderContents() {
     if (isFirstLoaded) {
@@ -47,9 +48,9 @@ export default function ElementScreen({route}) {
   }
 
   return (
-    <BaseModalScreen>
+    <BaseModalScreen backTo={backPath}>
       <View style={styles.headerRow}>
-        <BackButton accessibilityLabel="Close element" />
+        <BackButton to={backPath} accessibilityLabel="Close element" />
       </View>
       {renderContents()}
     </BaseModalScreen>

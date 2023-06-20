@@ -150,6 +150,10 @@ const router = createBrowserRouter([
     element: <Card />,
   },
   {
+    path: 'boards/:boardId/cards/:cardId/elements/:elementId',
+    element: <Element />,
+  },
+  {
     path: 'boards/:boardId/columns/:columnId',
     element: <Column />,
   },
