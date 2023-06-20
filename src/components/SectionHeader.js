@@ -1,9 +1,9 @@
-import ListSubheader from '@mui/material/ListSubheader';
+import {Typography} from '@mui/material';
 
 export default function SectionHeader({testID, style, children}) {
   return (
-    <ListSubheader component="div" style={style} data-testid={testID}>
+    <Typography component="div" variant="h6" style={style} data-testid={testID}>
       {children}
-    </ListSubheader>
+    </Typography>
   );
 }
