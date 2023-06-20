@@ -1,6 +1,7 @@
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import {View} from 'react-native';
+import {primaryColors} from '../theme/primaryColors';
 import Icon from './Icon';
 import Text from './Text';
 
@@ -23,15 +24,20 @@ export default function ButtonGroup({
         value={value ?? EMPTY_VALUE}
         onChange={handleChange}
       >
-        {options.map(option => (
-          <ToggleButton
-            key={option.key}
-            value={option.key ?? EMPTY_VALUE}
-            aria-label={option.label}
-          >
-            <Icon name={option.icon} color={option.iconColor} />
-          </ToggleButton>
-        ))}
+        {options.map(option => {
+          const color = option.iconColor
+            ? primaryColors[option.iconColor]
+            : null;
+          return (
+            <ToggleButton
+              key={option.key}
+              value={option.key ?? EMPTY_VALUE}
+              aria-label={option.label}
+            >
+              <Icon name={option.icon} sx={{color}} />
+            </ToggleButton>
+          );
+        })}
       </ToggleButtonGroup>
     </View>
   );
