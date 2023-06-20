@@ -1,5 +1,5 @@
-import {useNavigation} from '@react-navigation/native';
 import {StyleSheet, View} from 'react-native';
+import {useNavigate} from 'react-router-dom';
 import Button from '../../components/Button';
 import DropdownMenu from '../../components/DropdownMenu';
 import ErrorSnackbar from '../../components/ErrorSnackbar';
@@ -13,7 +13,7 @@ import FIELD_DATA_TYPES from '../../enums/fieldDataTypes';
 import sortByDisplayOrder from '../../utils/sortByDisplayOrder';
 
 export default function ElementList({board}) {
-  const navigation = useNavigation();
+  const navigate = useNavigate();
 
   const {data: elements = []} = useBoardElements(board);
   const sortedElements = sortByDisplayOrder(elements);
@@ -41,7 +41,7 @@ export default function ElementList({board}) {
     handleCreateElement({'element-type': ELEMENT_TYPES.BUTTON_MENU.key});
 
   function editElement(element) {
-    navigation.navigate('Element', {elementId: element.id});
+    navigate(`/boards/${board.id}/elements/${element.id}`);
   }
 
   return (
