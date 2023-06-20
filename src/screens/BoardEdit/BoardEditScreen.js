@@ -1,7 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import {useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Appbar} from 'react-native-paper';
+import BackButton from '../../components/BackButton';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import {useBoard} from '../../data/boards';
 import {useCurrentBoard} from '../../data/currentBoard';
@@ -36,10 +36,7 @@ export default function BoardEditScreen() {
   return (
     <BaseModalScreen>
       <View style={styles.headerRow}>
-        <Appbar.BackAction
-          onPress={closeModal}
-          accessibilityLabel="Close board edit form"
-        />
+        <BackButton accessibilityLabel="Close board edit form" />
       </View>
       {renderContents()}
     </BaseModalScreen>

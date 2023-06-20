@@ -35,6 +35,7 @@ export default function BoardList() {
         anchor={
           <IconButton
             icon="dots-vertical"
+            color="inherit"
             accessibilityLabel="App Menu"
             onPress={() => setMenuOpen(true)}
           />

@@ -1,7 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import {useCallback, useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Appbar} from 'react-native-paper';
+import BackButton from '../../components/BackButton';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import {useBoard} from '../../data/boards';
 import {useColumn} from '../../data/columns';
@@ -48,10 +48,7 @@ export default function ColumnScreen({route}) {
   return (
     <BaseModalScreen>
       <View style={styles.headerRow}>
-        <Appbar.BackAction
-          onPress={closeModal}
-          accessibilityLabel="Close column"
-        />
+        <BackButton accessibilityLabel="Close column" />
       </View>
       {renderContents()}
     </BaseModalScreen>

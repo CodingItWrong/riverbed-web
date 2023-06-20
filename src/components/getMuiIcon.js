@@ -1,4 +1,5 @@
 import AddIcon from '@mui/icons-material/Add';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import BedIcon from '@mui/icons-material/Bed';
 import BuildIcon from '@mui/icons-material/Build';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -31,6 +32,7 @@ export default function getMuiIcon(icon) {
 }
 
 const ICON_MAP = {
+  'arrow-back': ArrowBackIcon,
   baseball: SportsBaseballIcon,
   'bed-king-outline': BedIcon,
   'book-open-outline': MenuBookIcon,

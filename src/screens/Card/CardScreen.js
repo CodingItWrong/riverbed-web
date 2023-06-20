@@ -1,8 +1,9 @@
 import {useNavigation} from '@react-navigation/native';
 import {useCallback, useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Appbar} from 'react-native-paper';
+import BackButton from '../../components/BackButton';
 import ErrorSnackbar from '../../components/ErrorSnackbar';
+import IconButton from '../../components/IconButton';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import sharedStyles from '../../components/sharedStyles';
 import {useBoard} from '../../data/boards';
@@ -44,24 +45,24 @@ export default function CardScreen({route}) {
   const renderButtonControls = useCallback(() => {
     if (isEditingElements) {
       return (
-        <Appbar.Action
-          accessibilityLabel="Done Editing Elements"
+        <IconButton
           icon="check-bold"
-          onPress={() => setIsEditingElements(on => !on)}
+          accessibilityLabel="Done Editing Elements"
+          onClick={() => setIsEditingElements(on => !on)}
         />
       );
     } else {
       return (
         <>
-          <Appbar.Action
-            accessibilityLabel="Edit Elements"
+          <IconButton
             icon="wrench"
-            onPress={() => setIsEditingElements(on => !on)}
+            accessibilityLabel="Edit Elements"
+            onClick={() => setIsEditingElements(on => !on)}
           />
-          <Appbar.Action
-            accessibilityLabel="Delete Card"
+          <IconButton
             icon="delete"
-            onPress={handleDeleteCard}
+            accessibilityLabel="Delete Card"
+            onClick={handleDeleteCard}
           />
         </>
       );
@@ -88,10 +89,7 @@ export default function CardScreen({route}) {
     <>
       <BaseModalScreen>
         <View style={styles.headerRow}>
-          <Appbar.BackAction
-            onPress={closeModal}
-            accessibilityLabel="Close card"
-          />
+          <BackButton accessibilityLabel="Close card" />
           <View style={sharedStyles.spacer} />
           {renderButtonControls()}
         </View>

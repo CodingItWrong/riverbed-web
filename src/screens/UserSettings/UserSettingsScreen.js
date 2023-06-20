@@ -1,7 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import {useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Appbar} from 'react-native-paper';
+import BackButton from '../../components/BackButton';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import {useCurrentUser} from '../../data/user';
 import BaseModalScreen from '../BaseModalScreen';
@@ -34,10 +34,7 @@ export default function UserSettingsScreen() {
   return (
     <BaseModalScreen>
       <View style={styles.headerRow}>
-        <Appbar.BackAction
-          onPress={closeModal}
-          accessibilityLabel="Close user settings"
-        />
+        <BackButton accessibilityLabel="Close user settings" />
       </View>
       {renderContents()}
     </BaseModalScreen>

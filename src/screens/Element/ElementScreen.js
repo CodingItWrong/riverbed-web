@@ -1,7 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import {useCallback, useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Appbar} from 'react-native-paper';
+import BackButton from '../../components/BackButton';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import {useBoard} from '../../data/boards';
 import {useCurrentBoard} from '../../data/currentBoard';
@@ -49,10 +49,7 @@ export default function ElementScreen({route}) {
   return (
     <BaseModalScreen>
       <View style={styles.headerRow}>
-        <Appbar.BackAction
-          onPress={closeModal}
-          accessibilityLabel="Close element"
-        />
+        <BackButton accessibilityLabel="Close element" />
       </View>
       {renderContents()}
     </BaseModalScreen>
