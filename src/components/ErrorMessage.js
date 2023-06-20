@@ -1,23 +1,16 @@
-import {View} from 'react-native';
-import {withTheme} from 'react-native-paper';
-import Text from './Text';
+import Alert from '@mui/material/Alert';
 
-function ErrorMessage({theme, children, style}) {
-  const errorMessageStyle = {
-    color: theme.colors.error,
-    textAlign: 'center',
-    margin: 10,
-  };
-
+export default function ErrorMessage({theme, children, style}) {
   return (
     children && (
-      <View accessibilityRole="alert">
-        <Text testID="error-message" style={[errorMessageStyle, style]}>
-          {children}
-        </Text>
-      </View>
+      <Alert
+        severity="error"
+        data-testid="error-message"
+        sx={{m: 2}}
+        style={style}
+      >
+        {children}
+      </Alert>
     )
   );
 }
-
-export default withTheme(ErrorMessage);
