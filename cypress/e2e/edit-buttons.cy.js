@@ -141,7 +141,6 @@ describe('edit buttons', () => {
         .its('request.body')
         .should('deep.equal', {data: greetButton});
       cy.contains(buttonName);
-      cy.get('[aria-label="Done Editing Elements"]').click();
     });
 
     cy.step('CONFIRM BUTTON ACTION WORKS', () => {
@@ -225,7 +224,6 @@ describe('edit buttons', () => {
     });
 
     cy.step('CONFIRM BUTTON EDITED ON CARD', () => {
-      cy.get('[aria-label="Done Editing Elements"]').click();
       cy.contains(updatedButtonName);
     });
   });
@@ -271,7 +269,6 @@ describe('edit buttons', () => {
     });
 
     cy.step('CONFIRM BUTTON REMOVED FROM CARD', () => {
-      cy.get('[aria-label="Done Editing Elements"]').click();
       cy.contains(buttonName).should('not.exist');
     });
   });
@@ -361,7 +358,6 @@ describe('edit buttons', () => {
         .its('request.body')
         .should('deep.equal', {data: deferButton});
       cy.contains(buttonName);
-      cy.get('[aria-label="Done Editing Elements"]').click();
     });
 
     cy.step('RUN BUTTON ACTION', () => {
@@ -523,7 +519,6 @@ describe('edit buttons', () => {
         .its('request.body')
         .should('deep.equal', {data: updatedMenu});
       cy.contains('Save Button').should('not.exist');
-      cy.get('[aria-label="Done Editing Elements"]').click();
     });
 
     cy.step('CONFIRM BUTTON WORKS', () => {
