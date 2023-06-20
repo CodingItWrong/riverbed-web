@@ -2,6 +2,9 @@ import FIELD_DATA_TYPES from '../../../enums/fieldDataTypes';
 import SORT_DIRECTIONS from '../../../enums/sortDirections';
 import groupCards from './groupCards';
 
+// TODO: ideally reorganize code to remove this dependency
+jest.mock('../../../components/Map', () => ({}));
+
 describe('groupCards', () => {
   const textField = {
     id: 'fieldId',
