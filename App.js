@@ -10,7 +10,6 @@ import {ReactQueryDevtools} from '@tanstack/react-query-devtools';
 import {useEffect} from 'react';
 import {AppState, Platform} from 'react-native';
 import {Provider as PaperProvider} from 'react-native-paper';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
 import Navigation from './src/Navigation';
 import TokenLoadBuffer from './src/components/TokenLoadBuffer';
 import {CurrentBoardProvider} from './src/data/currentBoard';
@@ -53,20 +52,18 @@ export default function App() {
     <CurrentBoardProvider>
       <TokenProvider>
         <TokenLoadBuffer>
-          <SafeAreaProvider>
-            <PaperProvider theme={paperTheme}>
-              <MuiProvider theme={theme}>
-                <DateLocalizationProvider dateAdapter={AdapterDayjs}>
-                  <QueryClientProvider client={queryClient}>
-                    {Platform.OS === 'web' && __DEV__ && (
-                      <ReactQueryDevtools initialIsOpen={false} />
-                    )}
-                    <Navigation />
-                  </QueryClientProvider>
-                </DateLocalizationProvider>
-              </MuiProvider>
-            </PaperProvider>
-          </SafeAreaProvider>
+          <PaperProvider theme={paperTheme}>
+            <MuiProvider theme={theme}>
+              <DateLocalizationProvider dateAdapter={AdapterDayjs}>
+                <QueryClientProvider client={queryClient}>
+                  {Platform.OS === 'web' && __DEV__ && (
+                    <ReactQueryDevtools initialIsOpen={false} />
+                  )}
+                  <Navigation />
+                </QueryClientProvider>
+              </DateLocalizationProvider>
+            </MuiProvider>
+          </PaperProvider>
         </TokenLoadBuffer>
       </TokenProvider>
     </CurrentBoardProvider>

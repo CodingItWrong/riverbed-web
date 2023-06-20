@@ -3,7 +3,6 @@ import {useNavigation} from '@react-navigation/native';
 import {StyleSheet, View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Provider as PaperProvider} from 'react-native-paper';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Card from '../components/Card';
 import CenterModal from '../components/CenterModal';
 import sharedStyles from '../components/sharedStyles';
@@ -14,7 +13,6 @@ import useColorSchemeTheme, {
 } from '../theme/useColorSchemeTheme';
 
 export default function BaseModalScreen({children}) {
-  const insets = useSafeAreaInsets();
   const navigation = useNavigation();
   const {boardId} = useCurrentBoard();
 
@@ -29,10 +27,7 @@ export default function BaseModalScreen({children}) {
     <PaperProvider theme={paperColorTheme}>
       <MuiProvider theme={colorTheme}>
         <ModalScreenWrapper closeModal={() => navigation.goBack()}>
-          <KeyboardAwareScrollView
-            contentContainerStyle={{paddingBottom: insets.bottom}}
-            testID="scroll-view"
-          >
+          <KeyboardAwareScrollView testID="scroll-view">
             <View>{children}</View>
           </KeyboardAwareScrollView>
         </ModalScreenWrapper>

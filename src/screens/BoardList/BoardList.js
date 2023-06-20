@@ -6,7 +6,6 @@ import sortBy from 'lodash.sortby';
 import {useCallback, useEffect, useState} from 'react';
 import {SectionList, StyleSheet, View} from 'react-native';
 import {Menu} from 'react-native-paper';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import Button from '../../components/Button';
 import CenterColumn from '../../components/CenterColumn';
 import ErrorSnackbar from '../../components/ErrorSnackbar';
@@ -92,10 +91,7 @@ export default function BoardList() {
               <LoadingIndicator />
             </View>
           ) : (
-            <SafeAreaView
-              style={sharedStyles.fullHeight}
-              edges={['left', 'right', 'bottom']}
-            >
+            <View style={sharedStyles.fullHeight}>
               <SectionList
                 sections={boardGroups}
                 keyExtractor={board => board.id}
@@ -130,7 +126,7 @@ export default function BoardList() {
                   Add Board
                 </Button>
               </View>
-            </SafeAreaView>
+            </View>
           )}
         </View>
       </CenterColumn>
