@@ -1,22 +1,23 @@
-import {useNavigation} from '@react-navigation/native';
 import {useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
+import {useNavigate, useParams} from 'react-router-dom';
 import BackButton from '../../components/BackButton';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import {useBoard} from '../../data/boards';
-import {useCurrentBoard} from '../../data/currentBoard';
 import BaseModalScreen from '../BaseModalScreen';
 import EditBoardForm from './EditBoardForm';
 
 export default function BoardEditScreen() {
-  const navigation = useNavigation();
-  const {boardId} = useCurrentBoard();
+  const navigate = useNavigate();
+  const {boardId} = useParams();
 
   const {data: board} = useBoard(boardId);
 
+  const backPath = `/boards/${boardId}`;
+
   const closeModal = useCallback(() => {
-    navigation.goBack();
-  }, [navigation]);
+    navigate(backPath);
+  }, [navigate, backPath]);
 
   function renderContents() {
     if (!board) {
@@ -26,7 +27,7 @@ export default function BoardEditScreen() {
         <EditBoardForm
           board={board}
           onSave={closeModal}
-          onDelete={() => navigation.popToTop()}
+          onDelete={() => navigate('/')}
           onCancel={closeModal}
         />
       );
@@ -34,9 +35,9 @@ export default function BoardEditScreen() {
   }
 
   return (
-    <BaseModalScreen>
+    <BaseModalScreen backTo={backPath}>
       <View style={styles.headerRow}>
-        <BackButton accessibilityLabel="Close board edit form" />
+        <BackButton to={backPath} accessibilityLabel="Close board edit form" />
       </View>
       {renderContents()}
     </BaseModalScreen>
