@@ -1,12 +1,11 @@
 import {ThemeProvider as MuiProvider} from '@mui/material/styles';
 import {StyleSheet} from 'react-native';
 import {Provider as PaperProvider} from 'react-native-paper';
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import Card from '../components/Card';
 import CenterModal from '../components/CenterModal';
 import sharedStyles from '../components/sharedStyles';
 import {useBoard} from '../data/boards';
-import {useCurrentBoard} from '../data/currentBoard';
 import useColorSchemeTheme, {
   usePaperColorSchemeTheme,
 } from '../theme/useColorSchemeTheme';
@@ -17,7 +16,7 @@ export default function BaseModalScreen({backTo, children}) {
   }
 
   const navigate = useNavigate();
-  const {boardId} = useCurrentBoard();
+  const {boardId} = useParams();
 
   const {data: board} = useBoard(boardId);
 
