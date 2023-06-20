@@ -1,18 +1,18 @@
 import {useNavigation} from '@react-navigation/native';
 import {useCallback, useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
+import {useNavigate, useParams} from 'react-router-dom';
 import BackButton from '../../components/BackButton';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import {useBoard} from '../../data/boards';
 import {useColumn} from '../../data/columns';
-import {useCurrentBoard} from '../../data/currentBoard';
 import BaseModalScreen from '../BaseModalScreen';
 import EditColumnForm from './EditColumnForm';
 
-export default function ColumnScreen({route}) {
-  const navigation = useNavigation();
-  const {boardId} = useCurrentBoard();
-  const {columnId} = route.params;
+// TODO: fix double scroll
+export default function ColumnScreen() {
+  const navigate = useNavigate();
+  const {boardId, columnId} = useParams();
 
   const {data: board} = useBoard(boardId);
   const {data: column} = useColumn({boardId, columnId});
@@ -25,8 +25,8 @@ export default function ColumnScreen({route}) {
   }, [column]);
 
   const closeModal = useCallback(() => {
-    navigation.goBack();
-  }, [navigation]);
+    navigate(`/boards/${boardId}`);
+  }, [navigate, boardId]);
 
   function renderContents() {
     if (isFirstLoaded) {
@@ -45,10 +45,12 @@ export default function ColumnScreen({route}) {
     }
   }
 
+  const backPath = `/boards/${boardId}`;
+
   return (
-    <BaseModalScreen>
+    <BaseModalScreen backTo={backPath}>
       <View style={styles.headerRow}>
-        <BackButton accessibilityLabel="Close column" />
+        <BackButton to={backPath} accessibilityLabel="Close column" />
       </View>
       {renderContents()}
     </BaseModalScreen>
