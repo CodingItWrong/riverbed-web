@@ -1,6 +1,6 @@
-import {useNavigation} from '@react-navigation/native';
 import {useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
+import {useNavigate} from 'react-router-dom';
 import BackButton from '../../components/BackButton';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import {useCurrentUser} from '../../data/user';
@@ -8,13 +8,13 @@ import BaseModalScreen from '../BaseModalScreen';
 import EditSettingsForm from './EditSettingsForm';
 
 export default function UserSettingsScreen() {
-  const navigation = useNavigation();
+  const navigate = useNavigate();
 
   const {data: user} = useCurrentUser();
 
   const closeModal = useCallback(() => {
-    navigation.goBack();
-  }, [navigation]);
+    navigate('/boards');
+  }, [navigate]);
 
   function renderContents() {
     if (!user) {
@@ -24,7 +24,7 @@ export default function UserSettingsScreen() {
         <EditSettingsForm
           user={user}
           onSave={closeModal}
-          onDelete={() => navigation.popToTop()}
+          onDelete={closeModal}
           onCancel={closeModal}
         />
       );

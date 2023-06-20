@@ -1,9 +1,7 @@
 import MuiIconButton from '@mui/material/IconButton';
-import {useNavigation} from '@react-navigation/native';
 import Icon from './Icon';
 
 export default function BackButton({accessibilityLabel = 'Go back'}) {
-  const navigation = useNavigation();
   return (
     <MuiIconButton
       size="large"
@@ -11,7 +9,7 @@ export default function BackButton({accessibilityLabel = 'Go back'}) {
       color="inherit"
       aria-label={accessibilityLabel}
       sx={{mr: 2}}
-      onClick={() => navigation.goBack()}
+      onClick={() => history.back()}
     >
       <Icon name="arrow-back" />
     </MuiIconButton>

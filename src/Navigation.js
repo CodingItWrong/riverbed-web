@@ -141,6 +141,10 @@ const router = createBrowserRouter([
     path: '/boards',
     element: <BoardList />,
   },
+  {
+    path: '/settings',
+    element: <UserSettings />,
+  },
 ]);
 
 export default function Navigation() {

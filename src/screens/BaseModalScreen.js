@@ -1,5 +1,4 @@
 import {ThemeProvider as MuiProvider} from '@mui/material/styles';
-import {useNavigation} from '@react-navigation/native';
 import {StyleSheet} from 'react-native';
 import {Provider as PaperProvider} from 'react-native-paper';
 import Card from '../components/Card';
@@ -12,7 +11,6 @@ import useColorSchemeTheme, {
 } from '../theme/useColorSchemeTheme';
 
 export default function BaseModalScreen({children}) {
-  const navigation = useNavigation();
   const {boardId} = useCurrentBoard();
 
   const {data: board} = useBoard(boardId);
@@ -22,10 +20,11 @@ export default function BaseModalScreen({children}) {
     board?.attributes['color-theme'],
   );
 
+  // TODO: what is the correct back behavior we want here?
   return (
     <PaperProvider theme={paperColorTheme}>
       <MuiProvider theme={colorTheme}>
-        <ModalScreenWrapper closeModal={() => navigation.goBack()}>
+        <ModalScreenWrapper closeModal={() => history.back()}>
           {children}
         </ModalScreenWrapper>
       </MuiProvider>
