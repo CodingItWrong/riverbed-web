@@ -153,10 +153,8 @@ function BoardCard({board, onPress, style}) {
 
   let foregroundColor = null;
 
-  if (board.attributes['color-theme']) {
-    const colors = getBoardColors(board);
-    foregroundColor = colors.primary;
-  }
+  const colors = getBoardColors(board);
+  foregroundColor = colors.primary;
 
   return (
     <View style={style}>
@@ -170,7 +168,7 @@ function BoardCard({board, onPress, style}) {
                 sx={{color: foregroundColor}}
               />
               <View style={sharedStyles.fill}>
-                <Text variant="titleMedium" style={{color: foregroundColor}}>
+                <Text variant="titleMedium">
                   {board.attributes.name ?? '(unnamed board)'}
                 </Text>
               </View>
