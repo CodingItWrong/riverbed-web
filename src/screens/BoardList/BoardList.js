@@ -151,31 +151,26 @@ export default function BoardList() {
 function BoardCard({board, onPress, style}) {
   const getBoardColors = useBoardColors();
 
-  let backgroundColor = null;
   let foregroundColor = null;
 
   if (board.attributes['color-theme']) {
     const colors = getBoardColors(board);
-    backgroundColor = colors.secondaryContainer;
-    foregroundColor = colors.onSecondaryContainer;
+    foregroundColor = colors.primary;
   }
 
   return (
     <View style={style}>
-      <MuiCard style={backgroundColor ? {backgroundColor} : null}>
+      <MuiCard>
         <MuiCardActionArea onClick={onPress}>
           <MuiCardContent>
             <View style={styles.boardCard}>
               <Icon
                 name={board.attributes.icon ?? 'view-column'}
                 style={sharedStyles.mr}
-                color={foregroundColor}
+                sx={{color: foregroundColor}}
               />
               <View style={sharedStyles.fill}>
-                <Text
-                  variant="titleMedium"
-                  style={foregroundColor ? {color: foregroundColor} : null}
-                >
+                <Text variant="titleMedium" style={{color: foregroundColor}}>
                   {board.attributes.name ?? '(unnamed board)'}
                 </Text>
               </View>
