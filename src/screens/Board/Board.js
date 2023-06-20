@@ -12,12 +12,13 @@ import LoadingIndicator from '../../components/LoadingIndicator';
 import ScreenBackground from '../../components/ScreenBackground';
 import sharedStyles from '../../components/sharedStyles';
 import {useBoard} from '../../data/boards';
-import {useCards} from '../../data/cards';
+import {useCards, useRefreshCards} from '../../data/cards';
 import {useColumns} from '../../data/columns';
 import {useBoardElements} from '../../data/elements';
 import useColorSchemeTheme, {
   usePaperColorSchemeTheme,
 } from '../../theme/useColorSchemeTheme';
+import useNavigateEffect from '../../utils/useNavigateEffect';
 import ColumnList from './Column/ColumnList';
 
 export default function Board() {
@@ -36,6 +37,7 @@ export default function Board() {
     useBoardElements(board);
   const isFetching = isFetchingCards || isFetchingColumns || isFetchingElements;
   const error = boardError ?? cardsError ?? columnsError ?? elementsError;
+  const refreshCards = useRefreshCards(board);
 
   const editBoard = useCallback(
     () => board && navigate('edit'),
@@ -59,6 +61,12 @@ export default function Board() {
       };
     }
   })();
+
+  useNavigateEffect(
+    useCallback(() => {
+      refreshCards();
+    }, [refreshCards]),
+  );
 
   function renderContents() {
     if (!board) {
