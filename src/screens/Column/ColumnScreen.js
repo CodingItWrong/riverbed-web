@@ -1,4 +1,3 @@
-import {useNavigation} from '@react-navigation/native';
 import {useCallback, useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useNavigate, useParams} from 'react-router-dom';
