@@ -120,31 +120,21 @@ describe('field data types', () => {
     });
 
     cy.step('TEST DATE FIELD', () => {
-      cy.get(`[data-testid="element-${dateField.id}"] [role=button]`).click();
-      cy.get('[role=button]').contains(/^2$/).click();
-      cy.get('[data-testid=react-native-paper-dates-save-text]').click();
+      cy.get(`[data-testid="element-${dateField.id}"] button`).click();
+      cy.get('button').contains(/^2$/).click();
       cy.wait('@updateCard')
         .its('request.body.data.attributes["field-values"]')
         .should('deep.include', {[dateField.id]: '2023-01-02'});
     });
 
     cy.step('TEST DATETIME FIELD', () => {
-      cy.get(`[data-testid=date-input-${dateTimeField.id}`).click();
-      cy.get('[role=button]').contains(/^3$/).click();
-      cy.get('[data-testid=react-native-paper-dates-save-text]').click();
+      cy.get(`[data-testid=element-${dateTimeField.id}] button`).click();
+      cy.get('button').contains(/^3$/).click();
+      cy.get('[role=option]').contains(/^05$/).click();
+      cy.get('[role=option]').contains(/^15$/).click();
+      cy.get('[role=option]').contains(/^PM$/).click();
+      cy.contains('OK').click();
       cy.wait('@updateCard'); // not verifying contents due to time zone issues
-
-      cy.get(`[data-testid=time-input-${dateTimeField.id}`).click();
-      cy.get('[aria-modal=true]');
-      cy.get('[aria-modal=true] input[inputmode=numeric]')
-        .eq(0)
-        .clear({force: true})
-        .type('4', {force: true});
-      cy.get('[aria-modal=true] input[inputmode=numeric]')
-        .eq(1)
-        .clear({force: true})
-        .type('56', {force: true});
-      cy.get('[role=button]').contains('Ok').click();
       cy.wait('@updateCard'); // not verifying contents due to time zone issues
     });
 
