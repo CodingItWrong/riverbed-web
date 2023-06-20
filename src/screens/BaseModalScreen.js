@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
   wrapperCard: {
     marginTop: 8,
     maxHeight: '90%',
+    overflowY: 'auto',
   },
   container: {
     padding: 16,
