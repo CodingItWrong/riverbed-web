@@ -1,9 +1,9 @@
-import {List} from 'react-native-paper';
+import ListSubheader from '@mui/material/ListSubheader';
 
 export default function SectionHeader({testID, style, children}) {
   return (
-    <List.Subheader style={style} testID={testID}>
+    <ListSubheader component="div" style={style} data-testid={testID}>
       {children}
-    </List.Subheader>
+    </ListSubheader>
   );
 }
