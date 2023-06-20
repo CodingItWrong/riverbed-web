@@ -73,7 +73,7 @@ export default function CardScreen() {
     } else if (isEditingElements) {
       return (
         <View style={[styles.container, sharedStyles.fill]}>
-          <ElementList board={board} />
+          <ElementList board={board} card={card} />
         </View>
       );
     } else if (card) {
