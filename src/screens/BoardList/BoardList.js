@@ -3,7 +3,6 @@ import MuiCard from '@mui/material/Card';
 import MuiCardContent from '@mui/material/CardContent';
 import MuiMenu from '@mui/material/Menu';
 import MuiMenuItem from '@mui/material/MenuItem';
-import {useLinkTo} from '@react-navigation/native';
 import sortBy from 'lodash.sortby';
 import {useCallback, useState} from 'react';
 import {SectionList, StyleSheet, View} from 'react-native';
@@ -28,7 +27,6 @@ import dateTimeUtils from '../../utils/dateTimeUtils';
 export default function BoardList() {
   const {clearToken} = useToken();
   const navigate = useNavigate();
-  const linkTo = useLinkTo();
 
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
 
@@ -69,7 +67,7 @@ export default function BoardList() {
   const {data: boards = [], isLoading, error: loadError} = useBoards();
 
   function goToBoard(board) {
-    linkTo(`/boards/${board.id}`);
+    navigate(board.id);
   }
 
   const {

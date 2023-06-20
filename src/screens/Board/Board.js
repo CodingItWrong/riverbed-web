@@ -2,9 +2,9 @@ import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
 import Toolbar from '@mui/material/Toolbar';
 import {ThemeProvider as MuiProvider} from '@mui/material/styles';
-import {useFocusEffect, useNavigation} from '@react-navigation/native';
-import {useCallback, useEffect} from 'react';
+import {useCallback} from 'react';
 import {Provider as PaperProvider} from 'react-native-paper';
+import {useNavigate, useParams} from 'react-router-dom';
 import BackButton from '../../components/BackButton';
 import ErrorSnackbar from '../../components/ErrorSnackbar';
 import Icon from '../../components/Icon';
@@ -12,9 +12,8 @@ import LoadingIndicator from '../../components/LoadingIndicator';
 import ScreenBackground from '../../components/ScreenBackground';
 import sharedStyles from '../../components/sharedStyles';
 import {useBoard} from '../../data/boards';
-import {useCards, useRefreshCards} from '../../data/cards';
+import {useCards} from '../../data/cards';
 import {useColumns} from '../../data/columns';
-import {useCurrentBoard} from '../../data/currentBoard';
 import {useBoardElements} from '../../data/elements';
 import useColorSchemeTheme, {
   usePaperColorSchemeTheme,
@@ -22,8 +21,8 @@ import useColorSchemeTheme, {
 import ColumnList from './Column/ColumnList';
 
 export default function Board() {
-  const {boardId} = useCurrentBoard();
-  const navigation = useNavigation();
+  const {boardId} = useParams();
+  const navigate = useNavigate();
   const {
     data: board,
     isLoading: isLoadingBoard,
@@ -37,36 +36,29 @@ export default function Board() {
     useBoardElements(board);
   const isFetching = isFetchingCards || isFetchingColumns || isFetchingElements;
   const error = boardError ?? cardsError ?? columnsError ?? elementsError;
-  const refreshCards = useRefreshCards(board);
 
   const editBoard = useCallback(
-    () => navigation.navigate('BoardEdit', {boardId: board?.id}),
-    [navigation, board?.id],
+    () => board && navigate('edit'),
+    [navigate, board],
   );
 
-  useEffect(() => {
+  let navigationOptions = (() => {
     if (isLoadingBoard) {
-      navigation.setOptions({
+      return {
         title: null,
         icon: null,
         onTitlePress: null,
         isFetching: true,
-      });
+      };
     } else {
-      navigation.setOptions({
+      return {
         title: board?.attributes?.name ?? '(unnamed board)',
         icon: board?.attributes?.icon,
         onTitlePress: () => editBoard(),
         isFetching,
-      });
+      };
     }
-  }, [navigation, board, isLoadingBoard, isFetching, editBoard]);
-
-  useFocusEffect(
-    useCallback(() => {
-      refreshCards();
-    }, [refreshCards]),
-  );
+  })();
 
   function renderContents() {
     if (!board) {
@@ -85,13 +77,10 @@ export default function Board() {
     <PaperProvider theme={paperColorTheme}>
       <MuiProvider theme={colorTheme}>
         <EmbeddedHeader
-          title={
-            board?.attributes?.name ??
-            (!isLoadingBoard && !error && '(click to name board)')
-          }
-          icon={board?.attributes?.icon}
-          isFetching={isFetching}
-          onTitlePress={() => editBoard()}
+          title={navigationOptions.title}
+          icon={navigationOptions.icon}
+          isFetching={navigationOptions.isFetching}
+          onTitlePress={navigationOptions.onTitlePress}
         />
         <ScreenBackground style={sharedStyles.fullHeight}>
           {renderContents()}

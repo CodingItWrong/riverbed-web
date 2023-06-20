@@ -1,5 +1,5 @@
-import {useNavigation} from '@react-navigation/native';
 import {ScrollView, StyleSheet, View} from 'react-native';
+import {useNavigate} from 'react-router-dom';
 import {large, useBreakpoint} from '../../../breakpoints';
 import Button from '../../../components/Button';
 import ErrorSnackbar from '../../../components/ErrorSnackbar';
@@ -12,8 +12,9 @@ import VALUES from '../../../enums/values';
 import sortByDisplayOrder from '../../../utils/sortByDisplayOrder';
 import Column from './Column';
 
+// TODO: columns do not independently scroll
 export default function ColumnList({board}) {
-  const navigation = useNavigation();
+  const navigate = useNavigate();
 
   const {data: elements, isLoading: isLoadingElements} =
     useBoardElements(board);
@@ -47,14 +48,14 @@ export default function ColumnList({board}) {
     );
 
   function showColumn(column) {
-    navigation.navigate('Column', {columnId: column.id});
+    navigate(`columns/${column.id}`);
   }
 
   function showDetail(card) {
     primeCard(card);
     // TODO: may want to make sure card form data does reload if it changes from server
 
-    navigation.navigate('Card', {cardId: card.id});
+    navigate(`cards/${card.id}`);
   }
 
   const breakpoint = useBreakpoint();
