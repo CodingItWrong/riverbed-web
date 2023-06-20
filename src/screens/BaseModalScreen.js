@@ -1,6 +1,7 @@
 import {ThemeProvider as MuiProvider} from '@mui/material/styles';
 import {StyleSheet} from 'react-native';
 import {Provider as PaperProvider} from 'react-native-paper';
+import {useNavigate} from 'react-router-dom';
 import Card from '../components/Card';
 import CenterModal from '../components/CenterModal';
 import sharedStyles from '../components/sharedStyles';
@@ -10,7 +11,12 @@ import useColorSchemeTheme, {
   usePaperColorSchemeTheme,
 } from '../theme/useColorSchemeTheme';
 
-export default function BaseModalScreen({children}) {
+export default function BaseModalScreen({backTo, children}) {
+  if (!backTo) {
+    throw new Error('BaseModalScreen: backTo prop is required');
+  }
+
+  const navigate = useNavigate();
   const {boardId} = useCurrentBoard();
 
   const {data: board} = useBoard(boardId);
@@ -24,7 +30,7 @@ export default function BaseModalScreen({children}) {
   return (
     <PaperProvider theme={paperColorTheme}>
       <MuiProvider theme={colorTheme}>
-        <ModalScreenWrapper closeModal={() => history.back()}>
+        <ModalScreenWrapper closeModal={() => navigate(backTo)}>
           {children}
         </ModalScreenWrapper>
       </MuiProvider>

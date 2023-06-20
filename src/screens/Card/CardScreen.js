@@ -83,11 +83,13 @@ export default function CardScreen() {
     }
   }
 
+  const backPath = `/boards/${boardId}`;
+
   return (
     <>
-      <BaseModalScreen>
+      <BaseModalScreen backTo={backPath}>
         <View style={styles.headerRow}>
-          <BackButton accessibilityLabel="Close card" />
+          <BackButton to={backPath} accessibilityLabel="Close card" />
           <View style={sharedStyles.spacer} />
           {renderButtonControls()}
         </View>

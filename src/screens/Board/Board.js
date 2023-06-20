@@ -99,7 +99,7 @@ function EmbeddedHeader({title, icon, isFetching, onTitlePress}) {
   return (
     <AppBar position="relative">
       <Toolbar>
-        <BackButton />
+        <BackButton to="/" />
         {icon && <Icon name={icon} style={sharedStyles.mr} />}
         <Button
           color="inherit"

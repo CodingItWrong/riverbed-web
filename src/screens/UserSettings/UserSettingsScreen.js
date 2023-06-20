@@ -31,10 +31,12 @@ export default function UserSettingsScreen() {
     }
   }
 
+  const backPath = '/';
+
   return (
-    <BaseModalScreen>
+    <BaseModalScreen backTo={backPath}>
       <View style={styles.headerRow}>
-        <BackButton accessibilityLabel="Close user settings" />
+        <BackButton to={backPath} accessibilityLabel="Close user settings" />
       </View>
       {renderContents()}
     </BaseModalScreen>
