@@ -1,6 +1,6 @@
 import {ThemeProvider as MuiProvider} from '@mui/material/styles';
 import {useNavigation} from '@react-navigation/native';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {Provider as PaperProvider} from 'react-native-paper';
 import Card from '../components/Card';
 import CenterModal from '../components/CenterModal';
