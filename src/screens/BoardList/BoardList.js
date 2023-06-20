@@ -67,7 +67,7 @@ export default function BoardList() {
   const {data: boards = [], isLoading, error: loadError} = useBoards();
 
   function goToBoard(board) {
-    navigate(board.id);
+    navigate(`/boards/${board.id}`);
   }
 
   const {

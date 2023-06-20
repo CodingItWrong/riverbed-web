@@ -1,6 +1,6 @@
-import {useNavigation} from '@react-navigation/native';
 import {useCallback, useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
+import {useNavigate, useParams} from 'react-router-dom';
 import BackButton from '../../components/BackButton';
 import ErrorSnackbar from '../../components/ErrorSnackbar';
 import IconButton from '../../components/IconButton';
@@ -8,15 +8,13 @@ import LoadingIndicator from '../../components/LoadingIndicator';
 import sharedStyles from '../../components/sharedStyles';
 import {useBoard} from '../../data/boards';
 import {useCard, useDeleteCard} from '../../data/cards';
-import {useCurrentBoard} from '../../data/currentBoard';
 import BaseModalScreen from '../BaseModalScreen';
 import EditCardForm from './EditCardForm';
 import ElementList from './ElementList';
 
-export default function CardScreen({route}) {
-  const {boardId} = useCurrentBoard();
-  const {cardId} = route.params;
-  const navigation = useNavigation();
+export default function CardScreen() {
+  const {boardId, cardId} = useParams();
+  const navigate = useNavigate();
   const [isEditingElements, setIsEditingElements] = useState(false);
 
   // we use this instead of isLoading or isFetching because we do need the individual card to be newly loaded (so we need to wait on fetching), but we don't want to re-trigger the loading indicator any time we click back into the browser to fetch
@@ -33,8 +31,8 @@ export default function CardScreen({route}) {
   }, [card]);
 
   const closeModal = useCallback(() => {
-    navigation.goBack();
-  }, [navigation]);
+    navigate(`/boards/${boardId}`);
+  }, [navigate, boardId]);
 
   const {mutate: deleteCard, error: deleteError} = useDeleteCard(card, board);
   const handleDeleteCard = useCallback(
