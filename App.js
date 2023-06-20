@@ -7,7 +7,6 @@ import {
   focusManager,
 } from '@tanstack/react-query';
 import {ReactQueryDevtools} from '@tanstack/react-query-devtools';
-import {StatusBar} from 'expo-status-bar';
 import {useEffect} from 'react';
 import {AppState, Platform} from 'react-native';
 import {Provider as PaperProvider} from 'react-native-paper';
@@ -55,7 +54,6 @@ export default function App() {
       <TokenProvider>
         <TokenLoadBuffer>
           <SafeAreaProvider>
-            <StatusBar />
             <PaperProvider theme={paperTheme}>
               <MuiProvider theme={theme}>
                 <DateLocalizationProvider dateAdapter={AdapterDayjs}>
