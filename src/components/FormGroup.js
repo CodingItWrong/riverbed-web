@@ -5,8 +5,10 @@ export default function FormGroup({title, children}) {
   return (
     <>
       <Divider />
-      <ListSubheader component="div">{title}</ListSubheader>
-      {children}
+      <div>
+        <ListSubheader component="div">{title}</ListSubheader>
+        {children}
+      </div>
       <Divider />
     </>
   );
