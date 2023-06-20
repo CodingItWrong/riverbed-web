@@ -6,6 +6,7 @@ export default function Text({children, variant, testID, style}) {
     <Typography
       variant={VARIANT_MAPPING[variant]}
       data-testid={testID}
+      color="textPrimary"
       style={style}
     >
       {children}
