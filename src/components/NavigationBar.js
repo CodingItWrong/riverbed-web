@@ -19,11 +19,11 @@ export default function NavigationBar({navigation, options, back}) {
         {icon && <Icon name={icon} style={sharedStyles.mr} />}
         {onTitlePress ? (
           <Button color="inherit" onClick={onTitlePress}>
-            {title}!!1!
+            {title}
           </Button>
         ) : (
           <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
-            {title}!!1!
+            {title}
           </Typography>
         )}
         <LoadingIndicator loading={Boolean(isFetching)} />
