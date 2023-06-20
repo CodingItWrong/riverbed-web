@@ -1,11 +1,12 @@
 import {CardActionArea as MuiCardActionArea} from '@mui/material';
 import MuiCard from '@mui/material/Card';
 import MuiCardContent from '@mui/material/CardContent';
+import MuiMenu from '@mui/material/Menu';
+import MuiMenuItem from '@mui/material/MenuItem';
 import {useLinkTo, useNavigation} from '@react-navigation/native';
 import sortBy from 'lodash.sortby';
 import {useCallback, useEffect, useState} from 'react';
 import {SectionList, StyleSheet, View} from 'react-native';
-import {Menu} from 'react-native-paper';
 import Button from '../../components/Button';
 import CenterColumn from '../../components/CenterColumn';
 import ErrorSnackbar from '../../components/ErrorSnackbar';
@@ -27,37 +28,43 @@ export default function BoardList() {
   const navigation = useNavigation();
   const linkTo = useLinkTo();
 
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuAnchorEl, setMenuAnchorEl] = useState(null);
 
-  const renderMenu = useCallback(
-    () => (
-      <Menu
-        anchor={
-          <IconButton
-            icon="dots-vertical"
-            color="inherit"
-            accessibilityLabel="App Menu"
-            onPress={() => setMenuOpen(true)}
-          />
-        }
-        visible={menuOpen}
-        onDismiss={() => setMenuOpen(false)}
-        anchorPosition="bottom"
-      >
-        <Menu.Item
-          onPress={() => navigation.navigate('UserSettings')}
-          title="User Settings"
-          accessibilityLabel="User Settings"
+  function openMenu(event) {
+    setMenuAnchorEl(event.currentTarget);
+  }
+
+  const renderMenu = useCallback(() => {
+    const isMenuOpen = Boolean(menuAnchorEl);
+
+    function closeMenu() {
+      setMenuAnchorEl(null);
+    }
+
+    const handlePress = callback => () => {
+      closeMenu();
+      callback();
+    };
+
+    return (
+      <>
+        <IconButton
+          icon="dots-vertical"
+          color="inherit"
+          accessibilityLabel="App Menu"
+          onPress={openMenu}
         />
-        <Menu.Item
-          onPress={clearToken}
-          title="Sign Out"
-          accessibilityLabel="Sign Out"
-        />
-      </Menu>
-    ),
-    [menuOpen, clearToken, navigation],
-  );
+        <MuiMenu anchorEl={menuAnchorEl} open={isMenuOpen} onClose={closeMenu}>
+          <MuiMenuItem
+            onClick={handlePress(() => navigation.navigate('UserSettings'))}
+          >
+            User Settings
+          </MuiMenuItem>
+          <MuiMenuItem onClick={handlePress(clearToken)}>Sign Out</MuiMenuItem>
+        </MuiMenu>
+      </>
+    );
+  }, [menuAnchorEl, clearToken, navigation]);
 
   useEffect(() => {
     navigation.setOptions({
