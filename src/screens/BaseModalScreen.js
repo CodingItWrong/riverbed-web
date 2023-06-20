@@ -1,7 +1,6 @@
 import {ThemeProvider as MuiProvider} from '@mui/material/styles';
 import {useNavigation} from '@react-navigation/native';
 import {StyleSheet, View} from 'react-native';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Provider as PaperProvider} from 'react-native-paper';
 import Card from '../components/Card';
 import CenterModal from '../components/CenterModal';
@@ -27,9 +26,7 @@ export default function BaseModalScreen({children}) {
     <PaperProvider theme={paperColorTheme}>
       <MuiProvider theme={colorTheme}>
         <ModalScreenWrapper closeModal={() => navigation.goBack()}>
-          <KeyboardAwareScrollView testID="scroll-view">
-            <View>{children}</View>
-          </KeyboardAwareScrollView>
+          {children}
         </ModalScreenWrapper>
       </MuiProvider>
     </PaperProvider>
