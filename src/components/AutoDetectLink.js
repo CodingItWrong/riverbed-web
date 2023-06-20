@@ -9,11 +9,14 @@ export function AutoDetectLink({link, enableLinking, variant, children}) {
     return (
       <View style={styles.linkContainer}>
         <Link href={link} target="_blank" onClick={preventParentClickBehavior}>
-          <Text variant={variant}>{children}</Text>
+          <Text variant={variant} color={null}>
+            {children}
+          </Text>
         </Link>
       </View>
     );
   } else {
+    // Our Text adds color for light/dark mode, MUI's Typography does not
     return <Text variant={variant}>{children}</Text>;
   }
 }

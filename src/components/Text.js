@@ -1,12 +1,18 @@
 import Typography from '@mui/material/Typography';
 
 // TODO: abstract away variant from Paper dependnecy
-export default function Text({children, variant, testID, style}) {
+export default function Text({
+  children,
+  variant,
+  testID,
+  style,
+  color = 'textPrimary',
+}) {
   return (
     <Typography
       variant={VARIANT_MAPPING[variant]}
       data-testid={testID}
-      color="textPrimary"
+      color={color}
       style={style}
     >
       {children}
