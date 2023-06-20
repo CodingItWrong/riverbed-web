@@ -34,8 +34,8 @@ export default function ConditionInputs({
           <View style={styles.concreteFieldWrapper}>
             <View style={[styles.conditionElements, sharedStyles.mt]}>
               <DropdownField
-                fieldLabel={null}
-                emptyLabel="(field)"
+                fieldLabel="Field"
+                emptyLabel="(choose)"
                 options={fields}
                 value={fields.find(f => f.id === condition.field)}
                 onValueChange={field =>
@@ -46,8 +46,8 @@ export default function ConditionInputs({
                 style={styles.conditionButton}
               />
               <DropdownField
-                fieldLabel={null}
-                emptyLabel="(condition)"
+                fieldLabel="Condition"
+                emptyLabel="(choose)"
                 options={queryOptions}
                 value={queryOptions.find(
                   query => query.key === condition.query,

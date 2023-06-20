@@ -10,7 +10,6 @@ import DoneIcon from '@mui/icons-material/Done';
 import EditIcon from '@mui/icons-material/Edit';
 import ExploreIcon from '@mui/icons-material/Explore';
 import FastfoodIcon from '@mui/icons-material/Fastfood';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import LinkIcon from '@mui/icons-material/Link';
 import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
@@ -38,7 +37,6 @@ const ICON_MAP = {
   'chart-timeline': ViewTimelineIcon,
   'check-bold': DoneIcon,
   'checkbox-outline': CheckBoxIcon,
-  'chevron-down': KeyboardArrowDownIcon,
   'close-circle': CancelIcon,
   compass: ExploreIcon,
   delete: DeleteIcon,

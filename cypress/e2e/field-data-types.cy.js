@@ -112,9 +112,8 @@ describe('field data types', () => {
     }).as('updateCard');
 
     cy.step('TEST CHOICE FIELD', () => {
-      cy.get(`[data-testid="choice-input-${choiceField.id}"]`).paperSelect(
-        'Choice 1',
-      );
+      cy.get(`[data-testid="choice-input-${choiceField.id}"]`).click();
+      cy.get('[role=listbox]').contains('Choice 1').click();
       cy.wait('@updateCard')
         .its('request.body.data.attributes["field-values"]')
         .should('deep.include', {[choiceField.id]: 'fake_uuid_1'});

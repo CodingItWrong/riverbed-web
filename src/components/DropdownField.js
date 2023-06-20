@@ -1,7 +1,8 @@
-import {useState} from 'react';
-import {StyleSheet} from 'react-native';
-import {Button, Menu} from 'react-native-paper';
-import sharedStyles from './sharedStyles';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import {useId} from 'react';
 
 export default function DropdownField({
   fieldLabel,
@@ -12,56 +13,39 @@ export default function DropdownField({
   disabled,
   keyExtractor = option => option.key,
   labelExtractor = option => option.label,
-  style,
   testID,
 }) {
-  const [isMenuShown, setIsMenuShown] = useState(false);
+  const id = useId();
+  const labelId = `${id}-label`;
+  const selectId = `${id}-select`;
 
-  function handleChoose(option) {
+  function handleChange(event) {
+    const newValue = event.target.value;
+    const option = options.find(o => keyExtractor(o) === newValue);
     onValueChange(option);
-    setIsMenuShown(false);
   }
 
   return (
-    <Menu
-      visible={isMenuShown}
-      onDismiss={() => setIsMenuShown(false)}
-      anchor={
-        <Button
-          testID={testID}
-          mode="outlined"
-          icon="chevron-down"
-          accessibilityLabel={fieldLabel}
-          style={[styles.dropdownButton, style]}
-          contentStyle={sharedStyles.flexReverse}
-          disabled={disabled}
-          onPress={() => setIsMenuShown(true)}
-        >
-          {fieldLabel ? `${fieldLabel}: ` : ''}
-          {value ? labelExtractor(value) : emptyLabel}
-        </Button>
-      }
-    >
-      <Menu.Item
-        key="paper-dropdown-empty-item"
-        title={emptyLabel}
-        accessibilityRole="button"
-        onPress={() => handleChoose(null)}
-      />
-      {options?.map(option => (
-        <Menu.Item
-          key={keyExtractor(option)}
-          title={labelExtractor(option)}
-          accessibilityRole="button"
-          onPress={() => handleChoose(option)}
-        />
-      ))}
-    </Menu>
+    <FormControl sx={{mt: '10px'}}>
+      <InputLabel id={labelId}>{fieldLabel}</InputLabel>
+      <Select
+        labelId={labelId}
+        label={fieldLabel}
+        id={selectId}
+        value={value ? keyExtractor(value) : EMPTY_VALUE}
+        onChange={handleChange}
+        data-testid={testID}
+        disabled={disabled}
+      >
+        <MenuItem value={EMPTY_VALUE}>{emptyLabel}</MenuItem>
+        {options?.map(option => (
+          <MenuItem key={keyExtractor(option)} value={keyExtractor(option)}>
+            {labelExtractor(option)}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
   );
 }
 
-const styles = StyleSheet.create({
-  dropdownButton: {
-    borderRadius: 4,
-  },
-});
+const EMPTY_VALUE = '__empty__';

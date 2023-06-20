@@ -17,7 +17,6 @@ export default function ButtonMenuElement({
           disabled={disabled}
           testID={`button-${element.id}`}
           style={style}
-          icon="chevron-down"
           rightIcon
           {...props}
         >
