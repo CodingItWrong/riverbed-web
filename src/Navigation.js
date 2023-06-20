@@ -1,7 +1,6 @@
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {useEffect} from 'react';
-import {Platform} from 'react-native';
 import NavigationBar from './components/NavigationBar';
 import {useCurrentBoard} from './data/currentBoard';
 import {useToken} from './data/token';
