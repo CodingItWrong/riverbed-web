@@ -36,20 +36,10 @@ const linking = {
   },
 };
 
-const modalOptions = Platform.select({
-  android: {
-    headerShown: false,
-    presentation: 'modal',
-  },
-  ios: {
-    headerShown: false,
-    presentation: 'formSheet',
-  },
-  web: {
-    headerShown: false,
-    presentation: 'transparentModal',
-  },
-});
+const modalOptions = {
+  headerShown: false,
+  presentation: 'transparentModal',
+};
 const BoardStack = createNativeStackNavigator();
 const Boards = ({route}) => {
   const {boardId} = route.params;
