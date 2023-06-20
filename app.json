@@ -51,18 +51,6 @@
             "deploymentTarget": "15.0"
           }
         }
-      ],
-      [
-        "share-extension-expo-plugin",
-        {
-          "devTeam": "6283CFQE2Y",
-          "extensionPath": "assets/ios/shareExtension",
-          "mainStoryboardName": "ShareView",
-          "activationRule": [
-            "url",
-            "plain-text"
-          ]
-        }
       ]
     ]
   }
