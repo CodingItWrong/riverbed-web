@@ -1,4 +1,3 @@
-import {getCurrentPositionAsync, useForegroundPermissions} from 'expo-location';
 import {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import FIELD_DATA_TYPES from '../../enums/fieldDataTypes';
@@ -25,30 +24,26 @@ function GeolocationEditorComponent({
   disabled,
   style,
 }) {
-  const [status, requestPermission] = useForegroundPermissions();
+  const [isPermissionDenied, setIsPermissionDenied] = useState(false);
   const [isLoadingCurrentPosition, setIsLoadingCurrentPosition] =
     useState(false);
 
   async function fillCurrentLocation() {
-    let statusToUse = status;
-
-    if (!status.granted && status.canAskAgain) {
-      statusToUse = await requestPermission();
+    function onSuccess({coords: {latitude, longitude}}) {
+      setIsLoadingCurrentPosition(false);
+      setValue({lat: String(latitude), lng: String(longitude)});
     }
 
-    if (statusToUse.granted) {
-      setIsLoadingCurrentPosition(true);
-      try {
-        const {
-          coords: {latitude, longitude},
-        } = await getCurrentPositionAsync({});
-        setValue({lat: String(latitude), lng: String(longitude)});
-      } catch (e) {
-        console.error(e);
-      } finally {
-        setIsLoadingCurrentPosition(false);
+    function onError(error) {
+      setIsLoadingCurrentPosition(false);
+      console.error(error);
+      if (error.code === error.PERMISSION_DENIED) {
+        setIsPermissionDenied(true);
       }
     }
+
+    setIsLoadingCurrentPosition(true);
+    navigator.geolocation.getCurrentPosition(onSuccess, onError);
   }
 
   function handlePressLocation(newLocation) {
@@ -86,9 +81,7 @@ function GeolocationEditorComponent({
             <IconButton
               accessibilityLabel="Use current location"
               icon="compass"
-              disabled={
-                disabled || !status || (!status.granted && !status.canAskAgain)
-              }
+              disabled={disabled || isPermissionDenied}
               onPress={fillCurrentLocation}
               style={isLoadingCurrentPosition ? styles.hidden : null}
             />

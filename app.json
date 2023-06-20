@@ -45,12 +45,6 @@
     },
     "plugins": [
       [
-        "expo-location",
-        {
-          "locationAlwaysAndWhenInUsePermission": "Allow you to use your current location to fill in location fields."
-        }
-      ],
-      [
         "expo-build-properties",
         {
           "ios": {
