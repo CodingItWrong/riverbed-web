@@ -1,4 +1,6 @@
 import {ThemeProvider as MuiProvider} from '@mui/material/styles';
+import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
+import {LocalizationProvider as DateLocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
 import {
   QueryClient,
   QueryClientProvider,
@@ -59,12 +61,14 @@ export default function App() {
             <StatusBar />
             <PaperProvider theme={paperTheme}>
               <MuiProvider theme={theme}>
-                <QueryClientProvider client={queryClient}>
-                  {Platform.OS === 'web' && __DEV__ && (
-                    <ReactQueryDevtools initialIsOpen={false} />
-                  )}
-                  <Navigation />
-                </QueryClientProvider>
+                <DateLocalizationProvider dateAdapter={AdapterDayjs}>
+                  <QueryClientProvider client={queryClient}>
+                    {Platform.OS === 'web' && __DEV__ && (
+                      <ReactQueryDevtools initialIsOpen={false} />
+                    )}
+                    <Navigation />
+                  </QueryClientProvider>
+                </DateLocalizationProvider>
               </MuiProvider>
             </PaperProvider>
           </SafeAreaProvider>
