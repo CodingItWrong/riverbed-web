@@ -1,9 +1,7 @@
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {useEffect} from 'react';
 import {RouterProvider, createBrowserRouter} from 'react-router-dom';
 import NavigationBar from './components/NavigationBar';
-import {useCurrentBoard} from './data/currentBoard';
 import {useToken} from './data/token';
 import Board from './screens/Board';
 import BoardEdit from './screens/BoardEdit';
@@ -41,44 +39,31 @@ const modalOptions = {
   presentation: 'transparentModal',
 };
 const BoardStack = createNativeStackNavigator();
-const Boards = ({route}) => {
-  const {boardId} = route.params;
-  const {setBoardId} = useCurrentBoard();
-
-  useEffect(() => {
-    setBoardId(boardId);
-  }, [setBoardId, boardId]);
-
-  return (
-    <BoardStack.Navigator
-      screenOptions={{
-        header: props => <NavigationBar {...props} />,
-      }}
-    >
-      <BoardStack.Screen
-        name="Board"
-        component={Board}
-        options={{headerShown: false}}
-      />
-      <BoardStack.Screen
-        name="BoardEdit"
-        component={BoardEdit}
-        options={{...modalOptions, title: 'Edit Board'}}
-      />
-      <AppStack.Screen
-        name="Column"
-        component={Column}
-        options={modalOptions}
-      />
-      <AppStack.Screen name="Card" component={Card} options={modalOptions} />
-      <AppStack.Screen
-        name="Element"
-        component={Element}
-        options={modalOptions}
-      />
-    </BoardStack.Navigator>
-  );
-};
+const Boards = ({route}) => (
+  <BoardStack.Navigator
+    screenOptions={{
+      header: props => <NavigationBar {...props} />,
+    }}
+  >
+    <BoardStack.Screen
+      name="Board"
+      component={Board}
+      options={{headerShown: false}}
+    />
+    <BoardStack.Screen
+      name="BoardEdit"
+      component={BoardEdit}
+      options={{...modalOptions, title: 'Edit Board'}}
+    />
+    <AppStack.Screen name="Column" component={Column} options={modalOptions} />
+    <AppStack.Screen name="Card" component={Card} options={modalOptions} />
+    <AppStack.Screen
+      name="Element"
+      component={Element}
+      options={modalOptions}
+    />
+  </BoardStack.Navigator>
+);
 
 const AppStack = createNativeStackNavigator();
 const AppNav = () => {
