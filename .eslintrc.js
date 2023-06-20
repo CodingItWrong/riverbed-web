@@ -1,7 +1,7 @@
 module.exports = {
   root: true,
   extends: ['@react-native-community'],
-  plugins: ['import', 'cypress', 'detox'],
+  plugins: ['import', 'cypress'],
   env: {'cypress/globals': true},
   rules: {
     'arrow-body-style': ['error', 'as-needed'],
@@ -18,14 +18,4 @@ module.exports = {
       {ignoreDeclarationSort: true, ignoreMemberSort: false},
     ], // alphabetize named imports - https://eslint.org/docs/rules/sort-imports
   },
-  overrides: [
-    {
-      files: ['e2e/**/*.test.js'],
-      env: {
-        'detox/detox': true,
-        jest: true,
-        'jest/globals': true,
-      },
-    },
-  ],
 };

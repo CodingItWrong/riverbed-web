@@ -1,12 +1,6 @@
-import {Platform} from 'react-native';
-import nativeStorage from './native';
 import webStorage from './web';
 
-const platformStorage = () =>
-  Platform.select({
-    web: webStorage,
-    default: nativeStorage,
-  });
+const platformStorage = () => webStorage;
 
 export function setStringAsync(key, value) {
   return platformStorage().setStringAsync(key, value);

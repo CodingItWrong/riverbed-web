@@ -1,8 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import {useCallback, useEffect, useState} from 'react';
-import {Platform, StyleSheet, View} from 'react-native';
-import {Appbar} from 'react-native-paper';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {StyleSheet, View} from 'react-native';
+import BackButton from '../../components/BackButton';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import {useBoard} from '../../data/boards';
 import {useColumn} from '../../data/columns';
@@ -11,7 +10,6 @@ import BaseModalScreen from '../BaseModalScreen';
 import EditColumnForm from './EditColumnForm';
 
 export default function ColumnScreen({route}) {
-  const insets = useSafeAreaInsets();
   const navigation = useNavigation();
   const {boardId} = useCurrentBoard();
   const {columnId} = route.params;
@@ -49,16 +47,8 @@ export default function ColumnScreen({route}) {
 
   return (
     <BaseModalScreen>
-      <View
-        style={[
-          styles.headerRow,
-          Platform.OS === 'android' && {paddingTop: insets.top},
-        ]}
-      >
-        <Appbar.BackAction
-          onPress={closeModal}
-          accessibilityLabel="Close column"
-        />
+      <View style={styles.headerRow}>
+        <BackButton accessibilityLabel="Close column" />
       </View>
       {renderContents()}
     </BaseModalScreen>

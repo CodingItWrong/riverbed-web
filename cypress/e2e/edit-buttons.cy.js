@@ -95,7 +95,8 @@ describe('edit buttons', () => {
         data: newButton,
       });
 
-      cy.contains('Add Element').paperSelect('Button');
+      cy.contains('Add Element').click();
+      cy.contains('Button').click();
 
       cy.wait('@addButton')
         .its('request.body')
@@ -115,20 +116,19 @@ describe('edit buttons', () => {
 
       // action
       cy.contains('Add Action').click();
-      cy.contains('Command: (choose)').paperSelect('Set Value');
-      // TODO: make this reliable to select when it's just the field name shown, not conflicting with other things on the page
-      cy.contains('Action Field: (choose)').paperSelect('Greeting');
-      cy.contains('Value: (choose)').paperSelect(VALUES.EMPTY.label);
+      cy.contains('(choose)').click();
+      cy.get('[role=listbox]').contains('Set Value').click();
+      cy.contains('(choose)').click();
+      cy.get('[role=listbox]').contains('Greeting').click();
+      cy.contains('(choose)').click();
+      cy.get('[role=listbox]').contains(VALUES.EMPTY.label).click();
 
       // show condition
       cy.contains('Add Condition').click();
-      cy.contains('(field)').paperSelect('Greeting');
-      cy.get('[role=menuitem]').should('not.exist');
-      cy.contains('(condition)').click();
-      cy.get('[role=menuitem]')
-        .contains(QUERIES.IS_NOT_EMPTY.label)
-        .click({force: true});
-      cy.get('[role=menuitem]').should('not.exist');
+      cy.contains('(choose)').click();
+      cy.get('[role=listbox]').contains('Greeting').click();
+      cy.contains('(choose)').click();
+      cy.get('[role=listbox]').contains(QUERIES.IS_NOT_EMPTY.label).click();
 
       cy.intercept('PATCH', `http://cypressapi/elements/${newButton.id}?`, {
         success: true,
@@ -324,7 +324,8 @@ describe('edit buttons', () => {
         data: newButton,
       });
 
-      cy.contains('Add Element').paperSelect('Button');
+      cy.contains('Add Element').click();
+      cy.contains('Button').click();
 
       cy.wait('@addButton')
         .its('request.body')
@@ -343,8 +344,10 @@ describe('edit buttons', () => {
       cy.get('[data-testid="text-input-element-name"]').type(buttonName);
 
       cy.contains('Add Action').click();
-      cy.contains('Command: (choose)').paperSelect('Add Days');
-      cy.contains('Action Field: (choose)').paperSelect('Greeted At');
+      cy.contains('(choose)').click();
+      cy.get('[role=listbox]').contains('Add Days').click();
+      cy.contains('(choose)').click();
+      cy.get('[role=listbox]').contains('Greeted At').click();
       cy.get('[data-testid=number-input-value]').type(2);
 
       cy.intercept('PATCH', `http://cypressapi/elements/${newButton.id}?`, {
@@ -427,7 +430,8 @@ describe('edit buttons', () => {
         data: newButtonMenu,
       });
 
-      cy.contains('Add Element').paperSelect('Button Menu');
+      cy.contains('Add Element').click();
+      cy.contains('Button Menu').click();
 
       cy.wait('@addButtonMenu')
         .its('request.body')
@@ -453,9 +457,12 @@ describe('edit buttons', () => {
       );
 
       cy.get('[data-testid=menu-item-0]').contains('Add Action').click();
-      cy.contains('Command: (choose)').paperSelect('Set Value');
-      cy.contains('Action Field: (choose)').paperSelect(completedAtFieldName);
-      cy.contains('Value: (choose)').paperSelect(VALUES.NOW.label);
+      cy.contains('(choose)').click();
+      cy.get('[role=listbox]').contains('Set Value').click();
+      cy.contains('(choose)').click();
+      cy.get('[role=listbox]').contains(completedAtFieldName).click();
+      cy.contains('(choose)').click();
+      cy.get('[role=listbox]').contains(VALUES.NOW.label).click();
     });
 
     cy.step('ADD A SECOND MENU ITEM', () => {
@@ -465,9 +472,12 @@ describe('edit buttons', () => {
       );
 
       cy.get('[data-testid=menu-item-1]').contains('Add Action').click();
-      cy.contains('Command: (choose)').paperSelect('Set Value');
-      cy.contains('Action Field: (choose)').paperSelect(completedAtFieldName);
-      cy.contains('Value: (choose)').paperSelect(VALUES.EMPTY.label);
+      cy.contains('(choose)').click();
+      cy.get('[role=listbox]').contains('Set Value').click();
+      cy.contains('(choose)').click();
+      cy.get('[role=listbox]').contains(completedAtFieldName).click();
+      cy.contains('(choose)').click();
+      cy.get('[role=listbox]').contains(VALUES.EMPTY.label).click();
     });
 
     cy.step('SAVE MENU', () => {
@@ -527,7 +537,8 @@ describe('edit buttons', () => {
       cy.intercept('GET', `http://cypressapi/cards/${card.id}?`, {
         data: uncompletedCard,
       });
-      cy.contains(menuName).paperSelect(uncompleteItemName);
+      cy.contains(menuName).click();
+      cy.contains(uncompleteItemName).click();
       cy.wait('@updateCard')
         .its('request.body')
         .should('deep.equal', {data: uncompletedCard});
@@ -541,7 +552,7 @@ describe('edit buttons', () => {
       cy.get(`[data-testid=card-${card.id}]`).click();
       cy.get(`[data-testid="date-input-${completedAtField.id}"]`)
         .invoke('val')
-        .should('eq', '');
+        .should('eq', 'MM/DD/YYYY'); // empty
     });
   });
 });

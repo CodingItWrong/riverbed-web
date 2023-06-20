@@ -1,33 +1,34 @@
-import {StyleSheet} from 'react-native';
-import {Appbar} from 'react-native-paper';
-import {Icon} from './Icon';
+import AppBar from '@mui/material/AppBar';
+import Button from '@mui/material/Button';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import BackButton from './BackButton';
+import Icon from './Icon';
 import LoadingIndicator from './LoadingIndicator';
 import sharedStyles from './sharedStyles';
 
+// TODO: positioned after contents in React Navigation, so may need to
+// switch off that first before switching this off Paper
 export default function NavigationBar({navigation, options, back}) {
   const {title, icon, onTitlePress, headerRight, isFetching} = options;
 
   return (
-    <Appbar.Header elevated>
-      {back && (
-        <Appbar.BackAction
-          onPress={navigation.goBack}
-          accessibilityLabel="Go back"
-        />
-      )}
-      {icon && <Icon name={icon} style={sharedStyles.mr} />}
-      <Appbar.Content title={title} onPress={onTitlePress} />
-      <LoadingIndicator
-        loading={Boolean(isFetching)}
-        style={styles.navBarLoadingIndicator}
-      />
-      {headerRight?.()}
-    </Appbar.Header>
+    <AppBar position="relative">
+      <Toolbar>
+        {back && <BackButton />}
+        {icon && <Icon name={icon} style={sharedStyles.mr} />}
+        {onTitlePress ? (
+          <Button color="inherit" onClick={onTitlePress}>
+            {title}!!1!
+          </Button>
+        ) : (
+          <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
+            {title}!!1!
+          </Typography>
+        )}
+        <LoadingIndicator loading={Boolean(isFetching)} />
+        {headerRight?.()}
+      </Toolbar>
+    </AppBar>
   );
 }
-
-const styles = StyleSheet.create({
-  navBarLoadingIndicator: {
-    marginRight: 8,
-  },
-});

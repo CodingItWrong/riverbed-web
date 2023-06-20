@@ -77,13 +77,14 @@ describe('edit fields', () => {
         data: newField,
       });
 
-      cy.contains('Add Element').paperSelect('Field');
+      cy.contains('Add Element').click();
+      cy.contains('Field').click();
 
       cy.wait('@addField');
       const fieldName = 'Greeting';
       cy.get('[data-testid="text-input-element-name"]').type(fieldName);
-      cy.contains('Data Type: (choose)').paperSelect('Text');
-      cy.contains('Data Type: Text');
+      cy.contains('(choose)').click();
+      cy.get('[role=listbox]').contains('Text').click();
       cy.get('[data-testid="checkbox-show-in-summary"]').click();
 
       // TODO: set other element fields: show condition, etc
@@ -320,7 +321,8 @@ describe('edit fields', () => {
         data: newField,
       });
 
-      cy.contains('Add Element').paperSelect('Field');
+      cy.contains('Add Element').click();
+      cy.contains('Field').click();
 
       cy.wait('@addField');
     });
@@ -331,8 +333,8 @@ describe('edit fields', () => {
       cy.get('[data-testid="text-input-element-name"]').type(fieldName);
 
       // data type: choice
-      cy.contains('Data Type: (choose)').paperSelect('Choice');
-      cy.contains('Data Type: Choice');
+      cy.contains('(choose)').click();
+      cy.get('[role=listbox]').contains('Choice').click();
       cy.get('[data-testid="checkbox-show-in-summary"]').click();
 
       // options
@@ -370,8 +372,8 @@ describe('edit fields', () => {
       cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
         data: [updatedCard],
       });
-      cy.contains('Color: (choose)').paperSelect('Green');
-      cy.contains('Color: Green');
+      cy.contains('(choose)').click();
+      cy.get('[role=listbox]').contains('Green').click();
       cy.wait('@updateCard')
         .its('request.body')
         .should('deep.equal', {
@@ -537,7 +539,8 @@ describe('edit fields', () => {
     );
     cy.step('SET INITIAL DATE VALUE TO NOW', () => {
       cy.get('[aria-label="Edit Date field"]').click();
-      cy.contains('Initial Value: (choose)').paperSelect(VALUES.NOW.label);
+      cy.contains('(choose)').click();
+      cy.get('[role=listbox]').contains(VALUES.NOW.label).click();
 
       cy.intercept('PATCH', `http://cypressapi/elements/${dateField.id}?`, {
         success: true,
@@ -558,7 +561,8 @@ describe('edit fields', () => {
     );
     cy.step('SET INITIAL DATETIME VALUE TO NOW', () => {
       cy.get('[aria-label="Edit Date and Time field"]').click();
-      cy.contains('Initial Value: (choose)').paperSelect(VALUES.NOW.label);
+      cy.contains('(choose)').click();
+      cy.get('[role=listbox]').contains(VALUES.NOW.label).click();
 
       cy.intercept('PATCH', `http://cypressapi/elements/${dateTimeField.id}?`, {
         success: true,

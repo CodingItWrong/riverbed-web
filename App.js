@@ -1,22 +1,16 @@
-import {
-  QueryClient,
-  QueryClientProvider,
-  focusManager,
-} from '@tanstack/react-query';
+import {ThemeProvider as MuiProvider} from '@mui/material/styles';
+import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
+import {LocalizationProvider as DateLocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {ReactQueryDevtools} from '@tanstack/react-query-devtools';
-import {StatusBar} from 'expo-status-bar';
-import {useEffect} from 'react';
-import {AppState, Platform} from 'react-native';
 import {Provider as PaperProvider} from 'react-native-paper';
-import {en, registerTranslation} from 'react-native-paper-dates';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
 import Navigation from './src/Navigation';
 import TokenLoadBuffer from './src/components/TokenLoadBuffer';
 import {CurrentBoardProvider} from './src/data/currentBoard';
 import {TokenProvider} from './src/data/token';
-import useColorSchemeTheme from './src/theme/useColorSchemeTheme';
-
-registerTranslation('en', en);
+import useColorSchemeTheme, {
+  usePaperColorSchemeTheme,
+} from './src/theme/useColorSchemeTheme';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -25,43 +19,26 @@ const queryClient = new QueryClient({
       staleTime: 5000,
     },
   },
-  logger: {
-    log: console.log,
-    warn: console.warn,
-    error: Platform.OS === 'web' ? console.error : () => {},
-  },
 });
-
-function onAppStateChange(status) {
-  if (Platform.OS !== 'web') {
-    focusManager.setFocused(status === 'active');
-  }
-}
 
 export default function App() {
   const theme = useColorSchemeTheme();
-
-  useEffect(() => {
-    const subscription = AppState.addEventListener('change', onAppStateChange);
-
-    return () => subscription.remove();
-  }, []);
+  const paperTheme = usePaperColorSchemeTheme();
 
   return (
     <CurrentBoardProvider>
       <TokenProvider>
         <TokenLoadBuffer>
-          <SafeAreaProvider>
-            <StatusBar />
-            <PaperProvider theme={theme}>
-              <QueryClientProvider client={queryClient}>
-                {Platform.OS === 'web' && __DEV__ && (
-                  <ReactQueryDevtools initialIsOpen={false} />
-                )}
-                <Navigation />
-              </QueryClientProvider>
-            </PaperProvider>
-          </SafeAreaProvider>
+          <PaperProvider theme={paperTheme}>
+            <MuiProvider theme={theme}>
+              <DateLocalizationProvider dateAdapter={AdapterDayjs}>
+                <QueryClientProvider client={queryClient}>
+                  {__DEV__ && <ReactQueryDevtools initialIsOpen={false} />}
+                  <Navigation />
+                </QueryClientProvider>
+              </DateLocalizationProvider>
+            </MuiProvider>
+          </PaperProvider>
         </TokenLoadBuffer>
       </TokenProvider>
     </CurrentBoardProvider>

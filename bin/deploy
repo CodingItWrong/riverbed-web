@@ -4,6 +4,3 @@ export $(xargs <./.env.production)
 
 # deploy to web
 yarn deploy:web
-
-# deploy to expo custom native client
-eas update --channel preview --message "Deploy"

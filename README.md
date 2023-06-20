@@ -1,17 +1,13 @@
 # Riverbed Expo
 
-An app for creating CRUD apps with interactivity with no programming.
+A web app for creating CRUD apps with interactivity with no programming.
+
+Note that only the web platform is supported, not native. We are migrating away from Expo to bare webpack.
 
 ## Requirements
 
 - [Node 16.x](https://nodejs.org) (newer not yet supported by a react-native-web dependency)
 - [Yarn 1.x](https://classic.yarnpkg.com/lang/en/)
-
-Optional:
-
-- To run on Android Emulator, [Android Studio](https://developer.android.com/studio)
-- To run on iOS Simulator, [Xcode](https://developer.apple.com/xcode/)
-- For mobile testing, [Maestro](https://maestro.mobile.dev/getting-started/installing-maestro)
 
 ## Installation
 
@@ -23,97 +19,13 @@ Dependencies are locked with `yarn.lock`; please use `yarn` rather than `npm` fo
 
 ## Running
 
-- Run `bin/serve` (starts both Metro and Webpack)
+- Run `bin/serve`
 
-## Development
+## E2E Tests: Cypress
 
-### Expo Go
-
-Expo Go is useful for quickly installing a running app on iOS Simulator and Android Emulator, when additional native functionality (the share extension) does not need to be tested.
-
-To run Expo Go, run `yarn start` and then press `a` or `i`. If Expo Go is not installed on the device, it will be installed. If a custom dev client is installed, you will get to choose which to run.
-
-Once you set up EAS Build, Expo Go no longer seems to work by default. But Expo Go is currently working for iOS Simulator and Android Emulator, due to using `runtimeVersion.policy = 'sdkVersion'` in `app.json`.
-
-### Custom Dev Client
-
-- iOS simulator dev client:
-  - `eas build --profile development-simulator --platform ios --local`
-  - Then `eas build:run -p ios --path=build-[date].tar.gz`
-- Android dev client:
-  - `eas build --profile development --platform android --local`
-  - Then `eas build:run -p android --path=build-[date].apk`
-
-A custom dev client is useful for running on the iOS Simulator or Android Emulator to get additional native functionality (the share extension). It includes the dev menu like Expo Go does.
-
-To build a custom dev client:
-
-<https://docs.expo.dev/development/create-development-builds/#on-emulatorsimulator>
-
-After this, run `yarn start` then press `a` or `i` to launch the app in the simulator/emulator. If Expo Go is also installed, you will get to choose which to run.
-
-### Xcode Project
-
-`npx expo prebuild -p ios`
-
-Prebuilding (generating the Xcode project) is useful for troubleshooting the share extension code or troubleshooting local build issues, either on Simulator or a physical iPhone.
-
-After prebuilding the Xcode project, open the workspace file in Xcode, and run the app or the share extension.
-
-## Preview Client
-
-- **First set the production share extension URL in `Config.swift`**
-- `eas build --profile preview --platform ios --local`.
-
-To install on the device, AirDrop the built `.ipa` file to the phone.
-
-The preview client uses the latest published "preview" channel JS bundles. This can be published with `bin/deploy`
-
-The preview client is useful to have a running app on a physical device with an Apple Developer account, without being connected to a Metro dev server. The JS bundle can be updated without rebuilding a preview client.
-
-Before building a preview client, edit `assets/ios/shareExtension/Config.swift` to uncomment the production URL and add a production key. Do not commit these changes to CI. (Confirm if this sends that version to EAS's servers)
-
-## Building on Expo Servers
-
-For custom dev client and preview client builds, you can omit the `--local` flag to build on EAS servers. Note that the free Expo plan is limited to 15 iOS builds per month, and then you will begin to be charged.
-
-## Submitting to TestFlight
-
-TestFlight builds can be used by any device added as internal testers.
-
-- `eas build --profile production --platform ios`
-- `eas submit --platform ios`
-
-## E2E Tests
-
-### Web: Cypress
-
-- Start webpack by running `yarn start --web` (or, within Metro, press `w`)
+- Start webpack by running `bin/serve`
 - In another terminal, run `yarn cypress`
 - Choose E2E Testing, then any browser, then click "Start E2E Testing"
-
-### Native: Maestro
-
-(Only runs locally, not on CI)
-
-- Boot the app in Expo Go in a simulator or emulator
-- Run `maestro test maestro/[some test name].yaml`
-
-### Native: Detox
-
-- Build the Detox client with `detox build -c ios.sim.release`
-- Run the Detox tests with `detox test -c ios.sim.release`
-
-## Updating Xcode
-
-Xcode updates can introduce build failures for React Native. To avoid not being able to build the app:
-
-- Do not overwrite your existing working Xcode version
-- Manually download the new Xcode version from the [Apple Developer > Downloads > Applications](https://developer.apple.com/download/applications/) page.
-- Expand the download and rename it to add the Xcode version to the name.
-- Prebuild the Xcode project (see command above)
-- Build the app from within Xcode and see if it succeeds
-- If it does, you can replace the old Xcode version
 
 ## License
 

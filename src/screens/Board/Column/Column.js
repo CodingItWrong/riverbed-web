@@ -1,7 +1,6 @@
 import get from 'lodash.get';
 import sortBy from 'lodash.sortby';
 import {SectionList, StyleSheet, View} from 'react-native';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import IconButton from '../../../components/IconButton';
 import SectionHeader from '../../../components/SectionHeader';
 import Text from '../../../components/Text';
@@ -16,7 +15,6 @@ import CardSummary from './CardSummary';
 import groupCards from './groupCards';
 
 export default function Column({column, board, onEdit, onSelectCard}) {
-  const insets = useSafeAreaInsets();
   const columnWidthStyle = useColumnStyle();
 
   const {data: elements} = useBoardElements(board);
@@ -83,11 +81,7 @@ export default function Column({column, board, onEdit, onSelectCard}) {
       <SectionList
         sections={cardGroups}
         keyExtractor={card => card.id}
-        contentContainerStyle={[
-          sharedStyles.columnPadding,
-          {paddingBottom: insets.bottom},
-        ]}
-        scrollIndicatorInsets={{bottom: insets.bottom}}
+        contentContainerStyle={sharedStyles.columnPadding}
         stickySectionHeadersEnabled={false}
         ListEmptyComponent={<Text>(no cards)</Text>}
         renderSectionHeader={({section: group}) => {

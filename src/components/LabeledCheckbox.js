@@ -1,4 +1,5 @@
-import {Checkbox} from 'react-native-paper';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
 
 export default function LabeledCheckbox({
   label,
@@ -6,14 +7,16 @@ export default function LabeledCheckbox({
   onChangeChecked,
   testID,
 }) {
-  const status = checked ? 'checked' : 'unchecked';
   return (
-    <Checkbox.Item
-      mode="android"
+    <FormControlLabel
+      control={
+        <Checkbox
+          checked={checked}
+          onChange={() => onChangeChecked(!checked)}
+        />
+      }
       label={label}
-      status={status}
-      onPress={() => onChangeChecked(!checked)}
-      testID={testID}
+      data-testid={testID}
     />
   );
 }

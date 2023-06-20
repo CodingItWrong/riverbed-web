@@ -1,10 +1,23 @@
-import {Text as PaperText} from 'react-native-paper';
+import Typography from '@mui/material/Typography';
 
 // TODO: abstract away variant from Paper dependnecy
 export default function Text({children, variant, testID, style}) {
   return (
-    <PaperText variant={variant} testID={testID} style={style}>
+    <Typography
+      variant={VARIANT_MAPPING[variant]}
+      data-testid={testID}
+      style={style}
+    >
       {children}
-    </PaperText>
+    </Typography>
   );
 }
+
+const VARIANT_MAPPING = {
+  titleLarge: 'h4',
+  titleMedium: 'h5',
+  titleSmall: 'h6',
+  bodyLarge: 'body1',
+  bodyMedium: 'body2',
+  bodySmall: 'caption',
+};

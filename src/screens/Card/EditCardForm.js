@@ -153,7 +153,7 @@ export default function EditCardForm({card, board, onClose}) {
                   value={fieldValues[element.id]}
                   setValue={value => setFieldValue(element.id, value)}
                   readOnly={element.attributes['read-only']}
-                  style={elementIndex > 0 && sharedStyles.mt}
+                  style={elementIndex > 0 ? sharedStyles.mt : null}
                 />
               </View>
             );
@@ -165,7 +165,7 @@ export default function EditCardForm({card, board, onClose}) {
                 onPerformAction={() =>
                   handlePerformActions(element.attributes.options.actions)
                 }
-                style={elementIndex > 0 && sharedStyles.mt}
+                style={elementIndex > 0 ? sharedStyles.mt : null}
               />
             );
           case ELEMENT_TYPES.BUTTON_MENU.key:
@@ -176,7 +176,7 @@ export default function EditCardForm({card, board, onClose}) {
                 onPerformActionForItem={menuItem =>
                   handlePerformActions(menuItem.actions)
                 }
-                style={elementIndex > 0 && sharedStyles.mt}
+                style={elementIndex > 0 ? sharedStyles.mt : null}
               />
             );
           default:

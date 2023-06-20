@@ -1,5 +1,5 @@
+import Snackbar from '@mui/material/Snackbar';
 import {useEffect, useState} from 'react';
-import {Snackbar} from 'react-native-paper';
 
 export default function ErrorSnackbar({error, children}) {
   const [visible, setVisible] = useState(Boolean(error));
@@ -10,8 +10,10 @@ export default function ErrorSnackbar({error, children}) {
   }, [error]);
 
   return (
-    <Snackbar visible={visible} onDismiss={() => setVisible(false)}>
-      {children}
-    </Snackbar>
+    <Snackbar
+      open={visible}
+      onClose={() => setVisible(false)}
+      message={children}
+    />
   );
 }

@@ -1,4 +1,3 @@
-import {StyleSheet} from 'react-native';
 import FIELD_DATA_TYPES from '../../enums/fieldDataTypes';
 import TextField from '../TextField';
 
@@ -19,17 +18,10 @@ function TextEditorComponent({field, label, value, setValue, disabled, style}) {
       onChangeText={setValue}
       disabled={disabled}
       multiline={multiline}
-      style={[style, multiline && styles.multilineFix]}
+      style={style}
       testID={`text-input-${field.id}`}
     />
   );
 }
 
 export default textFieldDataType;
-
-const styles = StyleSheet.create({
-  // @see https://github.com/callstack/react-native-paper/issues/3665#issuecomment-1425643799
-  multilineFix: {
-    lineHeight: 24,
-  },
-});

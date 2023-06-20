@@ -1,19 +1,24 @@
+import AppBar from '@mui/material/AppBar';
+import Button from '@mui/material/Button';
+import Toolbar from '@mui/material/Toolbar';
+import {ThemeProvider as MuiProvider} from '@mui/material/styles';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {useCallback, useEffect} from 'react';
-import {View} from 'react-native';
-import {Appbar, Provider as PaperProvider} from 'react-native-paper';
+import {Provider as PaperProvider} from 'react-native-paper';
+import BackButton from '../../components/BackButton';
 import ErrorSnackbar from '../../components/ErrorSnackbar';
-import {Icon} from '../../components/Icon';
+import Icon from '../../components/Icon';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import ScreenBackground from '../../components/ScreenBackground';
-import Text from '../../components/Text';
 import sharedStyles from '../../components/sharedStyles';
 import {useBoard} from '../../data/boards';
 import {useCards, useRefreshCards} from '../../data/cards';
 import {useColumns} from '../../data/columns';
 import {useCurrentBoard} from '../../data/currentBoard';
 import {useBoardElements} from '../../data/elements';
-import useColorSchemeTheme from '../../theme/useColorSchemeTheme';
+import useColorSchemeTheme, {
+  usePaperColorSchemeTheme,
+} from '../../theme/useColorSchemeTheme';
 import ColumnList from './Column/ColumnList';
 
 export default function Board() {
@@ -72,67 +77,50 @@ export default function Board() {
   }
 
   const colorTheme = useColorSchemeTheme(board?.attributes['color-theme']);
-
-  // keep title bar gray until board loaded
-  const titleBarColorTheme = board ? colorTheme : null;
+  const paperColorTheme = usePaperColorSchemeTheme(
+    board?.attributes['color-theme'],
+  );
 
   return (
-    <PaperProvider theme={colorTheme}>
-      <EmbeddedHeader
-        title={
-          board?.attributes?.name ??
-          (!isLoadingBoard && !error && '(click to name board)')
-        }
-        icon={board?.attributes?.icon}
-        isFetching={isFetching}
-        onPressTitle={() => editBoard()}
-        colorTheme={titleBarColorTheme}
-      />
-      <ScreenBackground style={sharedStyles.fullHeight}>
-        {renderContents()}
-        <ErrorSnackbar error={error}>
-          An error occurred loading the board.
-        </ErrorSnackbar>
-      </ScreenBackground>
+    <PaperProvider theme={paperColorTheme}>
+      <MuiProvider theme={colorTheme}>
+        <EmbeddedHeader
+          title={
+            board?.attributes?.name ??
+            (!isLoadingBoard && !error && '(click to name board)')
+          }
+          icon={board?.attributes?.icon}
+          isFetching={isFetching}
+          onTitlePress={() => editBoard()}
+        />
+        <ScreenBackground style={sharedStyles.fullHeight}>
+          {renderContents()}
+          <ErrorSnackbar error={error}>
+            An error occurred loading the board.
+          </ErrorSnackbar>
+        </ScreenBackground>
+      </MuiProvider>
     </PaperProvider>
   );
 }
 
-// TODO: extract and remove duplication
-function EmbeddedHeader({title, icon, isFetching, onPressTitle, colorTheme}) {
-  const navigation = useNavigation();
+// TODO: may not need a duplicate header now that it isn't themed separately;
+// wait until removing React Navigation to see
+function EmbeddedHeader({title, icon, isFetching, onTitlePress}) {
   return (
-    <Appbar.Header
-      elevated
-      style={{backgroundColor: colorTheme?.colors?.secondaryContainer}}
-    >
-      <Appbar.BackAction
-        color={colorTheme?.colors?.onSecondaryContainer}
-        onPress={navigation.goBack}
-        accessibilityLabel="Go back"
-      />
-      <Appbar.Content
-        title={
-          <View style={sharedStyles.row}>
-            {icon && (
-              <Icon
-                name={icon}
-                color={colorTheme?.colors?.onSecondaryContainer}
-                style={sharedStyles.mr}
-              />
-            )}
-            <Text
-              variant="titleLarge"
-              style={{color: colorTheme?.colors?.onSecondaryContainer}}
-            >
-              {title}
-            </Text>
-          </View>
-        }
-        onPress={onPressTitle}
-        testID="navigation-bar-title"
-      />
-      <LoadingIndicator loading={Boolean(isFetching)} style={sharedStyles.mr} />
-    </Appbar.Header>
+    <AppBar position="relative">
+      <Toolbar>
+        <BackButton />
+        {icon && <Icon name={icon} style={sharedStyles.mr} />}
+        <Button
+          color="inherit"
+          onClick={onTitlePress}
+          data-testid="navigation-bar-title"
+        >
+          {title}
+        </Button>
+        <LoadingIndicator loading={Boolean(isFetching)} />
+      </Toolbar>
+    </AppBar>
   );
 }

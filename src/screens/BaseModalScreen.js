@@ -1,37 +1,34 @@
+import {ThemeProvider as MuiProvider} from '@mui/material/styles';
 import {useNavigation} from '@react-navigation/native';
-import {Platform, StyleSheet, View} from 'react-native';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {StyleSheet} from 'react-native';
 import {Provider as PaperProvider} from 'react-native-paper';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Card from '../components/Card';
 import CenterModal from '../components/CenterModal';
-import ScreenBackground from '../components/ScreenBackground';
 import sharedStyles from '../components/sharedStyles';
 import {useBoard} from '../data/boards';
 import {useCurrentBoard} from '../data/currentBoard';
-import useColorSchemeTheme from '../theme/useColorSchemeTheme';
+import useColorSchemeTheme, {
+  usePaperColorSchemeTheme,
+} from '../theme/useColorSchemeTheme';
 
 export default function BaseModalScreen({children}) {
-  const insets = useSafeAreaInsets();
   const navigation = useNavigation();
   const {boardId} = useCurrentBoard();
 
   const {data: board} = useBoard(boardId);
 
   const colorTheme = useColorSchemeTheme(board?.attributes['color-theme']);
+  const paperColorTheme = usePaperColorSchemeTheme(
+    board?.attributes['color-theme'],
+  );
 
   return (
-    <PaperProvider theme={colorTheme}>
-      <ModalScreenWrapper closeModal={() => navigation.goBack()}>
-        <KeyboardAwareScrollView
-          contentContainerStyle={{paddingBottom: insets.bottom}}
-          testID="scroll-view"
-        >
-          <View style={Platform.OS === 'ios' && styles.container}>
-            {children}
-          </View>
-        </KeyboardAwareScrollView>
-      </ModalScreenWrapper>
+    <PaperProvider theme={paperColorTheme}>
+      <MuiProvider theme={colorTheme}>
+        <ModalScreenWrapper closeModal={() => navigation.goBack()}>
+          {children}
+        </ModalScreenWrapper>
+      </MuiProvider>
     </PaperProvider>
   );
 }
@@ -41,26 +38,20 @@ export default function BaseModalScreen({children}) {
  * Provides extra styling for web as we don't get it by default.
  */
 function ModalScreenWrapper({children, closeModal}) {
-  return Platform.select({
-    web: (
-      <CenterModal onDismiss={closeModal}>
-        <Card style={styles.wrapperCard} contentStyle={sharedStyles.fill}>
-          {children}
-        </Card>
-      </CenterModal>
-    ),
-    default: (
-      <ScreenBackground>
-        <View style={sharedStyles.fill}>{children}</View>
-      </ScreenBackground>
-    ),
-  });
+  return (
+    <CenterModal onDismiss={closeModal}>
+      <Card style={styles.wrapperCard} contentStyle={sharedStyles.fill}>
+        {children}
+      </Card>
+    </CenterModal>
+  );
 }
 
 const styles = StyleSheet.create({
   wrapperCard: {
     marginTop: 8,
     maxHeight: '90%',
+    overflowY: 'auto',
   },
   container: {
     padding: 16,

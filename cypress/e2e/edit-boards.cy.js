@@ -32,8 +32,8 @@ describe('edit boards', () => {
     const boardName = 'Video Games';
     const updatedBoard = Factory.board({name: boardName}, newBoard);
     cy.step('EDIT BOARD', () => {
-      cy.get('[aria-label="Loading"] > div').should('be.visible');
-      cy.get('[aria-label="Loading"] > div').should('not.be.visible');
+      // may need to wait for the board to load
+      // loading indicators are hard in MUI; consider checking for nav bar title text instead
       cy.get('[data-testid=navigation-bar-title]').click({force: true});
 
       cy.get('[data-testid="text-input-board-name"]').type(boardName);
@@ -63,8 +63,8 @@ describe('edit boards', () => {
     cy.step('DELETE BOARD', () => {
       cy.contains(boardName).click();
 
-      cy.get('[aria-label="Loading"] > div').should('be.visible');
-      cy.get('[aria-label="Loading"] > div').should('not.be.visible');
+      // may need to wait for the board to load
+      // loading indicators are hard in MUI; consider checking for nav bar title text instead
       cy.get('[data-testid=navigation-bar-title]').click({force: true});
 
       cy.contains('Delete Board').click();

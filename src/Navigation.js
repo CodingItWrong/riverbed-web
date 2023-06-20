@@ -1,7 +1,6 @@
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {useEffect} from 'react';
-import {Platform} from 'react-native';
 import NavigationBar from './components/NavigationBar';
 import {useCurrentBoard} from './data/currentBoard';
 import {useToken} from './data/token';
@@ -36,20 +35,10 @@ const linking = {
   },
 };
 
-const modalOptions = Platform.select({
-  android: {
-    headerShown: false,
-    presentation: 'modal',
-  },
-  ios: {
-    headerShown: false,
-    presentation: 'formSheet',
-  },
-  web: {
-    headerShown: false,
-    presentation: 'transparentModal',
-  },
-});
+const modalOptions = {
+  headerShown: false,
+  presentation: 'transparentModal',
+};
 const BoardStack = createNativeStackNavigator();
 const Boards = ({route}) => {
   const {boardId} = route.params;

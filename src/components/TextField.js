@@ -1,8 +1,4 @@
-import {Platform, StyleSheet} from 'react-native';
-import {TextInput as PaperTextInput} from 'react-native-paper';
-import sharedStyles from './sharedStyles';
-
-const IS_WEB = Platform.OS === 'web';
+import MuiTextField from '@mui/material/TextField';
 
 export default function TextField({
   label,
@@ -18,33 +14,36 @@ export default function TextField({
   style,
 }) {
   return (
-    <PaperTextInput
-      // TODO: see if removing "multiline" helps with scrolling
-      // multiline
+    <MuiTextField
+      variant="filled"
+      type={getInputType({secureTextEntry, keyboardType})}
       label={label}
-      accessibilityLabel={label}
-      testID={testID}
+      aria-label={label}
+      inputProps={{
+        'data-testid': testID,
+      }}
       value={value}
-      onChangeText={onChangeText}
+      onChange={e => onChangeText(e.target.value)}
       disabled={disabled}
       multiline={multiline}
-      autoCapitalize={autoCapitalize}
-      autoCorrect={autoCorrect}
-      secureTextEntry={secureTextEntry}
-      keyboardType={keyboardType}
-      style={[
-        sharedStyles.textInput,
-        style,
-        IS_WEB && multiline && styles.multilineWeb,
-      ]}
+      autoCapitalize={autoCapitalize ?? undefined}
+      autoCorrect={autoCorrect ?? undefined}
+      style={style}
     />
   );
 }
 
-const styles = StyleSheet.create({
-  // 3 lines, because does not auto-expand to fit content on web
-  // @see https://github.com/callstack/react-native-paper/issues/3124
-  multilineWeb: {
-    height: 100,
-  },
-});
+function getInputType({secureTextEntry, keyboardType}) {
+  if (secureTextEntry) {
+    return 'password';
+  }
+
+  switch (keyboardType) {
+    case 'email-address':
+      return 'email';
+    case 'decimal-pad':
+      return 'number';
+    default:
+      return 'text';
+  }
+}

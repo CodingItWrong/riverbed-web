@@ -1,4 +1,3 @@
-// `uuid` npm package is not compatible with Expo
-import {randomUUID} from 'expo-crypto';
+import {v4 as uuidV4} from 'uuid';
 
-export default randomUUID;
+export default uuidV4;

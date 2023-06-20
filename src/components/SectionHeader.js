@@ -1,9 +1,9 @@
-import {List} from 'react-native-paper';
+import {Typography} from '@mui/material';
 
 export default function SectionHeader({testID, style, children}) {
   return (
-    <List.Subheader style={style} testID={testID}>
+    <Typography component="div" variant="h6" style={style} data-testid={testID}>
       {children}
-    </List.Subheader>
+    </Typography>
   );
 }

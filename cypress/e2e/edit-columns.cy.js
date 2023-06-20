@@ -168,8 +168,10 @@ describe('edit columns', () => {
     cy.step('SET SORT', () => {
       cy.get('[aria-label="Edit Column"]').click();
 
-      cy.contains('Sort Field: (choose)').paperSelect('Title');
-      cy.contains('Sort Direction: (choose)').paperSelect('descending');
+      cy.contains('(choose)').click();
+      cy.get('[role=listbox]').contains('Title').click();
+      cy.contains('(choose)').click();
+      cy.get('[role=listbox]').contains('descending').click();
 
       const sortedColumn = Factory.column(
         {
@@ -216,20 +218,16 @@ describe('edit columns', () => {
       cy.get('[data-testid="text-input-column-name"]').clear().type('To Play');
 
       cy.contains('Add Condition').click();
-      cy.contains('(field)').paperSelect('Purchase Date');
-
-      // paper menu select; not sure why this is needed as it's the same code as paperSelect(), without a check at the end. Is it because it's scrolled off the bottom?
-      // cy.contains('(condition)').paperSelect(QUERIES.IS_NOT_EMPTY.label);
-      cy.contains('(condition)').click();
-      cy.get('[role=menuitem]')
-        .contains(QUERIES.IS_NOT_EMPTY.label)
-        .should('be.visible')
-        .click({force: true});
-      // end paper menu select
+      cy.contains('(choose)').click();
+      cy.get('[role=listbox]').contains('Purchase Date').click();
+      cy.contains('(choose)').click();
+      cy.get('[role=listbox]').contains(QUERIES.IS_NOT_EMPTY.label).click();
 
       cy.contains('Add Condition').click();
-      cy.contains('(field)').paperSelect('Complete Date');
-      cy.contains('(condition)').paperSelect(QUERIES.IS_EMPTY.label);
+      cy.contains('(choose)').click();
+      cy.get('[role=listbox]').contains('Complete Date').click();
+      cy.contains('(choose)').click();
+      cy.get('[role=listbox]').contains(QUERIES.IS_EMPTY.label).click();
 
       const filteredColumn = Factory.column(
         {
@@ -281,8 +279,10 @@ describe('edit columns', () => {
       cy.get('[data-testid="text-input-column-name"]').clear().type('To Play');
 
       cy.contains('Add Condition').click();
-      cy.contains('(field)').paperSelect('Title');
-      cy.contains('(condition)').paperSelect(QUERIES.EQUALS_VALUE.label);
+      cy.contains('(choose)').click();
+      cy.get('[role=listbox]').contains('Title').click();
+      cy.contains('(choose)').click();
+      cy.get('[role=listbox]').contains(QUERIES.EQUALS_VALUE.label).click();
       cy.get(`[data-testid="text-input-${titleField.id}`).type(unownedTitle);
 
       const filteredColumn = Factory.column(
@@ -329,15 +329,17 @@ describe('edit columns', () => {
     cy.step('SET GROUPING', () => {
       cy.get('[aria-label="Edit Column"]').click();
 
-      cy.contains('Group Field: (choose)').paperSelect('Purchase Date');
-      cy.contains(/^\(choose\)$/).should('not.exist'); // ensure modal is closed
-      cy.contains('Group Direction: (choose)').paperSelect('descending');
-      cy.contains(/^\(choose\)$/).should('not.exist');
+      // sort order
+      cy.contains('(choose)').click();
+      cy.get('[role=listbox]').contains('Title').click();
+      cy.contains('(choose)').click();
+      cy.get('[role=listbox]').contains('ascending').click();
 
-      cy.contains('Sort Field: (choose)').paperSelect('Title');
-      cy.contains(/^\(choose\)$/).should('not.exist');
-      cy.contains('Sort Direction: (choose)').paperSelect('ascending');
-      cy.contains(/^\(choose\)$/).should('not.exist');
+      // grouping
+      cy.contains('(choose)').click();
+      cy.get('[role=listbox]').contains('Purchase Date').click();
+      cy.contains('(choose)').click();
+      cy.get('[role=listbox]').contains('descending').click();
 
       const groupedColumn = Factory.column(
         {
@@ -397,8 +399,11 @@ describe('edit columns', () => {
 
     cy.step('EDIT COLUMN SUMMARY', () => {
       cy.get('[aria-label="Edit Column"]').click();
-      cy.contains('Summary Function: (choose)').paperSelect('Sum');
-      cy.contains('Summary Field: (choose)').paperSelect('Price');
+
+      cy.contains('Summary').parent().contains('(choose)').click();
+      cy.get('[role=listbox]').contains('Sum').click();
+      cy.contains('Summary').parent().contains('(choose)').click();
+      cy.get('[role=listbox]').contains('Price').click();
 
       const summedColumn = Factory.column(
         {

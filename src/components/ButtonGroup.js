@@ -1,5 +1,9 @@
-import {StyleSheet, View} from 'react-native';
-import {Text, ToggleButton} from 'react-native-paper';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import {View} from 'react-native';
+import {primaryColors} from '../theme/primaryColors';
+import Icon from './Icon';
+import Text from './Text';
 
 export default function ButtonGroup({
   label,
@@ -8,29 +12,35 @@ export default function ButtonGroup({
   options,
   style,
 }) {
+  function handleChange(event, newValue) {
+    onChangeValue(newValue === EMPTY_VALUE ? null : newValue);
+  }
+
   return (
     <View style={style}>
       <Text variant="bodySmall">{label}</Text>
-      <View style={styles.toggleButtonList}>
-        {options.map(option => (
-          <ToggleButton
-            key={option.key}
-            value={option.key}
-            icon={option.icon}
-            iconColor={option.iconColor}
-            accessibilityLabel={option.label}
-            status={value === option.key ? 'checked' : 'unchecked'}
-            onPress={() => onChangeValue(option.key)}
-          />
-        ))}
-      </View>
+      <ToggleButtonGroup
+        exclusive
+        value={value ?? EMPTY_VALUE}
+        onChange={handleChange}
+      >
+        {options.map(option => {
+          const color = option.iconColor
+            ? primaryColors[option.iconColor]
+            : null;
+          return (
+            <ToggleButton
+              key={option.key}
+              value={option.key ?? EMPTY_VALUE}
+              aria-label={option.label}
+            >
+              <Icon name={option.icon} sx={{color}} />
+            </ToggleButton>
+          );
+        })}
+      </ToggleButtonGroup>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  toggleButtonList: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
-});
+const EMPTY_VALUE = '__empty__';

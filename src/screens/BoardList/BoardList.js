@@ -1,13 +1,16 @@
+import {CardActionArea as MuiCardActionArea} from '@mui/material';
+import MuiCard from '@mui/material/Card';
+import MuiCardContent from '@mui/material/CardContent';
+import MuiMenu from '@mui/material/Menu';
+import MuiMenuItem from '@mui/material/MenuItem';
 import {useLinkTo, useNavigation} from '@react-navigation/native';
 import sortBy from 'lodash.sortby';
 import {useCallback, useEffect, useState} from 'react';
-import {Platform, SectionList, StyleSheet, View} from 'react-native';
-import {Card, Menu} from 'react-native-paper';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {SectionList, StyleSheet, View} from 'react-native';
 import Button from '../../components/Button';
 import CenterColumn from '../../components/CenterColumn';
 import ErrorSnackbar from '../../components/ErrorSnackbar';
-import {Icon} from '../../components/Icon';
+import Icon from '../../components/Icon';
 import IconButton from '../../components/IconButton';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import ScreenBackground from '../../components/ScreenBackground';
@@ -25,24 +28,49 @@ export default function BoardList() {
   const navigation = useNavigation();
   const linkTo = useLinkTo();
 
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuAnchorEl, setMenuAnchorEl] = useState(null);
+
+  function openMenu(event) {
+    setMenuAnchorEl(event.currentTarget);
+  }
+
+  const renderMenu = useCallback(() => {
+    const isMenuOpen = Boolean(menuAnchorEl);
+
+    function closeMenu() {
+      setMenuAnchorEl(null);
+    }
+
+    const handlePress = callback => () => {
+      closeMenu();
+      callback();
+    };
+
+    return (
+      <>
+        <IconButton
+          icon="dots-vertical"
+          color="inherit"
+          accessibilityLabel="App Menu"
+          onPress={openMenu}
+        />
+        <MuiMenu anchorEl={menuAnchorEl} open={isMenuOpen} onClose={closeMenu}>
+          <MuiMenuItem
+            onClick={handlePress(() => navigation.navigate('UserSettings'))}
+          >
+            User Settings
+          </MuiMenuItem>
+          <MuiMenuItem onClick={handlePress(clearToken)}>Sign Out</MuiMenuItem>
+        </MuiMenu>
+      </>
+    );
+  }, [menuAnchorEl, clearToken, navigation]);
 
   useEffect(() => {
     navigation.setOptions({
       headerRight: renderMenu,
     });
   }, [navigation, renderMenu]);
-
-  const renderMenu = useCallback(
-    () => (
-      <IconButton
-        icon="dots-vertical"
-        accessibilityLabel="App Menu"
-        onPress={() => setMenuOpen(true)}
-      />
-    ),
-    [],
-  );
 
   const {data: boards = [], isLoading, error: loadError} = useBoards();
 
@@ -64,25 +92,6 @@ export default function BoardList() {
 
   return (
     <ScreenBackground>
-      <View style={styles.menuAnchorContainer}>
-        <Menu
-          visible={menuOpen}
-          onDismiss={() => setMenuOpen(false)}
-          anchor={<MenuAnchor />}
-          anchorPosition="bottom"
-        >
-          <Menu.Item
-            onPress={() => navigation.navigate('UserSettings')}
-            title="User Settings"
-            accessibilityLabel="User Settings"
-          />
-          <Menu.Item
-            onPress={clearToken}
-            title="Sign Out"
-            accessibilityLabel="Sign Out"
-          />
-        </Menu>
-      </View>
       <CenterColumn>
         <View style={[sharedStyles.fullHeight, sharedStyles.noPadding]}>
           {isLoading ? (
@@ -90,10 +99,7 @@ export default function BoardList() {
               <LoadingIndicator />
             </View>
           ) : (
-            <SafeAreaView
-              style={sharedStyles.fullHeight}
-              edges={['left', 'right', 'bottom']}
-            >
+            <View style={sharedStyles.fullHeight}>
               <SectionList
                 sections={boardGroups}
                 keyExtractor={board => board.id}
@@ -114,7 +120,7 @@ export default function BoardList() {
                   <BoardCard
                     board={board}
                     onPress={() => goToBoard(board)}
-                    style={index > 0 && sharedStyles.mt}
+                    style={index > 0 ? sharedStyles.mt : null}
                   />
                 )}
               />
@@ -128,7 +134,7 @@ export default function BoardList() {
                   Add Board
                 </Button>
               </View>
-            </SafeAreaView>
+            </View>
           )}
         </View>
       </CenterColumn>
@@ -142,44 +148,36 @@ export default function BoardList() {
   );
 }
 
-function MenuAnchor() {
-  // see https://github.com/callstack/react-native-paper/issues/3854
-  // web needs the menu not to go off the edge, so we add extra width
-  const width = Platform.select({web: 150, default: 1});
-  return <View style={[styles.menuAnchor, {width}]} />;
-}
-
 function BoardCard({board, onPress, style}) {
   const getBoardColors = useBoardColors();
 
-  let backgroundColor = null;
   let foregroundColor = null;
 
   if (board.attributes['color-theme']) {
     const colors = getBoardColors(board);
-    backgroundColor = colors.secondaryContainer;
-    foregroundColor = colors.onSecondaryContainer;
+    foregroundColor = colors.primary;
   }
 
   return (
     <View style={style}>
-      <Card onPress={onPress} style={[backgroundColor && {backgroundColor}]}>
-        <View style={styles.boardCard}>
-          <Icon
-            name={board.attributes.icon ?? 'view-column'}
-            style={sharedStyles.mr}
-            color={foregroundColor}
-          />
-          <View style={sharedStyles.fill}>
-            <Text
-              variant="titleMedium"
-              style={foregroundColor && {color: foregroundColor}}
-            >
-              {board.attributes.name ?? '(unnamed board)'}
-            </Text>
-          </View>
-        </View>
-      </Card>
+      <MuiCard>
+        <MuiCardActionArea onClick={onPress}>
+          <MuiCardContent>
+            <View style={styles.boardCard}>
+              <Icon
+                name={board.attributes.icon ?? 'view-column'}
+                style={sharedStyles.mr}
+                sx={{color: foregroundColor}}
+              />
+              <View style={sharedStyles.fill}>
+                <Text variant="titleMedium" style={{color: foregroundColor}}>
+                  {board.attributes.name ?? '(unnamed board)'}
+                </Text>
+              </View>
+            </View>
+          </MuiCardContent>
+        </MuiCardActionArea>
+      </MuiCard>
       <View style={styles.favoriteContainer}>
         <FavoriteButton board={board} />
       </View>
@@ -247,23 +245,14 @@ function useBoardColors() {
 }
 
 const styles = StyleSheet.create({
-  menuAnchorContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-  },
-  menuAnchor: {
-    height: 1,
-  },
   boardCard: {
-    paddingLeft: 16,
     paddingRight: 50,
-    paddingVertical: 12,
     flexDirection: 'row',
     alignItems: 'center',
   },
   favoriteContainer: {
     position: 'absolute',
-    right: 0,
+    right: 10,
     top: 0,
     bottom: 0,
     justifyContent: 'center',

@@ -17,8 +17,6 @@ updates:
       - dependency-name: "babel-core"
       - dependency-name: "babel-jest"
       # - dependency-name: "expo" # commented to get notification
-      - dependency-name: "expo-secure-store"
-      - dependency-name: "expo-status-bar"
       - dependency-name: "jest-expo"
       - dependency-name: "react"
       - dependency-name: "react-dom"
