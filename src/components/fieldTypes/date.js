@@ -1,7 +1,7 @@
-import {DatePickerInput} from 'react-native-paper-dates';
+import {DatePicker} from '@mui/x-date-pickers/DatePicker';
+import dayjs from 'dayjs';
 import FIELD_DATA_TYPES from '../../enums/fieldDataTypes';
 import dateUtils from '../../utils/dateUtils';
-import sharedStyles from '../sharedStyles';
 
 const dateFieldDataType = {
   key: FIELD_DATA_TYPES.DATE.key,
@@ -14,22 +14,20 @@ const dateFieldDataType = {
 };
 
 function DateEditorComponent({field, label, value, setValue, disabled, style}) {
+  console.log({valueObject: dateUtils.serverStringToObject(value)});
   // TODO: should onChangeText always update? Like if you type?
   return (
-    <DatePickerInput
-      locale="en"
+    <DatePicker
       label={label}
-      value={dateUtils.serverStringToObject(value)}
-      onChange={newDate => setValue(dateUtils.objectToServerString(newDate))}
-      onChangeText={newText => {
-        if (newText === '') {
-          setValue(newText);
-        }
+      value={dayjs(value)}
+      onChange={dayJsObject => {
+        const string = dateUtils.objectToServerString(dayJsObject);
+        console.log({string});
+        setValue(string);
       }}
       disabled={disabled}
-      inputMode="start"
-      testID={`date-input-${field.id}`}
-      style={[sharedStyles.textInput, style]}
+      data-testid={`date-input-${field.id}`}
+      style={style}
     />
   );
 }
