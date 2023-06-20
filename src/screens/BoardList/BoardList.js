@@ -41,6 +41,11 @@ export default function BoardList() {
       setMenuAnchorEl(null);
     }
 
+    async function signOut() {
+      await clearToken();
+      navigate('/');
+    }
+
     const handlePress = callback => () => {
       closeMenu();
       callback();
@@ -58,7 +63,7 @@ export default function BoardList() {
           <MuiMenuItem onClick={handlePress(() => navigate('/settings'))}>
             User Settings
           </MuiMenuItem>
-          <MuiMenuItem onClick={handlePress(clearToken)}>Sign Out</MuiMenuItem>
+          <MuiMenuItem onClick={handlePress(signOut)}>Sign Out</MuiMenuItem>
         </MuiMenu>
       </>
     );

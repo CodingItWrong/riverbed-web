@@ -139,6 +139,10 @@ function ReactNavigation() {
 const router = createBrowserRouter([
   {
     path: '/',
+    element: <SignIn />,
+  },
+  {
+    path: 'boards',
     element: <BoardList />,
   },
   {

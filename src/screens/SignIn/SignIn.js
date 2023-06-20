@@ -1,4 +1,6 @@
+import {useEffect} from 'react';
 import {StyleSheet} from 'react-native';
+import {useNavigate} from 'react-router-dom';
 import oauthLogin from '../../auth/oauthLogin';
 import useLoginForm from '../../auth/useLoginForm';
 import Button from '../../components/Button';
@@ -13,7 +15,8 @@ import {useToken} from '../../data/token';
 const client = httpClient();
 
 export default function SignIn({navigation}) {
-  const {setToken} = useToken();
+  const {isLoggedIn, setToken} = useToken();
+  const navigate = useNavigate();
   const onLogIn = ({username, password}) =>
     oauthLogin({
       httpClient: client,
@@ -22,6 +25,12 @@ export default function SignIn({navigation}) {
     }).then(setToken);
   const {username, password, error, handleChange, handleLogIn} =
     useLoginForm(onLogIn);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate('/boards');
+    }
+  }, [isLoggedIn, navigate]);
 
   return (
     <ScreenBackground style={styles.container}>
