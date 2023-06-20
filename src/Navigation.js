@@ -1,6 +1,7 @@
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {useEffect} from 'react';
+import {RouterProvider, createBrowserRouter} from 'react-router-dom';
 import NavigationBar from './components/NavigationBar';
 import {useCurrentBoard} from './data/currentBoard';
 import {useToken} from './data/token';
@@ -124,7 +125,7 @@ function NavigationContents() {
   return <AppNav />;
 }
 
-export default function Navigation() {
+function ReactNavigation() {
   // IMPORTANT: NavigationContainer needs to not rerender too often or
   // else Safari and Firefox error on too many history API calls. Put
   // any hooks in NavigationContents so this parent doesn't rerender.
@@ -133,4 +134,15 @@ export default function Navigation() {
       <NavigationContents />
     </NavigationContainer>
   );
+}
+
+const router = createBrowserRouter([
+  {
+    path: '/boards',
+    element: <BoardList />,
+  },
+]);
+
+export default function Navigation() {
+  return <RouterProvider router={router} />;
 }
