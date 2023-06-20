@@ -13,7 +13,6 @@ export default function TextField({
   testID,
   style,
 }) {
-  console.log({style});
   return (
     <MuiTextField
       variant="filled"

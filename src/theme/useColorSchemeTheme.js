@@ -10,7 +10,6 @@ export default function useColorSchemeTheme(colorTheme) {
 
   const theme = useMemo(() => {
     const primaryColor = primaryColors[colorTheme ?? 'default'];
-    console.log({primaryColor});
     return createTheme({
       palette: {
         primary: {
