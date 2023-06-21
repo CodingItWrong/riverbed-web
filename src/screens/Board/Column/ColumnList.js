@@ -73,7 +73,7 @@ export default function ColumnList({board}) {
   const sortedColumns = sortByDisplayOrder(columns);
 
   return (
-    <View style={sharedStyles.fullHeight}>
+    <View style={styles.containerHeight}>
       <View style={[styles.buttonContainer, responsiveButtonContainerStyle]}>
         <Button
           mode="link"
@@ -125,6 +125,10 @@ export default function ColumnList({board}) {
 }
 
 const styles = StyleSheet.create({
+  containerHeight: {
+    position: 'absolute',
+    inset: 0,
+  },
   buttonContainer: {
     margin: 8,
   },
