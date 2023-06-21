@@ -1,6 +1,6 @@
 import {useCallback, useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useNavigate, useParams} from 'react-router-dom';
+import {Outlet, useNavigate, useParams} from 'react-router-dom';
 import BackButton from '../../components/BackButton';
 import ErrorSnackbar from '../../components/ErrorSnackbar';
 import IconButton from '../../components/IconButton';
@@ -98,6 +98,7 @@ export default function CardScreen() {
       <ErrorSnackbar error={deleteError}>
         An error occurred deleting the card.
       </ErrorSnackbar>
+      <Outlet />
     </>
   );
 }

@@ -1,6 +1,6 @@
 import {ThemeProvider as MuiProvider} from '@mui/material/styles';
 import {useCallback} from 'react';
-import {useNavigate, useParams} from 'react-router-dom';
+import {Outlet, useNavigate, useParams} from 'react-router-dom';
 import ErrorSnackbar from '../../components/ErrorSnackbar';
 import NavigationBar from '../../components/NavigationBar';
 import ScreenBackground from '../../components/ScreenBackground';
@@ -79,6 +79,7 @@ export default function Board() {
           An error occurred loading the board.
         </ErrorSnackbar>
       </ScreenBackground>
+      <Outlet />
     </MuiProvider>
   );
 }
