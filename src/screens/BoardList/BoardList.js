@@ -20,8 +20,7 @@ import Text from '../../components/Text';
 import sharedStyles from '../../components/sharedStyles';
 import {useBoards, useCreateBoard, useUpdateBoard} from '../../data/boards';
 import {useToken} from '../../data/token';
-import {colorThemes} from '../../theme/colorThemes';
-import useDebouncedColorScheme from '../../theme/useDebouncedColorScheme';
+import useColorSchemeTheme from '../../theme/useColorSchemeTheme';
 import dateTimeUtils from '../../utils/dateTimeUtils';
 
 export default function BoardList() {
@@ -147,12 +146,7 @@ export default function BoardList() {
 }
 
 function BoardCard({board, onPress, style}) {
-  const getBoardColors = useBoardColors();
-
-  let foregroundColor = null;
-
-  const colors = getBoardColors(board);
-  foregroundColor = colors.primary;
+  const primaryColor = useBoardPrimaryColor(board);
 
   return (
     <View style={style}>
@@ -163,7 +157,7 @@ function BoardCard({board, onPress, style}) {
               <Icon
                 name={board.attributes.icon ?? 'view-column'}
                 style={sharedStyles.mr}
-                sx={{color: foregroundColor}}
+                sx={{color: primaryColor}}
               />
               <View style={sharedStyles.fill}>
                 <Text variant="titleMedium">
@@ -202,9 +196,6 @@ function groupBoards(boards) {
 }
 
 function FavoriteButton({board, onToggleFavorite}) {
-  const getBoardColors = useBoardColors();
-  const colors = getBoardColors(board);
-
   const {attributes} = board;
   const isFavorite = Boolean(attributes['favorited-at']);
 
@@ -224,20 +215,15 @@ function FavoriteButton({board, onToggleFavorite}) {
           : `${attributes.name} is not a favorite board. Tap to favorite`
       }
       icon={isFavorite ? 'star' : 'star-outline'}
-      iconColor={colors.onSecondaryContainer}
       style={(styles.favoriteStar, {opacity: isFavorite ? 1.0 : 0.5})}
       onPress={handleUpdateBoard}
     />
   );
 }
 
-function useBoardColors() {
-  const colorScheme = useDebouncedColorScheme();
-
-  return function getBoardColors(board) {
-    const colorTheme = board?.attributes['color-theme'] ?? 'default';
-    return colorThemes[colorTheme][colorScheme].colors;
-  };
+function useBoardPrimaryColor(board) {
+  const colorTheme = useColorSchemeTheme(board?.attributes['color-theme']);
+  return colorTheme.palette.primary.main;
 }
 
 const styles = StyleSheet.create({
