@@ -113,6 +113,7 @@ export default function Column({column, board, onEdit, onSelectCard}) {
             <CardSummary
               card={card}
               board={board}
+              elements={elements}
               onPress={() => onSelectCard(card)}
               style={sharedStyles.mb}
             />

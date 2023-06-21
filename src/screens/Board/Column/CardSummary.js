@@ -2,12 +2,9 @@ import {StyleSheet, View} from 'react-native';
 import Card from '../../../components/Card';
 import Field from '../../../components/Field';
 import Text from '../../../components/Text';
-import {useBoardElements} from '../../../data/elements';
 import sortByDisplayOrder from '../../../utils/sortByDisplayOrder';
 
-export default function CardSummary({card, board, onPress, style}) {
-  const {data: elements = []} = useBoardElements(board);
-
+export default function CardSummary({card, board, elements, onPress, style}) {
   const fieldsToShow = sortByDisplayOrder(
     elements.filter(field => field.attributes['show-in-summary']),
   );
