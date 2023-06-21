@@ -1,3 +1,4 @@
+import {CssBaseline} from '@mui/material';
 import {ThemeProvider as MuiProvider} from '@mui/material/styles';
 import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
 import {LocalizationProvider as DateLocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
@@ -29,6 +30,7 @@ export default function App() {
       <TokenLoadBuffer>
         <PaperProvider theme={paperTheme}>
           <MuiProvider theme={theme}>
+            <CssBaseline />
             <DateLocalizationProvider dateAdapter={AdapterDayjs}>
               <QueryClientProvider client={queryClient}>
                 {__DEV__ && <ReactQueryDevtools initialIsOpen={false} />}
