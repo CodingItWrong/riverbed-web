@@ -9,9 +9,7 @@ import {useBoard} from '../../data/boards';
 import {useCards, useRefreshCards} from '../../data/cards';
 import {useColumns} from '../../data/columns';
 import {useBoardElements} from '../../data/elements';
-import useColorSchemeTheme, {
-  usePaperColorSchemeTheme,
-} from '../../theme/useColorSchemeTheme';
+import useColorSchemeTheme from '../../theme/useColorSchemeTheme';
 import useNavigateEffect from '../../utils/useNavigateEffect';
 import ColumnList from './Column/ColumnList';
 
