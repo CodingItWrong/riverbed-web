@@ -1,13 +1,10 @@
 import Constants from 'expo-constants';
 import {GoogleApiWrapper, Map as GoogleMap, Marker} from 'google-maps-react';
+import {useMemo} from 'react';
 import {View} from 'react-native';
 import Text from './Text';
 
 function Map({style, location, disabled, onPressLocation, google}) {
-  if (window.Cypress) {
-    return <Text>(hiding map view in cypress)</Text>;
-  }
-
   function handleClick(_props, _marker, event) {
     if (disabled) {
       return;
@@ -21,8 +18,15 @@ function Map({style, location, disabled, onPressLocation, google}) {
     onPressLocation(clickLocation);
   }
 
-  const mapLocation = valueToCoords(location ?? defaultLocation);
-  const markerLocation = valueToCoords(location);
+  const mapLocation = useMemo(
+    () => valueToCoords(location ?? defaultLocation),
+    [location],
+  );
+  const markerLocation = useMemo(() => valueToCoords(location), [location]);
+
+  if (window.Cypress) {
+    return <Text>(hiding map view in cypress)</Text>;
+  }
 
   return (
     <View style={style}>
