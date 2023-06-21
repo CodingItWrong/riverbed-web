@@ -1,14 +1,9 @@
-import AppBar from '@mui/material/AppBar';
-import Button from '@mui/material/Button';
-import Toolbar from '@mui/material/Toolbar';
 import {ThemeProvider as MuiProvider} from '@mui/material/styles';
 import {useCallback} from 'react';
 import {Provider as PaperProvider} from 'react-native-paper';
 import {useNavigate, useParams} from 'react-router-dom';
-import BackButton from '../../components/BackButton';
 import ErrorSnackbar from '../../components/ErrorSnackbar';
-import Icon from '../../components/Icon';
-import LoadingIndicator from '../../components/LoadingIndicator';
+import NavigationBar from '../../components/NavigationBar';
 import ScreenBackground from '../../components/ScreenBackground';
 import sharedStyles from '../../components/sharedStyles';
 import {useBoard} from '../../data/boards';
@@ -84,12 +79,7 @@ export default function Board() {
   return (
     <PaperProvider theme={paperColorTheme}>
       <MuiProvider theme={colorTheme}>
-        <EmbeddedHeader
-          title={navigationOptions.title}
-          icon={navigationOptions.icon}
-          isFetching={navigationOptions.isFetching}
-          onTitlePress={navigationOptions.onTitlePress}
-        />
+        <NavigationBar options={navigationOptions} backTo="/" />
         <ScreenBackground style={sharedStyles.fullHeight}>
           {renderContents()}
           <ErrorSnackbar error={error}>
@@ -98,26 +88,5 @@ export default function Board() {
         </ScreenBackground>
       </MuiProvider>
     </PaperProvider>
-  );
-}
-
-// TODO: may not need a duplicate header now that it isn't themed separately;
-// wait until removing React Navigation to see
-function EmbeddedHeader({title, icon, isFetching, onTitlePress}) {
-  return (
-    <AppBar position="relative">
-      <Toolbar>
-        <BackButton to="/" />
-        {icon && <Icon name={icon} style={sharedStyles.mr} />}
-        <Button
-          color="inherit"
-          onClick={onTitlePress}
-          data-testid="navigation-bar-title"
-        >
-          {title}
-        </Button>
-        <LoadingIndicator loading={Boolean(isFetching)} />
-      </Toolbar>
-    </AppBar>
   );
 }
