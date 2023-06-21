@@ -6,7 +6,7 @@ export default function CenterModal({children, onDismiss}) {
       <View style={styles.columnWrapper}>
         <PressableArea onPress={onDismiss} />
         <View style={styles.column}>
-          <PressableArea onPress={onDismiss} />
+          <PressableArea onPress={onDismiss} style={styles.topPressableArea} />
           {children}
           <PressableArea onPress={onDismiss} />
         </View>
@@ -16,8 +16,8 @@ export default function CenterModal({children, onDismiss}) {
   );
 }
 
-function PressableArea({onPress}) {
-  return <Pressable onPress={onPress} style={styles.pressableArea} />;
+function PressableArea({onPress, style}) {
+  return <Pressable onPress={onPress} style={[styles.pressableArea, style]} />;
 }
 
 // LARGE will be given most of the space first, but after it meets its max width, SMALL will still grow
@@ -42,5 +42,9 @@ const styles = StyleSheet.create({
   },
   pressableArea: {
     flexGrow: VERY_SMALL_GROW,
+  },
+  topPressableArea: {
+    height: 30,
+    flexGrow: 0,
   },
 });
