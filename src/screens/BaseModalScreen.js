@@ -1,14 +1,11 @@
 import {ThemeProvider as MuiProvider} from '@mui/material/styles';
 import {StyleSheet} from 'react-native';
-import {Provider as PaperProvider} from 'react-native-paper';
 import {useNavigate, useParams} from 'react-router-dom';
 import Card from '../components/Card';
 import CenterModal from '../components/CenterModal';
 import sharedStyles from '../components/sharedStyles';
 import {useBoard} from '../data/boards';
-import useColorSchemeTheme, {
-  usePaperColorSchemeTheme,
-} from '../theme/useColorSchemeTheme';
+import useColorSchemeTheme from '../theme/useColorSchemeTheme';
 
 export default function BaseModalScreen({backTo, children}) {
   if (!backTo) {
@@ -21,19 +18,13 @@ export default function BaseModalScreen({backTo, children}) {
   const {data: board} = useBoard(boardId);
 
   const colorTheme = useColorSchemeTheme(board?.attributes['color-theme']);
-  const paperColorTheme = usePaperColorSchemeTheme(
-    board?.attributes['color-theme'],
-  );
 
-  // TODO: what is the correct back behavior we want here?
   return (
-    <PaperProvider theme={paperColorTheme}>
-      <MuiProvider theme={colorTheme}>
-        <ModalScreenWrapper closeModal={() => navigate(backTo)}>
-          {children}
-        </ModalScreenWrapper>
-      </MuiProvider>
-    </PaperProvider>
+    <MuiProvider theme={colorTheme}>
+      <ModalScreenWrapper closeModal={() => navigate(backTo)}>
+        {children}
+      </ModalScreenWrapper>
+    </MuiProvider>
   );
 }
 

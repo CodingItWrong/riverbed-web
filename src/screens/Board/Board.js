@@ -1,6 +1,5 @@
 import {ThemeProvider as MuiProvider} from '@mui/material/styles';
 import {useCallback} from 'react';
-import {Provider as PaperProvider} from 'react-native-paper';
 import {useNavigate, useParams} from 'react-router-dom';
 import ErrorSnackbar from '../../components/ErrorSnackbar';
 import NavigationBar from '../../components/NavigationBar';
@@ -72,21 +71,16 @@ export default function Board() {
   }
 
   const colorTheme = useColorSchemeTheme(board?.attributes['color-theme']);
-  const paperColorTheme = usePaperColorSchemeTheme(
-    board?.attributes['color-theme'],
-  );
 
   return (
-    <PaperProvider theme={paperColorTheme}>
-      <MuiProvider theme={colorTheme}>
-        <NavigationBar options={navigationOptions} backTo="/" />
-        <ScreenBackground style={sharedStyles.fullHeight}>
-          {renderContents()}
-          <ErrorSnackbar error={error}>
-            An error occurred loading the board.
-          </ErrorSnackbar>
-        </ScreenBackground>
-      </MuiProvider>
-    </PaperProvider>
+    <MuiProvider theme={colorTheme}>
+      <NavigationBar options={navigationOptions} backTo="/" />
+      <ScreenBackground style={sharedStyles.fullHeight}>
+        {renderContents()}
+        <ErrorSnackbar error={error}>
+          An error occurred loading the board.
+        </ErrorSnackbar>
+      </ScreenBackground>
+    </MuiProvider>
   );
 }
