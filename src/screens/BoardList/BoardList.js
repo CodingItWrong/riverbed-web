@@ -3,16 +3,17 @@ import MuiCard from '@mui/material/Card';
 import MuiCardContent from '@mui/material/CardContent';
 import MuiMenu from '@mui/material/Menu';
 import MuiMenuItem from '@mui/material/MenuItem';
-import {useLinkTo, useNavigation} from '@react-navigation/native';
 import sortBy from 'lodash.sortby';
-import {useCallback, useEffect, useState} from 'react';
+import {useCallback, useState} from 'react';
 import {SectionList, StyleSheet, View} from 'react-native';
+import {useNavigate} from 'react-router-dom';
 import Button from '../../components/Button';
 import CenterColumn from '../../components/CenterColumn';
 import ErrorSnackbar from '../../components/ErrorSnackbar';
 import Icon from '../../components/Icon';
 import IconButton from '../../components/IconButton';
 import LoadingIndicator from '../../components/LoadingIndicator';
+import NavigationBar from '../../components/NavigationBar';
 import ScreenBackground from '../../components/ScreenBackground';
 import SectionHeader from '../../components/SectionHeader';
 import Text from '../../components/Text';
@@ -25,8 +26,7 @@ import dateTimeUtils from '../../utils/dateTimeUtils';
 
 export default function BoardList() {
   const {clearToken} = useToken();
-  const navigation = useNavigation();
-  const linkTo = useLinkTo();
+  const navigate = useNavigate();
 
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
 
@@ -39,6 +39,11 @@ export default function BoardList() {
 
     function closeMenu() {
       setMenuAnchorEl(null);
+    }
+
+    async function signOut() {
+      await clearToken();
+      navigate('/');
     }
 
     const handlePress = callback => () => {
@@ -55,27 +60,19 @@ export default function BoardList() {
           onPress={openMenu}
         />
         <MuiMenu anchorEl={menuAnchorEl} open={isMenuOpen} onClose={closeMenu}>
-          <MuiMenuItem
-            onClick={handlePress(() => navigation.navigate('UserSettings'))}
-          >
+          <MuiMenuItem onClick={handlePress(() => navigate('/settings'))}>
             User Settings
           </MuiMenuItem>
-          <MuiMenuItem onClick={handlePress(clearToken)}>Sign Out</MuiMenuItem>
+          <MuiMenuItem onClick={handlePress(signOut)}>Sign Out</MuiMenuItem>
         </MuiMenu>
       </>
     );
-  }, [menuAnchorEl, clearToken, navigation]);
-
-  useEffect(() => {
-    navigation.setOptions({
-      headerRight: renderMenu,
-    });
-  }, [navigation, renderMenu]);
+  }, [menuAnchorEl, clearToken, navigate]);
 
   const {data: boards = [], isLoading, error: loadError} = useBoards();
 
   function goToBoard(board) {
-    linkTo(`/boards/${board.id}`);
+    navigate(`/boards/${board.id}`);
   }
 
   const {
@@ -92,6 +89,7 @@ export default function BoardList() {
 
   return (
     <ScreenBackground>
+      <NavigationBar options={{title: 'My Boards', headerRight: renderMenu}} />
       <CenterColumn>
         <View style={[sharedStyles.fullHeight, sharedStyles.noPadding]}>
           {isLoading ? (

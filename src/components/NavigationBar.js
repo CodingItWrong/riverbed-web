@@ -7,18 +7,20 @@ import Icon from './Icon';
 import LoadingIndicator from './LoadingIndicator';
 import sharedStyles from './sharedStyles';
 
-// TODO: positioned after contents in React Navigation, so may need to
-// switch off that first before switching this off Paper
-export default function NavigationBar({navigation, options, back}) {
+export default function NavigationBar({options, backTo}) {
   const {title, icon, onTitlePress, headerRight, isFetching} = options;
 
   return (
     <AppBar position="relative">
       <Toolbar>
-        {back && <BackButton />}
+        {backTo && <BackButton to={backTo} />}
         {icon && <Icon name={icon} style={sharedStyles.mr} />}
         {onTitlePress ? (
-          <Button color="inherit" onClick={onTitlePress}>
+          <Button
+            color="inherit"
+            onClick={onTitlePress}
+            data-testid="navigation-bar-title"
+          >
             {title}
           </Button>
         ) : (

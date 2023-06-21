@@ -24,7 +24,6 @@ updates:
       - dependency-name: "react-native-gesture-handler"
       - dependency-name: "react-native-maps"
       - dependency-name: "react-native-reanimated"
-      - dependency-name: "react-native-safe-area-context"
       - dependency-name: "react-native-screens"
       - dependency-name: "react-native-web"
       - dependency-name: "typescript"

@@ -6,7 +6,6 @@ import {ReactQueryDevtools} from '@tanstack/react-query-devtools';
 import {Provider as PaperProvider} from 'react-native-paper';
 import Navigation from './src/Navigation';
 import TokenLoadBuffer from './src/components/TokenLoadBuffer';
-import {CurrentBoardProvider} from './src/data/currentBoard';
 import {TokenProvider} from './src/data/token';
 import useColorSchemeTheme, {
   usePaperColorSchemeTheme,
@@ -26,21 +25,19 @@ export default function App() {
   const paperTheme = usePaperColorSchemeTheme();
 
   return (
-    <CurrentBoardProvider>
-      <TokenProvider>
-        <TokenLoadBuffer>
-          <PaperProvider theme={paperTheme}>
-            <MuiProvider theme={theme}>
-              <DateLocalizationProvider dateAdapter={AdapterDayjs}>
-                <QueryClientProvider client={queryClient}>
-                  {__DEV__ && <ReactQueryDevtools initialIsOpen={false} />}
-                  <Navigation />
-                </QueryClientProvider>
-              </DateLocalizationProvider>
-            </MuiProvider>
-          </PaperProvider>
-        </TokenLoadBuffer>
-      </TokenProvider>
-    </CurrentBoardProvider>
+    <TokenProvider>
+      <TokenLoadBuffer>
+        <PaperProvider theme={paperTheme}>
+          <MuiProvider theme={theme}>
+            <DateLocalizationProvider dateAdapter={AdapterDayjs}>
+              <QueryClientProvider client={queryClient}>
+                {__DEV__ && <ReactQueryDevtools initialIsOpen={false} />}
+                <Navigation />
+              </QueryClientProvider>
+            </DateLocalizationProvider>
+          </MuiProvider>
+        </PaperProvider>
+      </TokenLoadBuffer>
+    </TokenProvider>
   );
 }
