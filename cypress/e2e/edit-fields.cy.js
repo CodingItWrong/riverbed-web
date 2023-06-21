@@ -100,6 +100,7 @@ describe('edit fields', () => {
         .its('request.body')
         .should('deep.equal', {data: localGreetingField});
       cy.contains(fieldName);
+      cy.get('[aria-label="Done Editing Elements"]').click();
     });
 
     cy.step('CONFIRM CARD HAS FIELD', () => {
@@ -143,8 +144,11 @@ describe('edit fields', () => {
 
     cy.get(`[data-testid=card-${card.id}]`).click();
 
-    cy.step('CANCEL FIELD EDIT', () => {
+    cy.step('EDIT ELEMENTS', () => {
       cy.get('[aria-label="Edit Elements"]').click();
+    });
+
+    cy.step('CANCEL FIELD EDIT', () => {
       cy.get(`[aria-label="Edit ${greetingFieldName} field"]`).click();
       cy.get('[data-testid="text-input-element-name"]')
         .invoke('val')
@@ -154,7 +158,6 @@ describe('edit fields', () => {
     });
 
     cy.step('EDIT FIELD', () => {
-      cy.get('[aria-label="Edit Elements"]').click();
       cy.get(`[aria-label="Edit ${greetingFieldName} field"]`).click();
 
       const updatedFieldName = 'Salutation';
@@ -354,6 +357,7 @@ describe('edit fields', () => {
           ]);
           expect(choices.map(c => c.label)).to.deep.equal(['Red', 'Green']);
         });
+      cy.get('[aria-label="Done Editing Elements"]').click();
     });
 
     cy.step('CONFIRM CARD HAS CHOICES', () => {
@@ -456,7 +460,6 @@ describe('edit fields', () => {
       .should('deep.equal', {data: orderedFieldA});
     cy.contains('Save Field').should('not.exist');
 
-    cy.get('[aria-label="Edit Elements"]').click();
     cy.get('[aria-label="Edit Field B field"]').click();
     cy.get('[data-testid="number-input-order"]').type(1);
     const orderedFieldB = Factory.field({'display-order': 1}, fieldB);
@@ -472,26 +475,24 @@ describe('edit fields', () => {
       .should('deep.equal', {data: orderedFieldB});
     cy.contains('Save Field').should('not.exist');
 
-    // confirm new order in card detail
-    cy.assertOrder('[data-testid^="element-"]', [
-      e => e.invoke('attr', 'data-testid').should('eq', `element-${fieldB.id}`),
-      e => e.invoke('attr', 'data-testid').should('eq', `element-${fieldA.id}`),
-    ]);
-
-    cy.get('[aria-label="Edit Elements"]').click();
-
     // confirm new field order in Edit Elements form
     cy.assertOrder('[data-testid^="element-"]', [
       e => e.invoke('attr', 'data-testid').should('eq', `element-${fieldB.id}`),
       e => e.invoke('attr', 'data-testid').should('eq', `element-${fieldA.id}`),
     ]);
 
-    cy.get('[aria-label="Close card"]').click();
+    cy.get('[aria-label="Done Editing Elements"]').click();
 
     // confirm new field order in card summary
     cy.assertOrder('[data-testid="field-value"]', [
       e => e.contains('Value B'),
       e => e.contains('Value A'),
+    ]);
+
+    // confirm new order in card detail
+    cy.assertOrder('[data-testid^="element-"]', [
+      e => e.invoke('attr', 'data-testid').should('eq', `element-${fieldB.id}`),
+      e => e.invoke('attr', 'data-testid').should('eq', `element-${fieldA.id}`),
     ]);
   });
 
@@ -523,8 +524,9 @@ describe('edit fields', () => {
 
     goToBoard();
 
-    cy.step('PULL UP CARD', () => {
+    cy.step('EDIT ELEMENTS', () => {
       cy.get(`[data-testid=card-${card.id}]`).click();
+      cy.get('[aria-label="Edit Elements"]').click();
     });
 
     const updatedDateField = Factory.field(
@@ -532,7 +534,6 @@ describe('edit fields', () => {
       dateField,
     );
     cy.step('SET INITIAL DATE VALUE TO NOW', () => {
-      cy.get('[aria-label="Edit Elements"]').click();
       cy.get('[aria-label="Edit Date field"]').click();
       cy.contains('(choose)').click();
       cy.get('[role=listbox]').contains(VALUES.NOW.label).click();
@@ -555,7 +556,6 @@ describe('edit fields', () => {
       dateTimeField,
     );
     cy.step('SET INITIAL DATETIME VALUE TO NOW', () => {
-      cy.get('[aria-label="Edit Elements"]').click();
       cy.get('[aria-label="Edit Date and Time field"]').click();
       cy.contains('(choose)').click();
       cy.get('[role=listbox]').contains(VALUES.NOW.label).click();
@@ -573,7 +573,8 @@ describe('edit fields', () => {
       cy.wait('@elementList'); // to make sure the updated elements are loaded before proceeding
     });
 
-    cy.step('CLOSE CARD', () => {
+    cy.step('FINISH EDITING ELEMENTS', () => {
+      cy.get('[aria-label="Done Editing Elements"]').click();
       cy.get('[aria-label="Close card"]').click();
     });
 
