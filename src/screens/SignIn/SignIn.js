@@ -6,6 +6,7 @@ import useLoginForm from '../../auth/useLoginForm';
 import Button from '../../components/Button';
 import CenterColumn from '../../components/CenterColumn';
 import ErrorMessage from '../../components/ErrorMessage';
+import NavigationBar from '../../components/NavigationBar';
 import ScreenBackground from '../../components/ScreenBackground';
 import TextField from '../../components/TextField';
 import sharedStyles from '../../components/sharedStyles';
@@ -33,30 +34,33 @@ export default function SignIn({navigation}) {
   }, [isLoggedIn, navigate]);
 
   return (
-    <ScreenBackground style={styles.container}>
-      <CenterColumn>
-        <TextField
-          label="Email"
-          testID="text-input-email"
-          value={username}
-          onChangeText={handleChange('username')}
-          keyboardType="email-address"
-          autoCapitalize="none"
-          autoCorrect="off"
-        />
-        <TextField
-          label="Password"
-          testID="text-input-password"
-          value={password}
-          onChangeText={handleChange('password')}
-          secureTextEntry
-        />
-        <ErrorMessage>{error}</ErrorMessage>
-        <Button mode="primary" onPress={handleLogIn} style={sharedStyles.mt}>
-          Sign in
-        </Button>
-      </CenterColumn>
-    </ScreenBackground>
+    <>
+      <NavigationBar options={{title: 'Riverbed'}} />
+      <ScreenBackground style={styles.container}>
+        <CenterColumn>
+          <TextField
+            label="Email"
+            testID="text-input-email"
+            value={username}
+            onChangeText={handleChange('username')}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            autoCorrect="off"
+          />
+          <TextField
+            label="Password"
+            testID="text-input-password"
+            value={password}
+            onChangeText={handleChange('password')}
+            secureTextEntry
+          />
+          <ErrorMessage>{error}</ErrorMessage>
+          <Button mode="primary" onPress={handleLogIn} style={sharedStyles.mt}>
+            Sign in
+          </Button>
+        </CenterColumn>
+      </ScreenBackground>
+    </>
   );
 }
 
