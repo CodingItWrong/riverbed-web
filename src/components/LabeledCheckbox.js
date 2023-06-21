@@ -11,7 +11,7 @@ export default function LabeledCheckbox({
     <FormControlLabel
       control={
         <Checkbox
-          checked={checked}
+          checked={checked ?? false}
           onChange={() => onChangeChecked(!checked)}
         />
       }
