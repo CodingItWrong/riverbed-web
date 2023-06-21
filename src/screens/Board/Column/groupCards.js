@@ -17,7 +17,8 @@ export default function groupCards({columnCards, cardGrouping, elements}) {
   let cardGroups = [];
 
   columnCards.forEach(card => {
-    const groupValue = card.attributes['field-values'][cardGrouping.field];
+    const groupValue =
+      card.attributes['field-values'][cardGrouping.field] ?? null;
     let group = cardGroups.find(g => g.value === groupValue);
     if (!group) {
       group = {value: groupValue, data: []};

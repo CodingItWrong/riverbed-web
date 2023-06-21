@@ -27,7 +27,27 @@ describe('groupCards', () => {
     id: '4',
     attributes: {'field-values': {[textField.id]: 'c'}},
   };
-  const columnCards = [cardC1, cardA1, cardB1, cardA2];
+  const cardNull = {
+    id: '5',
+    attributes: {'field-values': {[textField.id]: null}},
+  };
+  const cardUndefined = {
+    id: '6',
+    attributes: {'field-values': {[textField.id]: undefined}},
+  };
+  const cardAbsentKey = {
+    id: '7',
+    attributes: {'field-values': {}},
+  };
+  const columnCards = [
+    cardC1,
+    cardA1,
+    cardB1,
+    cardA2,
+    cardNull,
+    cardUndefined,
+    cardAbsentKey,
+  ];
 
   it('returns cards grouped by the configured field', () => {
     const cardGrouping = {
@@ -41,6 +61,7 @@ describe('groupCards', () => {
       {value: 'a', data: [cardA1, cardA2]},
       {value: 'b', data: [cardB1]},
       {value: 'c', data: [cardC1]},
+      {value: null, data: [cardNull, cardUndefined, cardAbsentKey]},
     ]);
   });
 
@@ -53,6 +74,7 @@ describe('groupCards', () => {
     const result = groupCards({columnCards, cardGrouping, elements});
 
     expect(result).toEqual([
+      {value: null, data: [cardNull, cardUndefined, cardAbsentKey]},
       {value: 'c', data: [cardC1]},
       {value: 'b', data: [cardB1]},
       {value: 'a', data: [cardA1, cardA2]},
