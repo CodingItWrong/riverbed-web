@@ -2,14 +2,16 @@ import {Pressable, StyleSheet, View} from 'react-native';
 
 export default function CenterModal({children, onDismiss}) {
   return (
-    <View style={styles.columnWrapper}>
-      <PressableArea onPress={onDismiss} />
-      <View style={styles.column}>
+    <View style={styles.overlay}>
+      <View style={styles.columnWrapper}>
         <PressableArea onPress={onDismiss} />
-        {children}
+        <View style={styles.column}>
+          <PressableArea onPress={onDismiss} />
+          {children}
+          <PressableArea onPress={onDismiss} />
+        </View>
         <PressableArea onPress={onDismiss} />
       </View>
-      <PressableArea onPress={onDismiss} />
     </View>
   );
 }
@@ -23,6 +25,10 @@ const VERY_LARGE_GROW = 100;
 const VERY_SMALL_GROW = 1;
 
 const styles = StyleSheet.create({
+  overlay: {
+    position: 'absolute',
+    inset: 0,
+  },
   columnWrapper: {
     flex: 1,
     flexDirection: 'row',

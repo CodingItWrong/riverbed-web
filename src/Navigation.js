@@ -16,30 +16,36 @@ const router = createBrowserRouter([
   {
     path: 'boards',
     element: <BoardList />,
+    children: [
+      {
+        path: 'settings',
+        element: <UserSettings />,
+      },
+    ],
   },
   {
     path: 'boards/:boardId',
     element: <Board />,
-  },
-  {
-    path: 'boards/:boardId/cards/:cardId',
-    element: <Card />,
-  },
-  {
-    path: 'boards/:boardId/cards/:cardId/elements/:elementId',
-    element: <Element />,
-  },
-  {
-    path: 'boards/:boardId/columns/:columnId',
-    element: <Column />,
-  },
-  {
-    path: 'boards/:boardId/edit',
-    element: <BoardEdit />,
-  },
-  {
-    path: 'settings',
-    element: <UserSettings />,
+    children: [
+      {
+        path: 'cards/:cardId',
+        element: <Card />,
+        children: [
+          {
+            path: 'elements/:elementId',
+            element: <Element />,
+          },
+        ],
+      },
+      {
+        path: 'columns/:columnId',
+        element: <Column />,
+      },
+      {
+        path: 'edit',
+        element: <BoardEdit />,
+      },
+    ],
   },
 ]);
 
