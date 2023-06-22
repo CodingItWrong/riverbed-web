@@ -61,7 +61,7 @@ function GeolocationEditorComponent({
   return (
     <div>
       <Stack direction="row" alignItems="center">
-        <Text style={{flexGrow: 1}}>{label}</Text>
+        <Text style={styles.grow}>{label}</Text>
         <View>
           <IconButton
             accessibilityLabel="Use current location"
@@ -90,7 +90,7 @@ function GeolocationEditorComponent({
           onChangeText={newValue => setValue({...value, lat: newValue})}
           disabled={disabled}
           testID={`number-input-${field.id}-latitude`}
-          style={{flexGrow: 1}}
+          style={styles.grow}
         />
         <NumberField
           label="longitude"
@@ -98,7 +98,7 @@ function GeolocationEditorComponent({
           onChangeText={newValue => setValue({...value, lng: newValue})}
           disabled={disabled}
           testID={`number-input-${field.id}-longitude`}
-          style={{flexGrow: 1}}
+          style={styles.grow}
         />
       </Stack>
       <Map
@@ -133,6 +133,9 @@ const styles = StyleSheet.create({
     bottom: 0,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  grow: {
+    flexGrow: 1,
   },
 });
 

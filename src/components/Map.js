@@ -28,7 +28,7 @@ function Map({style, location, disabled, onPressLocation, google}) {
   }
 
   return (
-    <div style={{position: 'relative', ...style}}>
+    <div style={{...styles.mapWrapper, ...style}}>
       <GoogleMap
         google={google}
         zoom={13}
@@ -62,3 +62,9 @@ const valueToCoords = value =>
         lng: Number(value.lng),
       }
     : null;
+
+const styles = {
+  mapWrapper: {
+    position: 'relative',
+  },
+};
