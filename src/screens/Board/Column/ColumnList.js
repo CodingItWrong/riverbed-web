@@ -61,6 +61,11 @@ export default function ColumnList({board}) {
   const responsiveButtonContainerStyle = {
     alignItems: breakpoint === large ? 'flex-start' : 'stretch',
   };
+  const fullContainerStyle = {
+    ...sharedStyles.column,
+    ...styles.buttonContainer,
+    ...responsiveButtonContainerStyle,
+  };
   const columnWidthStyle = useColumnStyle();
   const pagingEnabled = breakpoint !== large;
 
@@ -76,13 +81,7 @@ export default function ColumnList({board}) {
       data-testid="outer"
       style={{...sharedStyles.column, ...styles.containerHeight}}
     >
-      <div
-        style={{
-          ...styles.buttonContainer,
-          ...sharedStyles.column,
-          ...responsiveButtonContainerStyle,
-        }}
-      >
+      <div style={fullContainerStyle}>
         <Button
           mode="link"
           icon="plus"
@@ -107,7 +106,7 @@ export default function ColumnList({board}) {
           />
         ))}
         <div style={{...columnWidthStyle, ...sharedStyles.columnPadding}}>
-          <div style={responsiveButtonContainerStyle}>
+          <div style={fullContainerStyle}>
             <Button
               mode="link"
               icon="plus"
