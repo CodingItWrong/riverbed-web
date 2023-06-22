@@ -2,16 +2,15 @@
   "name": "riverbed",
   "version": "1.0.0",
   "scripts": {
-    "start": "expo start --dev-client",
-    "web": "expo start --web",
+    "start": "webpack server --open --config webpack.dev.js",
     "test": "jest --watchAll",
     "test:ci": "jest",
     "cypress": "cypress open",
     "cypress:run": "cypress run",
     "lint": "eslint src cypress/e2e",
     "lint:ci": "eslint src cypress/e2e --max-warnings=0",
-    "build:web": "expo export:web && cp _redirects web-build",
-    "deploy:web": "npm run build:web && netlify deploy --prod",
+    "build": "webpack --config webpack.prod.js",
+    "deploy": "npm run build && netlify deploy --prod",
     "prepare": "husky install"
   },
   "dependencies": {
@@ -51,14 +50,23 @@
   "devDependencies": {
     "@babel/core": "^7.12.9",
     "@babel/plugin-proposal-private-methods": "^7.18.6",
+    "@babel/preset-env": "^7.22.5",
+    "@babel/preset-react": "^7.22.5",
     "@react-native-community/eslint-config": "^3.2.0",
     "@tanstack/react-query-devtools": "^4.29.6",
+    "babel-loader": "^9.1.2",
+    "copy-webpack-plugin": "^11.0.0",
     "cypress": "^12.15.0",
     "eslint": "^8.43",
     "eslint-plugin-cypress": "^2.13.3",
     "eslint-plugin-import": "^2.27.5",
+    "html-webpack-plugin": "^5.5.3",
     "husky": "^8.0.0",
-    "prettier": "^2.8.8"
+    "prettier": "^2.8.8",
+    "webpack": "^5.88.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1",
+    "webpack-merge": "^5.9.0"
   },
   "private": true,
   "jest": {
