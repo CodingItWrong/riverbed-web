@@ -5,7 +5,7 @@ import MuiMenu from '@mui/material/Menu';
 import MuiMenuItem from '@mui/material/MenuItem';
 import sortBy from 'lodash.sortby';
 import {useCallback, useState} from 'react';
-import {SectionList, StyleSheet, View} from 'react-native';
+import {SectionList} from 'react-native';
 import {Outlet, useNavigate} from 'react-router-dom';
 import Button from '../../components/Button';
 import CenterColumn from '../../components/CenterColumn';
@@ -97,50 +97,53 @@ export default function BoardList() {
     <ScreenBackground>
       <NavigationBar options={{title: 'My Boards', headerRight: renderMenu}} />
       <CenterColumn>
-        <View style={[sharedStyles.fullHeight, sharedStyles.noPadding]}>
-          {isLoading ? (
-            <View style={sharedStyles.columnPadding}>
-              <LoadingIndicator />
-            </View>
-          ) : (
-            <View style={sharedStyles.fullHeight}>
-              <SectionList
-                sections={boardGroups}
-                keyExtractor={board => board.id}
-                contentContainerStyle={sharedStyles.columnPadding}
-                stickySectionHeadersEnabled={false}
-                renderSectionHeader={({section: group}) => {
-                  if (!group.title) {
-                    return;
-                  }
+        {isLoading ? (
+          <div style={sharedStyles.columnPadding}>
+            <LoadingIndicator />
+          </div>
+        ) : (
+          <div>
+            <SectionList
+              sections={boardGroups}
+              keyExtractor={board => board.id}
+              contentContainerStyle={sharedStyles.columnPadding}
+              stickySectionHeadersEnabled={false}
+              renderSectionHeader={({section: group}) => {
+                if (!group.title) {
+                  return;
+                }
 
-                  return (
-                    <SectionHeader testID="group-heading">
-                      {group.title}
-                    </SectionHeader>
-                  );
-                }}
-                renderItem={({item: board, index}) => (
-                  <BoardCard
-                    board={board}
-                    onPress={() => goToBoard(board)}
-                    style={index > 0 ? sharedStyles.mt : null}
-                  />
-                )}
-              />
-              <View style={sharedStyles.columnPadding}>
-                <Button
-                  mode="link"
-                  icon="plus"
-                  onPress={handleCreateBoard}
-                  disabled={isAdding}
-                >
-                  Add Board
-                </Button>
-              </View>
-            </View>
-          )}
-        </View>
+                return (
+                  <SectionHeader testID="group-heading">
+                    {group.title}
+                  </SectionHeader>
+                );
+              }}
+              renderItem={({item: board, index}) => (
+                <BoardCard
+                  board={board}
+                  onPress={() => goToBoard(board)}
+                  style={index > 0 ? sharedStyles.mt : null}
+                />
+              )}
+            />
+            <div
+              style={{
+                ...sharedStyles.columnPadding,
+                ...styles.addButtonContainer,
+              }}
+            >
+              <Button
+                mode="link"
+                icon="plus"
+                onPress={handleCreateBoard}
+                disabled={isAdding}
+              >
+                Add Board
+              </Button>
+            </div>
+          </div>
+        )}
       </CenterColumn>
       <ErrorSnackbar error={loadError}>
         An error occurred loading the boards.
@@ -157,29 +160,27 @@ function BoardCard({board, onPress, style}) {
   const primaryColor = useBoardPrimaryColor(board);
 
   return (
-    <View style={style}>
+    <div style={style}>
       <MuiCard>
         <MuiCardActionArea onClick={onPress}>
           <MuiCardContent>
-            <View style={styles.boardCard}>
+            <div style={styles.boardCard}>
               <Icon
                 name={board.attributes.icon ?? 'view-column'}
                 style={sharedStyles.mr}
                 sx={{color: primaryColor}}
               />
-              <View style={sharedStyles.fill}>
-                <Text variant="titleMedium">
-                  {board.attributes.name ?? '(unnamed board)'}
-                </Text>
-              </View>
-            </View>
+              <Text variant="titleMedium">
+                {board.attributes.name ?? '(unnamed board)'}
+              </Text>
+            </div>
           </MuiCardContent>
         </MuiCardActionArea>
       </MuiCard>
-      <View style={styles.favoriteContainer}>
+      <div style={styles.favoriteContainer}>
         <FavoriteButton board={board} />
-      </View>
-    </View>
+      </div>
+    </div>
   );
 }
 
@@ -234,13 +235,15 @@ function useBoardPrimaryColor(board) {
   return colorTheme.palette.primary.main;
 }
 
-const styles = StyleSheet.create({
+const styles = {
   boardCard: {
-    paddingRight: 50,
+    display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    paddingRight: 50,
   },
   favoriteContainer: {
+    display: 'flex',
     position: 'absolute',
     right: 10,
     top: 0,
@@ -250,4 +253,8 @@ const styles = StyleSheet.create({
   favoriteStar: {
     margin: 5,
   },
-});
+  addButtonContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+};
