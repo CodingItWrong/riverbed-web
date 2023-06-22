@@ -34,6 +34,7 @@ const sharedStyles = StyleSheet.create({
     padding: 0,
   },
   row: {
+    display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
   },

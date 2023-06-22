@@ -1,7 +1,7 @@
+import Stack from '@mui/material/Stack';
 import set from 'lodash.set';
 import startCase from 'lodash.startcase';
 import {useState} from 'react';
-import {StyleSheet, View} from 'react-native';
 import Button from '../../components/Button';
 import ConditionInputs from '../../components/ConditionsInputs';
 import ConfirmationDialog from '../../components/ConfirmationDialog';
@@ -120,7 +120,7 @@ export default function EditElementForm({
   }
 
   return (
-    <View>
+    <Stack>
       <TextField
         label={`${startCase(elementType)} Name`}
         value={elementAttributes.name ?? ''}
@@ -206,7 +206,7 @@ export default function EditElementForm({
           {elementAttributes['data-type'] === FIELD_DATA_TYPES.CHOICE.key && (
             <>
               {elementAttributes.options.choices?.map((choice, index) => (
-                <View key={index /* it's fine */} style={sharedStyles.row}>
+                <div key={index /* it's fine */} style={sharedStyles.row}>
                   <TextField
                     label="Choice"
                     value={choice.label ?? ''}
@@ -221,7 +221,7 @@ export default function EditElementForm({
                     onPress={() => removeChoiceAtIndex(index)}
                     accessibilityLabel="Remove choice"
                   />
-                </View>
+                </div>
               ))}
               <Button mode="link" icon="plus" onPress={addChoice}>
                 Add Choice
@@ -286,8 +286,8 @@ export default function EditElementForm({
       {elementType === ELEMENT_TYPES.BUTTON_MENU.key && (
         <FormGroup title="Button Menu Items">
           {elementAttributes.options?.items?.map((menuItem, index) => (
-            <View key={index /* it's fine */} testID={`menu-item-${index}`}>
-              <View style={sharedStyles.row}>
+            <div key={index /* it's fine */} data-testid={`menu-item-${index}`}>
+              <div style={sharedStyles.row}>
                 <TextField
                   label="Menu Item Name"
                   testID={`text-input-menu-item-${index}-name`}
@@ -302,7 +302,7 @@ export default function EditElementForm({
                   onPress={() => removeButtonMenuItemAtIndex(index)}
                   accessibilityLabel="Remove menu item"
                 />
-              </View>
+              </div>
               <ActionInputs
                 actions={menuItem.actions ?? []}
                 updateActionsAttribute={(path, value) =>
@@ -313,7 +313,7 @@ export default function EditElementForm({
                 }
                 fields={fields}
               />
-            </View>
+            </div>
           ))}
           <Button mode="link" icon="plus" onPress={addButtonMenuItem}>
             Add Menu Item
@@ -355,7 +355,7 @@ export default function EditElementForm({
       >
         Save {startCase(elementType)}
       </Button>
-    </View>
+    </Stack>
   );
 }
 
@@ -376,8 +376,8 @@ function ActionInputs({actions, updateActionsAttribute, fields}) {
   return (
     <FormGroup title="Click Actions">
       {actions.map((action, index) => (
-        <View key={`action-${index}`} style={styles.actionRow}>
-          <View style={[styles.actionElements, sharedStyles.mt]}>
+        <div key={`action-${index}`} style={sharedStyles.row}>
+          <div style={{...styles.actionElements, ...sharedStyles.mt}}>
             <DropdownField
               fieldLabel="Command"
               emptyLabel="(choose)"
@@ -423,13 +423,13 @@ function ActionInputs({actions, updateActionsAttribute, fields}) {
                 style={styles.actionButton}
               />
             )}
-          </View>
+          </div>
           <IconButton
             icon="close-circle"
             accessibilityLabel="Remove action"
             onPress={() => removeActionAtIndex(index)}
           />
-        </View>
+        </div>
       ))}
       <Button
         icon="plus"
@@ -459,11 +459,7 @@ function ShowConditionsInputs({attributes, updateAttribute, fields}) {
   );
 }
 
-const styles = StyleSheet.create({
-  actionRow: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-  },
+const styles = {
   actionElements: {
     flex: 1,
     flexDirection: 'row',
@@ -473,4 +469,4 @@ const styles = StyleSheet.create({
   actionButton: {
     marginRight: 8,
   },
-});
+};
