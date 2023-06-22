@@ -1,8 +1,8 @@
 import get from 'lodash.get';
 import sortBy from 'lodash.sortby';
-import {SectionList} from 'react-native';
 import IconButton from '../../../components/IconButton';
 import SectionHeader from '../../../components/SectionHeader';
+import SectionList from '../../../components/SectionList';
 import Text from '../../../components/Text';
 import fieldTypes from '../../../components/fieldTypes';
 import sharedStyles, {useColumnStyle} from '../../../components/sharedStyles';
@@ -89,9 +89,9 @@ export default function Column({column, board, onEdit, onSelectCard}) {
       </div>
       <SectionList
         sections={cardGroups}
-        keyExtractor={card => card.id}
+        sectionKeyExtractor={group => group.value}
+        itemKeyExtractor={card => card.id}
         contentContainerStyle={sharedStyles.columnPadding}
-        stickySectionHeadersEnabled={false}
         ListEmptyComponent={<Text>(no cards)</Text>}
         renderSectionHeader={({section: group}) => {
           if (!applyGrouping) {
