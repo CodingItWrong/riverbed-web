@@ -1,9 +1,9 @@
-import {StyleSheet, View} from 'react-native';
 import QUERIES from '../enums/queries';
 import Button from './Button';
 import DropdownField from './DropdownField';
 import Field from './Field';
 import IconButton from './IconButton';
+import Stack from './Stack';
 import sharedStyles from './sharedStyles';
 
 export default function ConditionInputs({
@@ -28,11 +28,11 @@ export default function ConditionInputs({
   // - test removing a filter
   // - refactor visuals incl field names
   return (
-    <View>
+    <Stack>
       {conditions.map((condition, index) => (
-        <View key={`condition-${index}`} style={styles.conditionRow}>
-          <View style={styles.concreteFieldWrapper}>
-            <View style={[styles.conditionElements, sharedStyles.mt]}>
+        <div key={`condition-${index}`} style={sharedStyles.row}>
+          <div style={styles.concreteFieldWrapper}>
+            <div style={{...styles.conditionElements, ...sharedStyles.mt}}>
               <DropdownField
                 fieldLabel="Field"
                 emptyLabel="(choose)"
@@ -59,7 +59,7 @@ export default function ConditionInputs({
                 labelExtractor={query => query.label}
                 style={styles.conditionButton}
               />
-            </View>
+            </div>
             {queryOptions.find(query => query.key === condition.query)
               ?.showConcreteValueField &&
               condition.field && (
@@ -72,13 +72,13 @@ export default function ConditionInputs({
                   style={sharedStyles.mt}
                 />
               )}
-          </View>
+          </div>
           <IconButton
             icon="close-circle"
             accessibilityLabel="Remove condition"
             onPress={() => removeConditionAtIndex(index)}
           />
-        </View>
+        </div>
       ))}
       <Button
         icon="plus"
@@ -88,15 +88,11 @@ export default function ConditionInputs({
       >
         Add Condition
       </Button>
-    </View>
+    </Stack>
   );
 }
 
-const styles = StyleSheet.create({
-  conditionRow: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-  },
+const styles = {
   conditionElements: {
     flex: 1,
     flexDirection: 'row',
@@ -111,4 +107,4 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'stretch',
   },
-});
+};

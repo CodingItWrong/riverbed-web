@@ -1,7 +1,12 @@
-import {StyleSheet, useWindowDimensions} from 'react-native';
+import {useWindowDimensions} from 'react-native';
 import {large, useBreakpoint} from '../breakpoints';
 
-const sharedStyles = StyleSheet.create({
+const sharedStyles = {
+  column: {
+    position: 'relative',
+    display: 'flex',
+    flexDirection: 'column',
+  },
   columnPadding: {
     padding: '8px',
   },
@@ -30,6 +35,7 @@ const sharedStyles = StyleSheet.create({
     padding: 0,
   },
   row: {
+    display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -44,7 +50,7 @@ const sharedStyles = StyleSheet.create({
   hidden: {
     opacity: 0,
   },
-});
+};
 
 export default sharedStyles;
 

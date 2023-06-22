@@ -1,40 +1,47 @@
-import {Pressable, StyleSheet, View} from 'react-native';
-
 export default function CenterModal({children, onDismiss}) {
   return (
-    <View style={styles.overlay}>
-      <View style={styles.columnWrapper}>
+    <div style={styles.overlay}>
+      <div style={styles.columnWrapper}>
         <PressableArea onPress={onDismiss} />
-        <View style={styles.column}>
+        <div style={styles.column}>
           <PressableArea onPress={onDismiss} style={styles.topPressableArea} />
           {children}
           <PressableArea onPress={onDismiss} />
-        </View>
+        </div>
         <PressableArea onPress={onDismiss} />
-      </View>
-    </View>
+      </div>
+    </div>
   );
 }
 
 function PressableArea({onPress, style}) {
-  return <Pressable onPress={onPress} style={[styles.pressableArea, style]} />;
+  return (
+    <button
+      type="button"
+      onClick={onPress}
+      style={{...styles.pressableArea, ...style}}
+    />
+  );
 }
 
 // LARGE will be given most of the space first, but after it meets its max width, SMALL will still grow
 const VERY_LARGE_GROW = 100;
 const VERY_SMALL_GROW = 1;
 
-const styles = StyleSheet.create({
+const styles = {
   overlay: {
+    display: 'flex',
     position: 'absolute',
     inset: 0,
   },
   columnWrapper: {
+    display: 'flex',
     flex: 1,
     flexDirection: 'row',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   column: {
+    display: 'flex',
     flex: 1,
     flexDirection: 'column',
     maxWidth: 640, // fits sub-12.9 ipad portrait and half high-res 13" screen
@@ -42,9 +49,12 @@ const styles = StyleSheet.create({
   },
   pressableArea: {
     flexGrow: VERY_SMALL_GROW,
+    backgroundColor: 'transparent',
+    border: 'none',
+    cursor: 'pointer',
   },
   topPressableArea: {
     height: 30,
     flexGrow: 0,
   },
-});
+};

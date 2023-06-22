@@ -1,10 +1,10 @@
-import Stack from '@mui/material/Stack';
 import {useNavigate} from 'react-router-dom';
 import Button from '../../components/Button';
 import DropdownMenu from '../../components/DropdownMenu';
 import ErrorSnackbar from '../../components/ErrorSnackbar';
 import Field from '../../components/Field';
 import IconButton from '../../components/IconButton';
+import Stack from '../../components/Stack';
 import Text from '../../components/Text';
 import sharedStyles from '../../components/sharedStyles';
 import {useBoardElements, useCreateElement} from '../../data/elements';

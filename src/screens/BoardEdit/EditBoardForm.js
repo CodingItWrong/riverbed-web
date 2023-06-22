@@ -1,4 +1,3 @@
-import Stack from '@mui/material/Stack';
 import set from 'lodash.set';
 import {useState} from 'react';
 import Button from '../../components/Button';
@@ -6,6 +5,7 @@ import ButtonGroup from '../../components/ButtonGroup';
 import ConfirmationDialog from '../../components/ConfirmationDialog';
 import DropdownField from '../../components/DropdownField';
 import ErrorMessage from '../../components/ErrorMessage';
+import Stack from '../../components/Stack';
 import TextField from '../../components/TextField';
 import sharedStyles from '../../components/sharedStyles';
 import {useDeleteBoard, useUpdateBoard} from '../../data/boards';

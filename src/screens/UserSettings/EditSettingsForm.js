@@ -1,10 +1,10 @@
 import set from 'lodash.set';
 import sortBy from 'lodash.sortby';
 import {useState} from 'react';
-import {View} from 'react-native';
 import Button from '../../components/Button';
 import DropdownField from '../../components/DropdownField';
 import ErrorMessage from '../../components/ErrorMessage';
+import Stack from '../../components/Stack';
 import sharedStyles from '../../components/sharedStyles';
 import {useBoards} from '../../data/boards';
 import {useUpdateUser} from '../../data/user';
@@ -37,7 +37,7 @@ export default function EditSettingsForm({user, onSave, onDelete, onCancel}) {
   }
 
   return (
-    <View>
+    <Stack>
       <DropdownField
         fieldLabel="iOS Share to Board"
         emptyLabel="(none)"
@@ -65,6 +65,6 @@ export default function EditSettingsForm({user, onSave, onDelete, onCancel}) {
       >
         Save Settings
       </Button>
-    </View>
+    </Stack>
   );
 }

@@ -1,6 +1,5 @@
 import set from 'lodash.set';
 import {useState} from 'react';
-import {View} from 'react-native';
 import Button from '../../components/Button';
 import ConditionInputs from '../../components/ConditionsInputs';
 import DropdownField from '../../components/DropdownField';
@@ -60,7 +59,7 @@ export default function EditColumnForm({column, board, onChange, onCancel}) {
   }
 
   return (
-    <View>
+    <div style={sharedStyles.column}>
       <TextField
         label="Column Name"
         value={attributes.name ?? ''}
@@ -123,7 +122,7 @@ export default function EditColumnForm({column, board, onChange, onCancel}) {
       >
         Save Column
       </Button>
-    </View>
+    </div>
   );
 }
 

@@ -1,5 +1,4 @@
 import {useEffect} from 'react';
-import {StyleSheet} from 'react-native';
 import {useNavigate} from 'react-router-dom';
 import oauthLogin from '../../auth/oauthLogin';
 import useLoginForm from '../../auth/useLoginForm';
@@ -8,6 +7,7 @@ import CenterColumn from '../../components/CenterColumn';
 import ErrorMessage from '../../components/ErrorMessage';
 import NavigationBar from '../../components/NavigationBar';
 import ScreenBackground from '../../components/ScreenBackground';
+import Stack from '../../components/Stack';
 import TextField from '../../components/TextField';
 import sharedStyles from '../../components/sharedStyles';
 import httpClient from '../../data/httpClient';
@@ -38,34 +38,40 @@ export default function SignIn({navigation}) {
       <NavigationBar options={{title: 'Riverbed'}} />
       <ScreenBackground style={styles.container}>
         <CenterColumn>
-          <TextField
-            label="Email"
-            testID="text-input-email"
-            value={username}
-            onChangeText={handleChange('username')}
-            keyboardType="email-address"
-            autoCapitalize="none"
-            autoCorrect="off"
-          />
-          <TextField
-            label="Password"
-            testID="text-input-password"
-            value={password}
-            onChangeText={handleChange('password')}
-            secureTextEntry
-          />
-          <ErrorMessage>{error}</ErrorMessage>
-          <Button mode="primary" onPress={handleLogIn} style={sharedStyles.mt}>
-            Sign in
-          </Button>
+          <Stack>
+            <TextField
+              label="Email"
+              testID="text-input-email"
+              value={username}
+              onChangeText={handleChange('username')}
+              keyboardType="email-address"
+              autoCapitalize="none"
+              autoCorrect="off"
+            />
+            <TextField
+              label="Password"
+              testID="text-input-password"
+              value={password}
+              onChangeText={handleChange('password')}
+              secureTextEntry
+            />
+            <ErrorMessage>{error}</ErrorMessage>
+            <Button
+              mode="primary"
+              onPress={handleLogIn}
+              style={sharedStyles.mt}
+            >
+              Sign in
+            </Button>
+          </Stack>
         </CenterColumn>
       </ScreenBackground>
     </>
   );
 }
 
-const styles = StyleSheet.create({
+const styles = {
   container: {
     padding: 16,
   },
-});
+};
