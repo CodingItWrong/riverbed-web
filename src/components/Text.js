@@ -4,6 +4,7 @@ import Typography from '@mui/material/Typography';
 export default function Text({
   children,
   variant,
+  component,
   testID,
   style,
   color = 'textPrimary',
@@ -11,6 +12,7 @@ export default function Text({
   return (
     <Typography
       variant={VARIANT_MAPPING[variant]}
+      component={component}
       data-testid={testID}
       color={color}
       style={style}
