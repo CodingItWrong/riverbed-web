@@ -1,4 +1,3 @@
-import {useWindowDimensions} from 'react-native';
 import {large, useBreakpoint} from '../breakpoints';
 
 const sharedStyles = {
@@ -56,10 +55,9 @@ export default sharedStyles;
 
 export function useColumnStyle() {
   const breakpoint = useBreakpoint();
-  const {width: viewportWidth} = useWindowDimensions();
 
   return {
-    width: breakpoint === large ? 400 : viewportWidth,
+    width: breakpoint === large ? 400 : '100vw',
     padding: 8,
   };
 }
