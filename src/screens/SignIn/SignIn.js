@@ -1,5 +1,4 @@
 import {useEffect} from 'react';
-import {StyleSheet} from 'react-native';
 import {useNavigate} from 'react-router-dom';
 import oauthLogin from '../../auth/oauthLogin';
 import useLoginForm from '../../auth/useLoginForm';
@@ -64,8 +63,8 @@ export default function SignIn({navigation}) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = {
   container: {
     padding: 16,
   },
-});
+};
