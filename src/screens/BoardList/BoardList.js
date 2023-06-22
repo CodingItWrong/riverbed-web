@@ -129,8 +129,8 @@ export default function BoardList() {
             />
             <div
               style={{
+                ...sharedStyles.column,
                 ...sharedStyles.columnPadding,
-                ...styles.addButtonContainer,
               }}
             >
               <Button
@@ -252,9 +252,5 @@ const styles = {
   },
   favoriteStar: {
     margin: 5,
-  },
-  addButtonContainer: {
-    display: 'flex',
-    flexDirection: 'column',
   },
 };

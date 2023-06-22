@@ -65,8 +65,7 @@ export default function Column({column, board, onEdit, onSelectCard}) {
       data-testid={`column-${column.id}`}
       style={{
         ...columnWidthStyle,
-        ...sharedStyles.fullHeight,
-        ...styles.columnWrapper,
+        ...sharedStyles.column,
       }}
     >
       <div
@@ -135,11 +134,6 @@ export default function Column({column, board, onEdit, onSelectCard}) {
 }
 
 const styles = {
-  columnWrapper: {
-    display: 'flex',
-    flexDirection: 'column',
-    padding: 0, // no idea why this is needed. does View have default padding?
-  },
   columnHeader: {
     display: 'flex',
     flexDirection: 'row',

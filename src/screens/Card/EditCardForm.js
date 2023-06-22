@@ -137,7 +137,7 @@ export default function EditCardForm({card, board, onClose}) {
     <Stack>
       <ErrorMessage>{getErrorMessage()}</ErrorMessage>
       {sortedElements.length === 0 && (
-        <div style={styles.startMessage}>
+        <div style={{...sharedStyles.column, ...styles.startMessage}}>
           <Text variant="titleSmall">
             Add a field to the card by clicking the wrench icon above!
           </Text>
@@ -150,7 +150,7 @@ export default function EditCardForm({card, board, onClose}) {
               <div
                 key={element.id}
                 data-testid={`element-${element.id}`}
-                style={styles.fieldWrapper}
+                style={sharedStyles.column}
               >
                 <Field
                   field={element}
@@ -197,12 +197,6 @@ export default function EditCardForm({card, board, onClose}) {
 
 const styles = {
   startMessage: {
-    display: 'flex',
-    flexDirection: 'column',
     alignItems: 'center',
-  },
-  fieldWrapper: {
-    display: 'flex',
-    flexDirection: 'column',
   },
 };

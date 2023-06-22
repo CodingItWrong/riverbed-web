@@ -59,8 +59,6 @@ export default function ColumnList({board}) {
 
   const breakpoint = useBreakpoint();
   const responsiveButtonContainerStyle = {
-    display: 'flex',
-    flexDirection: 'column',
     alignItems: breakpoint === large ? 'flex-start' : 'stretch',
   };
   const columnWidthStyle = useColumnStyle();
@@ -74,9 +72,16 @@ export default function ColumnList({board}) {
   const sortedColumns = sortByDisplayOrder(columns);
 
   return (
-    <div data-testid="outer" style={styles.containerHeight}>
+    <div
+      data-testid="outer"
+      style={{...sharedStyles.column, ...styles.containerHeight}}
+    >
       <div
-        style={{...styles.buttonContainer, ...responsiveButtonContainerStyle}}
+        style={{
+          ...styles.buttonContainer,
+          ...sharedStyles.column,
+          ...responsiveButtonContainerStyle,
+        }}
       >
         <Button
           mode="link"
@@ -129,8 +134,6 @@ export default function ColumnList({board}) {
 
 const styles = {
   containerHeight: {
-    display: 'flex',
-    flexDirection: 'column',
     position: 'absolute',
     inset: 0,
   },
