@@ -1,4 +1,3 @@
-import {StyleSheet, View} from 'react-native';
 import Card from '../../../components/Card';
 import Field from '../../../components/Field';
 import Text from '../../../components/Text';
@@ -16,7 +15,7 @@ export default function CardSummary({card, board, elements, onPress, style}) {
       return <Text>(no fields to show!)</Text>;
     }
     return fieldsToShow.map((field, index) => (
-      <View key={field.id} testID="field-value">
+      <div key={field.id} data-testid="field-value">
         <Field
           field={field}
           value={card.attributes['field-values'][field.id]}
@@ -24,7 +23,7 @@ export default function CardSummary({card, board, elements, onPress, style}) {
           summary
           index={index}
         />
-      </View>
+      </div>
     ));
   }
 
@@ -36,13 +35,13 @@ export default function CardSummary({card, board, elements, onPress, style}) {
       onPress={onPress}
       testID={`card-${card.id}`}
     >
-      <View style={styles.cardContent}>{contents()}</View>
+      <div style={styles.cardContent}>{contents()}</div>
     </Card>
   );
 }
 
-const styles = StyleSheet.create({
+const styles = {
   cardContent: {
     overflow: 'hidden',
   },
-});
+};
