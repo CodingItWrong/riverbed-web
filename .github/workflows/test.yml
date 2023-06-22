@@ -45,7 +45,7 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           start: yarn web
-          wait-on: "http://localhost:19006"
+          wait-on: "http://localhost:8080"
           browser: chrome
 
       - uses: actions/upload-artifact@v3
