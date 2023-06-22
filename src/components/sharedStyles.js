@@ -1,7 +1,7 @@
-import {StyleSheet, useWindowDimensions} from 'react-native';
+import {useWindowDimensions} from 'react-native';
 import {large, useBreakpoint} from '../breakpoints';
 
-const sharedStyles = StyleSheet.create({
+const sharedStyles = {
   column: {
     display: 'flex',
     flexDirection: 'column',
@@ -49,7 +49,7 @@ const sharedStyles = StyleSheet.create({
   hidden: {
     opacity: 0,
   },
-});
+};
 
 export default sharedStyles;
 
