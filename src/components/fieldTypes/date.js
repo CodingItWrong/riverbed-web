@@ -17,7 +17,7 @@ function DateEditorComponent({field, label, value, setValue, disabled, style}) {
   return (
     <DatePicker
       label={label}
-      value={dayjs(value)}
+      value={value ? dayjs(value) : null}
       onChange={dayJsObject => {
         const string = dateUtils.objectToServerString(dayJsObject);
         setValue(string);

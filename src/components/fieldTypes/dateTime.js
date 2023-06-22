@@ -24,7 +24,7 @@ function DateTimeEditorComponent({
   return (
     <DateTimePicker
       label={label}
-      value={dayjs(value)}
+      value={value ? dayjs(value) : null}
       onChange={dayJsObject => {
         const string = dateTimeUtils.objectToServerString(dayJsObject);
         setValue(string);
