@@ -12,7 +12,6 @@ import VALUES from '../../../enums/values';
 import sortByDisplayOrder from '../../../utils/sortByDisplayOrder';
 import Column from './Column';
 
-// TODO: columns do not independently scroll
 export default function ColumnList({board}) {
   const navigate = useNavigate();
 
