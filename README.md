@@ -1,8 +1,6 @@
-# Riverbed Expo
+# Riverbed Web
 
 A web app for creating CRUD apps with interactivity with no programming.
-
-Note that only the web platform is supported, not native. We are migrating away from Expo to bare webpack.
 
 ## Requirements
 
@@ -19,11 +17,11 @@ Dependencies are locked with `yarn.lock`; please use `yarn` rather than `npm` fo
 
 ## Running
 
-- Run `bin/serve`
+- Run `yarn serve`
 
 ## E2E Tests: Cypress
 
-- Start webpack by running `bin/serve`
+- Start webpack by running `yarn serve`
 - In another terminal, run `yarn cypress`
 - Choose E2E Testing, then any browser, then click "Start E2E Testing"
 

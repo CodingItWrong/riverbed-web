@@ -1,6 +1,6 @@
-import Constants from 'expo-constants';
 import {GoogleApiWrapper, Map as GoogleMap, Marker} from 'google-maps-react';
 import {useMemo} from 'react';
+import Constants from '../constants';
 import Text from './Text';
 
 function Map({style, location, disabled, onPressLocation, google}) {
@@ -52,7 +52,7 @@ function Map({style, location, disabled, onPressLocation, google}) {
 const defaultLocation = {lat: '33.7489954', lng: '-84.3879824'}; // Atlanta GA
 
 export default GoogleApiWrapper({
-  apiKey: Constants.expoConfig.extra.googleMapsApiKeyWeb,
+  apiKey: Constants.googleMapsApiKeyWeb,
 })(Map);
 
 const valueToCoords = value =>
