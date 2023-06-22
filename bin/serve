@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-export $(xargs <./.env.local)
-
-yarn start --web
