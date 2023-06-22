@@ -1,5 +1,5 @@
-import {StyleSheet, View} from 'react-native';
 import {useToken} from '../data/token';
+import sharedStyles from './sharedStyles';
 
 export default function TokenLoadBuffer({children}) {
   const {isTokenLoaded} = useToken();
@@ -7,12 +7,6 @@ export default function TokenLoadBuffer({children}) {
   if (!isTokenLoaded) {
     return null; // because children will error
   } else {
-    return <View style={styles.fill}>{children}</View>;
+    return <div style={sharedStyles.fill}>{children}</div>;
   }
 }
-
-const styles = StyleSheet.create({
-  fill: {
-    flex: 1,
-  },
-});

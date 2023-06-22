@@ -1,7 +1,6 @@
 import Constants from 'expo-constants';
 import {GoogleApiWrapper, Map as GoogleMap, Marker} from 'google-maps-react';
 import {useMemo} from 'react';
-import {View} from 'react-native';
 import Text from './Text';
 
 function Map({style, location, disabled, onPressLocation, google}) {
@@ -29,7 +28,7 @@ function Map({style, location, disabled, onPressLocation, google}) {
   }
 
   return (
-    <View style={style}>
+    <div style={{...styles.mapWrapper, ...style}}>
       <GoogleMap
         google={google}
         zoom={13}
@@ -46,7 +45,7 @@ function Map({style, location, disabled, onPressLocation, google}) {
       >
         <Marker position={markerLocation} />
       </GoogleMap>
-    </View>
+    </div>
   );
 }
 
@@ -63,3 +62,9 @@ const valueToCoords = value =>
         lng: Number(value.lng),
       }
     : null;
+
+const styles = {
+  mapWrapper: {
+    position: 'relative',
+  },
+};

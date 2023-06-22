@@ -1,21 +1,15 @@
-import {StyleSheet, View} from 'react-native';
-
 export default function CenterColumn({children}) {
+  // without outer div, inner div shrinks to minimum size
   return (
-    <View style={styles.columnWrapper}>
-      <View style={styles.column}>{children}</View>
-    </View>
+    <div>
+      <div style={styles.column}>{children}</div>
+    </div>
   );
 }
 
-const styles = StyleSheet.create({
-  columnWrapper: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
+const styles = {
   column: {
-    flex: 1,
+    margin: '0 auto',
     maxWidth: 640, // fits sub-12.9 ipad portrait and half high-res 13" screen
   },
-});
+};

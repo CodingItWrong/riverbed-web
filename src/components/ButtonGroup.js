@@ -1,6 +1,6 @@
+import Stack from '@mui/material/Stack';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import {View} from 'react-native';
 import {primaryColors} from '../theme/primaryColors';
 import Icon from './Icon';
 import Text from './Text';
@@ -17,7 +17,7 @@ export default function ButtonGroup({
   }
 
   return (
-    <View style={style}>
+    <Stack>
       <Text variant="bodySmall">{label}</Text>
       <ToggleButtonGroup
         exclusive
@@ -39,7 +39,7 @@ export default function ButtonGroup({
           );
         })}
       </ToggleButtonGroup>
-    </View>
+    </Stack>
   );
 }
 

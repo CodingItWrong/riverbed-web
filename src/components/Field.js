@@ -1,4 +1,3 @@
-import {View} from 'react-native';
 import {domainForUrl} from '../utils/urlUtils';
 import {AutoDetectLink} from './AutoDetectLink';
 import Text from './Text';
@@ -42,7 +41,7 @@ export default function Field({
     const variant = options['text-size'] ?? 'bodyLarge';
 
     return (
-      <View style={style} testID={`field-${field.id}`}>
+      <div style={style} data-testid={`field-${field.id}`}>
         <AutoDetectLink
           enableLinking={options['link-urls']}
           variant={variant}
@@ -50,7 +49,7 @@ export default function Field({
         >
           {textToShow}
         </AutoDetectLink>
-      </View>
+      </div>
     );
   }
 

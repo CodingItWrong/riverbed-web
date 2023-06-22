@@ -1,3 +1,4 @@
+import Stack from '@mui/material/Stack';
 import {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import FIELD_DATA_TYPES from '../../enums/fieldDataTypes';
@@ -5,6 +6,7 @@ import IconButton from '../IconButton';
 import LoadingIndicator from '../LoadingIndicator';
 import Map from '../Map';
 import NumberField from '../NumberField';
+import Text from '../Text';
 import sharedStyles from '../sharedStyles';
 
 const geolocationFieldDataType = {
@@ -57,55 +59,55 @@ function GeolocationEditorComponent({
   }
 
   return (
-    <>
-      <View style={[styles.geoRow, style]}>
-        <View style={styles.coordsFieldContainer}>
-          <NumberField
-            label={`${label} latitude`}
-            value={value?.lat ?? ''}
-            onChangeText={newValue => setValue({...value, lat: newValue})}
-            disabled={disabled}
-            testID={`number-input-${field.id}-latitude`}
-          />
-          <NumberField
-            label={`${label} longitude`}
-            value={value?.lng ?? ''}
-            onChangeText={newValue => setValue({...value, lng: newValue})}
-            disabled={disabled}
-            style={sharedStyles.mt}
-            testID={`number-input-${field.id}-longitude`}
-          />
-        </View>
+    <div>
+      <Stack direction="row" alignItems="center">
+        <Text style={styles.grow}>{label}</Text>
         <View>
-          <View>
-            <IconButton
-              accessibilityLabel="Use current location"
-              icon="compass"
-              disabled={disabled || isPermissionDenied}
-              onPress={fillCurrentLocation}
-              style={isLoadingCurrentPosition ? styles.hidden : null}
-            />
-            {isLoadingCurrentPosition && (
-              <View style={styles.currentLocationLoadingContainer}>
-                <LoadingIndicator />
-              </View>
-            )}
-          </View>
           <IconButton
-            accessibilityLabel="Get directions"
-            icon="directions"
-            disabled={disabled || value?.lat == null || value?.lng == null}
-            onPress={openMapsApp}
+            accessibilityLabel="Use current location"
+            icon="compass"
+            disabled={disabled || isPermissionDenied}
+            onPress={fillCurrentLocation}
+            style={isLoadingCurrentPosition ? styles.hidden : null}
           />
+          {isLoadingCurrentPosition && (
+            <View style={styles.currentLocationLoadingContainer}>
+              <LoadingIndicator />
+            </View>
+          )}
         </View>
-      </View>
+        <IconButton
+          accessibilityLabel="Get directions"
+          icon="directions"
+          disabled={disabled || value?.lat == null || value?.lng == null}
+          onPress={openMapsApp}
+        />
+      </Stack>
+      <Stack direction="row" spacing={1}>
+        <NumberField
+          label="latitude"
+          value={value?.lat ?? ''}
+          onChangeText={newValue => setValue({...value, lat: newValue})}
+          disabled={disabled}
+          testID={`number-input-${field.id}-latitude`}
+          style={styles.grow}
+        />
+        <NumberField
+          label="longitude"
+          value={value?.lng ?? ''}
+          onChangeText={newValue => setValue({...value, lng: newValue})}
+          disabled={disabled}
+          testID={`number-input-${field.id}-longitude`}
+          style={styles.grow}
+        />
+      </Stack>
       <Map
         location={value}
         onPressLocation={handlePressLocation}
-        style={[styles.detailMap, sharedStyles.mt]}
+        style={{...styles.detailMap, ...sharedStyles.mt}}
         disabled={disabled}
       />
-    </>
+    </div>
   );
 }
 
@@ -118,7 +120,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   coordsFieldContainer: {
-    flex: 1,
+    flexDirection: 'row',
   },
   hidden: {
     opacity: 0,
@@ -131,6 +133,9 @@ const styles = StyleSheet.create({
     bottom: 0,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  grow: {
+    flexGrow: 1,
   },
 });
 
