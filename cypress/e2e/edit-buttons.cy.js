@@ -550,7 +550,7 @@ describe('edit buttons', () => {
       cy.get(`[data-testid=card-${card.id}]`).click();
       cy.get(`[data-testid="date-input-${completedAtField.id}"]`)
         .invoke('val')
-        .should('eq', 'MM/DD/YYYY'); // empty
+        .should('eq', ''); // empty
     });
   });
 });
