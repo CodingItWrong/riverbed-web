@@ -1,5 +1,5 @@
 import {useCallback, useEffect, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {View} from 'react-native';
 import {Outlet, useNavigate, useParams} from 'react-router-dom';
 import BackButton from '../../components/BackButton';
 import ErrorSnackbar from '../../components/ErrorSnackbar';
@@ -71,11 +71,7 @@ export default function CardScreen() {
     if (isFirstLoaded) {
       return <LoadingIndicator />;
     } else if (isEditingElements) {
-      return (
-        <View style={[styles.container, sharedStyles.fill]}>
-          <ElementList board={board} card={card} />
-        </View>
-      );
+      return <ElementList board={board} card={card} />;
     } else if (card) {
       return <EditCardForm card={card} board={board} onClose={closeModal} />;
     } else {
@@ -88,11 +84,11 @@ export default function CardScreen() {
   return (
     <>
       <BaseModalScreen backTo={backPath}>
-        <View style={styles.headerRow}>
+        <div style={sharedStyles.headerRow}>
           <BackButton to={backPath} accessibilityLabel="Close card" />
           <View style={sharedStyles.spacer} />
           {renderButtonControls()}
-        </View>
+        </div>
         {renderContents()}
       </BaseModalScreen>
       <ErrorSnackbar error={deleteError}>
@@ -102,10 +98,3 @@ export default function CardScreen() {
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  headerRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-});

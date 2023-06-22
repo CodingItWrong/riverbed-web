@@ -33,6 +33,11 @@ const sharedStyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  headerRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   spacer: {
     flex: 1,
   },

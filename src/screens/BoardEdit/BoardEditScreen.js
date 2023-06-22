@@ -1,8 +1,8 @@
 import {useCallback} from 'react';
-import {StyleSheet, View} from 'react-native';
 import {useNavigate, useParams} from 'react-router-dom';
 import BackButton from '../../components/BackButton';
 import LoadingIndicator from '../../components/LoadingIndicator';
+import sharedStyles from '../../components/sharedStyles';
 import {useBoard} from '../../data/boards';
 import BaseModalScreen from '../BaseModalScreen';
 import EditBoardForm from './EditBoardForm';
@@ -36,16 +36,10 @@ export default function BoardEditScreen() {
 
   return (
     <BaseModalScreen backTo={backPath}>
-      <View style={styles.headerRow}>
+      <div style={sharedStyles.headerRow}>
         <BackButton to={backPath} accessibilityLabel="Close board edit form" />
-      </View>
+      </div>
       {renderContents()}
     </BaseModalScreen>
   );
 }
-
-const styles = StyleSheet.create({
-  headerRow: {
-    flexDirection: 'row',
-  },
-});
