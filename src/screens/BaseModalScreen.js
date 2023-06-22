@@ -1,4 +1,3 @@
-import {StyleSheet} from 'react-native';
 import {useNavigate} from 'react-router-dom';
 import Card from '../components/Card';
 import CenterModal from '../components/CenterModal';
@@ -32,7 +31,7 @@ function ModalScreenWrapper({children, closeModal}) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = {
   wrapperCard: {
     marginTop: 8,
     maxHeight: '90%',
@@ -41,4 +40,4 @@ const styles = StyleSheet.create({
   container: {
     padding: 16,
   },
-});
+};
