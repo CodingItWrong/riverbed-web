@@ -1,6 +1,5 @@
 import Stack from '@mui/material/Stack';
 import {useState} from 'react';
-import {StyleSheet, View} from 'react-native';
 import FIELD_DATA_TYPES from '../../enums/fieldDataTypes';
 import IconButton from '../IconButton';
 import LoadingIndicator from '../LoadingIndicator';
@@ -62,7 +61,7 @@ function GeolocationEditorComponent({
     <div>
       <Stack direction="row" alignItems="center">
         <Text style={styles.grow}>{label}</Text>
-        <View>
+        <div style={styles.currentLocationWrapper}>
           <IconButton
             accessibilityLabel="Use current location"
             icon="compass"
@@ -71,11 +70,11 @@ function GeolocationEditorComponent({
             style={isLoadingCurrentPosition ? styles.hidden : null}
           />
           {isLoadingCurrentPosition && (
-            <View style={styles.currentLocationLoadingContainer}>
-              <LoadingIndicator />
-            </View>
+            <div style={styles.currentLocationLoadingContainer}>
+              <LoadingIndicator small />
+            </div>
           )}
-        </View>
+        </div>
         <IconButton
           accessibilityLabel="Get directions"
           icon="directions"
@@ -111,7 +110,7 @@ function GeolocationEditorComponent({
   );
 }
 
-const styles = StyleSheet.create({
+const styles = {
   detailMap: {
     height: 250,
   },
@@ -125,18 +124,22 @@ const styles = StyleSheet.create({
   hidden: {
     opacity: 0,
   },
+  currentLocationWrapper: {
+    position: 'relative',
+  },
   currentLocationLoadingContainer: {
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
+    display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
   },
   grow: {
     flexGrow: 1,
   },
-});
+};
 
 export default geolocationFieldDataType;
