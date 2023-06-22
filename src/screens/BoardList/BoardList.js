@@ -5,7 +5,6 @@ import MuiMenu from '@mui/material/Menu';
 import MuiMenuItem from '@mui/material/MenuItem';
 import sortBy from 'lodash.sortby';
 import {useCallback, useState} from 'react';
-import {SectionList} from 'react-native';
 import {Outlet, useNavigate} from 'react-router-dom';
 import Button from '../../components/Button';
 import CenterColumn from '../../components/CenterColumn';
@@ -16,6 +15,7 @@ import LoadingIndicator from '../../components/LoadingIndicator';
 import NavigationBar from '../../components/NavigationBar';
 import ScreenBackground from '../../components/ScreenBackground';
 import SectionHeader from '../../components/SectionHeader';
+import SectionList from '../../components/SectionList';
 import Text from '../../components/Text';
 import sharedStyles from '../../components/sharedStyles';
 import {useBoards, useCreateBoard, useUpdateBoard} from '../../data/boards';
@@ -105,7 +105,8 @@ export default function BoardList() {
           <div>
             <SectionList
               sections={boardGroups}
-              keyExtractor={board => board.id}
+              sectionKeyExtractor={group => group.title}
+              itemKeyExtractor={board => board.id}
               contentContainerStyle={sharedStyles.columnPadding}
               stickySectionHeadersEnabled={false}
               renderSectionHeader={({section: group}) => {

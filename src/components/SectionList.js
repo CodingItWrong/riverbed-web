@@ -1,0 +1,27 @@
+import sharedStyles from './sharedStyles';
+
+// Replicates React Native's SectionList API in the browser with no virtualization
+export default function SectionList({
+  sections,
+  sectionKeyExtractor,
+  itemKeyExtractor,
+  contentContainerStyle,
+  renderSectionHeader,
+  renderItem,
+}) {
+  return (
+    <div style={contentContainerStyle}>
+      {sections.map((section, sectionIndex) => (
+        <div key={sectionKeyExtractor(section)}>
+          {/*Replace with a section key extractor*/}
+          {renderSectionHeader({section})}
+          {section.data.map((item, index) => (
+            <div key={itemKeyExtractor(item)} style={sharedStyles.column}>
+              {renderItem({item, index})}
+            </div>
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+}

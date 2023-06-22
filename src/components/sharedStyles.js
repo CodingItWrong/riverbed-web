@@ -3,6 +3,7 @@ import {large, useBreakpoint} from '../breakpoints';
 
 const sharedStyles = {
   column: {
+    position: 'relative',
     display: 'flex',
     flexDirection: 'column',
   },
