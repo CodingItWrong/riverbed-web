@@ -1,4 +1,4 @@
-import {useWindowDimensions} from 'react-native';
+import {useMediaQuery} from '@mui/material';
 
 export const breakpointMedium = 429;
 export const breakpointLarge = 600;
@@ -6,9 +6,8 @@ export const breakpointLarge = 600;
 export const large = 'large';
 export const medium = 'medium';
 
-const breakpointForWidth = width => (width >= breakpointLarge ? large : medium);
-
 export function useBreakpoint() {
-  const {width} = useWindowDimensions();
-  return breakpointForWidth(width);
+  const isLarge = useMediaQuery(`(min-width:${breakpointLarge}px)`);
+
+  return isLarge ? large : medium;
 }
