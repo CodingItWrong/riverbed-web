@@ -22,6 +22,9 @@ module.exports = {
       'process.env.NODE_ENV': JSON.stringify(
         process.env.NODE_ENV || 'development',
       ),
+      'process.env.RIVERBED_GOOGLE_MAPS_API_KEY': JSON.stringify(
+        process.env.RIVERBED_GOOGLE_MAPS_API_KEY,
+      ),
       __DEV__: process.env.NODE_ENV !== 'production' || true,
     }),
   ],

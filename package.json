@@ -57,6 +57,7 @@
     "babel-loader": "^9.1.2",
     "copy-webpack-plugin": "^11.0.0",
     "cypress": "^12.15.0",
+    "dotenv": "^16.3.1",
     "eslint": "^8.43",
     "eslint-plugin-cypress": "^2.13.3",
     "eslint-plugin-import": "^2.27.5",

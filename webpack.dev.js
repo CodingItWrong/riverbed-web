@@ -1,3 +1,5 @@
+require('dotenv').config({path: './.env.local'});
+
 const {merge} = require('webpack-merge');
 const common = require('./webpack.common.js');
 
