@@ -1,10 +1,10 @@
-import Stack from '@mui/material/Stack';
 import {useState} from 'react';
 import FIELD_DATA_TYPES from '../../enums/fieldDataTypes';
 import IconButton from '../IconButton';
 import LoadingIndicator from '../LoadingIndicator';
 import Map from '../Map';
 import NumberField from '../NumberField';
+import Stack from '../Stack';
 import Text from '../Text';
 import sharedStyles from '../sharedStyles';
 

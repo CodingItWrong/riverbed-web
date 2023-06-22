@@ -1,10 +1,10 @@
-import Stack from '@mui/material/Stack';
 import debounce from 'lodash.debounce';
 import {useCallback, useEffect, useRef, useState} from 'react';
 import ButtonElement from '../../components/ButtonElement';
 import ButtonMenuElement from '../../components/ButtonMenuElement';
 import ErrorMessage from '../../components/ErrorMessage';
 import Field from '../../components/Field';
+import Stack from '../../components/Stack';
 import Text from '../../components/Text';
 import sharedStyles from '../../components/sharedStyles';
 import {useUpdateCard} from '../../data/cards';

@@ -1,4 +1,3 @@
-import Stack from '@mui/material/Stack';
 import {useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
 import oauthLogin from '../../auth/oauthLogin';
@@ -8,6 +7,7 @@ import CenterColumn from '../../components/CenterColumn';
 import ErrorMessage from '../../components/ErrorMessage';
 import NavigationBar from '../../components/NavigationBar';
 import ScreenBackground from '../../components/ScreenBackground';
+import Stack from '../../components/Stack';
 import TextField from '../../components/TextField';
 import sharedStyles from '../../components/sharedStyles';
 import httpClient from '../../data/httpClient';

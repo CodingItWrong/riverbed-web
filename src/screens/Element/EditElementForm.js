@@ -1,4 +1,3 @@
-import Stack from '@mui/material/Stack';
 import set from 'lodash.set';
 import startCase from 'lodash.startcase';
 import {useState} from 'react';
@@ -12,6 +11,7 @@ import FormGroup from '../../components/FormGroup';
 import IconButton from '../../components/IconButton';
 import LabeledCheckbox from '../../components/LabeledCheckbox';
 import NumberField from '../../components/NumberField';
+import Stack from '../../components/Stack';
 import Text from '../../components/Text';
 import TextField from '../../components/TextField';
 import fieldTypes from '../../components/fieldTypes';
