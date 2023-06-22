@@ -1,5 +1,4 @@
 import {useCallback, useEffect, useState} from 'react';
-import {View} from 'react-native';
 import {Outlet, useNavigate, useParams} from 'react-router-dom';
 import BackButton from '../../components/BackButton';
 import ErrorSnackbar from '../../components/ErrorSnackbar';
@@ -51,7 +50,7 @@ export default function CardScreen() {
       );
     } else {
       return (
-        <>
+        <div>
           <IconButton
             icon="wrench"
             accessibilityLabel="Edit Elements"
@@ -62,7 +61,7 @@ export default function CardScreen() {
             accessibilityLabel="Delete Card"
             onClick={handleDeleteCard}
           />
-        </>
+        </div>
       );
     }
   }, [isEditingElements, handleDeleteCard]);
@@ -86,7 +85,6 @@ export default function CardScreen() {
       <BaseModalScreen backTo={backPath}>
         <div style={sharedStyles.headerRow}>
           <BackButton to={backPath} accessibilityLabel="Close card" />
-          <View style={sharedStyles.spacer} />
           {renderButtonControls()}
         </div>
         {renderContents()}
