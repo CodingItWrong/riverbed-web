@@ -6,7 +6,10 @@ const sharedStyles = StyleSheet.create({
     padding: '8px',
   },
   fill: {
-    flex: 1,
+    position: 'relative',
+    display: 'flex',
+    flexDirection: 'column',
+    flex: '1',
   },
   flexReverse: {
     flexDirection: 'row-reverse',

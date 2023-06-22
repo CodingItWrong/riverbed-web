@@ -1,6 +1,5 @@
-import {View} from 'react-native';
+import sharedStyles from './sharedStyles';
 
 export default function ScreenBackground({style, children}) {
-  const baseStyle = {flex: 1};
-  return <View style={[baseStyle, style]}>{children}</View>;
+  return <div style={{...sharedStyles.fill, ...style}}>{children}</div>;
 }
