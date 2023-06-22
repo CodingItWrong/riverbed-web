@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import {HUMAN_FORMAT as HUMAN_DATE_FORMAT} from './dateUtils';
 import now from './now';
 
-const HUMAN_TIME_FORMAT = 'h:mm:ss A';
+const HUMAN_TIME_FORMAT = 'h:mm A';
 const HUMAN_FORMAT = `${HUMAN_DATE_FORMAT} ${HUMAN_TIME_FORMAT}`;
 
 const dateTimeUtils = {

@@ -97,7 +97,7 @@ describe('field data types', () => {
     cy.step('CONFIRM SUMMARY READ-ONLY DISPLAY OF FIELDS', () => {
       cy.contains('Choice: Choice 2');
       cy.contains('Date: Sun Jan 1, 2023');
-      cy.contains('Date and Time: Thu Feb 2, 2023 1:23:45 PM');
+      cy.contains('Date and Time: Thu Feb 2, 2023 1:23 PM');
       cy.contains('Location: (33, -84)');
       cy.contains('Number: 42');
       cy.contains('Text: Hello, world!');
