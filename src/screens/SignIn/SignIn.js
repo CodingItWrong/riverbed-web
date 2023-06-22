@@ -1,3 +1,4 @@
+import Stack from '@mui/material/Stack';
 import {useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
 import oauthLogin from '../../auth/oauthLogin';
@@ -37,26 +38,32 @@ export default function SignIn({navigation}) {
       <NavigationBar options={{title: 'Riverbed'}} />
       <ScreenBackground style={styles.container}>
         <CenterColumn>
-          <TextField
-            label="Email"
-            testID="text-input-email"
-            value={username}
-            onChangeText={handleChange('username')}
-            keyboardType="email-address"
-            autoCapitalize="none"
-            autoCorrect="off"
-          />
-          <TextField
-            label="Password"
-            testID="text-input-password"
-            value={password}
-            onChangeText={handleChange('password')}
-            secureTextEntry
-          />
-          <ErrorMessage>{error}</ErrorMessage>
-          <Button mode="primary" onPress={handleLogIn} style={sharedStyles.mt}>
-            Sign in
-          </Button>
+          <Stack>
+            <TextField
+              label="Email"
+              testID="text-input-email"
+              value={username}
+              onChangeText={handleChange('username')}
+              keyboardType="email-address"
+              autoCapitalize="none"
+              autoCorrect="off"
+            />
+            <TextField
+              label="Password"
+              testID="text-input-password"
+              value={password}
+              onChangeText={handleChange('password')}
+              secureTextEntry
+            />
+            <ErrorMessage>{error}</ErrorMessage>
+            <Button
+              mode="primary"
+              onPress={handleLogIn}
+              style={sharedStyles.mt}
+            >
+              Sign in
+            </Button>
+          </Stack>
         </CenterColumn>
       </ScreenBackground>
     </>
