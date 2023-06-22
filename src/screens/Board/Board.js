@@ -56,8 +56,11 @@ export default function Board() {
 
   useNavigateEffect(
     useCallback(() => {
+      if (board) {
+        document.title = board?.attributes?.name ?? '(unnamed board)';
+      }
       refreshCards();
-    }, [refreshCards]),
+    }, [board, refreshCards]),
   );
 
   function renderContents() {

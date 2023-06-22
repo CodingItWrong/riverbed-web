@@ -22,12 +22,19 @@ import {useBoards, useCreateBoard, useUpdateBoard} from '../../data/boards';
 import {useToken} from '../../data/token';
 import useColorSchemeTheme from '../../theme/useColorSchemeTheme';
 import dateTimeUtils from '../../utils/dateTimeUtils';
+import useNavigateEffect from '../../utils/useNavigateEffect';
 
 export default function BoardList() {
   const {clearToken} = useToken();
   const navigate = useNavigate();
 
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
+
+  useNavigateEffect(
+    useCallback(() => {
+      document.title = 'My Boards';
+    }, []),
+  );
 
   function openMenu(event) {
     setMenuAnchorEl(event.currentTarget);
