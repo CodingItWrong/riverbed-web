@@ -38,9 +38,6 @@ jobs:
       - name: Jest Tests
         run: yarn test:ci
 
-      - name: Install Sharp CLI
-        run: yarn global add sharp-cli@^2.1.0
-
       - name: Cypress Tests
         uses: cypress-io/github-action@v5
         with:
