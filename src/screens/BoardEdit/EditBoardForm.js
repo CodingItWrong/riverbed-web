@@ -1,6 +1,6 @@
+import Stack from '@mui/material/Stack';
 import set from 'lodash.set';
 import {useState} from 'react';
-import {View} from 'react-native';
 import Button from '../../components/Button';
 import ButtonGroup from '../../components/ButtonGroup';
 import ConfirmationDialog from '../../components/ConfirmationDialog';
@@ -59,7 +59,7 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
   }
 
   return (
-    <View>
+    <>
       <ConfirmationDialog
         destructive
         open={confirmingDelete}
@@ -69,92 +69,94 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
         onConfirm={handleDeleteBoard}
         onDismiss={() => setConfirmingDelete(false)}
       />
-      <TextField
-        label="Board Name"
-        value={attributes.name ?? ''}
-        onChangeText={value => updateAttribute('name', value)}
-        testID="text-input-board-name"
-        style={sharedStyles.mt}
-      />
-      <ButtonGroup
-        label="Color Theme"
-        value={attributes['color-theme']}
-        onChangeValue={value => updateAttribute('color-theme', value)}
-        options={COLOR_THEME_OPTIONS}
-        style={sharedStyles.mt}
-      />
-      <ButtonGroup
-        label="Icon"
-        value={attributes.icon}
-        onChangeValue={value => updateAttribute('icon', value)}
-        options={ICON_OPTIONS}
-        style={sharedStyles.mt}
-      />
-      <TextField
-        label="Card Create Webhook"
-        value={attributes.options.webhooks?.['card-create'] ?? ''}
-        onChangeText={value =>
-          updateAttribute('options.webhooks["card-create"]', value || null)
-        }
-        style={sharedStyles.mt}
-      />
-      <TextField
-        label="Card Update Webhook"
-        value={attributes.options.webhooks?.['card-update'] ?? ''}
-        onChangeText={value =>
-          updateAttribute('options.webhooks["card-update"]', value || null)
-        }
-        style={sharedStyles.mt}
-      />
-      <DropdownField
-        fieldLabel="Share URL Field"
-        emptyLabel="(field)"
-        options={fields}
-        value={fields.find(
-          f => f.id === attributes.options.share?.['url-field'],
-        )}
-        onValueChange={field =>
-          updateAttribute('options.share["url-field"]', field?.id)
-        }
-        keyExtractor={field => field.id}
-        labelExtractor={field => field.attributes.name}
-        style={sharedStyles.mt}
-      />
-      <DropdownField
-        fieldLabel="Share Title Field"
-        emptyLabel="(field)"
-        options={fields}
-        value={fields.find(
-          f => f.id === attributes.options.share?.['title-field'],
-        )}
-        onValueChange={field =>
-          updateAttribute('options.share["title-field"]', field?.id)
-        }
-        keyExtractor={field => field.id}
-        labelExtractor={field => field.attributes.name}
-        style={sharedStyles.mt}
-      />
+      <Stack>
+        <TextField
+          label="Board Name"
+          value={attributes.name ?? ''}
+          onChangeText={value => updateAttribute('name', value)}
+          testID="text-input-board-name"
+          style={sharedStyles.mt}
+        />
+        <ButtonGroup
+          label="Color Theme"
+          value={attributes['color-theme']}
+          onChangeValue={value => updateAttribute('color-theme', value)}
+          options={COLOR_THEME_OPTIONS}
+          style={sharedStyles.mt}
+        />
+        <ButtonGroup
+          label="Icon"
+          value={attributes.icon}
+          onChangeValue={value => updateAttribute('icon', value)}
+          options={ICON_OPTIONS}
+          style={sharedStyles.mt}
+        />
+        <TextField
+          label="Card Create Webhook"
+          value={attributes.options.webhooks?.['card-create'] ?? ''}
+          onChangeText={value =>
+            updateAttribute('options.webhooks["card-create"]', value || null)
+          }
+          style={sharedStyles.mt}
+        />
+        <TextField
+          label="Card Update Webhook"
+          value={attributes.options.webhooks?.['card-update'] ?? ''}
+          onChangeText={value =>
+            updateAttribute('options.webhooks["card-update"]', value || null)
+          }
+          style={sharedStyles.mt}
+        />
+        <DropdownField
+          fieldLabel="Share URL Field"
+          emptyLabel="(field)"
+          options={fields}
+          value={fields.find(
+            f => f.id === attributes.options.share?.['url-field'],
+          )}
+          onValueChange={field =>
+            updateAttribute('options.share["url-field"]', field?.id)
+          }
+          keyExtractor={field => field.id}
+          labelExtractor={field => field.attributes.name}
+          style={sharedStyles.mt}
+        />
+        <DropdownField
+          fieldLabel="Share Title Field"
+          emptyLabel="(field)"
+          options={fields}
+          value={fields.find(
+            f => f.id === attributes.options.share?.['title-field'],
+          )}
+          onValueChange={field =>
+            updateAttribute('options.share["title-field"]', field?.id)
+          }
+          keyExtractor={field => field.id}
+          labelExtractor={field => field.attributes.name}
+          style={sharedStyles.mt}
+        />
 
-      <ErrorMessage>{getErrorMessage()}</ErrorMessage>
-      <Button onPress={onCancel} disabled={isLoading} style={sharedStyles.mt}>
-        Cancel
-      </Button>
-      <Button
-        onPress={() => setConfirmingDelete(true)}
-        disabled={isLoading}
-        style={sharedStyles.mt}
-      >
-        Delete Board
-      </Button>
-      <Button
-        mode="primary"
-        onPress={handleUpdateBoard}
-        disabled={isLoading}
-        style={sharedStyles.mt}
-      >
-        Save Board
-      </Button>
-    </View>
+        <ErrorMessage>{getErrorMessage()}</ErrorMessage>
+        <Button onPress={onCancel} disabled={isLoading} style={sharedStyles.mt}>
+          Cancel
+        </Button>
+        <Button
+          onPress={() => setConfirmingDelete(true)}
+          disabled={isLoading}
+          style={sharedStyles.mt}
+        >
+          Delete Board
+        </Button>
+        <Button
+          mode="primary"
+          onPress={handleUpdateBoard}
+          disabled={isLoading}
+          style={sharedStyles.mt}
+        >
+          Save Board
+        </Button>
+      </Stack>
+    </>
   );
 }
 

@@ -1,8 +1,8 @@
 import {useCallback} from 'react';
-import {StyleSheet, View} from 'react-native';
 import {useNavigate} from 'react-router-dom';
 import BackButton from '../../components/BackButton';
 import LoadingIndicator from '../../components/LoadingIndicator';
+import sharedStyles from '../../components/sharedStyles';
 import {useCurrentUser} from '../../data/user';
 import BaseModalScreen from '../BaseModalScreen';
 import EditSettingsForm from './EditSettingsForm';
@@ -35,16 +35,10 @@ export default function UserSettingsScreen() {
 
   return (
     <BaseModalScreen backTo={backPath}>
-      <View style={styles.headerRow}>
+      <div style={sharedStyles.headerRow}>
         <BackButton to={backPath} accessibilityLabel="Close user settings" />
-      </View>
+      </div>
       {renderContents()}
     </BaseModalScreen>
   );
 }
-
-const styles = StyleSheet.create({
-  headerRow: {
-    flexDirection: 'row',
-  },
-});

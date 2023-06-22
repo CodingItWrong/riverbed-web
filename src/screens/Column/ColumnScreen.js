@@ -1,8 +1,8 @@
 import {useCallback, useEffect, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
 import {useNavigate, useParams} from 'react-router-dom';
 import BackButton from '../../components/BackButton';
 import LoadingIndicator from '../../components/LoadingIndicator';
+import sharedStyles from '../../components/sharedStyles';
 import {useBoard} from '../../data/boards';
 import {useColumn} from '../../data/columns';
 import BaseModalScreen from '../BaseModalScreen';
@@ -48,16 +48,10 @@ export default function ColumnScreen() {
 
   return (
     <BaseModalScreen backTo={backPath}>
-      <View style={styles.headerRow}>
+      <div style={sharedStyles.headerRow}>
         <BackButton to={backPath} accessibilityLabel="Close column" />
-      </View>
+      </div>
       {renderContents()}
     </BaseModalScreen>
   );
 }
-
-const styles = StyleSheet.create({
-  headerRow: {
-    flexDirection: 'row',
-  },
-});

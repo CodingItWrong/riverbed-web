@@ -1,4 +1,4 @@
-import {StyleSheet, View} from 'react-native';
+import Stack from '@mui/material/Stack';
 import {useNavigate} from 'react-router-dom';
 import Button from '../../components/Button';
 import DropdownMenu from '../../components/DropdownMenu';
@@ -45,7 +45,7 @@ export default function ElementList({board, card}) {
   }
 
   return (
-    <View style={[sharedStyles.fullHeight]}>
+    <Stack>
       {sortedElements.map((element, elementIndex) => (
         <EditableElement
           key={element.id}
@@ -76,7 +76,7 @@ export default function ElementList({board, card}) {
       <ErrorSnackbar error={createElementError}>
         An error occurred adding an element.
       </ErrorSnackbar>
-    </View>
+    </Stack>
   );
 }
 
@@ -103,20 +103,26 @@ function EditableElement({element, onEdit, testID, style}) {
   // TODO: don't assume label and key are the same
 
   return (
-    <View style={[sharedStyles.row, style]} testID={testID}>
-      <View style={sharedStyles.fill}>{disabledElement()}</View>
+    <div
+      style={{...sharedStyles.row, ...styles.editRow, ...style}}
+      data-testid={testID}
+    >
+      <div style={sharedStyles.fill}>{disabledElement()}</div>
       <IconButton
         icon="pencil"
         accessibilityLabel={`Edit ${name} ${elementTypeObject.label}`}
         onPress={onEdit}
         style={styles.editIcon}
       />
-    </View>
+    </div>
   );
 }
 
-const styles = StyleSheet.create({
+const styles = {
+  editRow: {
+    display: 'flex',
+  },
   editIcon: {
     marginVertical: 0,
   },
-});
+};
