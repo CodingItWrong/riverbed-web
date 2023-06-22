@@ -1,6 +1,6 @@
+import Stack from '@mui/material/Stack';
 import debounce from 'lodash.debounce';
 import {useCallback, useEffect, useRef, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
 import ButtonElement from '../../components/ButtonElement';
 import ButtonMenuElement from '../../components/ButtonMenuElement';
 import ErrorMessage from '../../components/ErrorMessage';
@@ -134,20 +134,24 @@ export default function EditCardForm({card, board, onClose}) {
   }
 
   return (
-    <View>
+    <Stack>
       <ErrorMessage>{getErrorMessage()}</ErrorMessage>
       {sortedElements.length === 0 && (
-        <View style={styles.startMessage}>
-          <Text variant="titleMedium">
+        <div style={styles.startMessage}>
+          <Text variant="titleSmall">
             Add a field to the card by clicking the wrench icon above!
           </Text>
-        </View>
+        </div>
       )}
       {sortedElements.map((element, elementIndex) => {
         switch (element.attributes['element-type']) {
           case ELEMENT_TYPES.FIELD.key:
             return (
-              <View key={element.id} testID={`element-${element.id}`}>
+              <div
+                key={element.id}
+                data-testid={`element-${element.id}`}
+                style={styles.fieldWrapper}
+              >
                 <Field
                   field={element}
                   value={fieldValues[element.id]}
@@ -155,7 +159,7 @@ export default function EditCardForm({card, board, onClose}) {
                   readOnly={element.attributes['read-only']}
                   style={elementIndex > 0 ? sharedStyles.mt : null}
                 />
-              </View>
+              </div>
             );
           case ELEMENT_TYPES.BUTTON.key:
             return (
@@ -187,12 +191,18 @@ export default function EditCardForm({card, board, onClose}) {
             );
         }
       })}
-    </View>
+    </Stack>
   );
 }
 
-const styles = StyleSheet.create({
+const styles = {
   startMessage: {
+    display: 'flex',
+    flexDirection: 'column',
     alignItems: 'center',
   },
-});
+  fieldWrapper: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+};
