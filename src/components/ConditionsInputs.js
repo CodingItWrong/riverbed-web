@@ -95,7 +95,7 @@ export default function ConditionInputs({
 const styles = StyleSheet.create({
   conditionRow: {
     flexDirection: 'row',
-    alignItems: 'flex-start',
+    alignItems: 'center',
   },
   conditionElements: {
     flex: 1,
