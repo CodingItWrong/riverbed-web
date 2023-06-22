@@ -1,6 +1,6 @@
 import get from 'lodash.get';
 import sortBy from 'lodash.sortby';
-import {SectionList, StyleSheet, View} from 'react-native';
+import {SectionList} from 'react-native';
 import IconButton from '../../../components/IconButton';
 import SectionHeader from '../../../components/SectionHeader';
 import Text from '../../../components/Text';
@@ -60,12 +60,22 @@ export default function Column({column, board, onEdit, onSelectCard}) {
   const cardGroups = groupCards({columnCards, cardGrouping, elements});
 
   return (
-    <View
+    <div
       key={column.id}
-      testID={`column-${column.id}`}
-      style={[columnWidthStyle, sharedStyles.fullHeight, styles.columnWrapper]}
+      data-testid={`column-${column.id}`}
+      style={{
+        ...columnWidthStyle,
+        ...sharedStyles.fullHeight,
+        ...styles.columnWrapper,
+      }}
     >
-      <View style={[sharedStyles.row, sharedStyles.columnPadding]}>
+      <div
+        style={{
+          ...sharedStyles.row,
+          ...sharedStyles.columnPadding,
+          ...styles.columnHeader,
+        }}
+      >
         <Text variant="titleMedium" testID="column-name">
           {name ?? '(unnamed column)'}
           {summary?.function && (
@@ -77,7 +87,7 @@ export default function Column({column, board, onEdit, onSelectCard}) {
           onPress={onEdit}
           accessibilityLabel="Edit Column"
         />
-      </View>
+      </div>
       <SectionList
         sections={cardGroups}
         keyExtractor={card => card.id}
@@ -105,8 +115,8 @@ export default function Column({column, board, onEdit, onSelectCard}) {
           );
         }}
         renderItem={({item: card, section: group}) => (
-          <View
-            testID={
+          <div
+            data-testid={
               cardGrouping && `group-${cardGrouping.field}-${group.value}-card`
             }
           >
@@ -117,15 +127,21 @@ export default function Column({column, board, onEdit, onSelectCard}) {
               onPress={() => onSelectCard(card)}
               style={sharedStyles.mb}
             />
-          </View>
+          </div>
         )}
       />
-    </View>
+    </div>
   );
 }
 
-const styles = StyleSheet.create({
+const styles = {
   columnWrapper: {
+    display: 'flex',
+    flexDirection: 'column',
     padding: 0, // no idea why this is needed. does View have default padding?
   },
-});
+  columnHeader: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
+};

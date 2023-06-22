@@ -1,4 +1,4 @@
-import {ScrollView, StyleSheet, View} from 'react-native';
+import {ScrollView} from 'react-native';
 import {useNavigate} from 'react-router-dom';
 import {large, useBreakpoint} from '../../../breakpoints';
 import Button from '../../../components/Button';
@@ -12,7 +12,6 @@ import VALUES from '../../../enums/values';
 import sortByDisplayOrder from '../../../utils/sortByDisplayOrder';
 import Column from './Column';
 
-// TODO: columns do not independently scroll
 export default function ColumnList({board}) {
   const navigate = useNavigate();
 
@@ -60,6 +59,8 @@ export default function ColumnList({board}) {
 
   const breakpoint = useBreakpoint();
   const responsiveButtonContainerStyle = {
+    display: 'flex',
+    flexDirection: 'column',
     alignItems: breakpoint === large ? 'flex-start' : 'stretch',
   };
   const columnWidthStyle = useColumnStyle();
@@ -73,8 +74,10 @@ export default function ColumnList({board}) {
   const sortedColumns = sortByDisplayOrder(columns);
 
   return (
-    <View style={styles.containerHeight}>
-      <View style={[styles.buttonContainer, responsiveButtonContainerStyle]}>
+    <div data-testid="outer" style={styles.containerHeight}>
+      <div
+        style={{...styles.buttonContainer, ...responsiveButtonContainerStyle}}
+      >
         <Button
           mode="link"
           icon="plus"
@@ -83,7 +86,7 @@ export default function ColumnList({board}) {
         >
           Add Card
         </Button>
-      </View>
+      </div>
       <ScrollView
         horizontal
         pagingEnabled={pagingEnabled}
@@ -98,8 +101,8 @@ export default function ColumnList({board}) {
             onSelectCard={card => showDetail(card)}
           />
         ))}
-        <View style={[columnWidthStyle, sharedStyles.columnPadding]}>
-          <View style={responsiveButtonContainerStyle}>
+        <div style={{...columnWidthStyle, ...sharedStyles.columnPadding}}>
+          <div style={responsiveButtonContainerStyle}>
             <Button
               mode="link"
               icon="plus"
@@ -108,8 +111,8 @@ export default function ColumnList({board}) {
             >
               Add Column
             </Button>
-          </View>
-        </View>
+          </div>
+        </div>
       </ScrollView>
       <ErrorSnackbar error={columnsError}>
         An error occurred loading columns.
@@ -120,19 +123,21 @@ export default function ColumnList({board}) {
       <ErrorSnackbar error={createCardError}>
         An error occurred adding a card.
       </ErrorSnackbar>
-    </View>
+    </div>
   );
 }
 
-const styles = StyleSheet.create({
+const styles = {
   containerHeight: {
+    display: 'flex',
+    flexDirection: 'column',
     position: 'absolute',
     inset: 0,
   },
   buttonContainer: {
     margin: 8,
   },
-});
+};
 
 function getInitialFieldValues(elements) {
   const fieldsWithInitialValues = elements.filter(
