@@ -12,6 +12,7 @@ export default function DropdownField({
   onValueChange,
   options,
   disabled,
+  style,
   keyExtractor = option => option.key,
   labelExtractor = option => option.label,
   testID,
@@ -27,7 +28,7 @@ export default function DropdownField({
   }
 
   return (
-    <div style={sharedStyles.column}>
+    <div style={{...sharedStyles.column, ...style}}>
       <FormControl sx={{mt: '5px'}}>
         <InputLabel id={labelId}>{fieldLabel}</InputLabel>
         <Select

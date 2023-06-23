@@ -33,6 +33,7 @@ const styles = {
     display: 'flex',
     position: 'absolute',
     inset: 0,
+    zIndex: 0,
   },
   columnWrapper: {
     display: 'flex',
