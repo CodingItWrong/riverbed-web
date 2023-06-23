@@ -30,46 +30,43 @@ export default function ConditionInputs({
     <>
       {conditions.map((condition, index) => (
         <div key={`condition-${index}`} style={sharedStyles.row}>
-          <div style={styles.concreteFieldWrapper}>
-            <div style={styles.conditionElements}>
-              <DropdownField
-                fieldLabel="Field"
-                emptyLabel="(choose)"
-                options={fields}
-                value={fields.find(f => f.id === condition.field)}
-                onValueChange={field =>
-                  updateConditionsPath(`[${index}].field`, field?.id)
-                }
-                keyExtractor={field => field.id}
-                labelExtractor={field => field.attributes.name}
-                style={styles.conditionButton}
-              />
-              <DropdownField
-                fieldLabel="Condition"
-                emptyLabel="(choose)"
-                options={queryOptions}
-                value={queryOptions.find(
-                  query => query.key === condition.query,
-                )}
-                onValueChange={query =>
-                  updateConditionsPath(`[${index}].query`, query?.key)
-                }
-                keyExtractor={query => query.key}
-                labelExtractor={query => query.label}
-                style={styles.conditionButton}
-              />
-            </div>
+          <div style={styles.conditionElements}>
+            <DropdownField
+              fieldLabel="Field"
+              emptyLabel="(choose)"
+              options={fields}
+              value={fields.find(f => f.id === condition.field)}
+              onValueChange={field =>
+                updateConditionsPath(`[${index}].field`, field?.id)
+              }
+              keyExtractor={field => field.id}
+              labelExtractor={field => field.attributes.name}
+              style={styles.conditionClause}
+            />
+            <DropdownField
+              fieldLabel="Condition"
+              emptyLabel="(choose)"
+              options={queryOptions}
+              value={queryOptions.find(query => query.key === condition.query)}
+              onValueChange={query =>
+                updateConditionsPath(`[${index}].query`, query?.key)
+              }
+              keyExtractor={query => query.key}
+              labelExtractor={query => query.label}
+              style={styles.conditionClause}
+            />
             {queryOptions.find(query => query.key === condition.query)
               ?.showConcreteValueField &&
               condition.field && (
-                <Field
-                  field={fields.find(f => f.id === condition.field)}
-                  value={condition.options?.value}
-                  setValue={v =>
-                    updateConditionsPath(`[${index}].options.value`, v)
-                  }
-                  style={sharedStyles.mt}
-                />
+                <div style={styles.conditionClause}>
+                  <Field
+                    field={fields.find(f => f.id === condition.field)}
+                    value={condition.options?.value}
+                    setValue={v =>
+                      updateConditionsPath(`[${index}].options.value`, v)
+                    }
+                  />
+                </div>
               )}
           </div>
           <IconButton
@@ -93,17 +90,14 @@ export default function ConditionInputs({
 
 const styles = {
   conditionElements: {
+    display: 'flex',
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     flexWrap: 'wrap',
   },
-  conditionButton: {
+  conditionClause: {
+    marginTop: 8,
     marginRight: 8,
-  },
-  concreteFieldWrapper: {
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'stretch',
   },
 };

@@ -79,7 +79,7 @@ export default function EditColumnForm({column, board, onChange, onCancel}) {
         }
         testID="number-input-order"
       />
-      <CardInclusionCondition
+      <CardInclusionConditions
         board={board}
         fields={fields}
         attributes={attributes}
@@ -117,7 +117,7 @@ export default function EditColumnForm({column, board, onChange, onCancel}) {
   );
 }
 
-function CardInclusionCondition({fields, attributes, updateAttribute}) {
+function CardInclusionConditions({fields, attributes, updateAttribute}) {
   function updateConditionsPath(path, value) {
     updateAttribute(`card-inclusion-conditions${path}`, value);
   }
