@@ -368,7 +368,7 @@ function ActionInputs({actions, updateActionsAttribute, fields}) {
               onValueChange={command =>
                 updateActionsAttribute(`[${index}].command`, command?.key)
               }
-              style={styles.actionButton}
+              style={styles.actionClause}
             />
             <DropdownField
               fieldLabel="Action Field"
@@ -380,7 +380,7 @@ function ActionInputs({actions, updateActionsAttribute, fields}) {
               }
               keyExtractor={field => field.id}
               labelExtractor={field => field.attributes.name}
-              style={styles.actionButton}
+              style={styles.actionClause}
             />
             {action.command !== COMMANDS.ADD_DAYS.key && (
               <DropdownField
@@ -391,7 +391,7 @@ function ActionInputs({actions, updateActionsAttribute, fields}) {
                 onValueChange={option =>
                   updateActionsAttribute(`[${index}].value`, option?.key)
                 }
-                style={styles.actionButton}
+                style={styles.actionClause}
               />
             )}
             {action.command === COMMANDS.ADD_DAYS.key && (
@@ -402,7 +402,7 @@ function ActionInputs({actions, updateActionsAttribute, fields}) {
                 onChangeText={value =>
                   updateActionsAttribute(`[${index}].value`, value)
                 }
-                style={styles.actionButton}
+                style={styles.actionClause}
               />
             )}
           </div>
@@ -438,12 +438,14 @@ function ShowConditionsInputs({attributes, updateAttribute, fields}) {
 
 const styles = {
   actionElements: {
+    display: 'flex',
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     flexWrap: 'wrap',
   },
-  actionButton: {
+  actionClause: {
+    marginTop: 8,
     marginRight: 8,
   },
   checkboxFix: {
