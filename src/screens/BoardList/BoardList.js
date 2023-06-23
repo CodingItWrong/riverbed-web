@@ -167,9 +167,7 @@ function BoardCard({board, onPress, style}) {
             style={sharedStyles.mr}
             sx={{color: primaryColor}}
           />
-          <Text variant="titleSmall">
-            {board.attributes.name ?? '(unnamed board)'}
-          </Text>
+          <Text size={3}>{board.attributes.name ?? '(unnamed board)'}</Text>
         </div>
       </Card>
       <div style={styles.favoriteContainer}>

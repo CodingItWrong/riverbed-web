@@ -76,7 +76,7 @@ export default function Column({column, board, onEdit, onSelectCard}) {
           ...styles.columnHeader,
         }}
       >
-        <Text variant="titleMedium" testID="column-name">
+        <Text size={2} testID="column-name">
           {name ?? '(unnamed column)'}
           {summary?.function && (
             <> ({calculateSummary({cards: columnCards, summary})})</>
@@ -93,7 +93,7 @@ export default function Column({column, board, onEdit, onSelectCard}) {
         sectionKeyExtractor={group => group.value}
         itemKeyExtractor={card => card.id}
         contentContainerStyle={sharedStyles.columnPadding}
-        ListEmptyComponent={<Text>(no cards)</Text>}
+        ListEmptyComponent={<Text size={3}>(no cards)</Text>}
         renderSectionHeader={({section: group}) => {
           if (!applyGrouping) {
             return;

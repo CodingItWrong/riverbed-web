@@ -138,7 +138,7 @@ export default function EditCardForm({card, board, onClose}) {
       <ErrorMessage>{getErrorMessage()}</ErrorMessage>
       {sortedElements.length === 0 && (
         <div style={{...sharedStyles.column, ...styles.startMessage}}>
-          <Text variant="titleSmall">
+          <Text size={3}>
             Add a field to the card by clicking the wrench icon above!
           </Text>
         </div>
@@ -185,7 +185,7 @@ export default function EditCardForm({card, board, onClose}) {
             );
           default:
             return (
-              <Text>
+              <Text size={4}>
                 unknown element type: {element.attributes['element-type']}
               </Text>
             );

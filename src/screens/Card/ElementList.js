@@ -89,7 +89,7 @@ function EditableElement({element, onEdit, testID, style}) {
         return <Field field={element} disabled />;
       }
       default:
-        return <Text>Unknown element type: {elementType}</Text>;
+        return <Text size={4}>Unknown element type: {elementType}</Text>;
     }
   }
 

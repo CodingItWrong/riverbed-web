@@ -10,9 +10,9 @@ export default function CardSummary({card, board, elements, onPress, style}) {
 
   function contents() {
     if (elements.length === 0) {
-      return <Text variant="titleMedium">Click this card to get started!</Text>;
+      return <Text size={3}>Click this card to get started!</Text>;
     } else if (fieldsToShow.length === 0) {
-      return <Text>(no fields to show!)</Text>;
+      return <Text size={4}>(no fields to show!)</Text>;
     }
     return fieldsToShow.map((field, index) => (
       <div key={field.id} data-testid="field-value">

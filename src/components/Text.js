@@ -1,17 +1,20 @@
 import Typography from '@mui/material/Typography';
+import TEXT_SIZES from '../enums/textSizes';
 
 // TODO: abstract away variant from Paper dependnecy
 export default function Text({
   children,
-  variant,
+  size,
   component,
   testID,
   style,
   color = 'textPrimary',
 }) {
+  const variant =
+    TEXT_SIZES.find(s => s.key === size)?.muiVariant ?? DEFAULT_MUI_VARIANT;
   return (
     <Typography
-      variant={VARIANT_MAPPING[variant]}
+      variant={variant}
       component={component}
       data-testid={testID}
       color={color}
@@ -22,11 +25,4 @@ export default function Text({
   );
 }
 
-const VARIANT_MAPPING = {
-  titleLarge: 'h4',
-  titleMedium: 'h5',
-  titleSmall: 'h6',
-  bodyLarge: 'body1',
-  bodyMedium: 'body2',
-  bodySmall: 'caption',
-};
+const DEFAULT_MUI_VARIANT = 'body1';

@@ -38,13 +38,13 @@ export default function Field({
       textToShow = `${name}: ${textToShow ?? '(empty)'}`;
     }
 
-    const variant = options['text-size'] ?? 'bodyLarge';
+    const size = options['text-size'];
 
     return (
       <div style={style} data-testid={`field-${field.id}`}>
         <AutoDetectLink
           enableLinking={options['link-urls']}
-          variant={variant}
+          size={size}
           link={originalText}
         >
           {textToShow}
