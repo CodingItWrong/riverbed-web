@@ -24,7 +24,7 @@ import SquareIcon from '@mui/icons-material/Square';
 import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import TvIcon from '@mui/icons-material/Tv';
-import ViewColumnIcon from '@mui/icons-material/ViewColumn';
+import ViewColumnOutlinedIcon from '@mui/icons-material/ViewColumnOutlined';
 import ViewTimelineOutlinedIcon from '@mui/icons-material/ViewTimelineOutlined';
 
 export default function getMuiIcon(icon) {
@@ -34,31 +34,31 @@ export default function getMuiIcon(icon) {
 // find more at https://mui.com/material-ui/material-icons/?theme=Outlined
 const MUI_NAME_TO_COMPONENT_MAP = {
   'arrow-back': ArrowBackIcon,
-  baseball: SportsBaseballOutlinedIcon,
-  'bed-king-outline': BedOutlinedIcon,
-  'book-open-outline': MenuBookIcon,
-  'chart-timeline': ViewTimelineOutlinedIcon,
+  'sports-baseball': SportsBaseballOutlinedIcon,
+  bed: BedOutlinedIcon,
+  'menu-book': MenuBookIcon,
+  'view-timeline': ViewTimelineOutlinedIcon,
   'check-bold': DoneIcon,
-  'checkbox-outline': CheckBoxOutlinedIcon,
+  'check-box': CheckBoxOutlinedIcon,
   'close-circle': CancelIcon,
   compass: ExploreIcon,
   delete: DeleteIcon,
   directions: DirectionsIcon,
   'dots-square': CropFreeIcon,
   'dots-vertical': MoreVertIcon,
-  food: FastfoodOutlinedIcon,
-  'gamepad-variant': SportsEsportsOutlinedIcon,
+  fastfood: FastfoodOutlinedIcon,
+  'sports-esports': SportsEsportsOutlinedIcon,
   link: LinkIcon,
-  'map-marker': PlaceOutlinedIcon,
-  'medical-bag': MedicalServicesOutlinedIcon,
+  place: PlaceOutlinedIcon,
+  'medical-services': MedicalServicesOutlinedIcon,
   pencil: EditIcon,
   plus: AddIcon,
-  'scale-bathroom': MonitorWeightOutlinedIcon,
+  'monitor-weight': MonitorWeightOutlinedIcon,
   square: SquareIcon,
   star: StarIcon,
   'star-outline': StarBorderIcon,
-  television: TvIcon,
-  tree: ParkOutlinedIcon,
-  'view-column': ViewColumnIcon,
+  tv: TvIcon,
+  park: ParkOutlinedIcon,
+  'view-column': ViewColumnOutlinedIcon,
   wrench: BuildIcon,
 };

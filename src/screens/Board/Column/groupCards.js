@@ -1,4 +1,4 @@
-import sortBy from 'lodash.sortby';
+import sortBy from 'lodash/sortBy';
 import fieldTypes from '../../../components/fieldTypes';
 import SORT_DIRECTIONS from '../../../enums/sortDirections';
 

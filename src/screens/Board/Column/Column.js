@@ -1,5 +1,5 @@
-import get from 'lodash.get';
-import sortBy from 'lodash.sortby';
+import get from 'lodash/get';
+import sortBy from 'lodash/sortBy';
 import IconButton from '../../../components/IconButton';
 import SectionHeader from '../../../components/SectionHeader';
 import SectionList from '../../../components/SectionList';
