@@ -138,31 +138,35 @@ function ColumnSortOrder({board, fields, attributes, updateAttribute}) {
 
   return (
     <FormGroup title="Sort Order">
-      <DropdownField
-        fieldLabel="Sort Field"
-        emptyLabel="(choose)"
-        options={fields}
-        value={fields.find(f => f.id === attributes['card-sort-order']?.field)}
-        onValueChange={field =>
-          updateAttribute('card-sort-order.field', field?.id)
-        }
-        keyExtractor={field => field.id}
-        labelExtractor={field => field.attributes.name}
-      />
-      <DropdownField
-        fieldLabel="Sort Direction"
-        emptyLabel="(choose)"
-        options={sortDirectionOptions}
-        value={sortDirectionOptions.find(
-          direction =>
-            direction.key === attributes['card-sort-order']?.direction,
-        )}
-        onValueChange={direction =>
-          updateAttribute('card-sort-order.direction', direction?.key)
-        }
-        keyExtractor={direction => direction.key}
-        labelExtractor={direction => direction.label}
-      />
+      <Stack direction="row" spacing={1}>
+        <DropdownField
+          fieldLabel="Field"
+          emptyLabel="(choose)"
+          options={fields}
+          value={fields.find(
+            f => f.id === attributes['card-sort-order']?.field,
+          )}
+          onValueChange={field =>
+            updateAttribute('card-sort-order.field', field?.id)
+          }
+          keyExtractor={field => field.id}
+          labelExtractor={field => field.attributes.name}
+        />
+        <DropdownField
+          fieldLabel="Direction"
+          emptyLabel="(choose)"
+          options={sortDirectionOptions}
+          value={sortDirectionOptions.find(
+            direction =>
+              direction.key === attributes['card-sort-order']?.direction,
+          )}
+          onValueChange={direction =>
+            updateAttribute('card-sort-order.direction', direction?.key)
+          }
+          keyExtractor={direction => direction.key}
+          labelExtractor={direction => direction.label}
+        />
+      </Stack>
     </FormGroup>
   );
 }
@@ -172,30 +176,33 @@ function ColumnGrouping({board, fields, attributes, updateAttribute}) {
 
   return (
     <FormGroup title="Grouping">
-      <DropdownField
-        fieldLabel="Group Field"
-        emptyLabel="(choose)"
-        options={fields}
-        value={fields.find(f => f.id === attributes['card-grouping']?.field)}
-        onValueChange={field =>
-          updateAttribute('card-grouping.field', field?.id)
-        }
-        keyExtractor={field => field.id}
-        labelExtractor={field => field.attributes.name}
-      />
-      <DropdownField
-        fieldLabel="Group Direction"
-        emptyLabel="(choose)"
-        options={sortDirectionOptions}
-        value={sortDirectionOptions.find(
-          direction => direction.key === attributes['card-grouping']?.direction,
-        )}
-        onValueChange={direction =>
-          updateAttribute('card-grouping.direction', direction?.key)
-        }
-        keyExtractor={direction => direction.key}
-        labelExtractor={direction => direction.label}
-      />
+      <Stack direction="row" spacing={1}>
+        <DropdownField
+          fieldLabel="Field"
+          emptyLabel="(choose)"
+          options={fields}
+          value={fields.find(f => f.id === attributes['card-grouping']?.field)}
+          onValueChange={field =>
+            updateAttribute('card-grouping.field', field?.id)
+          }
+          keyExtractor={field => field.id}
+          labelExtractor={field => field.attributes.name}
+        />
+        <DropdownField
+          fieldLabel="Direction"
+          emptyLabel="(choose)"
+          options={sortDirectionOptions}
+          value={sortDirectionOptions.find(
+            direction =>
+              direction.key === attributes['card-grouping']?.direction,
+          )}
+          onValueChange={direction =>
+            updateAttribute('card-grouping.direction', direction?.key)
+          }
+          keyExtractor={direction => direction.key}
+          labelExtractor={direction => direction.label}
+        />
+      </Stack>
     </FormGroup>
   );
 }
