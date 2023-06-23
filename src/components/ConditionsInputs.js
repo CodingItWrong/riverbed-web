@@ -3,7 +3,6 @@ import Button from './Button';
 import DropdownField from './DropdownField';
 import Field from './Field';
 import IconButton from './IconButton';
-import Stack from './Stack';
 import sharedStyles from './sharedStyles';
 
 export default function ConditionInputs({
@@ -28,11 +27,11 @@ export default function ConditionInputs({
   // - test removing a filter
   // - refactor visuals incl field names
   return (
-    <Stack>
+    <>
       {conditions.map((condition, index) => (
         <div key={`condition-${index}`} style={sharedStyles.row}>
           <div style={styles.concreteFieldWrapper}>
-            <div style={{...styles.conditionElements, ...sharedStyles.mt}}>
+            <div style={styles.conditionElements}>
               <DropdownField
                 fieldLabel="Field"
                 emptyLabel="(choose)"
@@ -88,7 +87,7 @@ export default function ConditionInputs({
       >
         Add Condition
       </Button>
-    </Stack>
+    </>
   );
 }
 

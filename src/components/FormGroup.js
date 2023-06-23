@@ -1,14 +1,14 @@
 import Divider from '@mui/material/Divider';
-import ListSubheader from '@mui/material/ListSubheader';
 import Stack from '@mui/material/Stack';
+import SectionHeader from './SectionHeader';
 
 export default function FormGroup({title, children}) {
   return (
     <>
       <Divider />
       <div>
-        <ListSubheader component="div">{title}</ListSubheader>
-        <Stack>{children}</Stack>
+        <SectionHeader>{title}</SectionHeader>
+        <Stack spacing={1}>{children}</Stack>
       </div>
       <Divider />
     </>

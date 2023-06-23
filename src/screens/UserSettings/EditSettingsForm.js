@@ -5,7 +5,6 @@ import Button from '../../components/Button';
 import DropdownField from '../../components/DropdownField';
 import ErrorMessage from '../../components/ErrorMessage';
 import Stack from '../../components/Stack';
-import sharedStyles from '../../components/sharedStyles';
 import {useBoards} from '../../data/boards';
 import {useUpdateUser} from '../../data/user';
 
@@ -37,7 +36,7 @@ export default function EditSettingsForm({user, onSave, onDelete, onCancel}) {
   }
 
   return (
-    <Stack>
+    <Stack spacing={1}>
       <DropdownField
         fieldLabel="iOS Share to Board"
         emptyLabel="(none)"
@@ -50,19 +49,13 @@ export default function EditSettingsForm({user, onSave, onDelete, onCancel}) {
         }
         keyExtractor={board => board.id}
         labelExtractor={board => board.attributes.name}
-        style={sharedStyles.mt}
       />
 
       <ErrorMessage>{getErrorMessage()}</ErrorMessage>
-      <Button onPress={onCancel} disabled={isSaving} style={sharedStyles.mt}>
+      <Button onPress={onCancel} disabled={isSaving}>
         Cancel
       </Button>
-      <Button
-        mode="primary"
-        onPress={handleUpdateUser}
-        disabled={isSaving}
-        style={sharedStyles.mt}
-      >
+      <Button mode="primary" onPress={handleUpdateUser} disabled={isSaving}>
         Save Settings
       </Button>
     </Stack>

@@ -65,6 +65,7 @@ export default function Column({column, board, onEdit, onSelectCard}) {
       data-testid={`column-${column.id}`}
       style={{
         ...columnWidthStyle,
+        ...styles.columnWrapper,
         ...sharedStyles.column,
       }}
     >
@@ -134,6 +135,10 @@ export default function Column({column, board, onEdit, onSelectCard}) {
 }
 
 const styles = {
+  columnWrapper: {
+    padding: 0, // overrides previous padding style
+    minHeight: 0, // needed so that the column scrolls on mobile, no idea why
+  },
   columnHeader: {
     display: 'flex',
     flexDirection: 'row',
