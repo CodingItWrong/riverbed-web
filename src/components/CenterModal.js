@@ -53,6 +53,8 @@ const styles = {
     backgroundColor: 'transparent',
     border: 'none',
     cursor: 'pointer',
+    padding: 0,
+    minWidth: '8px',
   },
   topPressableArea: {
     height: 30,
