@@ -7,7 +7,6 @@ import DropdownField from '../../components/DropdownField';
 import ErrorMessage from '../../components/ErrorMessage';
 import Stack from '../../components/Stack';
 import TextField from '../../components/TextField';
-import sharedStyles from '../../components/sharedStyles';
 import {useDeleteBoard, useUpdateBoard} from '../../data/boards';
 import {useBoardElements} from '../../data/elements';
 import COLOR_THEMES from '../../enums/colorThemes';

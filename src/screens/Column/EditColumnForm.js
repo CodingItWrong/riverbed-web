@@ -8,7 +8,6 @@ import FormGroup from '../../components/FormGroup';
 import NumberField from '../../components/NumberField';
 import Stack from '../../components/Stack';
 import TextField from '../../components/TextField';
-import sharedStyles from '../../components/sharedStyles';
 import {useDeleteColumn, useUpdateColumn} from '../../data/columns';
 import {useBoardElements} from '../../data/elements';
 import ELEMENT_TYPES from '../../enums/elementTypes';

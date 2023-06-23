@@ -5,7 +5,6 @@ import Button from '../../components/Button';
 import DropdownField from '../../components/DropdownField';
 import ErrorMessage from '../../components/ErrorMessage';
 import Stack from '../../components/Stack';
-import sharedStyles from '../../components/sharedStyles';
 import {useBoards} from '../../data/boards';
 import {useUpdateUser} from '../../data/user';
 
