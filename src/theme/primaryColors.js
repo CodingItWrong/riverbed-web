@@ -1,7 +1,6 @@
 import {
   blue,
   cyan,
-  deepPurple,
   green,
   orange,
   pink,
@@ -11,7 +10,7 @@ import {
 import COLOR_THEMES from '../enums/colorThemes';
 
 export const primaryColors = {
-  default: deepPurple[500],
+  default: '#324b4b',
   [COLOR_THEMES.pink.key]: pink[500],
   [COLOR_THEMES.green.key]: green[500],
   [COLOR_THEMES.blue.key]: blue[500],
