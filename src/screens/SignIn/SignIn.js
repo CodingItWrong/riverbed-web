@@ -9,7 +9,6 @@ import NavigationBar from '../../components/NavigationBar';
 import ScreenBackground from '../../components/ScreenBackground';
 import Stack from '../../components/Stack';
 import TextField from '../../components/TextField';
-import sharedStyles from '../../components/sharedStyles';
 import httpClient from '../../data/httpClient';
 import {useToken} from '../../data/token';
 
@@ -38,7 +37,7 @@ export default function SignIn({navigation}) {
       <NavigationBar options={{title: 'Riverbed'}} />
       <ScreenBackground style={styles.container}>
         <CenterColumn>
-          <Stack>
+          <Stack spacing={1}>
             <TextField
               label="Email"
               testID="text-input-email"
@@ -56,11 +55,7 @@ export default function SignIn({navigation}) {
               secureTextEntry
             />
             <ErrorMessage>{error}</ErrorMessage>
-            <Button
-              mode="primary"
-              onPress={handleLogIn}
-              style={sharedStyles.mt}
-            >
+            <Button mode="primary" onPress={handleLogIn}>
               Sign in
             </Button>
           </Stack>
