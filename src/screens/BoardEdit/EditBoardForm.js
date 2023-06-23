@@ -69,27 +69,24 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
         onConfirm={handleDeleteBoard}
         onDismiss={() => setConfirmingDelete(false)}
       />
-      <Stack>
+      <Stack spacing={1}>
         <TextField
           label="Board Name"
           value={attributes.name ?? ''}
           onChangeText={value => updateAttribute('name', value)}
           testID="text-input-board-name"
-          style={sharedStyles.mt}
         />
         <ButtonGroup
           label="Color Theme"
           value={attributes['color-theme']}
           onChangeValue={value => updateAttribute('color-theme', value)}
           options={COLOR_THEME_OPTIONS}
-          style={sharedStyles.mt}
         />
         <ButtonGroup
           label="Icon"
           value={attributes.icon}
           onChangeValue={value => updateAttribute('icon', value)}
           options={ICON_OPTIONS}
-          style={sharedStyles.mt}
         />
         <TextField
           label="Card Create Webhook"
@@ -97,7 +94,6 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
           onChangeText={value =>
             updateAttribute('options.webhooks["card-create"]', value || null)
           }
-          style={sharedStyles.mt}
         />
         <TextField
           label="Card Update Webhook"
@@ -105,7 +101,6 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
           onChangeText={value =>
             updateAttribute('options.webhooks["card-update"]', value || null)
           }
-          style={sharedStyles.mt}
         />
         <DropdownField
           fieldLabel="Share URL Field"
@@ -119,7 +114,6 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
           }
           keyExtractor={field => field.id}
           labelExtractor={field => field.attributes.name}
-          style={sharedStyles.mt}
         />
         <DropdownField
           fieldLabel="Share Title Field"
@@ -133,26 +127,16 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
           }
           keyExtractor={field => field.id}
           labelExtractor={field => field.attributes.name}
-          style={sharedStyles.mt}
         />
 
         <ErrorMessage>{getErrorMessage()}</ErrorMessage>
-        <Button onPress={onCancel} disabled={isLoading} style={sharedStyles.mt}>
+        <Button onPress={onCancel} disabled={isLoading}>
           Cancel
         </Button>
-        <Button
-          onPress={() => setConfirmingDelete(true)}
-          disabled={isLoading}
-          style={sharedStyles.mt}
-        >
+        <Button onPress={() => setConfirmingDelete(true)} disabled={isLoading}>
           Delete Board
         </Button>
-        <Button
-          mode="primary"
-          onPress={handleUpdateBoard}
-          disabled={isLoading}
-          style={sharedStyles.mt}
-        >
+        <Button mode="primary" onPress={handleUpdateBoard} disabled={isLoading}>
           Save Board
         </Button>
       </Stack>

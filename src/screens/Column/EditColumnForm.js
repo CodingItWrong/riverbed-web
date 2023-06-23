@@ -6,6 +6,7 @@ import DropdownField from '../../components/DropdownField';
 import ErrorMessage from '../../components/ErrorMessage';
 import FormGroup from '../../components/FormGroup';
 import NumberField from '../../components/NumberField';
+import Stack from '../../components/Stack';
 import TextField from '../../components/TextField';
 import sharedStyles from '../../components/sharedStyles';
 import {useDeleteColumn, useUpdateColumn} from '../../data/columns';
@@ -59,7 +60,7 @@ export default function EditColumnForm({column, board, onChange, onCancel}) {
   }
 
   return (
-    <div style={sharedStyles.column}>
+    <Stack spacing={1}>
       <TextField
         label="Column Name"
         value={attributes.name ?? ''}
@@ -104,25 +105,16 @@ export default function EditColumnForm({column, board, onChange, onCancel}) {
         updateAttribute={updateAttribute}
       />
       <ErrorMessage>{getErrorMessage()}</ErrorMessage>
-      <Button onPress={onCancel} disabled={isLoading} style={sharedStyles.mt}>
+      <Button onPress={onCancel} disabled={isLoading}>
         Cancel
       </Button>
-      <Button
-        onPress={handleDeleteColumn}
-        disabled={isLoading}
-        style={sharedStyles.mt}
-      >
+      <Button onPress={handleDeleteColumn} disabled={isLoading}>
         Delete Column
       </Button>
-      <Button
-        mode="primary"
-        onPress={handleUpdateColumn}
-        disabled={isLoading}
-        style={sharedStyles.mt}
-      >
+      <Button mode="primary" onPress={handleUpdateColumn} disabled={isLoading}>
         Save Column
       </Button>
-    </div>
+    </Stack>
   );
 }
 
@@ -157,7 +149,6 @@ function ColumnSortOrder({board, fields, attributes, updateAttribute}) {
         }
         keyExtractor={field => field.id}
         labelExtractor={field => field.attributes.name}
-        style={sharedStyles.mt}
       />
       <DropdownField
         fieldLabel="Sort Direction"
@@ -172,7 +163,6 @@ function ColumnSortOrder({board, fields, attributes, updateAttribute}) {
         }
         keyExtractor={direction => direction.key}
         labelExtractor={direction => direction.label}
-        style={sharedStyles.mt}
       />
     </FormGroup>
   );
@@ -193,7 +183,6 @@ function ColumnGrouping({board, fields, attributes, updateAttribute}) {
         }
         keyExtractor={field => field.id}
         labelExtractor={field => field.attributes.name}
-        style={sharedStyles.mt}
       />
       <DropdownField
         fieldLabel="Group Direction"
@@ -207,7 +196,6 @@ function ColumnGrouping({board, fields, attributes, updateAttribute}) {
         }
         keyExtractor={direction => direction.key}
         labelExtractor={direction => direction.label}
-        style={sharedStyles.mt}
       />
     </FormGroup>
   );
@@ -228,7 +216,6 @@ function ColumnSummary({board, fields, attributes, updateAttribute}) {
         onValueChange={o => updateAttribute('summary.function', o?.key)}
         keyExtractor={o => o.key}
         labelExtractor={o => o.label}
-        style={sharedStyles.mt}
       />
       {attributes.summary?.function === SUMMARY_FUNCTIONS.SUM.key && (
         <DropdownField
@@ -241,7 +228,6 @@ function ColumnSummary({board, fields, attributes, updateAttribute}) {
           }
           keyExtractor={field => field.id}
           labelExtractor={field => field.attributes.name}
-          style={sharedStyles.mt}
         />
       )}
     </FormGroup>

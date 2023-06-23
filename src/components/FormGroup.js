@@ -8,7 +8,7 @@ export default function FormGroup({title, children}) {
       <Divider />
       <div>
         <SectionHeader>{title}</SectionHeader>
-        <Stack>{children}</Stack>
+        <Stack spacing={1}>{children}</Stack>
       </div>
       <Divider />
     </>

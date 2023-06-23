@@ -3,6 +3,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import {useId} from 'react';
+import sharedStyles from './sharedStyles';
 
 export default function DropdownField({
   fieldLabel,
@@ -26,25 +27,27 @@ export default function DropdownField({
   }
 
   return (
-    <FormControl sx={{mt: '10px'}}>
-      <InputLabel id={labelId}>{fieldLabel}</InputLabel>
-      <Select
-        labelId={labelId}
-        label={fieldLabel}
-        id={selectId}
-        value={value ? keyExtractor(value) : EMPTY_VALUE}
-        onChange={handleChange}
-        data-testid={testID}
-        disabled={disabled}
-      >
-        <MenuItem value={EMPTY_VALUE}>{emptyLabel}</MenuItem>
-        {options?.map(option => (
-          <MenuItem key={keyExtractor(option)} value={keyExtractor(option)}>
-            {labelExtractor(option)}
-          </MenuItem>
-        ))}
-      </Select>
-    </FormControl>
+    <div style={sharedStyles.column}>
+      <FormControl sx={{mt: '5px'}}>
+        <InputLabel id={labelId}>{fieldLabel}</InputLabel>
+        <Select
+          labelId={labelId}
+          label={fieldLabel}
+          id={selectId}
+          value={value ? keyExtractor(value) : EMPTY_VALUE}
+          onChange={handleChange}
+          data-testid={testID}
+          disabled={disabled}
+        >
+          <MenuItem value={EMPTY_VALUE}>{emptyLabel}</MenuItem>
+          {options?.map(option => (
+            <MenuItem key={keyExtractor(option)} value={keyExtractor(option)}>
+              {labelExtractor(option)}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    </div>
   );
 }
 
