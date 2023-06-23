@@ -6,6 +6,7 @@ export default function LabeledCheckbox({
   checked,
   onChangeChecked,
   testID,
+  style,
 }) {
   return (
     <FormControlLabel
@@ -17,6 +18,7 @@ export default function LabeledCheckbox({
       }
       label={label}
       data-testid={testID}
+      style={style}
     />
   );
 }

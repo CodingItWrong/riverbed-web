@@ -120,7 +120,7 @@ export default function EditElementForm({
   }
 
   return (
-    <Stack>
+    <Stack spacing={1}>
       <TextField
         label={`${startCase(elementType)} Name`}
         value={elementAttributes.name ?? ''}
@@ -150,7 +150,6 @@ export default function EditElementForm({
             )}
             onValueChange={option => updateAttribute('data-type', option?.key)}
             options={dataTypeOptions}
-            style={sharedStyles.mt}
           />
           <DropdownField
             fieldLabel="Initial Value"
@@ -162,7 +161,6 @@ export default function EditElementForm({
               updateAttribute('initial-value', option?.key)
             }
             options={valueOptions}
-            style={sharedStyles.mt}
           />
           {elementAttributes['initial-value'] === VALUES.SPECIFIC_VALUE.key && (
             <Field
@@ -172,7 +170,6 @@ export default function EditElementForm({
               setValue={v =>
                 updateAttribute("options['initial-specific-value']", v)
               }
-              style={sharedStyles.mt}
             />
           )}
           <LabeledCheckbox
@@ -181,7 +178,6 @@ export default function EditElementForm({
             onChangeChecked={newChecked =>
               updateAttribute('options.show-label-when-read-only', newChecked)
             }
-            style={sharedStyles.mt}
             testID="checkbox-show-label-when-read-only"
           />
           <LabeledCheckbox
@@ -190,7 +186,6 @@ export default function EditElementForm({
             onChangeChecked={newChecked =>
               updateAttribute('read-only', newChecked)
             }
-            style={sharedStyles.mt}
             testID="checkbox-read-only"
           />
           {elementAttributes['data-type'] === FIELD_DATA_TYPES.TEXT.key && (
@@ -200,7 +195,6 @@ export default function EditElementForm({
               onChangeChecked={newChecked =>
                 updateAttribute('options.multiline', newChecked)
               }
-              style={sharedStyles.mt}
             />
           )}
           {elementAttributes['data-type'] === FIELD_DATA_TYPES.CHOICE.key && (
@@ -235,8 +229,8 @@ export default function EditElementForm({
               onChangeChecked={newChecked =>
                 updateAttribute('show-in-summary', newChecked)
               }
-              style={sharedStyles.mt}
               testID="checkbox-show-in-summary"
+              style={styles.checkboxFix}
             />
             <DropdownField
               fieldLabel="Text Size"
@@ -251,7 +245,6 @@ export default function EditElementForm({
               labelExtractor={option => (
                 <Text variant={option.key}>{option.label}</Text>
               )}
-              style={sharedStyles.mt}
             />
             <LabeledCheckbox
               label="Link URLs"
@@ -259,7 +252,6 @@ export default function EditElementForm({
               onChangeChecked={newChecked =>
                 updateAttribute('options["link-urls"]', newChecked)
               }
-              style={sharedStyles.mt}
             />
             <LabeledCheckbox
               label="Abbreviate URLs"
@@ -267,7 +259,6 @@ export default function EditElementForm({
               onChangeChecked={newChecked =>
                 updateAttribute('options["abbreviate-urls"]', newChecked)
               }
-              style={sharedStyles.mt}
             />
           </FormGroup>
         </>
@@ -337,22 +328,13 @@ export default function EditElementForm({
         onConfirm={handleDeleteElement}
         onDismiss={() => setConfirmingDelete(false)}
       />
-      <Button onPress={onCancel} disabled={isLoading} style={sharedStyles.mt}>
+      <Button onPress={onCancel} disabled={isLoading}>
         Cancel
       </Button>
-      <Button
-        onPress={() => setConfirmingDelete(true)}
-        disabled={isLoading}
-        style={sharedStyles.mt}
-      >
+      <Button onPress={() => setConfirmingDelete(true)} disabled={isLoading}>
         Delete {startCase(elementType)}
       </Button>
-      <Button
-        mode="primary"
-        onPress={handleUpdateElement}
-        disabled={isLoading}
-        style={sharedStyles.mt}
-      >
+      <Button mode="primary" onPress={handleUpdateElement} disabled={isLoading}>
         Save {startCase(elementType)}
       </Button>
     </Stack>
@@ -431,12 +413,7 @@ function ActionInputs({actions, updateActionsAttribute, fields}) {
           />
         </div>
       ))}
-      <Button
-        icon="plus"
-        mode="link"
-        onPress={addAction}
-        style={sharedStyles.mt}
-      >
+      <Button icon="plus" mode="link" onPress={addAction}>
         Add Action
       </Button>
     </FormGroup>
@@ -468,5 +445,8 @@ const styles = {
   },
   actionButton: {
     marginRight: 8,
+  },
+  checkboxFix: {
+    marginLeft: 0, // to correct negative margin MUI adds
   },
 };
