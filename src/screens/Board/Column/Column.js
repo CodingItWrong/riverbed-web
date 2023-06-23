@@ -143,5 +143,6 @@ const styles = {
   columnHeader: {
     display: 'flex',
     flexDirection: 'row',
+    gap: '5px',
   },
 };
