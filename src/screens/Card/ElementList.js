@@ -45,25 +45,18 @@ export default function ElementList({board, card}) {
   }
 
   return (
-    <Stack>
+    <Stack spacing={1}>
       {sortedElements.map((element, elementIndex) => (
         <EditableElement
           key={element.id}
           element={element}
           onEdit={() => editElement(element)}
           testID={`element-${element.id}`}
-          style={elementIndex > 0 && sharedStyles.mt}
         />
       ))}
       <DropdownMenu
         menuButton={props => (
-          <Button
-            icon="plus"
-            mode="link"
-            disabled={isAdding}
-            style={sharedStyles.mt}
-            {...props}
-          >
+          <Button icon="plus" mode="link" disabled={isAdding} {...props}>
             Add Element
           </Button>
         )}
