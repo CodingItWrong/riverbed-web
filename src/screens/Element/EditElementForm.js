@@ -1,5 +1,5 @@
-import set from 'lodash.set';
-import startCase from 'lodash.startcase';
+import set from 'lodash/set';
+import startCase from 'lodash/startcase';
 import {useState} from 'react';
 import Button from '../../components/Button';
 import ConditionInputs from '../../components/ConditionsInputs';
