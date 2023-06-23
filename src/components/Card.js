@@ -14,7 +14,9 @@ export default function Card({
   return (
     <MuiCard style={style} data-testid={testID}>
       <ConditionalCardActionArea onClick={onPress}>
-        <MuiCardContent style={contentStyle}>{children}</MuiCardContent>
+        <MuiCardContent style={{...styles.cardContent, ...contentStyle}}>
+          {children}
+        </MuiCardContent>
         {buttons && <MuiCardActions>{buttons}</MuiCardActions>}
       </ConditionalCardActionArea>
     </MuiCard>
@@ -28,3 +30,9 @@ function ConditionalCardActionArea({onClick, children}) {
     return children;
   }
 }
+
+const styles = {
+  cardContent: {
+    padding: '8px',
+  },
+};

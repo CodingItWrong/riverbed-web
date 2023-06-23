@@ -28,10 +28,10 @@ import ViewColumnIcon from '@mui/icons-material/ViewColumn';
 import ViewTimelineIcon from '@mui/icons-material/ViewTimeline';
 
 export default function getMuiIcon(icon) {
-  return ICON_MAP[icon];
+  return MUI_NAME_TO_COMPONENT_MAP[icon];
 }
 
-const ICON_MAP = {
+const MUI_NAME_TO_COMPONENT_MAP = {
   'arrow-back': ArrowBackIcon,
   baseball: SportsBaseballIcon,
   'bed-king-outline': BedIcon,

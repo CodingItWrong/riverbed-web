@@ -1,15 +1,13 @@
-import {CardActionArea as MuiCardActionArea} from '@mui/material';
-import MuiCard from '@mui/material/Card';
-import MuiCardContent from '@mui/material/CardContent';
 import MuiMenu from '@mui/material/Menu';
 import MuiMenuItem from '@mui/material/MenuItem';
 import sortBy from 'lodash.sortby';
 import {useCallback, useState} from 'react';
 import {Outlet, useNavigate} from 'react-router-dom';
+import BoardIcon from '../../components/BoardIcon';
 import Button from '../../components/Button';
+import Card from '../../components/Card';
 import CenterColumn from '../../components/CenterColumn';
 import ErrorSnackbar from '../../components/ErrorSnackbar';
-import Icon from '../../components/Icon';
 import IconButton from '../../components/IconButton';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import NavigationBar from '../../components/NavigationBar';
@@ -162,22 +160,18 @@ function BoardCard({board, onPress, style}) {
 
   return (
     <div style={style}>
-      <MuiCard>
-        <MuiCardActionArea onClick={onPress}>
-          <MuiCardContent>
-            <div style={styles.boardCard}>
-              <Icon
-                name={board.attributes.icon ?? 'view-column'}
-                style={sharedStyles.mr}
-                sx={{color: primaryColor}}
-              />
-              <Text variant="titleMedium">
-                {board.attributes.name ?? '(unnamed board)'}
-              </Text>
-            </div>
-          </MuiCardContent>
-        </MuiCardActionArea>
-      </MuiCard>
+      <Card onPress={onPress}>
+        <div style={styles.boardCard}>
+          <BoardIcon
+            name={board.attributes.icon}
+            style={sharedStyles.mr}
+            sx={{color: primaryColor}}
+          />
+          <Text variant="titleSmall">
+            {board.attributes.name ?? '(unnamed board)'}
+          </Text>
+        </div>
+      </Card>
       <div style={styles.favoriteContainer}>
         <FavoriteButton board={board} />
       </div>

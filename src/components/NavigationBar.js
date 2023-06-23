@@ -3,7 +3,7 @@ import Button from '@mui/material/Button';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import BackButton from './BackButton';
-import Icon from './Icon';
+import BoardIcon from './BoardIcon';
 import LoadingIndicator from './LoadingIndicator';
 import sharedStyles from './sharedStyles';
 
@@ -14,7 +14,7 @@ export default function NavigationBar({options, backTo}) {
     <AppBar position="relative">
       <Toolbar>
         {backTo && <BackButton to={backTo} />}
-        {icon && <Icon name={icon} style={sharedStyles.mr} />}
+        {icon && <BoardIcon name={icon} style={sharedStyles.mr} />}
         {onTitlePress ? (
           <Button
             color="inherit"

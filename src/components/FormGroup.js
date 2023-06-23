@@ -10,7 +10,6 @@ export default function FormGroup({title, children}) {
         <SectionHeader>{title}</SectionHeader>
         <Stack spacing={1}>{children}</Stack>
       </div>
-      <Divider />
     </>
   );
 }
