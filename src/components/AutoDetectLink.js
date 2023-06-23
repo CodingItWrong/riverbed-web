@@ -3,13 +3,13 @@ import {isValidUrl} from '../utils/urlUtils';
 import Text from './Text';
 
 // Pass text to this and if it is a valid URL it will be rendered as a link
-export function AutoDetectLink({link, enableLinking, variant, children}) {
+export function AutoDetectLink({link, enableLinking, size, children}) {
   if (enableLinking && isValidUrl(link)) {
     // div prevents the clickable link from being the entire width
     return (
       <div>
         <Link href={link} target="_blank" onClick={preventParentClickBehavior}>
-          <Text component="span" variant={variant} color={null}>
+          <Text component="span" size={size} color={null}>
             {children}
           </Text>
         </Link>
@@ -17,7 +17,7 @@ export function AutoDetectLink({link, enableLinking, variant, children}) {
     );
   } else {
     // Our Text adds color for light/dark mode, MUI's Typography does not
-    return <Text variant={variant}>{children}</Text>;
+    return <Text size={size}>{children}</Text>;
   }
 }
 

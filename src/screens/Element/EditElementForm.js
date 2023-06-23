@@ -243,7 +243,7 @@ export default function EditElementForm({
               }
               options={TEXT_SIZES}
               labelExtractor={option => (
-                <Text variant={option.key}>{option.label}</Text>
+                <Text size={option.key}>{option.label}</Text>
               )}
             />
             <LabeledCheckbox

@@ -1,9 +1,9 @@
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import Text from '@mui/material/Typography';
 import {primaryColors} from '../theme/primaryColors';
 import Icon from './Icon';
 import Stack from './Stack';
-import Text from './Text';
 
 export default function ButtonGroup({
   label,
