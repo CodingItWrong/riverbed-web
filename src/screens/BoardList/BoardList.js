@@ -1,6 +1,3 @@
-import {CardActionArea as MuiCardActionArea} from '@mui/material';
-import MuiCard from '@mui/material/Card';
-import MuiCardContent from '@mui/material/CardContent';
 import MuiMenu from '@mui/material/Menu';
 import MuiMenuItem from '@mui/material/MenuItem';
 import sortBy from 'lodash.sortby';
