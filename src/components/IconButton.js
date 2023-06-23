@@ -15,11 +15,12 @@ export default function IconButton({
   return (
     <MuiIconButton
       icon={icon}
+      color={iconColor ?? 'inherit'}
       onClick={onPress}
       aria-label={accessibilityLabel}
       {...props}
     >
-      <Icon name={icon} color={iconColor} />
+      <Icon name={icon} />
     </MuiIconButton>
   );
 }

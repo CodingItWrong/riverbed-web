@@ -11,11 +11,10 @@ export default function BackButton({to, accessibilityLabel = 'Go back'}) {
 
   return (
     <MuiIconButton
-      size="large"
       edge="start"
       color="inherit"
       aria-label={accessibilityLabel}
-      sx={{mr: 2}}
+      sx={{mr: 2, ml: 0}}
       onClick={() => navigate(to)}
     >
       <Icon name="arrow-back" />
