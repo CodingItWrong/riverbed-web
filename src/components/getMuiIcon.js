@@ -24,7 +24,7 @@ import SquareIcon from '@mui/icons-material/Square';
 import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import TvIcon from '@mui/icons-material/Tv';
-import ViewColumnIcon from '@mui/icons-material/ViewColumn';
+import ViewColumnOutlinedIcon from '@mui/icons-material/ViewColumnOutlined';
 import ViewTimelineOutlinedIcon from '@mui/icons-material/ViewTimelineOutlined';
 
 export default function getMuiIcon(icon) {
@@ -59,6 +59,6 @@ const MUI_NAME_TO_COMPONENT_MAP = {
   'star-outline': StarBorderIcon,
   television: TvIcon,
   tree: ParkOutlinedIcon,
-  'view-column': ViewColumnIcon,
+  'view-column': ViewColumnOutlinedIcon,
   wrench: BuildIcon,
 };
