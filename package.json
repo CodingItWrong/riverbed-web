@@ -10,6 +10,8 @@
     "lint": "eslint src cypress/e2e",
     "lint:ci": "eslint src cypress/e2e --max-warnings=0",
     "build": "webpack --config webpack.prod.js",
+    "explore:app": "source-map-explorer dist/app.*.js",
+    "explore:vendors": "source-map-explorer dist/vendors.*.js",
     "deploy": "npm run build && netlify deploy --prod",
     "prepare": "husky install"
   },
@@ -57,6 +59,7 @@
     "html-webpack-plugin": "^5.5.3",
     "husky": "^8.0.0",
     "prettier": "^2.8.8",
+    "source-map-explorer": "^2.5.3",
     "webpack": "^5.88.0",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1",
