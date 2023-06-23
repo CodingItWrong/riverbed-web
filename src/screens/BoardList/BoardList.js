@@ -3,9 +3,7 @@ import MuiMenuItem from '@mui/material/MenuItem';
 import sortBy from 'lodash/sortBy';
 import {useCallback, useState} from 'react';
 import {Outlet, useNavigate} from 'react-router-dom';
-import BoardIcon from '../../components/BoardIcon';
 import Button from '../../components/Button';
-import Card from '../../components/Card';
 import CenterColumn from '../../components/CenterColumn';
 import ErrorSnackbar from '../../components/ErrorSnackbar';
 import IconButton from '../../components/IconButton';
@@ -14,13 +12,11 @@ import NavigationBar from '../../components/NavigationBar';
 import ScreenBackground from '../../components/ScreenBackground';
 import SectionHeader from '../../components/SectionHeader';
 import SectionList from '../../components/SectionList';
-import Text from '../../components/Text';
 import sharedStyles from '../../components/sharedStyles';
-import {useBoards, useCreateBoard, useUpdateBoard} from '../../data/boards';
+import {useBoards, useCreateBoard} from '../../data/boards';
 import {useToken} from '../../data/token';
-import useColorSchemeTheme from '../../theme/useColorSchemeTheme';
-import dateTimeUtils from '../../utils/dateTimeUtils';
 import useNavigateEffect from '../../utils/useNavigateEffect';
+import BoardCard from './BoardCard';
 
 export default function BoardList() {
   const {clearToken} = useToken();
@@ -155,28 +151,6 @@ export default function BoardList() {
   );
 }
 
-function BoardCard({board, onPress, style}) {
-  const primaryColor = useBoardPrimaryColor(board);
-
-  return (
-    <div style={style}>
-      <Card onPress={onPress}>
-        <div style={styles.boardCard}>
-          <BoardIcon
-            name={board.attributes.icon}
-            style={sharedStyles.mr}
-            sx={{color: primaryColor}}
-          />
-          <Text size={3}>{board.attributes.name ?? '(unnamed board)'}</Text>
-        </div>
-      </Card>
-      <div style={styles.favoriteContainer}>
-        <FavoriteButton board={board} />
-      </div>
-    </div>
-  );
-}
-
 function groupBoards(boards) {
   const favorites = boards.filter(board => board.attributes['favorited-at']);
   const unfavorites = boards.filter(board => !board.attributes['favorited-at']);
@@ -196,54 +170,3 @@ function groupBoards(boards) {
   }
   return groups;
 }
-
-function FavoriteButton({board, onToggleFavorite}) {
-  const {attributes} = board;
-  const isFavorite = Boolean(attributes['favorited-at']);
-
-  const {mutate: updateBoard} = useUpdateBoard(board);
-  const handleUpdateBoard = () => {
-    const newFavoritedAt = isFavorite
-      ? null
-      : dateTimeUtils.objectToServerString(new Date());
-    updateBoard({...attributes, 'favorited-at': newFavoritedAt});
-  };
-
-  return (
-    <IconButton
-      accessibilityLabel={
-        isFavorite
-          ? `${attributes.name} is a favorite board. Tap to unfavorite`
-          : `${attributes.name} is not a favorite board. Tap to favorite`
-      }
-      icon={isFavorite ? 'star' : 'star-outline'}
-      style={(styles.favoriteStar, {opacity: isFavorite ? 1.0 : 0.5})}
-      onPress={handleUpdateBoard}
-    />
-  );
-}
-
-function useBoardPrimaryColor(board) {
-  const colorTheme = useColorSchemeTheme(board?.attributes['color-theme']);
-  return colorTheme.palette.primary.main;
-}
-
-const styles = {
-  boardCard: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingRight: 50,
-  },
-  favoriteContainer: {
-    display: 'flex',
-    position: 'absolute',
-    right: 10,
-    top: 0,
-    bottom: 0,
-    justifyContent: 'center',
-  },
-  favoriteStar: {
-    margin: 5,
-  },
-};
