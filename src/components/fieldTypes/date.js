@@ -23,10 +23,10 @@ function DateEditorComponent({field, label, value, setValue, disabled, style}) {
         setValue(string);
       }}
       disabled={disabled}
-      style={style}
       slotProps={{
         textField: {
           variant: 'filled',
+          style,
           inputProps: {
             'data-testid': `date-input-${field.id}`,
           },
