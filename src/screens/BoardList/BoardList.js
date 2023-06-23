@@ -8,7 +8,6 @@ import Button from '../../components/Button';
 import Card from '../../components/Card';
 import CenterColumn from '../../components/CenterColumn';
 import ErrorSnackbar from '../../components/ErrorSnackbar';
-import Icon from '../../components/Icon';
 import IconButton from '../../components/IconButton';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import NavigationBar from '../../components/NavigationBar';
