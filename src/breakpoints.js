@@ -1,4 +1,4 @@
-import {useMediaQuery} from '@mui/material';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 export const breakpointMedium = 429;
 export const breakpointLarge = 600;

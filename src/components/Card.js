@@ -1,5 +1,5 @@
-import {CardActionArea as MuiCardActionArea} from '@mui/material';
 import MuiCard from '@mui/material/Card';
+import MuiCardActionArea from '@mui/material/CardActionArea';
 import MuiCardActions from '@mui/material/CardActions';
 import MuiCardContent from '@mui/material/CardContent';
 
