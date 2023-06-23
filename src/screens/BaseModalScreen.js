@@ -24,7 +24,10 @@ export default function BaseModalScreen({backTo, children}) {
 function ModalScreenWrapper({children, closeModal}) {
   return (
     <CenterModal onDismiss={closeModal}>
-      <Card style={styles.wrapperCard} contentStyle={sharedStyles.fill}>
+      <Card
+        style={styles.wrapperCard}
+        contentStyle={{...sharedStyles.fill, ...styles.modalCard}}
+      >
         {children}
       </Card>
     </CenterModal>
@@ -39,5 +42,8 @@ const styles = {
   },
   container: {
     padding: 16,
+  },
+  modalCard: {
+    padding: '16px',
   },
 };
