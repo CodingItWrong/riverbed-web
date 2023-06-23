@@ -113,7 +113,7 @@ export default function BoardList() {
                 }
 
                 return (
-                  <SectionHeader testID="group-heading">
+                  <SectionHeader testID="group-heading" style={sharedStyles.mt}>
                     {group.title}
                   </SectionHeader>
                 );
@@ -122,7 +122,7 @@ export default function BoardList() {
                 <BoardCard
                   board={board}
                   onPress={() => goToBoard(board)}
-                  style={index > 0 ? sharedStyles.mt : null}
+                  style={sharedStyles.mb}
                 />
               )}
             />

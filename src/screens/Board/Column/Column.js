@@ -119,6 +119,7 @@ export default function Column({column, board, onEdit, onSelectCard}) {
             data-testid={
               cardGrouping && `group-${cardGrouping.field}-${group.value}-card`
             }
+            style={sharedStyles.mb}
           >
             <CardSummary
               card={card}
