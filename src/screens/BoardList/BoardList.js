@@ -3,6 +3,7 @@ import MuiMenuItem from '@mui/material/MenuItem';
 import sortBy from 'lodash.sortby';
 import {useCallback, useState} from 'react';
 import {Outlet, useNavigate} from 'react-router-dom';
+import BoardIcon from '../../components/BoardIcon';
 import Button from '../../components/Button';
 import Card from '../../components/Card';
 import CenterColumn from '../../components/CenterColumn';
@@ -162,8 +163,8 @@ function BoardCard({board, onPress, style}) {
     <div style={style}>
       <Card onPress={onPress}>
         <div style={styles.boardCard}>
-          <Icon
-            name={board.attributes.icon ?? 'view-column'}
+          <BoardIcon
+            name={board.attributes.icon}
             style={sharedStyles.mr}
             sx={{color: primaryColor}}
           />

@@ -156,5 +156,5 @@ const COLOR_THEME_OPTIONS = [
 const ICON_OPTIONS = [{key: null, label: 'None'}, ...ICONS].map(icon => ({
   key: icon.key,
   label: icon.label,
-  icon: icon.key ?? 'dots-square',
+  icon: icon.muiName ?? 'dots-square',
 }));
