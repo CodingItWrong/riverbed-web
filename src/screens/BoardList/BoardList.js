@@ -170,7 +170,7 @@ function BoardCard({board, onPress, style}) {
             style={sharedStyles.mr}
             sx={{color: primaryColor}}
           />
-          <Text variant="titleMedium">
+          <Text variant="titleSmall">
             {board.attributes.name ?? '(unnamed board)'}
           </Text>
         </div>
