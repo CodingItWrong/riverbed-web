@@ -1,6 +1,6 @@
 import MuiMenu from '@mui/material/Menu';
 import MuiMenuItem from '@mui/material/MenuItem';
-import sortBy from 'lodash/sortby';
+import sortBy from 'lodash/sortBy';
 import {useCallback, useState} from 'react';
 import {Outlet, useNavigate} from 'react-router-dom';
 import BoardIcon from '../../components/BoardIcon';
