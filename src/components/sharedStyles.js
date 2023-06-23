@@ -42,6 +42,7 @@ const sharedStyles = {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginBottom: '5px',
   },
   spacer: {
     flex: 1,
