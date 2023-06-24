@@ -529,6 +529,7 @@ describe('edit columns', () => {
         data: [],
       });
       cy.contains('Delete Column').click();
+      cy.contains('Yes, Delete Column').click();
       cy.wait('@deleteColumn');
       cy.contains('Delete Column').should('not.exist');
     });

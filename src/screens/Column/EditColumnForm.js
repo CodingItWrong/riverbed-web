@@ -2,6 +2,7 @@ import set from 'lodash/set';
 import {useState} from 'react';
 import Button from '../../components/Button';
 import ConditionInputs from '../../components/ConditionsInputs';
+import ConfirmationDialog from '../../components/ConfirmationDialog';
 import DropdownField from '../../components/DropdownField';
 import ErrorMessage from '../../components/ErrorMessage';
 import FormGroup from '../../components/FormGroup';
@@ -17,6 +18,7 @@ import sortByDisplayOrder from '../../utils/sortByDisplayOrder';
 
 export default function EditColumnForm({column, board, onChange, onCancel}) {
   const [attributes, setAttributes] = useState(column.attributes);
+  const [confirmingDelete, setConfirmingDelete] = useState(false);
 
   const {data: elements = []} = useBoardElements(board);
   const fields = sortByDisplayOrder(
@@ -59,58 +61,78 @@ export default function EditColumnForm({column, board, onChange, onCancel}) {
   }
 
   return (
-    <Stack spacing={1}>
-      <TextField
-        label="Column Name"
-        value={attributes.name ?? ''}
-        onChangeText={value => updateAttribute('name', value)}
-        testID="text-input-column-name"
+    <>
+      <ConfirmationDialog
+        destructive
+        open={confirmingDelete}
+        title="Delete Column?"
+        message={`Are you sure you want to delete ${
+          attributes.name ? `column "${attributes.name}"` : 'this column'
+        }? Data will not be able to be recovered.`}
+        confirmButtonLabel="Yes, Delete Column"
+        onConfirm={handleDeleteColumn}
+        onDismiss={() => setConfirmingDelete(false)}
       />
-      <NumberField
-        keyboard-type="number-pad"
-        label="Order"
-        value={
-          attributes['display-order'] == null
-            ? ''
-            : String(attributes['display-order'])
-        }
-        onChangeText={value =>
-          updateAttribute('display-order', value === '' ? null : Number(value))
-        }
-        testID="number-input-order"
-      />
-      <CardInclusionConditions
-        board={board}
-        fields={fields}
-        attributes={attributes}
-        updateAttribute={updateAttribute}
-      />
-      <ColumnSortOrder
-        fields={fields}
-        attributes={attributes}
-        updateAttribute={updateAttribute}
-      />
-      <ColumnGrouping
-        fields={fields}
-        attributes={attributes}
-        updateAttribute={updateAttribute}
-      />
-      <ColumnSummary
-        fields={fields}
-        attributes={attributes}
-        updateAttribute={updateAttribute}
-      />
-      <ErrorMessage>{getErrorMessage()}</ErrorMessage>
-      <Button onPress={onCancel} disabled={isLoading}>
-        Cancel
-      </Button>
-      <Button onPress={handleDeleteColumn} disabled={isLoading}>
-        Delete Column
-      </Button>
-      <Button mode="primary" onPress={handleUpdateColumn} disabled={isLoading}>
-        Save Column
-      </Button>
-    </Stack>
+      <Stack spacing={1}>
+        <TextField
+          label="Column Name"
+          value={attributes.name ?? ''}
+          onChangeText={value => updateAttribute('name', value)}
+          testID="text-input-column-name"
+        />
+        <NumberField
+          keyboard-type="number-pad"
+          label="Order"
+          value={
+            attributes['display-order'] == null
+              ? ''
+              : String(attributes['display-order'])
+          }
+          onChangeText={value =>
+            updateAttribute(
+              'display-order',
+              value === '' ? null : Number(value),
+            )
+          }
+          testID="number-input-order"
+        />
+        <CardInclusionConditions
+          board={board}
+          fields={fields}
+          attributes={attributes}
+          updateAttribute={updateAttribute}
+        />
+        <ColumnSortOrder
+          fields={fields}
+          attributes={attributes}
+          updateAttribute={updateAttribute}
+        />
+        <ColumnGrouping
+          fields={fields}
+          attributes={attributes}
+          updateAttribute={updateAttribute}
+        />
+        <ColumnSummary
+          fields={fields}
+          attributes={attributes}
+          updateAttribute={updateAttribute}
+        />
+        <ErrorMessage>{getErrorMessage()}</ErrorMessage>
+        <Button onPress={onCancel} disabled={isLoading}>
+          Cancel
+        </Button>
+        <Button onPress={() => setConfirmingDelete(true)} disabled={isLoading}>
+          Delete Column
+        </Button>
+        <Button
+          mode="primary"
+          onPress={handleUpdateColumn}
+          disabled={isLoading}
+        >
+          Save Column
+        </Button>
+      </Stack>
+    </>
   );
 }
 

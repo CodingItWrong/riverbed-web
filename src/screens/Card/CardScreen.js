@@ -1,6 +1,7 @@
 import {useCallback, useEffect, useState} from 'react';
 import {Outlet, useNavigate, useParams} from 'react-router-dom';
 import BackButton from '../../components/BackButton';
+import ConfirmationDialog from '../../components/ConfirmationDialog';
 import ErrorSnackbar from '../../components/ErrorSnackbar';
 import IconButton from '../../components/IconButton';
 import LoadingIndicator from '../../components/LoadingIndicator';
@@ -15,6 +16,7 @@ export default function CardScreen() {
   const {boardId, cardId} = useParams();
   const navigate = useNavigate();
   const [isEditingElements, setIsEditingElements] = useState(false);
+  const [confirmingDelete, setConfirmingDelete] = useState(false);
 
   // we use this instead of isLoading or isFetching because we do need the individual card to be newly loaded (so we need to wait on fetching), but we don't want to re-trigger the loading indicator any time we click back into the browser to fetch
   const [isFirstLoaded, setIsFirstLoaded] = useState(true);
@@ -59,7 +61,7 @@ export default function CardScreen() {
           <IconButton
             icon="delete"
             accessibilityLabel="Delete Card"
-            onClick={handleDeleteCard}
+            onClick={() => setConfirmingDelete(true)}
           />
         </div>
       );
@@ -82,6 +84,15 @@ export default function CardScreen() {
 
   return (
     <>
+      <ConfirmationDialog
+        destructive
+        open={confirmingDelete}
+        title="Delete Card?"
+        message="Are you sure you want to delete this card?"
+        confirmButtonLabel="Yes, Delete Card"
+        onConfirm={handleDeleteCard}
+        onDismiss={() => setConfirmingDelete(false)}
+      />
       <BaseModalScreen backTo={backPath}>
         <div style={sharedStyles.headerRow}>
           <BackButton to={backPath} accessibilityLabel="Close card" />

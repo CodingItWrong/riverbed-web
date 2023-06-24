@@ -128,6 +128,7 @@ describe('edit cards', () => {
 
       cy.contains(updatedTitle).click();
       cy.get('[aria-label="Delete Card"]').click();
+      cy.contains('Yes, Delete Card').click();
       cy.wait('@deleteCard');
       cy.contains(updatedTitle).should('not.exist');
     });
