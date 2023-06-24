@@ -129,22 +129,6 @@ export default function EditElementForm({
           onChangeText={value => updateAttribute('name', value)}
           testID="text-input-element-name"
         />
-        <NumberField
-          keyboard-type="number-pad"
-          label="Order"
-          value={
-            elementAttributes['display-order'] == null
-              ? ''
-              : String(elementAttributes['display-order'])
-          }
-          onChangeText={value =>
-            updateAttribute(
-              'display-order',
-              value === '' ? null : Number(value),
-            )
-          }
-          testID="number-input-order"
-        />
         {elementType === ELEMENT_TYPES.FIELD.key && (
           <>
             <DropdownField
