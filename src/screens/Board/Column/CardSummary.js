@@ -31,9 +31,10 @@ export default function CardSummary({card, board, elements, onPress, style}) {
   return (
     <Card
       key={card.id}
-      style={{...styles.card, ...style}}
+      style={style}
       onPress={onPress}
       testID={`card-${card.id}`}
+      contentStyole={styles.card}
     >
       <div style={styles.cardContent}>{contents()}</div>
     </Card>
