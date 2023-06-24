@@ -63,6 +63,40 @@ export function useUpdateElement(element, board) {
   });
 }
 
+export function useUpdateElementDisplayOrders(board) {
+  const elementClient = useElementClient();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async elements => {
+      const elementsWithUpdatedDisplayOrders = elements.map(
+        (element, index) => ({
+          ...element,
+          attributes: {
+            ...element.attributes,
+            'display-order': index,
+          },
+        }),
+      );
+
+      // update the cache immediately, to prevent flicker
+      queryClient.setQueryData(
+        ['elements', board.id],
+        elementsWithUpdatedDisplayOrders,
+      );
+
+      // update data on the server
+      for (let element of elementsWithUpdatedDisplayOrders) {
+        await elementClient.update({
+          type: 'elements',
+          id: element.id,
+          attributes: element.attributes,
+        });
+      }
+    },
+  });
+}
+
 export function useDeleteElement(element, board) {
   const elementClient = useElementClient();
   const queryClient = useQueryClient();
