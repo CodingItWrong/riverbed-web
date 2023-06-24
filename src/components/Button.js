@@ -23,7 +23,7 @@ export default function Button({
       endIcon={rightIcon ? renderedIcon : null}
       data-testid={testID}
     >
-      {children}
+      {children || 'Button'}
     </MuiButton>
   );
 }
