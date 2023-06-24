@@ -14,6 +14,7 @@ import {useBoardElements} from '../../data/elements';
 import ELEMENT_TYPES from '../../enums/elementTypes';
 import SORT_DIRECTIONS from '../../enums/sortDirections';
 import SUMMARY_FUNCTIONS from '../../enums/summaryFunctions';
+import useKeyHandler from '../../hooks/useKeyHandler';
 import sortByDisplayOrder from '../../utils/sortByDisplayOrder';
 
 export default function EditColumnForm({column, board, onChange, onCancel}) {
@@ -26,6 +27,8 @@ export default function EditColumnForm({column, board, onChange, onCancel}) {
       e => e.attributes['element-type'] === ELEMENT_TYPES.FIELD.key,
     ),
   );
+
+  useKeyHandler('Escape', onCancel);
 
   function updateAttribute(path, value) {
     setAttributes(oldAttributes => {

@@ -8,6 +8,7 @@ import LoadingIndicator from '../../components/LoadingIndicator';
 import sharedStyles from '../../components/sharedStyles';
 import {useBoard} from '../../data/boards';
 import {useCard, useDeleteCard} from '../../data/cards';
+import useKeyHandler from '../../hooks/useKeyHandler';
 import BaseModalScreen from '../BaseModalScreen';
 import EditCardForm from './EditCardForm';
 import ElementList from './ElementList';
@@ -34,6 +35,8 @@ export default function CardScreen() {
   const closeModal = useCallback(() => {
     navigate(`/boards/${boardId}`);
   }, [navigate, boardId]);
+
+  useKeyHandler('Escape', closeModal);
 
   const {mutate: deleteCard, error: deleteError} = useDeleteCard(card, board);
   const handleDeleteCard = useCallback(

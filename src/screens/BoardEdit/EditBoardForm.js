@@ -12,6 +12,7 @@ import {useBoardElements} from '../../data/elements';
 import COLOR_THEMES from '../../enums/colorThemes';
 import ELEMENT_TYPES from '../../enums/elementTypes';
 import ICONS from '../../enums/icons';
+import useKeyHandler from '../../hooks/useKeyHandler';
 import sortByDisplayOrder from '../../utils/sortByDisplayOrder';
 
 export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
@@ -24,6 +25,8 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
       e => e.attributes['element-type'] === ELEMENT_TYPES.FIELD.key,
     ),
   );
+
+  useKeyHandler('Escape', onCancel);
 
   const {
     mutate: updateBoard,
