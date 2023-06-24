@@ -10,7 +10,7 @@ const QUERIES = {
   },
   DOES_NOT_EQUAL_VALUE: {
     key: 'DOES_NOT_EQUAL_VALUE',
-    label: 'does not equal value',
+    label: 'does not equal',
     showConcreteValueField: true,
   },
   IS_CURRENT_MONTH: {
@@ -28,7 +28,7 @@ const QUERIES = {
   },
   EQUALS_VALUE: {
     key: 'EQUALS_VALUE',
-    label: 'equals value',
+    label: 'equals',
     showConcreteValueField: true,
   },
   IS_FUTURE: {

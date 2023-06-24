@@ -44,7 +44,7 @@ export default function ConditionInputs({
               style={styles.conditionClause}
             />
             <DropdownField
-              fieldLabel="Condition"
+              fieldLabel="Query"
               emptyLabel="(choose)"
               options={queryOptions}
               value={queryOptions.find(query => query.key === condition.query)}
