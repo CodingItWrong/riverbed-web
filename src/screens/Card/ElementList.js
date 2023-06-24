@@ -4,6 +4,7 @@ import Button from '../../components/Button';
 import DropdownMenu from '../../components/DropdownMenu';
 import ErrorSnackbar from '../../components/ErrorSnackbar';
 import Field from '../../components/Field';
+import Icon from '../../components/Icon';
 import IconButton from '../../components/IconButton';
 import Stack from '../../components/Stack';
 import Text from '../../components/Text';
@@ -145,6 +146,7 @@ function EditableElement({element, onEdit, testID, style}) {
       style={{...sharedStyles.row, ...styles.editRow, ...style}}
       data-testid={testID}
     >
+      <Icon name="drag-handle" />
       <div style={sharedStyles.fill}>{disabledElement()}</div>
       <IconButton
         icon="pencil"

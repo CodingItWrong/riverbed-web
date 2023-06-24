@@ -8,6 +8,7 @@ import CropFreeIcon from '@mui/icons-material/CropFree';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DirectionsIcon from '@mui/icons-material/Directions';
 import DoneIcon from '@mui/icons-material/Done';
+import DragHandleIcon from '@mui/icons-material/DragHandle';
 import EditIcon from '@mui/icons-material/Edit';
 import ExploreIcon from '@mui/icons-material/Explore';
 import FastfoodOutlinedIcon from '@mui/icons-material/FastfoodOutlined';
@@ -36,6 +37,7 @@ const MUI_NAME_TO_COMPONENT_MAP = {
   'arrow-back': ArrowBackIcon,
   'sports-baseball': SportsBaseballOutlinedIcon,
   bed: BedOutlinedIcon,
+  'drag-handle': DragHandleIcon,
   'menu-book': MenuBookIcon,
   'view-timeline': ViewTimelineOutlinedIcon,
   'check-bold': DoneIcon,
