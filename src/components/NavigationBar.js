@@ -21,7 +21,9 @@ export default function NavigationBar({options, backTo}) {
             onClick={onTitlePress}
             data-testid="navigation-bar-title"
           >
-            {title}
+            <Typography variant="h6" component="span" style={styles.buttonText}>
+              {title}
+            </Typography>
           </Button>
         ) : (
           <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
@@ -34,3 +36,9 @@ export default function NavigationBar({options, backTo}) {
     </AppBar>
   );
 }
+
+const styles = {
+  buttonText: {
+    textTransform: 'none',
+  },
+};
