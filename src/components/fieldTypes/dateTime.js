@@ -30,9 +30,9 @@ function DateTimeEditorComponent({
         setValue(string);
       }}
       disabled={disabled}
-      style={style}
       slotProps={{
         textField: {
+          style,
           variant: 'filled',
           'data-testid': `datetime-input-${field.id}`,
         },
