@@ -17,6 +17,7 @@ export default function ButtonGroup({label, value, onChangeValue, options}) {
         exclusive
         value={value ?? EMPTY_VALUE}
         onChange={handleChange}
+        sx={{flexWrap: 'wrap'}}
       >
         {options.map(option => {
           const color = option.iconColor
