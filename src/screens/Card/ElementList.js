@@ -92,6 +92,7 @@ export default function ElementList({board, card}) {
                     )}
                   </Draggable>
                 ))}
+                {provided.placeholder}
               </Stack>
             </div>
           )}
