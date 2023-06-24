@@ -71,28 +71,30 @@ export default function ElementList({board, card}) {
         <Droppable droppableId="droppable">
           {provided => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
-              {sortedElements.map((element, index) => (
-                <Draggable
-                  key={element.id}
-                  draggableId={element.id}
-                  index={index}
-                >
-                  {provided => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                    >
-                      <EditableElement
-                        key={element.id}
-                        element={element}
-                        onEdit={() => editElement(element)}
-                        testID={`element-${element.id}`}
-                      />
-                    </div>
-                  )}
-                </Draggable>
-              ))}
+              <Stack spacing={1}>
+                {sortedElements.map((element, index) => (
+                  <Draggable
+                    key={element.id}
+                    draggableId={element.id}
+                    index={index}
+                  >
+                    {provided => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                      >
+                        <EditableElement
+                          key={element.id}
+                          element={element}
+                          onEdit={() => editElement(element)}
+                          testID={`element-${element.id}`}
+                        />
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
+              </Stack>
             </div>
           )}
         </Droppable>
