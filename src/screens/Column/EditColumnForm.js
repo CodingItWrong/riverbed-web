@@ -60,15 +60,17 @@ export default function EditColumnForm({column, board, onChange, onCancel}) {
     }
   }
 
+  const deleteMessage = `Are you sure you want to delete ${
+    attributes.name ? `column "${attributes.name}"` : 'this column'
+  }? Cards in this column will still be available in other columns.`;
+
   return (
     <>
       <ConfirmationDialog
         destructive
         open={confirmingDelete}
         title="Delete Column?"
-        message={`Are you sure you want to delete ${
-          attributes.name ? `column "${attributes.name}"` : 'this column'
-        }? Data will not be able to be recovered.`}
+        message={deleteMessage}
         confirmButtonLabel="Yes, Delete Column"
         onConfirm={handleDeleteColumn}
         onDismiss={() => setConfirmingDelete(false)}
