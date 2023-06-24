@@ -30,7 +30,10 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
     isLoading: isSaving,
     isError: isUpdateError,
   } = useUpdateBoard(board);
-  const handleUpdateBoard = () => updateBoard(attributes, {onSuccess: onSave});
+  function handleUpdateBoard(e) {
+    e.preventDefault();
+    updateBoard(attributes, {onSuccess: onSave});
+  }
 
   const {
     mutate: deleteBoard,
@@ -68,77 +71,87 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
         onConfirm={handleDeleteBoard}
         onDismiss={() => setConfirmingDelete(false)}
       />
-      <Stack spacing={1}>
-        <TextField
-          label="Board Name"
-          value={attributes.name ?? ''}
-          onChangeText={value => updateAttribute('name', value)}
-          testID="text-input-board-name"
-        />
-        <ButtonGroup
-          label="Color Theme"
-          value={attributes['color-theme']}
-          onChangeValue={value => updateAttribute('color-theme', value)}
-          options={COLOR_THEME_OPTIONS}
-        />
-        <ButtonGroup
-          label="Icon"
-          value={attributes.icon}
-          onChangeValue={value => updateAttribute('icon', value)}
-          options={ICON_OPTIONS}
-        />
-        <TextField
-          label="Card Create Webhook"
-          value={attributes.options.webhooks?.['card-create'] ?? ''}
-          onChangeText={value =>
-            updateAttribute('options.webhooks["card-create"]', value || null)
-          }
-        />
-        <TextField
-          label="Card Update Webhook"
-          value={attributes.options.webhooks?.['card-update'] ?? ''}
-          onChangeText={value =>
-            updateAttribute('options.webhooks["card-update"]', value || null)
-          }
-        />
-        <DropdownField
-          fieldLabel="Share URL Field"
-          emptyLabel="(field)"
-          options={fields}
-          value={fields.find(
-            f => f.id === attributes.options.share?.['url-field'],
-          )}
-          onValueChange={field =>
-            updateAttribute('options.share["url-field"]', field?.id)
-          }
-          keyExtractor={field => field.id}
-          labelExtractor={field => field.attributes.name}
-        />
-        <DropdownField
-          fieldLabel="Share Title Field"
-          emptyLabel="(field)"
-          options={fields}
-          value={fields.find(
-            f => f.id === attributes.options.share?.['title-field'],
-          )}
-          onValueChange={field =>
-            updateAttribute('options.share["title-field"]', field?.id)
-          }
-          keyExtractor={field => field.id}
-          labelExtractor={field => field.attributes.name}
-        />
+      <form>
+        <Stack spacing={1}>
+          <TextField
+            label="Board Name"
+            value={attributes.name ?? ''}
+            onChangeText={value => updateAttribute('name', value)}
+            testID="text-input-board-name"
+          />
+          <ButtonGroup
+            label="Color Theme"
+            value={attributes['color-theme']}
+            onChangeValue={value => updateAttribute('color-theme', value)}
+            options={COLOR_THEME_OPTIONS}
+          />
+          <ButtonGroup
+            label="Icon"
+            value={attributes.icon}
+            onChangeValue={value => updateAttribute('icon', value)}
+            options={ICON_OPTIONS}
+          />
+          <TextField
+            label="Card Create Webhook"
+            value={attributes.options.webhooks?.['card-create'] ?? ''}
+            onChangeText={value =>
+              updateAttribute('options.webhooks["card-create"]', value || null)
+            }
+          />
+          <TextField
+            label="Card Update Webhook"
+            value={attributes.options.webhooks?.['card-update'] ?? ''}
+            onChangeText={value =>
+              updateAttribute('options.webhooks["card-update"]', value || null)
+            }
+          />
+          <DropdownField
+            fieldLabel="Share URL Field"
+            emptyLabel="(field)"
+            options={fields}
+            value={fields.find(
+              f => f.id === attributes.options.share?.['url-field'],
+            )}
+            onValueChange={field =>
+              updateAttribute('options.share["url-field"]', field?.id)
+            }
+            keyExtractor={field => field.id}
+            labelExtractor={field => field.attributes.name}
+          />
+          <DropdownField
+            fieldLabel="Share Title Field"
+            emptyLabel="(field)"
+            options={fields}
+            value={fields.find(
+              f => f.id === attributes.options.share?.['title-field'],
+            )}
+            onValueChange={field =>
+              updateAttribute('options.share["title-field"]', field?.id)
+            }
+            keyExtractor={field => field.id}
+            labelExtractor={field => field.attributes.name}
+          />
 
-        <ErrorMessage>{getErrorMessage()}</ErrorMessage>
-        <Button onPress={onCancel} disabled={isLoading}>
-          Cancel
-        </Button>
-        <Button onPress={() => setConfirmingDelete(true)} disabled={isLoading}>
-          Delete Board
-        </Button>
-        <Button mode="primary" onPress={handleUpdateBoard} disabled={isLoading}>
-          Save Board
-        </Button>
-      </Stack>
+          <ErrorMessage>{getErrorMessage()}</ErrorMessage>
+          <Button onPress={onCancel} disabled={isLoading}>
+            Cancel
+          </Button>
+          <Button
+            onPress={() => setConfirmingDelete(true)}
+            disabled={isLoading}
+          >
+            Delete Board
+          </Button>
+          <Button
+            type="submit"
+            mode="primary"
+            onPress={handleUpdateBoard}
+            disabled={isLoading}
+          >
+            Save Board
+          </Button>
+        </Stack>
+      </form>
     </>
   );
 }

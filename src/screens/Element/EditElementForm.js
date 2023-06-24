@@ -63,8 +63,10 @@ export default function EditElementForm({
     isLoading: isSaving,
     isError: isUpdateError,
   } = useUpdateElement(element, board);
-  const handleUpdateElement = () =>
+  function handleUpdateElement(e) {
+    e.preventDefault();
     updateElement(elementAttributes, {onSuccess: onSave});
+  }
 
   const [confirmingDelete, setConfirmingDelete] = useState(false);
   const {
@@ -119,224 +121,243 @@ export default function EditElementForm({
   }
 
   return (
-    <Stack spacing={1}>
-      <TextField
-        label={`${startCase(elementType)} Name`}
-        value={elementAttributes.name ?? ''}
-        onChangeText={value => updateAttribute('name', value)}
-        testID="text-input-element-name"
-      />
-      <NumberField
-        keyboard-type="number-pad"
-        label="Order"
-        value={
-          elementAttributes['display-order'] == null
-            ? ''
-            : String(elementAttributes['display-order'])
-        }
-        onChangeText={value =>
-          updateAttribute('display-order', value === '' ? null : Number(value))
-        }
-        testID="number-input-order"
-      />
-      {elementType === ELEMENT_TYPES.FIELD.key && (
-        <>
-          <DropdownField
-            fieldLabel="Data Type"
-            emptyLabel="(choose)"
-            value={dataTypeOptions.find(
-              o => o.key === elementAttributes['data-type'],
-            )}
-            onValueChange={option => updateAttribute('data-type', option?.key)}
-            options={dataTypeOptions}
-          />
-          <DropdownField
-            fieldLabel="Initial Value"
-            emptyLabel="(choose)"
-            value={valueOptions.find(
-              o => o.key === elementAttributes['initial-value'],
-            )}
-            onValueChange={option =>
-              updateAttribute('initial-value', option?.key)
-            }
-            options={valueOptions}
-          />
-          {elementAttributes['initial-value'] === VALUES.SPECIFIC_VALUE.key && (
-            <Field
-              field={element}
-              label="Initial value"
-              value={elementAttributes.options?.['initial-specific-value']}
-              setValue={v =>
-                updateAttribute("options['initial-specific-value']", v)
+    <form onSubmit={handleUpdateElement}>
+      <Stack spacing={1}>
+        <TextField
+          label={`${startCase(elementType)} Name`}
+          value={elementAttributes.name ?? ''}
+          onChangeText={value => updateAttribute('name', value)}
+          testID="text-input-element-name"
+        />
+        <NumberField
+          keyboard-type="number-pad"
+          label="Order"
+          value={
+            elementAttributes['display-order'] == null
+              ? ''
+              : String(elementAttributes['display-order'])
+          }
+          onChangeText={value =>
+            updateAttribute(
+              'display-order',
+              value === '' ? null : Number(value),
+            )
+          }
+          testID="number-input-order"
+        />
+        {elementType === ELEMENT_TYPES.FIELD.key && (
+          <>
+            <DropdownField
+              fieldLabel="Data Type"
+              emptyLabel="(choose)"
+              value={dataTypeOptions.find(
+                o => o.key === elementAttributes['data-type'],
+              )}
+              onValueChange={option =>
+                updateAttribute('data-type', option?.key)
               }
+              options={dataTypeOptions}
             />
-          )}
-          <LabeledCheckbox
-            label="Show Label When Read-Only"
-            checked={elementAttributes.options['show-label-when-read-only']}
-            onChangeChecked={newChecked =>
-              updateAttribute('options.show-label-when-read-only', newChecked)
-            }
-            testID="checkbox-show-label-when-read-only"
-          />
-          <LabeledCheckbox
-            label="Read-Only"
-            checked={elementAttributes['read-only']}
-            onChangeChecked={newChecked =>
-              updateAttribute('read-only', newChecked)
-            }
-            testID="checkbox-read-only"
-          />
-          {elementAttributes['data-type'] === FIELD_DATA_TYPES.TEXT.key && (
+            <DropdownField
+              fieldLabel="Initial Value"
+              emptyLabel="(choose)"
+              value={valueOptions.find(
+                o => o.key === elementAttributes['initial-value'],
+              )}
+              onValueChange={option =>
+                updateAttribute('initial-value', option?.key)
+              }
+              options={valueOptions}
+            />
+            {elementAttributes['initial-value'] ===
+              VALUES.SPECIFIC_VALUE.key && (
+              <Field
+                field={element}
+                label="Initial value"
+                value={elementAttributes.options?.['initial-specific-value']}
+                setValue={v =>
+                  updateAttribute("options['initial-specific-value']", v)
+                }
+              />
+            )}
             <LabeledCheckbox
-              label="Multiple Lines"
-              checked={elementAttributes.options.multiline}
+              label="Show Label When Read-Only"
+              checked={elementAttributes.options['show-label-when-read-only']}
               onChangeChecked={newChecked =>
-                updateAttribute('options.multiline', newChecked)
+                updateAttribute('options.show-label-when-read-only', newChecked)
               }
+              testID="checkbox-show-label-when-read-only"
             />
-          )}
-          {elementAttributes['data-type'] === FIELD_DATA_TYPES.CHOICE.key && (
-            <>
-              {elementAttributes.options.choices?.map((choice, index) => (
-                <div key={index /* it's fine */} style={sharedStyles.row}>
+            <LabeledCheckbox
+              label="Read-Only"
+              checked={elementAttributes['read-only']}
+              onChangeChecked={newChecked =>
+                updateAttribute('read-only', newChecked)
+              }
+              testID="checkbox-read-only"
+            />
+            {elementAttributes['data-type'] === FIELD_DATA_TYPES.TEXT.key && (
+              <LabeledCheckbox
+                label="Multiple Lines"
+                checked={elementAttributes.options.multiline}
+                onChangeChecked={newChecked =>
+                  updateAttribute('options.multiline', newChecked)
+                }
+              />
+            )}
+            {elementAttributes['data-type'] === FIELD_DATA_TYPES.CHOICE.key && (
+              <>
+                {elementAttributes.options.choices?.map((choice, index) => (
+                  <div key={index /* it's fine */} style={sharedStyles.row}>
+                    <TextField
+                      label="Choice"
+                      value={choice.label ?? ''}
+                      onChangeText={value =>
+                        updateAttribute(
+                          `options.choices[${index}].label`,
+                          value,
+                        )
+                      }
+                      testID={`text-input-choice-${index}-label`}
+                      style={sharedStyles.fill}
+                    />
+                    <IconButton
+                      icon="close-circle"
+                      onPress={() => removeChoiceAtIndex(index)}
+                      accessibilityLabel="Remove choice"
+                    />
+                  </div>
+                ))}
+                <Button mode="link" icon="plus" onPress={addChoice}>
+                  Add Choice
+                </Button>
+              </>
+            )}
+            <FormGroup title="Summary View">
+              <LabeledCheckbox
+                label="Show Field"
+                checked={elementAttributes['show-in-summary']}
+                onChangeChecked={newChecked =>
+                  updateAttribute('show-in-summary', newChecked)
+                }
+                testID="checkbox-show-in-summary"
+                style={styles.checkboxFix}
+              />
+              <DropdownField
+                fieldLabel="Text Size"
+                emptyLabel="(choose)"
+                value={TEXT_SIZES.find(
+                  o => o.key === elementAttributes.options['text-size'],
+                )}
+                onValueChange={option =>
+                  updateAttribute('options["text-size"]', option?.key)
+                }
+                options={TEXT_SIZES}
+                labelExtractor={option => (
+                  <Text size={option.key}>{option.label}</Text>
+                )}
+              />
+              <LabeledCheckbox
+                label="Link URLs"
+                checked={elementAttributes.options['link-urls']}
+                onChangeChecked={newChecked =>
+                  updateAttribute('options["link-urls"]', newChecked)
+                }
+              />
+              <LabeledCheckbox
+                label="Abbreviate URLs"
+                checked={elementAttributes.options['abbreviate-urls']}
+                onChangeChecked={newChecked =>
+                  updateAttribute('options["abbreviate-urls"]', newChecked)
+                }
+              />
+            </FormGroup>
+          </>
+        )}
+        {elementType === ELEMENT_TYPES.BUTTON.key && (
+          <ActionInputs
+            actions={elementAttributes.options?.actions ?? []}
+            updateActionsAttribute={(path, value) =>
+              updateAttribute(`options.actions${path}`, value)
+            }
+            attributes={elementAttributes}
+            updateAttribute={updateAttribute}
+            fields={fields}
+          />
+        )}
+        {elementType === ELEMENT_TYPES.BUTTON_MENU.key && (
+          <FormGroup title="Button Menu Items">
+            {elementAttributes.options?.items?.map((menuItem, index) => (
+              <div
+                key={index /* it's fine */}
+                data-testid={`menu-item-${index}`}
+              >
+                <div style={sharedStyles.row}>
                   <TextField
-                    label="Choice"
-                    value={choice.label ?? ''}
-                    onChangeText={value =>
-                      updateAttribute(`options.choices[${index}].label`, value)
+                    label="Menu Item Name"
+                    testID={`text-input-menu-item-${index}-name`}
+                    value={menuItem.name ?? ''}
+                    onChangeText={newName =>
+                      updateAttribute(`options.items[${index}].name`, newName)
                     }
-                    testID={`text-input-choice-${index}-label`}
                     style={sharedStyles.fill}
                   />
                   <IconButton
                     icon="close-circle"
-                    onPress={() => removeChoiceAtIndex(index)}
-                    accessibilityLabel="Remove choice"
+                    onPress={() => removeButtonMenuItemAtIndex(index)}
+                    accessibilityLabel="Remove menu item"
                   />
                 </div>
-              ))}
-              <Button mode="link" icon="plus" onPress={addChoice}>
-                Add Choice
-              </Button>
-            </>
-          )}
-          <FormGroup title="Summary View">
-            <LabeledCheckbox
-              label="Show Field"
-              checked={elementAttributes['show-in-summary']}
-              onChangeChecked={newChecked =>
-                updateAttribute('show-in-summary', newChecked)
-              }
-              testID="checkbox-show-in-summary"
-              style={styles.checkboxFix}
-            />
-            <DropdownField
-              fieldLabel="Text Size"
-              emptyLabel="(choose)"
-              value={TEXT_SIZES.find(
-                o => o.key === elementAttributes.options['text-size'],
-              )}
-              onValueChange={option =>
-                updateAttribute('options["text-size"]', option?.key)
-              }
-              options={TEXT_SIZES}
-              labelExtractor={option => (
-                <Text size={option.key}>{option.label}</Text>
-              )}
-            />
-            <LabeledCheckbox
-              label="Link URLs"
-              checked={elementAttributes.options['link-urls']}
-              onChangeChecked={newChecked =>
-                updateAttribute('options["link-urls"]', newChecked)
-              }
-            />
-            <LabeledCheckbox
-              label="Abbreviate URLs"
-              checked={elementAttributes.options['abbreviate-urls']}
-              onChangeChecked={newChecked =>
-                updateAttribute('options["abbreviate-urls"]', newChecked)
-              }
-            />
+                <ActionInputs
+                  actions={menuItem.actions ?? []}
+                  updateActionsAttribute={(path, value) =>
+                    updateAttribute(
+                      `options.items[${index}].actions${path}`,
+                      value,
+                    )
+                  }
+                  fields={fields}
+                />
+              </div>
+            ))}
+            <Button mode="link" icon="plus" onPress={addButtonMenuItem}>
+              Add Menu Item
+            </Button>
           </FormGroup>
-        </>
-      )}
-      {elementType === ELEMENT_TYPES.BUTTON.key && (
-        <ActionInputs
-          actions={elementAttributes.options?.actions ?? []}
-          updateActionsAttribute={(path, value) =>
-            updateAttribute(`options.actions${path}`, value)
-          }
+        )}
+        <ShowConditionsInputs
           attributes={elementAttributes}
           updateAttribute={updateAttribute}
           fields={fields}
         />
-      )}
-      {elementType === ELEMENT_TYPES.BUTTON_MENU.key && (
-        <FormGroup title="Button Menu Items">
-          {elementAttributes.options?.items?.map((menuItem, index) => (
-            <div key={index /* it's fine */} data-testid={`menu-item-${index}`}>
-              <div style={sharedStyles.row}>
-                <TextField
-                  label="Menu Item Name"
-                  testID={`text-input-menu-item-${index}-name`}
-                  value={menuItem.name ?? ''}
-                  onChangeText={newName =>
-                    updateAttribute(`options.items[${index}].name`, newName)
-                  }
-                  style={sharedStyles.fill}
-                />
-                <IconButton
-                  icon="close-circle"
-                  onPress={() => removeButtonMenuItemAtIndex(index)}
-                  accessibilityLabel="Remove menu item"
-                />
-              </div>
-              <ActionInputs
-                actions={menuItem.actions ?? []}
-                updateActionsAttribute={(path, value) =>
-                  updateAttribute(
-                    `options.items[${index}].actions${path}`,
-                    value,
-                  )
-                }
-                fields={fields}
-              />
-            </div>
-          ))}
-          <Button mode="link" icon="plus" onPress={addButtonMenuItem}>
-            Add Menu Item
-          </Button>
-        </FormGroup>
-      )}
-      <ShowConditionsInputs
-        attributes={elementAttributes}
-        updateAttribute={updateAttribute}
-        fields={fields}
-      />
-      <ErrorMessage>{getErrorMessage()}</ErrorMessage>
-      <ConfirmationDialog
-        destructive
-        open={confirmingDelete}
-        title={`Delete ${startCase(elementType)}?`}
-        message={`Are you sure you want to delete ${elementType} "${
-          elementAttributes.name
-        }"? ${getDeleteConfirmationMessageExtraContent()}Data will not be able to be recovered.`}
-        confirmButtonLabel={`Yes, Delete ${startCase(elementType)}`}
-        onConfirm={handleDeleteElement}
-        onDismiss={() => setConfirmingDelete(false)}
-      />
-      <Button onPress={onCancel} disabled={isLoading}>
-        Cancel
-      </Button>
-      <Button onPress={() => setConfirmingDelete(true)} disabled={isLoading}>
-        Delete {startCase(elementType)}
-      </Button>
-      <Button mode="primary" onPress={handleUpdateElement} disabled={isLoading}>
-        Save {startCase(elementType)}
-      </Button>
-    </Stack>
+        <ErrorMessage>{getErrorMessage()}</ErrorMessage>
+        <ConfirmationDialog
+          destructive
+          open={confirmingDelete}
+          title={`Delete ${startCase(elementType)}?`}
+          message={`Are you sure you want to delete ${elementType} "${
+            elementAttributes.name
+          }"? ${getDeleteConfirmationMessageExtraContent()}Data will not be able to be recovered.`}
+          confirmButtonLabel={`Yes, Delete ${startCase(elementType)}`}
+          onConfirm={handleDeleteElement}
+          onDismiss={() => setConfirmingDelete(false)}
+        />
+        <Button onPress={onCancel} disabled={isLoading}>
+          Cancel
+        </Button>
+        <Button onPress={() => setConfirmingDelete(true)} disabled={isLoading}>
+          Delete {startCase(elementType)}
+        </Button>
+        <Button
+          type="submit"
+          mode="primary"
+          onPress={handleUpdateElement}
+          disabled={isLoading}
+        >
+          Save {startCase(elementType)}
+        </Button>
+      </Stack>
+    </form>
   );
 }
 

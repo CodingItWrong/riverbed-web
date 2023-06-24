@@ -26,6 +26,11 @@ export default function SignIn() {
   const {username, password, error, handleChange, handleLogIn} =
     useLoginForm(onLogIn);
 
+  function handleSubmit(e) {
+    e.preventDefault();
+    handleLogIn();
+  }
+
   useEffect(() => {
     if (isLoggedIn) {
       navigate('/boards');
@@ -37,28 +42,30 @@ export default function SignIn() {
       <NavigationBar options={{title: 'Riverbed'}} />
       <ScreenBackground style={styles.container}>
         <CenterColumn>
-          <Stack spacing={1}>
-            <TextField
-              label="Email"
-              testID="text-input-email"
-              value={username}
-              onChangeText={handleChange('username')}
-              keyboardType="email-address"
-              autoCapitalize="none"
-              autoCorrect="off"
-            />
-            <TextField
-              label="Password"
-              testID="text-input-password"
-              value={password}
-              onChangeText={handleChange('password')}
-              secureTextEntry
-            />
-            <ErrorMessage>{error}</ErrorMessage>
-            <Button mode="primary" onPress={handleLogIn}>
-              Sign in
-            </Button>
-          </Stack>
+          <form onSubmit={handleSubmit}>
+            <Stack spacing={1}>
+              <TextField
+                label="Email"
+                testID="text-input-email"
+                value={username}
+                onChangeText={handleChange('username')}
+                keyboardType="email-address"
+                autoCapitalize="none"
+                autoCorrect="off"
+              />
+              <TextField
+                label="Password"
+                testID="text-input-password"
+                value={password}
+                onChangeText={handleChange('password')}
+                secureTextEntry
+              />
+              <ErrorMessage>{error}</ErrorMessage>
+              <Button type="submit" mode="primary">
+                Sign in
+              </Button>
+            </Stack>
+          </form>
         </CenterColumn>
       </ScreenBackground>
     </>

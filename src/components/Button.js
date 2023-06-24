@@ -2,6 +2,7 @@ import MuiButton from '@mui/material/Button';
 import Icon from './Icon';
 
 export default function Button({
+  type,
   icon,
   onPress,
   disabled,
@@ -15,6 +16,7 @@ export default function Button({
   const renderedIcon = icon && <Icon name={icon} />;
   return (
     <MuiButton
+      type={type}
       variant={muiVariant}
       onClick={onPress}
       disabled={disabled}
