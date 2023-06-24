@@ -80,16 +80,13 @@ export default function ElementList({board, card}) {
                     index={index}
                   >
                     {provided => (
-                      <div
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                      >
+                      <div ref={provided.innerRef} {...provided.draggableProps}>
                         <EditableElement
                           key={element.id}
                           element={element}
                           onEdit={() => editElement(element)}
                           testID={`element-${element.id}`}
+                          dragData={provided}
                         />
                       </div>
                     )}
@@ -119,7 +116,7 @@ export default function ElementList({board, card}) {
   );
 }
 
-function EditableElement({element, onEdit, testID, style}) {
+function EditableElement({element, onEdit, testID, style, dragData}) {
   const {name, 'element-type': elementType} = element.attributes;
   const elementTypeObject = Object.values(ELEMENT_TYPES).find(
     et => et.key === elementType,
@@ -146,7 +143,9 @@ function EditableElement({element, onEdit, testID, style}) {
       style={{...sharedStyles.row, ...styles.editRow, ...style}}
       data-testid={testID}
     >
-      <Icon name="drag-handle" />
+      <div {...dragData.dragHandleProps}>
+        <Icon name="drag-handle" />
+      </div>
       <div style={sharedStyles.fill}>{disabledElement()}</div>
       <IconButton
         icon="pencil"
