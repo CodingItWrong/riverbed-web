@@ -150,7 +150,7 @@ const COLOR_THEME_OPTIONS = [
   key: colorTheme.key,
   label: colorTheme.label,
   icon: 'square',
-  iconColor: colorTheme.key ?? 'purple', // TODO: this is not quite the right purple
+  iconColor: colorTheme.key ?? 'default',
 }));
 
 const ICON_OPTIONS = [{key: null, label: 'None'}, ...ICONS].map(icon => ({
