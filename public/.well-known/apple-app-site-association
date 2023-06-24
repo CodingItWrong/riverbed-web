@@ -1,0 +1,21 @@
+{
+    "applinks":
+    {
+        "details":
+        [
+            {
+                "appIDs":
+                [
+                    "6283CFQE2Y.com.codingitwrong.riverbed.uikit"
+                ]
+            }
+        ]
+    },
+    "webcredentials":
+    {
+        "apps":
+        [
+            "6283CFQE2Y.com.codingitwrong.riverbed.uikit"
+        ]
+    }
+}
