@@ -282,7 +282,9 @@ describe('edit columns', () => {
       cy.contains('(choose)').click();
       cy.get('[role=listbox]').contains('Title').click();
       cy.contains('(choose)').click();
-      cy.get('[role=listbox]').contains(QUERIES.EQUALS_VALUE.label).click();
+      cy.get('[role=listbox]')
+        .contains(new RegExp(`^${QUERIES.EQUALS_VALUE.label}$`))
+        .click();
       cy.get(`[data-testid="text-input-${titleField.id}`).type(unownedTitle);
 
       const filteredColumn = Factory.column(
