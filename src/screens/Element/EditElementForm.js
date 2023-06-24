@@ -35,7 +35,6 @@ export default function EditElementForm({
   onSave,
   onDelete,
   onCancel,
-  style,
 }) {
   const {data: elements = []} = useBoardElements(board);
   const fields = sortByDisplayOrder(
@@ -86,7 +85,7 @@ export default function EditElementForm({
     ]);
 
   function removeButtonMenuItemAtIndex(index) {
-    const newItems = [...elementAttributes.options?.items];
+    const newItems = [...(elementAttributes.options?.items ?? [])];
     newItems.splice(index, 1);
     updateAttribute('options.items', newItems);
   }

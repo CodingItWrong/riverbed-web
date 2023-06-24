@@ -6,9 +6,7 @@ import fieldTypes from './fieldTypes';
 export default function Field({
   field,
   value,
-  index,
   readOnly,
-  summary,
   disabled,
   setValue,
   style,

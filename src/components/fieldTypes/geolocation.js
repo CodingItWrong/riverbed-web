@@ -17,14 +17,7 @@ const geolocationFieldDataType = {
   EditorComponent: GeolocationEditorComponent,
 };
 
-function GeolocationEditorComponent({
-  field,
-  label,
-  value,
-  setValue,
-  disabled,
-  style,
-}) {
+function GeolocationEditorComponent({field, label, value, setValue, disabled}) {
   const [isPermissionDenied, setIsPermissionDenied] = useState(false);
   const [isLoadingCurrentPosition, setIsLoadingCurrentPosition] =
     useState(false);

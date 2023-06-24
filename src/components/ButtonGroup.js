@@ -5,13 +5,7 @@ import {primaryColors} from '../theme/primaryColors';
 import Icon from './Icon';
 import Stack from './Stack';
 
-export default function ButtonGroup({
-  label,
-  value,
-  onChangeValue,
-  options,
-  style,
-}) {
+export default function ButtonGroup({label, value, onChangeValue, options}) {
   function handleChange(event, newValue) {
     onChangeValue(newValue === EMPTY_VALUE ? null : newValue);
   }

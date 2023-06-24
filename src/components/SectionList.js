@@ -14,7 +14,7 @@ export default function SectionList({
     <div style={{...styles.container, ...contentContainerStyle}}>
       {sections.length === 0
         ? ListEmptyComponent
-        : sections.map((section, sectionIndex) => (
+        : sections.map(section => (
             <div key={sectionKeyExtractor(section)}>
               {/*Replace with a section key extractor*/}
               {renderSectionHeader({section})}

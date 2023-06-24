@@ -81,8 +81,18 @@ export default function EditCardForm({card, board, onClose}) {
 
     const fieldObject = elements.find(element => element.id === field);
 
+    function getStartDate() {
+      const now = new Date();
+      const fieldDate = dateUtils.serverStringToObject(fieldValues[field]);
+      if (fieldDate && fieldDate >= now) {
+        return fieldDate;
+      } else {
+        return now;
+      }
+    }
+
     switch (command) {
-      case COMMANDS.SET_VALUE.key:
+      case COMMANDS.SET_VALUE.key: {
         const valueObject = Object.values(VALUES).find(v => v.key === value);
         if (valueObject) {
           const concreteValue = valueObject.call(
@@ -93,21 +103,14 @@ export default function EditCardForm({card, board, onClose}) {
           console.error(`unknown value: ${value}`);
           return;
         }
-      case COMMANDS.ADD_DAYS.key:
+      }
+      case COMMANDS.ADD_DAYS.key: {
         // TODO: handle datetime
-        function getStartDate() {
-          const now = new Date();
-          const fieldDate = dateUtils.serverStringToObject(fieldValues[field]);
-          if (fieldDate && fieldDate >= now) {
-            return fieldDate;
-          } else {
-            return now;
-          }
-        }
         const startDate = getStartDate();
         const updatedDate = dateUtils.addDays(startDate, Number(value));
         const concreteValue = dateUtils.objectToServerString(updatedDate);
         return {[field]: concreteValue};
+      }
       default:
         console.error(`unknown command: ${command}`);
     }

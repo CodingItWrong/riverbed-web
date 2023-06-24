@@ -34,7 +34,7 @@ function useBoardPrimaryColor(board) {
   return colorTheme.palette.primary.main;
 }
 
-function FavoriteButton({board, onToggleFavorite}) {
+function FavoriteButton({board}) {
   const {attributes} = board;
   const isFavorite = Boolean(attributes['favorited-at']);
 
