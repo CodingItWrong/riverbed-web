@@ -111,7 +111,9 @@ export default function Column({column, board, onEdit, onSelectCard}) {
           }
 
           return (
-            <SectionHeader testID="group-heading">{textToShow}</SectionHeader>
+            <SectionHeader testID="group-heading" style={sharedStyles.mt}>
+              {textToShow}
+            </SectionHeader>
           );
         }}
         renderItem={({item: card, section: group}) => (
@@ -119,7 +121,6 @@ export default function Column({column, board, onEdit, onSelectCard}) {
             data-testid={
               cardGrouping && `group-${cardGrouping.field}-${group.value}-card`
             }
-            style={sharedStyles.mb}
           >
             <CardSummary
               card={card}
