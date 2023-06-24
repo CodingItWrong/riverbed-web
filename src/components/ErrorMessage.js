@@ -1,6 +1,6 @@
 import Alert from '@mui/material/Alert';
 
-export default function ErrorMessage({theme, children, style}) {
+export default function ErrorMessage({children, style}) {
   return (
     children && (
       <Alert

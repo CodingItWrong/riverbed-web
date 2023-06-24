@@ -114,7 +114,7 @@ export default function BoardList() {
                   </SectionHeader>
                 );
               }}
-              renderItem={({item: board, index}) => (
+              renderItem={({item: board}) => (
                 <BoardCard
                   board={board}
                   onPress={() => goToBoard(board)}

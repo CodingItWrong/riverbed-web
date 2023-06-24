@@ -86,19 +86,16 @@ export default function EditColumnForm({column, board, onChange, onCancel}) {
         updateAttribute={updateAttribute}
       />
       <ColumnSortOrder
-        board={board}
         fields={fields}
         attributes={attributes}
         updateAttribute={updateAttribute}
       />
       <ColumnGrouping
-        board={board}
         fields={fields}
         attributes={attributes}
         updateAttribute={updateAttribute}
       />
       <ColumnSummary
-        board={board}
         fields={fields}
         attributes={attributes}
         updateAttribute={updateAttribute}
@@ -133,7 +130,7 @@ function CardInclusionConditions({fields, attributes, updateAttribute}) {
   );
 }
 
-function ColumnSortOrder({board, fields, attributes, updateAttribute}) {
+function ColumnSortOrder({fields, attributes, updateAttribute}) {
   const sortDirectionOptions = Object.values(SORT_DIRECTIONS);
 
   return (
@@ -171,7 +168,7 @@ function ColumnSortOrder({board, fields, attributes, updateAttribute}) {
   );
 }
 
-function ColumnGrouping({board, fields, attributes, updateAttribute}) {
+function ColumnGrouping({fields, attributes, updateAttribute}) {
   const sortDirectionOptions = Object.values(SORT_DIRECTIONS);
 
   return (
@@ -207,7 +204,7 @@ function ColumnGrouping({board, fields, attributes, updateAttribute}) {
   );
 }
 
-function ColumnSummary({board, fields, attributes, updateAttribute}) {
+function ColumnSummary({fields, attributes, updateAttribute}) {
   const summaryFunctionOptions = Object.values(SUMMARY_FUNCTIONS);
 
   return (

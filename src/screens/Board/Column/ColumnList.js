@@ -96,7 +96,7 @@ export default function ColumnList({board}) {
         pagingEnabled={pagingEnabled}
         style={sharedStyles.fullHeight}
       >
-        {sortedColumns.map((column, columnIndex) => (
+        {sortedColumns.map(column => (
           <Column
             key={column.id}
             column={column}

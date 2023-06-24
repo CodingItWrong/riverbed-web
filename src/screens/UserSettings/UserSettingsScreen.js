@@ -24,7 +24,6 @@ export default function UserSettingsScreen() {
         <EditSettingsForm
           user={user}
           onSave={closeModal}
-          onDelete={closeModal}
           onCancel={closeModal}
         />
       );

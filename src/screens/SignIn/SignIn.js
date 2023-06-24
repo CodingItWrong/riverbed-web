@@ -14,7 +14,7 @@ import {useToken} from '../../data/token';
 
 const client = httpClient();
 
-export default function SignIn({navigation}) {
+export default function SignIn() {
   const {isLoggedIn, setToken} = useToken();
   const navigate = useNavigate();
   const onLogIn = ({username, password}) =>

@@ -46,7 +46,7 @@ export default function ElementList({board, card}) {
 
   return (
     <Stack spacing={1}>
-      {sortedElements.map((element, elementIndex) => (
+      {sortedElements.map(element => (
         <EditableElement
           key={element.id}
           element={element}

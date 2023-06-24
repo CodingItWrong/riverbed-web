@@ -3,7 +3,7 @@ import Field from '../../../components/Field';
 import Text from '../../../components/Text';
 import sortByDisplayOrder from '../../../utils/sortByDisplayOrder';
 
-export default function CardSummary({card, board, elements, onPress, style}) {
+export default function CardSummary({card, elements, onPress, style}) {
   const fieldsToShow = sortByDisplayOrder(
     elements.filter(field => field.attributes['show-in-summary']),
   );
@@ -14,14 +14,12 @@ export default function CardSummary({card, board, elements, onPress, style}) {
     } else if (fieldsToShow.length === 0) {
       return <Text size={4}>(no fields to show!)</Text>;
     }
-    return fieldsToShow.map((field, index) => (
+    return fieldsToShow.map(field => (
       <div key={field.id} data-testid="field-value">
         <Field
           field={field}
           value={card.attributes['field-values'][field.id]}
           readOnly
-          summary
-          index={index}
         />
       </div>
     ));

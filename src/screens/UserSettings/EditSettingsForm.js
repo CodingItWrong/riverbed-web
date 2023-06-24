@@ -8,7 +8,7 @@ import Stack from '../../components/Stack';
 import {useBoards} from '../../data/boards';
 import {useUpdateUser} from '../../data/user';
 
-export default function EditSettingsForm({user, onSave, onDelete, onCancel}) {
+export default function EditSettingsForm({user, onSave, onCancel}) {
   const [attributes, setAttributes] = useState(user.attributes);
 
   const {data: boards = []} = useBoards();
