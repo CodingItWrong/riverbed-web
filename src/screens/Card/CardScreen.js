@@ -60,6 +60,7 @@ export default function CardScreen() {
           />
           <IconButton
             icon="delete"
+            color="error"
             accessibilityLabel="Delete Card"
             onClick={() => setConfirmingDelete(true)}
           />
