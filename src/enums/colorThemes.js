@@ -6,6 +6,7 @@ const COLOR_THEMES = {
   cyan: {key: 'cyan', label: 'Cyan'},
   blue: {key: 'blue', label: 'Blue'},
   pink: {key: 'pink', label: 'Pink'},
+  purple: {key: 'purple', label: 'Purple'},
 };
 
 export default COLOR_THEMES;
