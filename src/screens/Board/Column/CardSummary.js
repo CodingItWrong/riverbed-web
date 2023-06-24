@@ -31,7 +31,7 @@ export default function CardSummary({card, board, elements, onPress, style}) {
   return (
     <Card
       key={card.id}
-      style={style}
+      style={{...styles.card, ...style}}
       onPress={onPress}
       testID={`card-${card.id}`}
     >
@@ -41,6 +41,12 @@ export default function CardSummary({card, board, elements, onPress, style}) {
 }
 
 const styles = {
+  card: {
+    minHeight: '44px',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   cardContent: {
     overflow: 'hidden',
   },
