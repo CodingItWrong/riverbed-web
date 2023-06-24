@@ -1,3 +1,4 @@
+import {DragDropContext, Draggable, Droppable} from 'react-beautiful-dnd';
 import {useNavigate} from 'react-router-dom';
 import Button from '../../components/Button';
 import DropdownMenu from '../../components/DropdownMenu';
@@ -7,7 +8,11 @@ import IconButton from '../../components/IconButton';
 import Stack from '../../components/Stack';
 import Text from '../../components/Text';
 import sharedStyles from '../../components/sharedStyles';
-import {useBoardElements, useCreateElement} from '../../data/elements';
+import {
+  useBoardElements,
+  useCreateElement,
+  useUpdateElementDisplayOrders,
+} from '../../data/elements';
 import ELEMENT_TYPES from '../../enums/elementTypes';
 import FIELD_DATA_TYPES from '../../enums/fieldDataTypes';
 import sortByDisplayOrder from '../../utils/sortByDisplayOrder';
@@ -44,16 +49,54 @@ export default function ElementList({board, card}) {
     navigate(`/boards/${board.id}/cards/${card.id}/elements/${element.id}`);
   }
 
+  const {mutate: updateElementDisplayOrders} =
+    useUpdateElementDisplayOrders(board);
+
+  function onDragEnd(result) {
+    if (!result.destination) {
+      return;
+    }
+
+    const updatedElements = [...sortedElements];
+    const elementToMove = updatedElements[result.source.index];
+    updatedElements.splice(result.source.index, 1);
+    updatedElements.splice(result.destination.index, 0, elementToMove);
+
+    updateElementDisplayOrders(updatedElements);
+  }
+
   return (
     <Stack spacing={1}>
-      {sortedElements.map(element => (
-        <EditableElement
-          key={element.id}
-          element={element}
-          onEdit={() => editElement(element)}
-          testID={`element-${element.id}`}
-        />
-      ))}
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId="droppable">
+          {provided => (
+            <div {...provided.droppableProps} ref={provided.innerRef}>
+              {sortedElements.map((element, index) => (
+                <Draggable
+                  key={element.id}
+                  draggableId={element.id}
+                  index={index}
+                >
+                  {provided => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                    >
+                      <EditableElement
+                        key={element.id}
+                        element={element}
+                        onEdit={() => editElement(element)}
+                        testID={`element-${element.id}`}
+                      />
+                    </div>
+                  )}
+                </Draggable>
+              ))}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
       <DropdownMenu
         menuButton={props => (
           <Button icon="plus" mode="link" disabled={isAdding} {...props}>
