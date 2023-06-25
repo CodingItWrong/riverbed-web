@@ -2,7 +2,7 @@ import MuiMenu from '@mui/material/Menu';
 import MuiMenuItem from '@mui/material/MenuItem';
 import sortBy from 'lodash/sortBy';
 import {useCallback, useState} from 'react';
-import {Outlet, useNavigate} from 'react-router-dom';
+import {Outlet, Link as RouterLink, useNavigate} from 'react-router-dom';
 import Button from '../../components/Button';
 import CenterColumn from '../../components/CenterColumn';
 import ErrorSnackbar from '../../components/ErrorSnackbar';
@@ -60,7 +60,7 @@ export default function BoardList() {
           onPress={openMenu}
         />
         <MuiMenu anchorEl={menuAnchorEl} open={isMenuOpen} onClose={closeMenu}>
-          <MuiMenuItem onClick={handlePress(() => navigate('settings'))}>
+          <MuiMenuItem component={RouterLink} to="settings" onClick={closeMenu}>
             User Settings
           </MuiMenuItem>
           <MuiMenuItem onClick={handlePress(signOut)}>Sign Out</MuiMenuItem>
