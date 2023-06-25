@@ -1,5 +1,5 @@
 import {DragDropContext, Draggable, Droppable} from 'react-beautiful-dnd';
-import {useNavigate} from 'react-router-dom';
+import {Link as RouterLink, useNavigate} from 'react-router-dom';
 import Button from '../../components/Button';
 import DropdownMenu from '../../components/DropdownMenu';
 import ErrorSnackbar from '../../components/ErrorSnackbar';
@@ -31,7 +31,7 @@ export default function ElementList({board, card}) {
   } = useCreateElement(board);
   const handleCreateElement = attributes =>
     createElement(attributes, {
-      onSuccess: newElement => editElement(newElement),
+      onSuccess: newElement => navigate(editElementPath(newElement)),
     });
 
   const addField = () =>
@@ -46,9 +46,8 @@ export default function ElementList({board, card}) {
   const addButtonMenu = () =>
     handleCreateElement({'element-type': ELEMENT_TYPES.BUTTON_MENU.key});
 
-  function editElement(element) {
-    navigate(`/boards/${board.id}/cards/${card.id}/elements/${element.id}`);
-  }
+  const editElementPath = element =>
+    `/boards/${board.id}/cards/${card.id}/elements/${element.id}`;
 
   const {mutate: updateElementDisplayOrders} =
     useUpdateElementDisplayOrders(board);
@@ -84,7 +83,7 @@ export default function ElementList({board, card}) {
                         <EditableElement
                           key={element.id}
                           element={element}
-                          onEdit={() => editElement(element)}
+                          editHref={editElementPath(element)}
                           testID={`element-${element.id}`}
                           dragData={provided}
                         />
@@ -117,7 +116,7 @@ export default function ElementList({board, card}) {
   );
 }
 
-function EditableElement({element, onEdit, testID, style, dragData}) {
+function EditableElement({element, editHref, testID, style, dragData}) {
   const {name, 'element-type': elementType} = element.attributes;
   const elementTypeObject = Object.values(ELEMENT_TYPES).find(
     et => et.key === elementType,
@@ -151,7 +150,8 @@ function EditableElement({element, onEdit, testID, style, dragData}) {
       <IconButton
         icon="pencil"
         accessibilityLabel={`Edit ${name} ${elementTypeObject.label}`}
-        onPress={onEdit}
+        component={RouterLink}
+        to={editHref}
         style={styles.editIcon}
       />
     </div>
