@@ -144,7 +144,7 @@ describe('edit cards', () => {
       cy.intercept('GET', `http://cypressapi/cards/${newCard.id}?`, {
         data: newCard,
       });
-      cy.contains('Add Card').click();
+      cy.get('[aria-label="Add Card"]').click();
       cy.wait('@createCard')
         .its('request.body')
         .should('deep.equal', {

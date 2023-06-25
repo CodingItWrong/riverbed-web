@@ -590,7 +590,7 @@ describe('edit fields', () => {
       cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
         data: [newCard],
       });
-      cy.contains('Add Card').click();
+      cy.get('[aria-label="Add Card"]').click();
     });
 
     cy.step('CONFIRM INITIAL VALUES SET IN REQUEST TO SERVER', () => {

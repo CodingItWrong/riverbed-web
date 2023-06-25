@@ -1,19 +1,28 @@
 import {ThemeProvider as MuiProvider} from '@mui/material/styles';
 import {useCallback} from 'react';
-import {Outlet, useParams} from 'react-router-dom';
+import {Outlet, useNavigate, useParams} from 'react-router-dom';
 import ErrorSnackbar from '../../components/ErrorSnackbar';
+import IconButton from '../../components/IconButton';
 import NavigationBar from '../../components/NavigationBar';
 import ScreenBackground from '../../components/ScreenBackground';
 import sharedStyles from '../../components/sharedStyles';
 import {useBoard} from '../../data/boards';
-import {useCards, useRefreshCards} from '../../data/cards';
+import {
+  useCards,
+  useCreateCard,
+  usePrimeCard,
+  useRefreshCards,
+} from '../../data/cards';
 import {useColumns} from '../../data/columns';
 import {useBoardElements} from '../../data/elements';
+import ELEMENT_TYPES from '../../enums/elementTypes';
+import VALUES from '../../enums/values';
 import useColorSchemeTheme from '../../theme/useColorSchemeTheme';
 import useNavigateEffect from '../../utils/useNavigateEffect';
 import ColumnList from './Column/ColumnList';
 
 export default function Board() {
+  const navigate = useNavigate();
   const {boardId} = useParams();
   const {
     data: board,
@@ -30,6 +39,24 @@ export default function Board() {
   const error = boardError ?? cardsError ?? columnsError ?? elementsError;
   const refreshCards = useRefreshCards(board);
 
+  const {data: elements} = useBoardElements(board);
+  const primeCard = usePrimeCard({board});
+  const {
+    mutate: createCard,
+    isLoading: isAddingCard,
+    error: createCardError,
+  } = useCreateCard(board);
+  const handleCreateCard = () =>
+    createCard(
+      {'field-values': getInitialFieldValues(elements)},
+      {
+        onSuccess: ({data: newCard}) => {
+          primeCard(newCard);
+          navigate(`cards/${newCard.id}`);
+        },
+      },
+    );
+
   let navigationOptions = (() => {
     if (isLoadingBoard) {
       return {
@@ -44,6 +71,14 @@ export default function Board() {
         icon: board?.attributes?.icon,
         titleHref: 'edit',
         isFetching,
+        headerRight: () => (
+          <IconButton
+            icon="plus"
+            onPress={handleCreateCard}
+            disabled={isAddingCard}
+            accessibilityLabel="Add Card"
+          />
+        ),
       };
     }
   })();
@@ -75,8 +110,31 @@ export default function Board() {
         <ErrorSnackbar error={error}>
           An error occurred loading the board.
         </ErrorSnackbar>
+        <ErrorSnackbar error={createCardError}>
+          An error occurred adding a card.
+        </ErrorSnackbar>
       </ScreenBackground>
       <Outlet />
     </MuiProvider>
   );
+}
+
+function getInitialFieldValues(elements) {
+  const fieldsWithInitialValues = elements.filter(
+    e =>
+      e.attributes['element-type'] === ELEMENT_TYPES.FIELD.key &&
+      e.attributes['initial-value'] !== null,
+  );
+  const initialValueEntries = fieldsWithInitialValues.map(field => {
+    const {
+      'data-type': dataType,
+      'initial-value': initialValue,
+      options: elementOptions,
+    } = field.attributes;
+    const resolvedValue = Object.values(VALUES)
+      .find(v => v.key === initialValue)
+      ?.call(dataType, elementOptions);
+    return [field.id, resolvedValue];
+  });
+  return Object.fromEntries(initialValueEntries);
 }

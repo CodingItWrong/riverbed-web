@@ -4,26 +4,22 @@ import {large, useBreakpoint} from '../../../breakpoints';
 import Button from '../../../components/Button';
 import ErrorSnackbar from '../../../components/ErrorSnackbar';
 import sharedStyles, {useColumnStyle} from '../../../components/sharedStyles';
-import {useCards, useCreateCard, usePrimeCard} from '../../../data/cards';
+import {useCards} from '../../../data/cards';
 import {useColumns, useCreateColumn} from '../../../data/columns';
 import {useBoardElements} from '../../../data/elements';
-import ELEMENT_TYPES from '../../../enums/elementTypes';
-import VALUES from '../../../enums/values';
 import sortByDisplayOrder from '../../../utils/sortByDisplayOrder';
 import Column from './Column';
 
 export default function ColumnList({board}) {
   const navigate = useNavigate();
 
-  const {data: elements, isLoading: isLoadingElements} =
-    useBoardElements(board);
+  const {isLoading: isLoadingElements} = useBoardElements(board);
   const {
     data: columns = [],
     isLoading: isLoadingColumns,
     error: columnsError,
   } = useColumns(board);
   const {isLoading: isLoadingCards} = useCards(board);
-  const primeCard = usePrimeCard({board});
 
   const {
     mutate: createColumn,
@@ -34,22 +30,6 @@ export default function ColumnList({board}) {
     createColumn(null, {
       onSuccess: ({data: column}) => navigate(`columns/${column.id}`),
     });
-
-  const {
-    mutate: createCard,
-    isLoading: isAddingCard,
-    error: createCardError,
-  } = useCreateCard(board);
-  const handleCreateCard = () =>
-    createCard(
-      {'field-values': getInitialFieldValues(elements)},
-      {
-        onSuccess: ({data: newCard}) => {
-          primeCard(newCard);
-          navigate(`cards/${newCard.id}`);
-        },
-      },
-    );
 
   const breakpoint = useBreakpoint();
   const responsiveButtonContainerStyle = {
@@ -75,16 +55,6 @@ export default function ColumnList({board}) {
       data-testid="outer"
       style={{...sharedStyles.column, ...styles.containerHeight}}
     >
-      <div style={fullContainerStyle}>
-        <Button
-          mode="link"
-          icon="plus"
-          onPress={handleCreateCard}
-          disabled={isAddingCard}
-        >
-          Add Card
-        </Button>
-      </div>
       <ScrollView
         horizontal
         pagingEnabled={pagingEnabled}
@@ -112,9 +82,6 @@ export default function ColumnList({board}) {
       <ErrorSnackbar error={createColumnError}>
         An error occurred adding a column.
       </ErrorSnackbar>
-      <ErrorSnackbar error={createCardError}>
-        An error occurred adding a card.
-      </ErrorSnackbar>
     </div>
   );
 }
@@ -128,23 +95,3 @@ const styles = {
     margin: 8,
   },
 };
-
-function getInitialFieldValues(elements) {
-  const fieldsWithInitialValues = elements.filter(
-    e =>
-      e.attributes['element-type'] === ELEMENT_TYPES.FIELD.key &&
-      e.attributes['initial-value'] !== null,
-  );
-  const initialValueEntries = fieldsWithInitialValues.map(field => {
-    const {
-      'data-type': dataType,
-      'initial-value': initialValue,
-      options: elementOptions,
-    } = field.attributes;
-    const resolvedValue = Object.values(VALUES)
-      .find(v => v.key === initialValue)
-      ?.call(dataType, elementOptions);
-    return [field.id, resolvedValue];
-  });
-  return Object.fromEntries(initialValueEntries);
-}
