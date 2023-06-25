@@ -14,7 +14,7 @@ import checkConditions from '../../../utils/checkConditions';
 import CardSummary from './CardSummary';
 import groupCards from './groupCards';
 
-export default function Column({column, board, onEdit, onSelectCard}) {
+export default function Column({column, board, onEdit}) {
   const columnWidthStyle = useColumnStyle();
 
   const {data: elements} = useBoardElements(board);
@@ -124,8 +124,8 @@ export default function Column({column, board, onEdit, onSelectCard}) {
           >
             <CardSummary
               card={card}
+              board={board}
               elements={elements}
-              onPress={() => onSelectCard(card)}
               style={sharedStyles.mb}
             />
           </div>

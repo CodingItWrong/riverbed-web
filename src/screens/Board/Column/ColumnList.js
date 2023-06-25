@@ -43,18 +43,16 @@ export default function ColumnList({board}) {
   const handleCreateCard = () =>
     createCard(
       {'field-values': getInitialFieldValues(elements)},
-      {onSuccess: ({data: newCard}) => showDetail(newCard)},
+      {
+        onSuccess: ({data: newCard}) => {
+          primeCard(newCard);
+          navigate(`cards/${newCard.id}`);
+        },
+      },
     );
 
   function showColumn(column) {
     navigate(`columns/${column.id}`);
-  }
-
-  function showDetail(card) {
-    primeCard(card);
-    // TODO: may want to make sure card form data does reload if it changes from server
-
-    navigate(`cards/${card.id}`);
   }
 
   const breakpoint = useBreakpoint();
@@ -102,7 +100,6 @@ export default function ColumnList({board}) {
             column={column}
             board={board}
             onEdit={() => showColumn(column)}
-            onSelectCard={card => showDetail(card)}
           />
         ))}
         <div style={{...columnWidthStyle, ...sharedStyles.columnPadding}}>
