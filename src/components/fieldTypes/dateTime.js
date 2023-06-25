@@ -1,7 +1,10 @@
-import {DateTimePicker} from '@mui/x-date-pickers/DateTimePicker';
-import dayjs from 'dayjs';
+import {Suspense, lazy} from 'react';
 import FIELD_DATA_TYPES from '../../enums/fieldDataTypes';
 import dateTimeUtils from '../../utils/dateTimeUtils';
+
+const LazyDateEditorComponent = lazy(() =>
+  import('./lazy/DateEditorComponent'),
+);
 
 const dateTimeFieldDataType = {
   key: FIELD_DATA_TYPES.DATETIME.key,
@@ -13,31 +16,11 @@ const dateTimeFieldDataType = {
   EditorComponent: DateTimeEditorComponent,
 };
 
-function DateTimeEditorComponent({
-  field,
-  label,
-  value,
-  setValue,
-  style,
-  disabled,
-}) {
+function DateTimeEditorComponent(props) {
   return (
-    <DateTimePicker
-      label={label}
-      value={value ? dayjs(value) : null}
-      onChange={dayJsObject => {
-        const string = dateTimeUtils.objectToServerString(dayJsObject);
-        setValue(string);
-      }}
-      disabled={disabled}
-      slotProps={{
-        textField: {
-          style,
-          variant: 'filled',
-          'data-testid': `datetime-input-${field.id}`,
-        },
-      }}
-    />
+    <Suspense fallback={<div>Loading…</div>}>
+      <LazyDateEditorComponent {...props} />
+    </Suspense>
   );
 }
 
