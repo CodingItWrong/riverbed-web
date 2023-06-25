@@ -1,6 +1,6 @@
 import {ThemeProvider as MuiProvider} from '@mui/material/styles';
 import {useCallback} from 'react';
-import {Outlet, useNavigate, useParams} from 'react-router-dom';
+import {Outlet, useParams} from 'react-router-dom';
 import ErrorSnackbar from '../../components/ErrorSnackbar';
 import NavigationBar from '../../components/NavigationBar';
 import ScreenBackground from '../../components/ScreenBackground';
@@ -15,7 +15,6 @@ import ColumnList from './Column/ColumnList';
 
 export default function Board() {
   const {boardId} = useParams();
-  const navigate = useNavigate();
   const {
     data: board,
     isLoading: isLoadingBoard,
@@ -31,24 +30,19 @@ export default function Board() {
   const error = boardError ?? cardsError ?? columnsError ?? elementsError;
   const refreshCards = useRefreshCards(board);
 
-  const editBoard = useCallback(
-    () => board && navigate('edit'),
-    [navigate, board],
-  );
-
   let navigationOptions = (() => {
     if (isLoadingBoard) {
       return {
         title: null,
         icon: null,
-        onTitlePress: null,
+        titleHref: null,
         isFetching: true,
       };
     } else {
       return {
         title: board?.attributes?.name ?? '(unnamed board)',
         icon: board?.attributes?.icon,
-        onTitlePress: () => editBoard(),
+        titleHref: 'edit',
         isFetching,
       };
     }
