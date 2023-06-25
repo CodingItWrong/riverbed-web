@@ -17,6 +17,7 @@ import MedicalServicesOutlinedIcon from '@mui/icons-material/MedicalServicesOutl
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import MonitorWeightOutlinedIcon from '@mui/icons-material/MonitorWeightOutlined';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import PaidOutlinedIcon from '@mui/icons-material/PaidOutlined';
 import ParkOutlinedIcon from '@mui/icons-material/ParkOutlined';
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
 import SportsBaseballOutlinedIcon from '@mui/icons-material/SportsBaseballOutlined';
@@ -51,6 +52,7 @@ const MUI_NAME_TO_COMPONENT_MAP = {
   fastfood: FastfoodOutlinedIcon,
   'sports-esports': SportsEsportsOutlinedIcon,
   link: LinkIcon,
+  'paid-outlined': PaidOutlinedIcon,
   place: PlaceOutlinedIcon,
   'medical-services': MedicalServicesOutlinedIcon,
   pencil: EditIcon,
