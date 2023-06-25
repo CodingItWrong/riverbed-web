@@ -32,7 +32,7 @@ export default function ColumnList({board}) {
   } = useCreateColumn(board);
   const handleCreateColumn = () =>
     createColumn(null, {
-      onSuccess: ({data: column}) => showColumn(column),
+      onSuccess: ({data: column}) => navigate(`columns/${column.id}`),
     });
 
   const {
@@ -50,10 +50,6 @@ export default function ColumnList({board}) {
         },
       },
     );
-
-  function showColumn(column) {
-    navigate(`columns/${column.id}`);
-  }
 
   const breakpoint = useBreakpoint();
   const responsiveButtonContainerStyle = {
@@ -95,12 +91,7 @@ export default function ColumnList({board}) {
         style={sharedStyles.fullHeight}
       >
         {sortedColumns.map(column => (
-          <Column
-            key={column.id}
-            column={column}
-            board={board}
-            onEdit={() => showColumn(column)}
-          />
+          <Column key={column.id} column={column} board={board} />
         ))}
         <div style={{...columnWidthStyle, ...sharedStyles.columnPadding}}>
           <div style={fullContainerStyle}>
