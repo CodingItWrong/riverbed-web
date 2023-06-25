@@ -47,8 +47,18 @@ module.exports = {
     runtimeChunk: 'single',
     splitChunks: {
       cacheGroups: {
+        datePickers: {
+          test: /[\\/]node_modules[\\/]@mui[\\/]x-date-pickers/,
+          name: 'date-pickers',
+          chunks: 'all',
+        },
+        googleMaps: {
+          test: /[\\/]node_modules[\\/]google-maps-react/,
+          name: 'google-maps',
+          chunks: 'all',
+        },
         vendor: {
-          test: /[\\/]node_modules[\\/]/,
+          test: /[\\/]node_modules[\\/](?!google-maps-react|@mui[\\/]x-date-pickers)/,
           name: 'vendors',
           chunks: 'all',
         },

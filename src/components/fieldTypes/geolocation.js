@@ -1,12 +1,14 @@
-import {useState} from 'react';
+import {Suspense, lazy, useState} from 'react';
 import FIELD_DATA_TYPES from '../../enums/fieldDataTypes';
 import IconButton from '../IconButton';
 import LoadingIndicator from '../LoadingIndicator';
-import Map from '../Map';
 import NumberField from '../NumberField';
 import Stack from '../Stack';
 import Text from '../Text';
 import sharedStyles from '../sharedStyles';
+
+// lazy to defer loading google-maps-react
+const Map = lazy(() => import('../Map'));
 
 const geolocationFieldDataType = {
   key: FIELD_DATA_TYPES.GEOLOCATION.key,
@@ -93,12 +95,14 @@ function GeolocationEditorComponent({field, label, value, setValue, disabled}) {
           style={styles.grow}
         />
       </Stack>
-      <Map
-        location={value}
-        onPressLocation={handlePressLocation}
-        style={{...styles.detailMap, ...sharedStyles.mt}}
-        disabled={disabled}
-      />
+      <Suspense fallback={<div>Loading…</div>}>
+        <Map
+          location={value}
+          onPressLocation={handlePressLocation}
+          style={{...styles.detailMap, ...sharedStyles.mt}}
+          disabled={disabled}
+        />
+      </Suspense>
     </div>
   );
 }
