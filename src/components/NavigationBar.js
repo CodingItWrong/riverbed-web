@@ -17,18 +17,24 @@ export default function NavigationBar({options, backTo}) {
         {backTo && <BackButton to={backTo} />}
         {icon && <BoardIcon name={icon} style={sharedStyles.mr} />}
         {titleHref ? (
-          <Button
-            color="inherit"
-            component={RouterLink}
-            to={titleHref}
-            data-testid="navigation-bar-title"
-          >
-            <Typography variant="h6" component="span" style={styles.buttonText}>
-              {title}
-            </Typography>
-          </Button>
+          <div style={styles.grow}>
+            <Button
+              color="inherit"
+              component={RouterLink}
+              to={titleHref}
+              data-testid="navigation-bar-title"
+            >
+              <Typography
+                variant="h6"
+                component="span"
+                style={styles.buttonText}
+              >
+                {title}
+              </Typography>
+            </Button>
+          </div>
         ) : (
-          <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
+          <Typography variant="h6" component="div" style={styles.grow}>
             {title}
           </Typography>
         )}
@@ -40,6 +46,9 @@ export default function NavigationBar({options, backTo}) {
 }
 
 const styles = {
+  grow: {
+    flexGrow: 1,
+  },
   buttonText: {
     textTransform: 'none',
   },
