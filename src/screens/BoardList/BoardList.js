@@ -2,7 +2,7 @@ import MuiMenu from '@mui/material/Menu';
 import MuiMenuItem from '@mui/material/MenuItem';
 import sortBy from 'lodash/sortBy';
 import {useCallback, useState} from 'react';
-import {Outlet, useNavigate} from 'react-router-dom';
+import {Outlet, Link as RouterLink, useNavigate} from 'react-router-dom';
 import Button from '../../components/Button';
 import CenterColumn from '../../components/CenterColumn';
 import ErrorSnackbar from '../../components/ErrorSnackbar';
@@ -60,7 +60,7 @@ export default function BoardList() {
           onPress={openMenu}
         />
         <MuiMenu anchorEl={menuAnchorEl} open={isMenuOpen} onClose={closeMenu}>
-          <MuiMenuItem onClick={handlePress(() => navigate('settings'))}>
+          <MuiMenuItem component={RouterLink} to="settings" onClick={closeMenu}>
             User Settings
           </MuiMenuItem>
           <MuiMenuItem onClick={handlePress(signOut)}>Sign Out</MuiMenuItem>
@@ -71,9 +71,7 @@ export default function BoardList() {
 
   const {data: boards = [], isLoading, error: loadError} = useBoards();
 
-  function goToBoard(board) {
-    navigate(`/boards/${board.id}`);
-  }
+  const boardLink = board => `/boards/${board.id}`;
 
   const {
     mutate: createBoard,
@@ -82,7 +80,7 @@ export default function BoardList() {
   } = useCreateBoard();
   const handleCreateBoard = () =>
     createBoard(null, {
-      onSuccess: ({data: board}) => goToBoard(board),
+      onSuccess: ({data: board}) => navigate(boardLink(board)),
     });
 
   const boardGroups = groupBoards(boards);
@@ -117,7 +115,7 @@ export default function BoardList() {
               renderItem={({item: board}) => (
                 <BoardCard
                   board={board}
-                  onPress={() => goToBoard(board)}
+                  href={boardLink(board)}
                   style={sharedStyles.mb}
                 />
               )}

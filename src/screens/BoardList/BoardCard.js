@@ -7,12 +7,12 @@ import {useUpdateBoard} from '../../data/boards';
 import useColorSchemeTheme from '../../theme/useColorSchemeTheme';
 import dateTimeUtils from '../../utils/dateTimeUtils';
 
-export default function BoardCard({board, onPress, style}) {
+export default function BoardCard({board, href, style}) {
   const primaryColor = useBoardPrimaryColor(board);
 
   return (
     <div style={{...styles.rowWrapper, ...style}}>
-      <Card onPress={onPress}>
+      <Card href={href}>
         <div style={styles.boardCard}>
           <BoardIcon
             name={board.attributes.icon}

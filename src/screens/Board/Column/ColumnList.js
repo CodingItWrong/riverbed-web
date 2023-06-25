@@ -32,7 +32,7 @@ export default function ColumnList({board}) {
   } = useCreateColumn(board);
   const handleCreateColumn = () =>
     createColumn(null, {
-      onSuccess: ({data: column}) => showColumn(column),
+      onSuccess: ({data: column}) => navigate(`columns/${column.id}`),
     });
 
   const {
@@ -43,19 +43,13 @@ export default function ColumnList({board}) {
   const handleCreateCard = () =>
     createCard(
       {'field-values': getInitialFieldValues(elements)},
-      {onSuccess: ({data: newCard}) => showDetail(newCard)},
+      {
+        onSuccess: ({data: newCard}) => {
+          primeCard(newCard);
+          navigate(`cards/${newCard.id}`);
+        },
+      },
     );
-
-  function showColumn(column) {
-    navigate(`columns/${column.id}`);
-  }
-
-  function showDetail(card) {
-    primeCard(card);
-    // TODO: may want to make sure card form data does reload if it changes from server
-
-    navigate(`cards/${card.id}`);
-  }
 
   const breakpoint = useBreakpoint();
   const responsiveButtonContainerStyle = {
@@ -97,13 +91,7 @@ export default function ColumnList({board}) {
         style={sharedStyles.fullHeight}
       >
         {sortedColumns.map(column => (
-          <Column
-            key={column.id}
-            column={column}
-            board={board}
-            onEdit={() => showColumn(column)}
-            onSelectCard={card => showDetail(card)}
-          />
+          <Column key={column.id} column={column} board={board} />
         ))}
         <div style={{...columnWidthStyle, ...sharedStyles.columnPadding}}>
           <div style={fullContainerStyle}>

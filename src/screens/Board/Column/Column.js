@@ -1,5 +1,6 @@
 import get from 'lodash/get';
 import sortBy from 'lodash/sortBy';
+import {Link as RouterLink} from 'react-router-dom';
 import IconButton from '../../../components/IconButton';
 import SectionHeader from '../../../components/SectionHeader';
 import SectionList from '../../../components/SectionList';
@@ -14,7 +15,7 @@ import checkConditions from '../../../utils/checkConditions';
 import CardSummary from './CardSummary';
 import groupCards from './groupCards';
 
-export default function Column({column, board, onEdit, onSelectCard}) {
+export default function Column({column, board}) {
   const columnWidthStyle = useColumnStyle();
 
   const {data: elements} = useBoardElements(board);
@@ -84,8 +85,9 @@ export default function Column({column, board, onEdit, onSelectCard}) {
         </Text>
         <IconButton
           icon="pencil"
-          onPress={onEdit}
           accessibilityLabel="Edit Column"
+          component={RouterLink}
+          to={`columns/${column.id}`}
         />
       </div>
       <SectionList
@@ -124,8 +126,8 @@ export default function Column({column, board, onEdit, onSelectCard}) {
           >
             <CardSummary
               card={card}
+              board={board}
               elements={elements}
-              onPress={() => onSelectCard(card)}
               style={sharedStyles.mb}
             />
           </div>
