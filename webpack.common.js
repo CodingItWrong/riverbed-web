@@ -47,8 +47,13 @@ module.exports = {
     runtimeChunk: 'single',
     splitChunks: {
       cacheGroups: {
+        googleMaps: {
+          test: /[\\/]node_modules[\\/]google-maps-react/,
+          name: 'google-maps',
+          chunks: 'all',
+        },
         vendor: {
-          test: /[\\/]node_modules[\\/]/,
+          test: /[\\/]node_modules[\\/](?!google-maps-react)/,
           name: 'vendors',
           chunks: 'all',
         },
