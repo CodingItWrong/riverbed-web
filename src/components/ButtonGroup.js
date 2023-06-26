@@ -8,7 +8,7 @@ export default function ButtonGroup({label, value, onChangeValue, options}) {
   return (
     <Stack>
       <Text variant="bodySmall">{label}</Text>
-      <div>
+      <Stack direction="row" spacing="3px" useFlexGap flexWrap="wrap">
         {options.map(option => {
           const color = option.iconColor
             ? primaryColors[option.iconColor]
@@ -24,7 +24,7 @@ export default function ButtonGroup({label, value, onChangeValue, options}) {
             </ToggleButton>
           );
         })}
-      </div>
+      </Stack>
     </Stack>
   );
 }
