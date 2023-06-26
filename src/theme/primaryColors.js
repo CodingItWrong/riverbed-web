@@ -11,7 +11,7 @@ import {
 import COLOR_THEMES from '../enums/colorThemes';
 
 export const primaryColors = {
-  default: '#324b4b',
+  default: '#438F8F',
   [COLOR_THEMES.red.key]: red[500],
   [COLOR_THEMES.orange.key]: orange[500],
   [COLOR_THEMES.yellow.key]: yellow[500],
