@@ -386,7 +386,7 @@ function ActionInputs({actions, updateActionsAttribute, fields}) {
               labelExtractor={field => field.attributes.name}
               style={styles.actionClause}
             />
-            {action.command !== COMMANDS.ADD_DAYS.key && (
+            {action.command === COMMANDS.SET_VALUE.key && (
               <DropdownField
                 fieldLabel="Value"
                 emptyLabel="(choose)"
@@ -398,13 +398,28 @@ function ActionInputs({actions, updateActionsAttribute, fields}) {
                 style={styles.actionClause}
               />
             )}
+            {action.command === COMMANDS.SET_VALUE.key &&
+              action.value === VALUES.SPECIFIC_VALUE.key && (
+                <TextField
+                  label="Specific Value"
+                  testID="text-input-specific-value"
+                  value={action?.['specific-value'] ?? ''}
+                  onChangeText={value =>
+                    updateActionsAttribute(
+                      `[${index}]['specific-value']`,
+                      value,
+                    )
+                  }
+                  style={styles.actionClause}
+                />
+              )}
             {action.command === COMMANDS.ADD_DAYS.key && (
               <NumberField
                 label="Days to Add"
-                testID="number-input-value"
-                value={action?.value ?? ''}
+                testID="number-input-days-to-add"
+                value={action?.['specific-value'] ?? ''}
                 onChangeText={value =>
-                  updateActionsAttribute(`[${index}].value`, value)
+                  updateActionsAttribute(`[${index}]['specific-value']`, value)
                 }
                 style={styles.actionClause}
               />

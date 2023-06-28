@@ -29,8 +29,7 @@ const VALUES = {
   SPECIFIC_VALUE: {
     key: 'specific_value',
     label: 'specific value',
-    call: (_dataType, elementOptions) =>
-      elementOptions['initial-specific-value'],
+    call: (_dataType, specificValue) => specificValue,
   },
 };
 

@@ -285,7 +285,7 @@ describe('edit buttons', () => {
             {
               command: COMMANDS.ADD_DAYS.key,
               field: greetedAtField.id,
-              value: '2', // TODO: consider storing as number
+              'specific-value': '2',
             },
           ],
         },
@@ -346,7 +346,7 @@ describe('edit buttons', () => {
       cy.get('[role=listbox]').contains('Add Days').click();
       cy.contains('(choose)').click();
       cy.get('[role=listbox]').contains('Greeted At').click();
-      cy.get('[data-testid=number-input-value]').type(2);
+      cy.get('[data-testid=number-input-days-to-add]').type(2);
 
       cy.intercept('PATCH', `http://cypressapi/elements/${newButton.id}?`, {
         success: true,
@@ -384,6 +384,110 @@ describe('edit buttons', () => {
 
     cy.step('CONFIRM FIELD DATA UPDATED ON CARD', () => {
       cy.contains('Thu Jan 3, 2999');
+    });
+  });
+
+  it('allows setting a specific concrete value', () => {
+    const newButton = Factory.button({});
+    const buttonName = 'Change the Greeting';
+    const newGreeting = 'Good day!';
+    const greetButton = Factory.button(
+      {
+        name: buttonName,
+        options: {
+          actions: [
+            {
+              command: COMMANDS.SET_VALUE.key,
+              field: greetingField.id,
+              value: VALUES.SPECIFIC_VALUE.key,
+              'specific-value': newGreeting,
+            },
+          ],
+        },
+      },
+      newButton,
+    );
+
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
+      data: [greetingField, greetButton],
+    });
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
+      data: [greetingCard],
+    });
+    cy.intercept('GET', `http://cypressapi/cards/${greetingCard.id}?`, {
+      data: greetingCard,
+    });
+
+    goToBoard();
+
+    cy.step('CREATE BUTTON', () => {
+      cy.get(`[data-testid=card-${greetingCard.id}`).click();
+      cy.get('[aria-label="Edit Elements"]').click();
+
+      cy.intercept('POST', 'http://cypressapi/elements?', {
+        data: newButton,
+      }).as('addButton');
+      cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
+        data: [greetingField, newButton],
+      });
+      cy.intercept('GET', `http://cypressapi/elements/${newButton.id}?`, {
+        data: newButton,
+      });
+
+      cy.contains('Add Element').click();
+      cy.contains('Button').click();
+
+      cy.wait('@addButton');
+    });
+
+    cy.step('CONFIGURE BUTTON', () => {
+      cy.get('[data-testid="text-input-element-name"]').type(buttonName);
+
+      cy.contains('Add Action').click();
+      cy.contains('(choose)').click();
+      cy.get('[role=listbox]').contains('Set Value').click();
+      cy.contains('(choose)').click();
+      cy.get('[role=listbox]').contains('Greeting').click();
+      cy.contains('(choose)').click();
+      cy.get('[role=listbox]').contains('specific value').click();
+      cy.get('[data-testid=text-input-specific-value]').type(newGreeting);
+
+      cy.intercept('PATCH', `http://cypressapi/elements/${newButton.id}?`, {
+        success: true,
+      }).as('updateField');
+      cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
+        data: [greetingField, greetButton],
+      });
+      cy.contains('Save Button').click();
+      cy.wait('@updateField')
+        .its('request.body')
+        .should('deep.equal', {data: greetButton});
+      cy.contains(buttonName);
+      cy.get('[aria-label="Done Editing Elements"]').click();
+    });
+
+    cy.step('RUN BUTTON ACTION', () => {
+      const updatedCard = Factory.card(
+        {[greetingField.id]: newGreeting},
+        greetingCard,
+      );
+      cy.intercept('PATCH', `http://cypressapi/cards/${greetingCard.id}?`, {
+        success: true,
+      }).as('updateCard');
+      cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
+        data: [updatedCard],
+      });
+      cy.intercept('GET', `http://cypressapi/cards/${updatedCard.id}?`, {
+        data: updatedCard,
+      });
+      cy.contains(buttonName).click();
+      cy.wait('@updateCard')
+        .its('request.body')
+        .should('deep.equal', {data: updatedCard});
+    });
+
+    cy.step('CONFIRM FIELD DATA UPDATED ON CARD', () => {
+      cy.contains(newGreeting);
     });
   });
 
