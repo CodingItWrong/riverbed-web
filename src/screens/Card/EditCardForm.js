@@ -77,7 +77,7 @@ export default function EditCardForm({card, board, onClose}) {
   }
 
   function performAction(action) {
-    const {command, field, value} = action;
+    const {command, field, value, 'specific-value': specificValue} = action;
 
     const fieldObject = elements.find(element => element.id === field);
 
@@ -97,6 +97,7 @@ export default function EditCardForm({card, board, onClose}) {
         if (valueObject) {
           const concreteValue = valueObject.call(
             fieldObject.attributes['data-type'],
+            specificValue,
           );
           return {[field]: concreteValue};
         } else {
@@ -107,7 +108,7 @@ export default function EditCardForm({card, board, onClose}) {
       case COMMANDS.ADD_DAYS.key: {
         // TODO: handle datetime
         const startDate = getStartDate();
-        const updatedDate = dateUtils.addDays(startDate, Number(value));
+        const updatedDate = dateUtils.addDays(startDate, Number(specificValue));
         const concreteValue = dateUtils.objectToServerString(updatedDate);
         return {[field]: concreteValue};
       }
