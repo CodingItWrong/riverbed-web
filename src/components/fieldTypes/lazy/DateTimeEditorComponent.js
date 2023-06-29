@@ -1,9 +1,8 @@
+import {DateTimePicker} from '@mui/x-date-pickers';
 import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
 import {LocalizationProvider as DateLocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from 'dayjs';
-import dateTimeUtils from '../../utils/dateTimeUtils';
-
-const DateTimePicker = () => null;
+import dateTimeUtils from '../../../utils/dateTimeUtils';
 
 function DateTimeEditorComponent({
   field,

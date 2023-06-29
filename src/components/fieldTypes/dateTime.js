@@ -2,8 +2,8 @@ import {Suspense, lazy} from 'react';
 import FIELD_DATA_TYPES from '../../enums/fieldDataTypes';
 import dateTimeUtils from '../../utils/dateTimeUtils';
 
-const LazyDateEditorComponent = lazy(() =>
-  import('./lazy/DateEditorComponent'),
+const LazyDateTimeEditorComponent = lazy(() =>
+  import('./lazy/DateTimeEditorComponent'),
 );
 
 const dateTimeFieldDataType = {
@@ -19,7 +19,7 @@ const dateTimeFieldDataType = {
 function DateTimeEditorComponent(props) {
   return (
     <Suspense fallback={<div>Loading…</div>}>
-      <LazyDateEditorComponent {...props} />
+      <LazyDateTimeEditorComponent {...props} />
     </Suspense>
   );
 }
