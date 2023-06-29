@@ -149,7 +149,7 @@ export default function EditElementForm({
                 o => o.key === elementAttributes['initial-value'],
               )}
               onValueChange={option =>
-                updateAttribute('initial-value', option?.key)
+                updateAttribute('initial-value', option?.key ?? null)
               }
               options={valueOptions}
             />

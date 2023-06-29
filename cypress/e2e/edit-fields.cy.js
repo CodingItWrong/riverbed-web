@@ -602,4 +602,86 @@ describe('edit fields', () => {
         });
     });
   });
+
+  it.only('allows setting initial concrete values for fields', () => {
+    const greetingText = 'Hello, stranger!';
+    const greetingField = Factory.field({
+      name: 'Greeting',
+      'data-type': FIELD_DATA_TYPES.TEXT.key,
+    });
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
+      data: [greetingField],
+    });
+    cy.intercept('GET', `http://cypressapi/elements/${greetingField.id}?`, {
+      data: greetingField,
+    });
+    const card = Factory.card({});
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
+      data: [card],
+    });
+    cy.intercept('GET', `http://cypressapi/cards/${card.id}?`, {
+      data: card,
+    });
+
+    goToBoard();
+
+    cy.step('EDIT ELEMENTS', () => {
+      cy.get(`[data-testid=card-${card.id}]`).click();
+      cy.get('[aria-label="Edit Elements"]').click();
+    });
+
+    const updatedGreetingField = Factory.field(
+      {
+        'initial-value': VALUES.SPECIFIC_VALUE.key,
+        options: {
+          'initial-specific-value': greetingText,
+        },
+      },
+      greetingField,
+    );
+    cy.step('SET INITIAL TEXT VALUE', () => {
+      cy.get('[aria-label="Edit Greeting field"]').click();
+      cy.contains('(choose)').click();
+      cy.get('[role=listbox]').contains(VALUES.SPECIFIC_VALUE.label).click();
+      cy.get(`[data-testid=text-input-${greetingField.id}]`)
+        .eq(1)
+        .type(greetingText); // TODO: target specifically instead of having to index
+
+      cy.intercept('PATCH', `http://cypressapi/elements/${greetingField.id}?`, {
+        success: true,
+      }).as('updateField');
+      cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
+        data: [updatedGreetingField],
+      });
+      cy.contains('Save Field').click();
+      cy.wait('@updateField')
+        .its('request.body')
+        .should('deep.equal', {data: updatedGreetingField});
+      cy.contains('Save Field').should('not.exist');
+    });
+
+    cy.step('FINISH EDITING ELEMENTS', () => {
+      cy.get('[aria-label="Done Editing Elements"]').click();
+      cy.get('[aria-label="Close card"]').click();
+    });
+
+    cy.step('ADD NEW CARD', () => {
+      const newCard = Factory.card();
+      cy.intercept('POST', 'http://cypressapi/cards?', {data: newCard}).as(
+        'createCard',
+      );
+      cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
+        data: [newCard],
+      });
+      cy.get('[aria-label="Add Card"]').click();
+    });
+
+    cy.step('CONFIRM INITIAL VALUE SET IN REQUEST TO SERVER', () => {
+      cy.wait('@createCard')
+        .its('request.body.data.attributes["field-values"]')
+        .should('deep.equal', {
+          [greetingField.id]: greetingText,
+        });
+    });
+  });
 });
