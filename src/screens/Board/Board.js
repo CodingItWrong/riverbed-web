@@ -133,7 +133,7 @@ function getInitialFieldValues(elements) {
     } = field.attributes;
     const resolvedValue = Object.values(VALUES)
       .find(v => v.key === initialValue)
-      ?.call(dataType, elementOptions);
+      ?.call(dataType, elementOptions?.['initial-specific-value']);
     return [field.id, resolvedValue];
   });
   return Object.fromEntries(initialValueEntries);
