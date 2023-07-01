@@ -603,7 +603,7 @@ describe('edit fields', () => {
     });
   });
 
-  it.only('allows setting initial concrete values for fields', () => {
+  it('allows setting initial concrete values for fields', () => {
     const greetingText = 'Hello, stranger!';
     const greetingField = Factory.field({
       name: 'Greeting',
