@@ -16,6 +16,7 @@ export default function ButtonGroup({label, value, onChangeValue, options}) {
           return (
             <ToggleButton
               key={option.key}
+              value={option.key ?? 'default'}
               aria-label={option.label}
               selected={value === option.key}
               onChange={() => onChangeValue(option.key)}
