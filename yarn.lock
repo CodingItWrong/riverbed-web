@@ -2272,13 +2272,13 @@
     prop-types "^15.8.1"
     react-is "^18.2.0"
 
-"@mui/x-date-pickers@^6.9.0":
-  version "6.9.0"
-  resolved "https://registry.yarnpkg.com/@mui/x-date-pickers/-/x-date-pickers-6.9.0.tgz#8fabcecc5e908ff243eced686eafbbc15862f024"
-  integrity sha512-aQ2FPQIf+Il85pkNdJ/vQaCEMJ/RiFor9qJzgSfm1NkCMlvAL8GguLxbvn3M0UdY3wSIdT23C4xyQRji7rV5Xg==
+"@mui/x-date-pickers@^6.9.1":
+  version "6.9.1"
+  resolved "https://registry.yarnpkg.com/@mui/x-date-pickers/-/x-date-pickers-6.9.1.tgz#1127fc4bc77261bc36eef4d616d67f75e882d42d"
+  integrity sha512-iqw0U8fn58tP5OPXoITqkjp1JKY2EvFpsLLTd8stP/pJkVjjAnhhm/KOneMmBziIgTyMSXP4SnoRaKjwpXILew==
   dependencies:
     "@babel/runtime" "^7.22.5"
-    "@mui/utils" "^5.13.1"
+    "@mui/utils" "^5.13.6"
     "@types/react-transition-group" "^4.4.6"
     clsx "^1.2.1"
     prop-types "^15.8.1"
