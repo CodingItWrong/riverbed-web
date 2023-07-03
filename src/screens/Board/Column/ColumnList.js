@@ -3,6 +3,7 @@ import {useNavigate} from 'react-router-dom';
 import {large, useBreakpoint} from '../../../breakpoints';
 import Button from '../../../components/Button';
 import ErrorSnackbar from '../../../components/ErrorSnackbar';
+import LoadingIndicator from '../../../components/LoadingIndicator';
 import sharedStyles, {useColumnStyle} from '../../../components/sharedStyles';
 import {useCards} from '../../../data/cards';
 import {useColumns, useCreateColumn} from '../../../data/columns';
@@ -13,13 +14,16 @@ import Column from './Column';
 export default function ColumnList({board}) {
   const navigate = useNavigate();
 
-  const {isLoading: isLoadingElements} = useBoardElements(board);
+  const {isLoading: isLoadingElements, isFetching: isFetchingElements} =
+    useBoardElements(board);
   const {
     data: columns = [],
     isLoading: isLoadingColumns,
+    isFetching: isFetchingColumns,
     error: columnsError,
   } = useColumns(board);
-  const {isLoading: isLoadingCards} = useCards(board);
+  const {isLoading: isLoadingCards, isFetching: isFetchingCards} =
+    useCards(board);
 
   const {
     mutate: createColumn,
@@ -44,8 +48,13 @@ export default function ColumnList({board}) {
   const pagingEnabled = breakpoint !== large;
 
   const isLoading = isLoadingCards || isLoadingColumns || isLoadingElements;
+  const isFetching = isFetchingCards || isFetchingColumns || isFetchingElements;
   if (isLoading) {
-    return null; // loading indicator is in header
+    return (
+      <div style={styles.firstLoadIndicatorContainer}>
+        <LoadingIndicator style={styles.firstLoadIndicator} />
+      </div>
+    );
   }
 
   const sortedColumns = sortByDisplayOrder(columns);
@@ -55,6 +64,7 @@ export default function ColumnList({board}) {
       data-testid="outer"
       style={{...sharedStyles.column, ...styles.containerHeight}}
     >
+      {isFetching && <LoadingIndicator style={styles.reloadIndicator} />}
       <ScrollView
         horizontal
         pagingEnabled={pagingEnabled}
@@ -93,5 +103,18 @@ const styles = {
   },
   buttonContainer: {
     margin: 8,
+  },
+  firstLoadIndicatorContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginTop: '8px',
+  },
+  reloadIndicator: {
+    position: 'absolute',
+    right: '8px',
+    top: '8px',
+    width: '20px',
+    height: '20px',
   },
 };
