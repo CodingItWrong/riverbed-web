@@ -92,21 +92,13 @@ export default function Board() {
     }, [board, refreshCards]),
   );
 
-  function renderContents() {
-    if (!board) {
-      return null;
-    } else {
-      return <ColumnList board={board} />;
-    }
-  }
-
   const colorTheme = useColorSchemeTheme(board?.attributes['color-theme']);
 
   return (
     <MuiProvider theme={colorTheme}>
       <NavigationBar options={navigationOptions} backTo="/" />
       <ScreenBackground style={sharedStyles.fullHeight}>
-        {renderContents()}
+        <ColumnList board={board} />
         <ErrorSnackbar error={error}>
           An error occurred loading the board.
         </ErrorSnackbar>
