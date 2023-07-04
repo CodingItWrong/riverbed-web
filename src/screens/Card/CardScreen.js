@@ -74,7 +74,11 @@ export default function CardScreen() {
 
   function renderContents() {
     if (isFirstLoaded) {
-      return <LoadingIndicator />;
+      return (
+        <div style={sharedStyles.firstLoadIndicatorContainer}>
+          <LoadingIndicator />
+        </div>
+      );
     } else if (isEditingElements) {
       return <ElementList board={board} card={card} />;
     } else if (card) {

@@ -51,7 +51,7 @@ export default function ColumnList({board}) {
   const isFetching = isFetchingCards || isFetchingColumns || isFetchingElements;
   if (isLoading) {
     return (
-      <div style={styles.firstLoadIndicatorContainer}>
+      <div style={sharedStyles.firstLoadIndicatorContainer}>
         <LoadingIndicator style={styles.firstLoadIndicator} />
       </div>
     );
@@ -103,12 +103,6 @@ const styles = {
   },
   buttonContainer: {
     margin: 8,
-  },
-  firstLoadIndicatorContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    marginTop: '8px',
   },
   reloadIndicator: {
     position: 'absolute',
