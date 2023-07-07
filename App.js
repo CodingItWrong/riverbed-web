@@ -12,6 +12,10 @@ const queryClient = new QueryClient({
     queries: {
       refetchOnWindowFocus: !window.Cypress,
       staleTime: 5000,
+
+      // for debugging:
+      // refetchOnWindowFocus: false,
+      // retry: false,
     },
   },
 });
@@ -25,7 +29,12 @@ export default function App() {
         <MuiProvider theme={theme}>
           <CssBaseline />
           <QueryClientProvider client={queryClient}>
-            {__DEV__ && <ReactQueryDevtools initialIsOpen={false} />}
+            {__DEV__ && (
+              <ReactQueryDevtools
+                initialIsOpen={false}
+                position="bottom-right"
+              />
+            )}
             <Navigation />
           </QueryClientProvider>
         </MuiProvider>

@@ -5,11 +5,10 @@ import Typography from '@mui/material/Typography';
 import {Link as RouterLink} from 'react-router-dom';
 import BackButton from './BackButton';
 import BoardIcon from './BoardIcon';
-import LoadingIndicator from './LoadingIndicator';
 import sharedStyles from './sharedStyles';
 
 export default function NavigationBar({options, backTo}) {
-  const {title, icon, titleHref, headerRight, isFetching} = options;
+  const {title, icon, titleHref, headerRight} = options;
 
   return (
     <AppBar position="relative">
@@ -38,7 +37,6 @@ export default function NavigationBar({options, backTo}) {
             {title}
           </Typography>
         )}
-        <LoadingIndicator loading={Boolean(isFetching)} />
         {headerRight?.()}
       </Toolbar>
     </AppBar>

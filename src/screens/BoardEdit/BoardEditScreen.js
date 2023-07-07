@@ -21,7 +21,11 @@ export default function BoardEditScreen() {
 
   function renderContents() {
     if (!board) {
-      return <LoadingIndicator />;
+      return (
+        <div style={sharedStyles.firstLoadIndicatorContainer}>
+          <LoadingIndicator />
+        </div>
+      );
     } else {
       return (
         <EditBoardForm

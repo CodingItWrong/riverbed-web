@@ -11,7 +11,7 @@ import {useBoardElements} from '../../../data/elements';
 import sortByDisplayOrder from '../../../utils/sortByDisplayOrder';
 import Column from './Column';
 
-export default function ColumnList({board}) {
+export default function ColumnList({board, isLoadingBoard}) {
   const navigate = useNavigate();
 
   const {isLoading: isLoadingElements, isFetching: isFetchingElements} =
@@ -47,11 +47,13 @@ export default function ColumnList({board}) {
   const columnWidthStyle = useColumnStyle();
   const pagingEnabled = breakpoint !== large;
 
-  const isLoading = isLoadingCards || isLoadingColumns || isLoadingElements;
+  const isLoading = board
+    ? isLoadingCards || isLoadingColumns || isLoadingElements
+    : isLoadingBoard;
   const isFetching = isFetchingCards || isFetchingColumns || isFetchingElements;
   if (isLoading) {
     return (
-      <div style={styles.firstLoadIndicatorContainer}>
+      <div style={sharedStyles.firstLoadIndicatorContainer}>
         <LoadingIndicator style={styles.firstLoadIndicator} />
       </div>
     );
@@ -73,18 +75,20 @@ export default function ColumnList({board}) {
         {sortedColumns.map(column => (
           <Column key={column.id} column={column} board={board} />
         ))}
-        <div style={{...columnWidthStyle, ...sharedStyles.columnPadding}}>
-          <div style={fullContainerStyle}>
-            <Button
-              mode="link"
-              icon="plus"
-              onPress={handleCreateColumn}
-              disabled={isAddingColumn}
-            >
-              Add Column
-            </Button>
+        {board && (
+          <div style={{...columnWidthStyle, ...sharedStyles.columnPadding}}>
+            <div style={fullContainerStyle}>
+              <Button
+                mode="link"
+                icon="plus"
+                onPress={handleCreateColumn}
+                disabled={isAddingColumn}
+              >
+                Add Column
+              </Button>
+            </div>
           </div>
-        </div>
+        )}
       </ScrollView>
       <ErrorSnackbar error={columnsError}>
         An error occurred loading columns.
@@ -103,12 +107,6 @@ const styles = {
   },
   buttonContainer: {
     margin: 8,
-  },
-  firstLoadIndicatorContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    marginTop: '8px',
   },
   reloadIndicator: {
     position: 'absolute',

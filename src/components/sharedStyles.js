@@ -50,6 +50,12 @@ const sharedStyles = {
   hidden: {
     opacity: 0,
   },
+  firstLoadIndicatorContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginTop: '8px',
+  },
 };
 
 export default sharedStyles;

@@ -42,8 +42,17 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
     mutate: deleteBoard,
     isLoading: isDeleting,
     isError: isDeleteError,
+    reset: clearDeleteError,
   } = useDeleteBoard(board);
-  const handleDeleteBoard = () => deleteBoard(null, {onSuccess: onDelete});
+  const handleDeleteBoard = () => {
+    setConfirmingDelete(false);
+    deleteBoard(null, {onSuccess: onDelete});
+  };
+
+  function confirmDelete() {
+    clearDeleteError();
+    setConfirmingDelete(true);
+  }
 
   function updateAttribute(path, value) {
     setAttributes(oldAttributes => {
@@ -69,7 +78,9 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
         destructive
         open={confirmingDelete}
         title="Delete Board?"
-        message={`Are you sure you want to delete board "${attributes.name}"? Data will not be able to be recovered.`}
+        message={`Are you sure you want to delete ${
+          attributes.name ? `board "${attributes.name}"` : 'this board'
+        }? Data will not be able to be recovered.`}
         confirmButtonLabel="Yes, Delete Board"
         onConfirm={handleDeleteBoard}
         onDismiss={() => setConfirmingDelete(false)}
@@ -139,10 +150,7 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
           <Button onPress={onCancel} disabled={isLoading}>
             Cancel
           </Button>
-          <Button
-            onPress={() => setConfirmingDelete(true)}
-            disabled={isLoading}
-          >
+          <Button onPress={confirmDelete} disabled={isLoading}>
             Delete Board
           </Button>
           <Button
