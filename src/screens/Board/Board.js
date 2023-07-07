@@ -116,7 +116,7 @@ export default function Board() {
     <MuiProvider theme={colorTheme}>
       <NavigationBar options={navigationOptions} backTo="/" />
       <ScreenBackground style={sharedStyles.fullHeight}>
-        <ColumnList board={board} />
+        <ColumnList board={board} isLoadingBoard={isLoadingBoard} />
         <ErrorSnackbar error={error} onRetry={refetch}>
           An error occurred loading the board.
         </ErrorSnackbar>
