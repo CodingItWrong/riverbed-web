@@ -90,7 +90,12 @@ export default function BoardList() {
       <NavigationBar options={{title: 'My Boards', headerRight: renderMenu}} />
       <CenterColumn>
         {isLoading ? (
-          <div style={sharedStyles.columnPadding}>
+          <div
+            style={{
+              ...sharedStyles.columnPadding,
+              ...sharedStyles.firstLoadIndicatorContainer,
+            }}
+          >
             <LoadingIndicator />
           </div>
         ) : (
