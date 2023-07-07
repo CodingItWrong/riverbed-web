@@ -169,9 +169,7 @@ describe('edit cards', () => {
         data: updatedNewCard,
       });
 
-      cy.get(`[data-testid=text-input-${titleField.id}]`)
-        .clear()
-        .type(newTitle);
+      cy.get(`[data-testid=text-input-${titleField.id}]`).type(newTitle);
       cy.wait('@updateNewCard');
 
       cy.get('[aria-label="Close card"]').click();
