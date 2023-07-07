@@ -69,7 +69,7 @@ export default function BoardList() {
     );
   }, [menuAnchorEl, clearToken, navigate]);
 
-  const {data: boards = [], isLoading, error: loadError} = useBoards();
+  const {data: boards = [], isLoading, error: loadError, refetch} = useBoards();
 
   const boardLink = board => `/boards/${board.id}`;
 
@@ -138,7 +138,7 @@ export default function BoardList() {
           </div>
         )}
       </CenterColumn>
-      <ErrorSnackbar error={loadError}>
+      <ErrorSnackbar error={loadError} onRetry={refetch}>
         An error occurred loading the boards.
       </ErrorSnackbar>
       <ErrorSnackbar error={createError}>
