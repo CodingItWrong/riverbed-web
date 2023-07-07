@@ -69,7 +69,9 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
         destructive
         open={confirmingDelete}
         title="Delete Board?"
-        message={`Are you sure you want to delete board "${attributes.name}"? Data will not be able to be recovered.`}
+        message={`Are you sure you want to delete ${
+          attributes.name ? `board "${attributes.name}"` : 'this board'
+        }? Data will not be able to be recovered.`}
         confirmButtonLabel="Yes, Delete Board"
         onConfirm={handleDeleteBoard}
         onDismiss={() => setConfirmingDelete(false)}
