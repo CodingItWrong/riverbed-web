@@ -28,15 +28,33 @@ export default function Board() {
     data: board,
     isLoading: isLoadingBoard,
     error: boardError,
+    refetch: refetchBoard,
   } = useBoard(boardId);
 
-  const {isFetching: isFetchingCards, error: cardsError} = useCards(board);
-  const {isFetching: isFetchingColumns, error: columnsError} =
-    useColumns(board);
-  const {isFetching: isFetchingElements, error: elementsError} =
-    useBoardElements(board);
+  const {
+    isFetching: isFetchingCards,
+    error: cardsError,
+    refetch: refetchCards,
+  } = useCards(board);
+  const {
+    isFetching: isFetchingColumns,
+    error: columnsError,
+    refetch: refetchColumns,
+  } = useColumns(board);
+  const {
+    isFetching: isFetchingElements,
+    error: elementsError,
+    refetch: refetchElements,
+  } = useBoardElements(board);
   const isFetching = isFetchingCards || isFetchingColumns || isFetchingElements;
   const error = boardError ?? cardsError ?? columnsError ?? elementsError;
+  function refetch() {
+    refetchBoard();
+    refetchCards();
+    refetchColumns();
+    refetchElements();
+  }
+
   const refreshCards = useRefreshCards(board);
 
   const {data: elements} = useBoardElements(board);
@@ -99,7 +117,7 @@ export default function Board() {
       <NavigationBar options={navigationOptions} backTo="/" />
       <ScreenBackground style={sharedStyles.fullHeight}>
         <ColumnList board={board} />
-        <ErrorSnackbar error={error}>
+        <ErrorSnackbar error={error} onRetry={refetch}>
           An error occurred loading the board.
         </ErrorSnackbar>
         <ErrorSnackbar error={createCardError}>
