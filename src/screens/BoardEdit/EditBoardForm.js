@@ -42,8 +42,17 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
     mutate: deleteBoard,
     isLoading: isDeleting,
     isError: isDeleteError,
+    reset: clearDeleteError,
   } = useDeleteBoard(board);
-  const handleDeleteBoard = () => deleteBoard(null, {onSuccess: onDelete});
+  const handleDeleteBoard = () => {
+    setConfirmingDelete(false);
+    deleteBoard(null, {onSuccess: onDelete});
+  };
+
+  function confirmDelete() {
+    clearDeleteError();
+    setConfirmingDelete(true);
+  }
 
   function updateAttribute(path, value) {
     setAttributes(oldAttributes => {
@@ -141,10 +150,7 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
           <Button onPress={onCancel} disabled={isLoading}>
             Cancel
           </Button>
-          <Button
-            onPress={() => setConfirmingDelete(true)}
-            disabled={isLoading}
-          >
+          <Button onPress={confirmDelete} disabled={isLoading}>
             Delete Board
           </Button>
           <Button
