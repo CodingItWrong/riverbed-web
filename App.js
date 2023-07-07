@@ -25,7 +25,12 @@ export default function App() {
         <MuiProvider theme={theme}>
           <CssBaseline />
           <QueryClientProvider client={queryClient}>
-            {__DEV__ && <ReactQueryDevtools initialIsOpen={false} />}
+            {__DEV__ && (
+              <ReactQueryDevtools
+                initialIsOpen={false}
+                position="bottom-right"
+              />
+            )}
             <Navigation />
           </QueryClientProvider>
         </MuiProvider>
