@@ -23,7 +23,7 @@ export default function CardScreen() {
   const [isFirstLoaded, setIsFirstLoaded] = useState(true);
 
   const {data: board} = useBoard(boardId);
-  const {data: card} = useCard({boardId, cardId});
+  const {data: card, isFetching, error, refetch} = useCard({boardId, cardId});
 
   useEffect(() => {
     if (card) {
@@ -73,7 +73,7 @@ export default function CardScreen() {
   }, [isEditingElements, handleDeleteCard]);
 
   function renderContents() {
-    if (isFirstLoaded) {
+    if (isFetching && isFirstLoaded) {
       return (
         <div style={sharedStyles.firstLoadIndicatorContainer}>
           <LoadingIndicator />
@@ -108,6 +108,9 @@ export default function CardScreen() {
         </div>
         {renderContents()}
       </BaseModalScreen>
+      <ErrorSnackbar error={error} onRetry={refetch}>
+        An error occurred loading the card.
+      </ErrorSnackbar>
       <ErrorSnackbar error={deleteError}>
         An error occurred deleting the card.
       </ErrorSnackbar>
