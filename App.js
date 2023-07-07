@@ -12,6 +12,10 @@ const queryClient = new QueryClient({
     queries: {
       refetchOnWindowFocus: !window.Cypress,
       staleTime: 5000,
+
+      // for debugging:
+      // refetchOnWindowFocus: false,
+      // retry: false,
     },
   },
 });
