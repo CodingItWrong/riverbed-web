@@ -73,18 +73,20 @@ export default function ColumnList({board}) {
         {sortedColumns.map(column => (
           <Column key={column.id} column={column} board={board} />
         ))}
-        <div style={{...columnWidthStyle, ...sharedStyles.columnPadding}}>
-          <div style={fullContainerStyle}>
-            <Button
-              mode="link"
-              icon="plus"
-              onPress={handleCreateColumn}
-              disabled={isAddingColumn}
-            >
-              Add Column
-            </Button>
+        {board && (
+          <div style={{...columnWidthStyle, ...sharedStyles.columnPadding}}>
+            <div style={fullContainerStyle}>
+              <Button
+                mode="link"
+                icon="plus"
+                onPress={handleCreateColumn}
+                disabled={isAddingColumn}
+              >
+                Add Column
+              </Button>
+            </div>
           </div>
-        </div>
+        )}
       </ScrollView>
       <ErrorSnackbar error={columnsError}>
         An error occurred loading columns.
