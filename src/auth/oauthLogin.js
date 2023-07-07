@@ -20,16 +20,16 @@ const oauthLogin = ({httpClient, path = DEFAULT_PATH, username, password}) =>
     .catch(handleErrorResponse);
 
 function handleErrorResponse(error) {
-  let message;
-  if (
-    error &&
-    error.response &&
-    error.response.data &&
-    error.response.data.error_description
-  ) {
-    message = error.response.data.error_description;
-  } else {
-    message = DEFAULT_ERROR_MESSAGE;
+  let message = DEFAULT_ERROR_MESSAGE;
+  if (error?.responseText) {
+    try {
+      const responseData = JSON.parse(error?.responseText);
+      if (responseData.error_description) {
+        message = responseData.error_description;
+      }
+    } catch {
+      // no-op: use default message value
+    }
   }
   throw message;
 }

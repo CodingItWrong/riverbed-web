@@ -9,9 +9,10 @@ export default function httpClient({token} = {}) {
 }
 
 class ResponseError extends Error {
-  constructor(response) {
+  constructor(response, responseText) {
     super('An error was returned from the server');
     this.response = response;
+    this.responseText = responseText;
   }
 }
 
@@ -75,7 +76,7 @@ class HttpClient {
     if (response.status >= 400) {
       const responseText = await response.text();
       console.error(response, responseText);
-      throw new ResponseError(response);
+      throw new ResponseError(response, responseText);
     } else {
       const data = await response.json();
       return {data};
