@@ -103,10 +103,10 @@ describe('edit cards', () => {
       });
 
       cy.contains(card.attributes['field-values'][titleField.id]).click();
-      cy.get(`[data-testid=text-input-${titleField.id}]`)
-        .clear()
-        .type(updatedTitle);
+      cy.get(`[data-testid=text-input-${titleField.id}]`).clear();
+      cy.wait('@updateCard1');
 
+      cy.get(`[data-testid=text-input-${titleField.id}]`).type(updatedTitle);
       cy.wait('@updateCard1')
         .its('request.body')
         .should('deep.equal', {data: updatedCard});
