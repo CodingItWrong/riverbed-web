@@ -133,7 +133,6 @@ export default function EditElementForm({
           <>
             <DropdownField
               fieldLabel="Data Type"
-              emptyLabel="(choose)"
               value={dataTypeOptions.find(
                 o => o.key === elementAttributes['data-type'],
               )}

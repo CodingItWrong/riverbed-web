@@ -36,6 +36,7 @@ describe('edit fields', () => {
   it('allows creating fields', () => {
     const newField = Factory.field({
       'element-type': ELEMENT_TYPES.FIELD.key,
+      'data-type': FIELD_DATA_TYPES.TEXT.key,
       name: '',
     });
     const localGreetingField = Factory.field(
@@ -83,8 +84,7 @@ describe('edit fields', () => {
       cy.wait('@addField');
       const fieldName = 'Greeting';
       cy.get('[data-testid="text-input-element-name"]').type(fieldName);
-      cy.contains('(choose)').click();
-      cy.get('[role=listbox]').contains('Text').click();
+      cy.contains('Text'); // ensure preselected
       cy.get('[data-testid="checkbox-show-in-summary"]').click();
 
       // TODO: set other element fields: show condition, etc
@@ -274,6 +274,7 @@ describe('edit fields', () => {
     const card = Factory.card({});
     const newField = Factory.field({
       'element-type': ELEMENT_TYPES.FIELD.key,
+      'data-type': FIELD_DATA_TYPES.TEXT.key,
       name: '',
     });
     const choiceField = Factory.field(
@@ -329,7 +330,7 @@ describe('edit fields', () => {
       cy.get('[data-testid="text-input-element-name"]').type(fieldName);
 
       // data type: choice
-      cy.contains('(choose)').click();
+      cy.contains('Text').click();
       cy.get('[role=listbox]').contains('Choice').click();
       cy.get('[data-testid="checkbox-show-in-summary"]').click();
 

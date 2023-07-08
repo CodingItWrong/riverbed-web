@@ -40,7 +40,7 @@ export default function DropdownField({
           data-testid={testID}
           disabled={disabled}
         >
-          <MenuItem value={EMPTY_VALUE}>{emptyLabel}</MenuItem>
+          {emptyLabel && <MenuItem value={EMPTY_VALUE}>{emptyLabel}</MenuItem>}
           {options?.map(option => (
             <MenuItem key={keyExtractor(option)} value={keyExtractor(option)}>
               {labelExtractor(option)}
