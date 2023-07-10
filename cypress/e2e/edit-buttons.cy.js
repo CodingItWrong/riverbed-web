@@ -387,7 +387,7 @@ describe('edit buttons', () => {
     });
   });
 
-  it('allows setting a specific concrete value', () => {
+  it('allows setting a specific concrete text value', () => {
     const newButton = Factory.button({});
     const buttonName = 'Change the Greeting';
     const newGreeting = 'Good day!';
@@ -450,7 +450,9 @@ describe('edit buttons', () => {
       cy.get('[role=listbox]').contains('Greeting').click();
       cy.contains('(choose)').click();
       cy.get('[role=listbox]').contains('specific value').click();
-      cy.get('[data-testid=text-input-specific-value]').type(newGreeting);
+      cy.get(`[data-testid=text-input-${greetingField.id}]`)
+        .eq(1)
+        .type(newGreeting);
 
       cy.intercept('PATCH', `http://cypressapi/elements/${newButton.id}?`, {
         success: true,
@@ -488,6 +490,110 @@ describe('edit buttons', () => {
 
     cy.step('CONFIRM FIELD DATA UPDATED ON CARD', () => {
       cy.contains(newGreeting);
+    });
+  });
+
+  it('allows setting a specific concrete choice value', () => {
+    const colorField = Factory.field({
+      name: 'Color',
+      'data-type': FIELD_DATA_TYPES.CHOICE.key,
+      'show-in-summary': true,
+      options: {
+        choices: [
+          {id: 'red_uuid', label: 'Red'},
+          {id: 'green_uuid', label: 'Green'},
+        ],
+      },
+    });
+    const colorCard = Factory.card({[colorField.id]: null});
+
+    const buttonName = 'Go';
+    const goButton = Factory.button({
+      name: buttonName,
+    });
+    const updatedGoButton = Factory.button(
+      {
+        options: {
+          actions: [
+            {
+              command: COMMANDS.SET_VALUE.key,
+              field: colorField.id,
+              value: VALUES.SPECIFIC_VALUE.key,
+              'specific-value': 'green_uuid',
+            },
+          ],
+        },
+      },
+      goButton,
+    );
+
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
+      data: [colorField, goButton],
+    });
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
+      data: [colorCard],
+    });
+    cy.intercept('GET', `http://cypressapi/cards/${colorCard.id}?`, {
+      data: colorCard,
+    });
+    cy.intercept('GET', `http://cypressapi/elements/${goButton.id}?`, {
+      data: goButton,
+    });
+
+    goToBoard();
+
+    cy.step('CONFIGURE BUTTON', () => {
+      cy.get(`[data-testid=card-${colorCard.id}`).click();
+      cy.get('[aria-label="Edit Elements"]').click();
+      cy.get(`[aria-label="Edit ${buttonName} button"`).click();
+
+      cy.contains('Add Action').click();
+      const getActionsContainer = () => cy.contains('Click Actions').parent();
+      getActionsContainer().contains('(choose)').click();
+      cy.get('[role=listbox]').contains('Set Value').click();
+      getActionsContainer().contains('(choose)').click();
+      cy.get('[role=listbox]').contains('Color').click();
+      getActionsContainer().contains('(choose)').click();
+      cy.get('[role=listbox]').contains('specific value').click();
+      getActionsContainer().contains('(choose)').click();
+      cy.get('[role=listbox]').contains('Green').click();
+
+      cy.intercept('PATCH', `http://cypressapi/elements/${goButton.id}?`, {
+        success: true,
+      }).as('updateField');
+      cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
+        data: [colorField, updatedGoButton],
+      });
+      cy.contains('Save Button').click();
+      cy.wait('@updateField')
+        .its('request.body')
+        .should('deep.equal', {data: updatedGoButton});
+      cy.contains(buttonName);
+      cy.get('[aria-label="Done Editing Elements"]').click();
+    });
+
+    cy.step('RUN BUTTON ACTION', () => {
+      const updatedCard = Factory.card(
+        {[colorField.id]: 'green_uuid'},
+        colorCard,
+      );
+      cy.intercept('PATCH', `http://cypressapi/cards/${colorCard.id}?`, {
+        success: true,
+      }).as('updateCard');
+      cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
+        data: [updatedCard],
+      });
+      cy.intercept('GET', `http://cypressapi/cards/${updatedCard.id}?`, {
+        data: updatedCard,
+      });
+      cy.contains(buttonName).click();
+      cy.wait('@updateCard')
+        .its('request.body')
+        .should('deep.equal', {data: updatedCard});
+    });
+
+    cy.step('CONFIRM FIELD DATA UPDATED ON CARD', () => {
+      cy.contains('Green');
     });
   });
 
