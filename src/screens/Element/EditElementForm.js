@@ -398,19 +398,17 @@ function ActionInputs({actions, updateActionsAttribute, fields}) {
               />
             )}
             {action.command === COMMANDS.SET_VALUE.key &&
+              action.field &&
               action.value === VALUES.SPECIFIC_VALUE.key && (
-                <TextField
-                  label="Specific Value"
-                  testID="text-input-specific-value"
-                  value={action?.['specific-value'] ?? ''}
-                  onChangeText={value =>
-                    updateActionsAttribute(
-                      `[${index}]['specific-value']`,
-                      value,
-                    )
-                  }
-                  style={styles.actionClause}
-                />
+                <div style={styles.actionClause}>
+                  <Field
+                    field={fields.find(f => f.id === action.field)}
+                    value={action['specific-value']}
+                    setValue={v =>
+                      updateActionsAttribute(`[${index}]['specific-value']`, v)
+                    }
+                  />
+                </div>
               )}
             {action.command === COMMANDS.ADD_DAYS.key && (
               <NumberField
