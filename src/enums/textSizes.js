@@ -8,3 +8,5 @@ const TEXT_SIZES = [
 ];
 
 export default TEXT_SIZES;
+
+export const DEFAULT_TEXT_SIZE = 4;
