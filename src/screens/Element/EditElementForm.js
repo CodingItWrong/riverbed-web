@@ -24,7 +24,7 @@ import {
 import COMMANDS from '../../enums/commands';
 import ELEMENT_TYPES from '../../enums/elementTypes';
 import FIELD_DATA_TYPES from '../../enums/fieldDataTypes';
-import TEXT_SIZES from '../../enums/textSizes';
+import TEXT_SIZES, {DEFAULT_TEXT_SIZE} from '../../enums/textSizes';
 import VALUES from '../../enums/values';
 import sortByDisplayOrder from '../../utils/sortByDisplayOrder';
 import uuid from '../../utils/uuid';
@@ -228,9 +228,11 @@ export default function EditElementForm({
               />
               <DropdownField
                 fieldLabel="Text Size"
-                emptyLabel="(choose)"
                 value={TEXT_SIZES.find(
-                  o => o.key === elementAttributes.options['text-size'],
+                  o =>
+                    o.key ===
+                    (elementAttributes.options['text-size'] ??
+                      DEFAULT_TEXT_SIZE),
                 )}
                 onValueChange={option =>
                   updateAttribute('options["text-size"]', option?.key)
