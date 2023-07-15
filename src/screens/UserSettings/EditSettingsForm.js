@@ -4,6 +4,7 @@ import {useState} from 'react';
 import Button from '../../components/Button';
 import DropdownField from '../../components/DropdownField';
 import ErrorMessage from '../../components/ErrorMessage';
+import LabeledCheckbox from '../../components/LabeledCheckbox';
 import Stack from '../../components/Stack';
 import {useBoards} from '../../data/boards';
 import {useUpdateUser} from '../../data/user';
@@ -37,6 +38,11 @@ export default function EditSettingsForm({user, onSave, onCancel}) {
 
   return (
     <Stack spacing={1}>
+      <LabeledCheckbox
+        label="Allow Emails"
+        checked={attributes['allow-emails']}
+        onChangeChecked={newValue => updateAttribute('allow-emails', newValue)}
+      />
       <DropdownField
         fieldLabel="iOS Share to Board"
         emptyLabel="(none)"
