@@ -9,6 +9,8 @@ export default function Button({
   children,
   mode = 'default',
   rightIcon = false,
+  component,
+  href,
   style,
   testID,
 }) {
@@ -24,6 +26,8 @@ export default function Button({
       startIcon={rightIcon ? null : renderedIcon}
       endIcon={rightIcon ? renderedIcon : null}
       data-testid={testID}
+      component={component}
+      to={href}
     >
       {children || 'Button'}
     </MuiButton>

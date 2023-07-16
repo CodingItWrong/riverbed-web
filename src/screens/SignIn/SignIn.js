@@ -1,5 +1,5 @@
 import {useEffect} from 'react';
-import {useNavigate} from 'react-router-dom';
+import {Outlet, Link as RouterLink, useNavigate} from 'react-router-dom';
 import oauthLogin from '../../auth/oauthLogin';
 import useLoginForm from '../../auth/useLoginForm';
 import Button from '../../components/Button';
@@ -64,10 +64,19 @@ export default function SignIn() {
               <Button type="submit" mode="primary">
                 Sign in
               </Button>
+              <Button
+                type="button"
+                mode="secondary"
+                component={RouterLink}
+                href="/sign-up"
+              >
+                Sign up
+              </Button>
             </Stack>
           </form>
         </CenterColumn>
       </ScreenBackground>
+      <Outlet />
     </>
   );
 }

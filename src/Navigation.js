@@ -6,12 +6,19 @@ import Card from './screens/Card';
 import Column from './screens/Column';
 import Element from './screens/Element';
 import SignIn from './screens/SignIn';
+import SignUp from './screens/SignUp/SignUp';
 import UserSettings from './screens/UserSettings';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <SignIn />,
+    children: [
+      {
+        path: 'sign-up',
+        element: <SignUp />,
+      },
+    ],
   },
   {
     path: 'boards',
