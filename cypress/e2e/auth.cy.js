@@ -41,7 +41,7 @@ describe('auth', () => {
     cy.contains('Sign in').should('exist');
   });
 
-  it.only('allows signing up', () => {
+  it('allows signing up', () => {
     cy.visit('/');
 
     const email = 'example@example.com';
