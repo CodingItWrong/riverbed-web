@@ -14,6 +14,15 @@ export default function ConfirmationDialog({
   onDismiss,
   destructive,
 }) {
+  console.log({
+    open,
+    title,
+    message,
+    confirmButtonLabel,
+    onConfirm,
+    onDismiss,
+    destructive,
+  });
   return (
     <Dialog open={open} onClose={onDismiss}>
       <DialogTitle>{title}</DialogTitle>
@@ -21,13 +30,15 @@ export default function ConfirmationDialog({
         <DialogContentText>{message}</DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button variant="outlined" onClick={onDismiss}>
-          Cancel
-        </Button>
+        {onDismiss && (
+          <Button variant="outlined" onClick={onDismiss}>
+            Cancel
+          </Button>
+        )}
         <Button
           variant="contained"
           onClick={onConfirm}
-          color={destructive ? 'error' : null}
+          color={destructive ? 'error' : undefined}
         >
           {confirmButtonLabel}
         </Button>

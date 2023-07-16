@@ -28,12 +28,20 @@ export function useCurrentUser(options) {
   );
 }
 
+export function useCreateUser(options) {
+  const userClient = useUserClient();
+  return useMutation({
+    mutationFn: attributes => userClient.create({attributes}),
+    ...options,
+  });
+}
+
 export function useUpdateUser(user) {
-  const boardClient = useUserClient();
+  const userClient = useUserClient();
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: attributes =>
-      boardClient.update({
+      userClient.update({
         type: 'users',
         id: user.id,
         attributes,
