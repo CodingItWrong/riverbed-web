@@ -1,3 +1,4 @@
+import MuiDivider from '@mui/material/Divider';
 import MuiMenu from '@mui/material/Menu';
 import MuiMenuItem from '@mui/material/MenuItem';
 import sortBy from 'lodash/sortBy';
@@ -64,6 +65,21 @@ export default function BoardList() {
             User Settings
           </MuiMenuItem>
           <MuiMenuItem onClick={handlePress(signOut)}>Sign Out</MuiMenuItem>
+          <MuiDivider />
+          <MuiMenuItem
+            component="a"
+            href="https://about.riverbed.app"
+            onClick={closeMenu}
+          >
+            About
+          </MuiMenuItem>
+          <MuiMenuItem
+            component="a"
+            href="https://link.riverbed.app/source-ios"
+            onClick={closeMenu}
+          >
+            Source code
+          </MuiMenuItem>
         </MuiMenu>
       </>
     );
