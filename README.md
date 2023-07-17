@@ -1,6 +1,6 @@
 # Riverbed Web
 
-A web app for creating CRUD apps with interactivity with no programming.
+Web client for Riverbed, an app for creating interactive CRUD apps with no programming.
 
 ## Requirements
 
