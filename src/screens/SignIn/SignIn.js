@@ -77,6 +77,13 @@ export default function SignIn() {
                   Read the Riverbed Beta announcement!
                 </a>
               </p>
+              <p style={styles.link}>
+                Get access to the{' '}
+                <a href="https://testflight.apple.com/join/x2YeMEWe">
+                  Riverbed beta on Apple platforms
+                </a>{' '}
+                (iOS, iPadOS, and macOS)
+              </p>
             </Stack>
           </form>
         </CenterColumn>
