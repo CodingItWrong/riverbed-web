@@ -25,6 +25,8 @@ Dependencies are locked with `yarn.lock`; please use `yarn` rather than `npm` fo
 - In another terminal, run `yarn cypress`
 - Choose E2E Testing, then any browser, then click "Start E2E Testing"
 
-## License
+## Copyright and License
 
-MIT
+Copyright 2023 NeedBee, LLC.
+
+Licensed under GNU Affero General Public License (GNU AGPL) version 3 or later. See LICENSE.md for details.
