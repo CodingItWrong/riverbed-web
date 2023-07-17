@@ -22,7 +22,7 @@
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.14.0",
     "@mui/material": "^5.14.0",
-    "@mui/x-date-pickers": "^6.9.2",
+    "@mui/x-date-pickers": "^6.10.0",
     "@tanstack/react-query": "^4.29.5",
     "dayjs": "^1.11.9",
     "google-maps-react": "^2.0.6",
