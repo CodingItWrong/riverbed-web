@@ -72,6 +72,11 @@ export default function SignIn() {
               >
                 Sign up
               </Button>
+              <p style={styles.link}>
+                <a href="https://about.riverbed.app">
+                  Read the Riverbed Beta announcement!
+                </a>
+              </p>
             </Stack>
           </form>
         </CenterColumn>
@@ -84,5 +89,8 @@ export default function SignIn() {
 const styles = {
   container: {
     padding: 16,
+  },
+  link: {
+    textAlign: 'center',
   },
 };
