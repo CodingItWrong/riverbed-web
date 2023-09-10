@@ -43,7 +43,7 @@ export default function SignIn() {
 
   return (
     <>
-      <NavigationBar options={{title: 'Riverbed BETA'}} />
+      <NavigationBar options={{title: 'Riverbed'}} />
       <ScreenBackground style={styles.container}>
         <CenterColumn>
           <form onSubmit={handleSubmit}>
