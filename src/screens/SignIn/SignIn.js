@@ -1,3 +1,4 @@
+import {useMediaQuery} from '@mui/material';
 import {useEffect} from 'react';
 import {Outlet, Link as RouterLink, useNavigate} from 'react-router-dom';
 import oauthLogin from '../../auth/oauthLogin';
@@ -15,6 +16,7 @@ import {useToken} from '../../data/token';
 const client = httpClient();
 
 export default function SignIn() {
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
   const {isLoggedIn, setToken} = useToken();
   const navigate = useNavigate();
   const onLogIn = ({username, password}) =>
@@ -36,6 +38,8 @@ export default function SignIn() {
       navigate('/boards');
     }
   }, [isLoggedIn, navigate]);
+
+  const appStoreBadgeColor = prefersDarkMode ? 'white' : 'black';
 
   return (
     <>
@@ -77,13 +81,29 @@ export default function SignIn() {
                   Read the Riverbed Beta announcement!
                 </a>
               </p>
-              <p style={styles.link}>
-                Get access to the{' '}
-                <a href="https://testflight.apple.com/join/x2YeMEWe">
-                  Riverbed beta on Apple platforms
+              <div style={styles.link}>
+                <a
+                  href="https://apps.apple.com/us/app/riverbed-info-management/id6448536545"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <img
+                    src={`/ios-app-store-${appStoreBadgeColor}.svg`}
+                    alt="Download on the App Store"
+                    target="_blank"
+                  />
                 </a>{' '}
-                (iOS, iPadOS, and macOS)
-              </p>
+                <a
+                  href="https://apps.apple.com/us/app/riverbed-info-management/id6448536545"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <img
+                    src={`/mac-app-store-${appStoreBadgeColor}.svg`}
+                    alt="Download on the Mac App Store"
+                  />
+                </a>
+              </div>
             </Stack>
           </form>
         </CenterColumn>
