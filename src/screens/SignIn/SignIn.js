@@ -77,9 +77,10 @@ export default function SignIn() {
                 Sign up
               </Button>
               <p style={styles.link}>
-                <a href="https://about.riverbed.app">
-                  Read the Riverbed Beta announcement!
-                </a>
+                Riverbed allows you to build mini-apps that let you interact
+                with your data the way that works best for you—all without
+                writing any code.{' '}
+                <a href="https://about.riverbed.app">Learn More</a>
               </p>
               <div style={styles.link}>
                 <a
