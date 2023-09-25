@@ -24,7 +24,7 @@
     "@mui/material": "^5.14.10",
     "@mui/x-date-pickers": "^6.15.0",
     "@tanstack/react-query": "^4.29.5",
-    "dayjs": "^1.11.9",
+    "dayjs": "^1.11.10",
     "google-maps-react": "^2.0.6",
     "jest": "^29.7.0",
     "lodash": "^4.17.21",
