@@ -7,6 +7,7 @@ import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined';
 import CropFreeIcon from '@mui/icons-material/CropFree';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DirectionsIcon from '@mui/icons-material/Directions';
+import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 import DoneIcon from '@mui/icons-material/Done';
 import DragHandleIcon from '@mui/icons-material/DragHandle';
 import EditIcon from '@mui/icons-material/Edit';
@@ -58,6 +59,7 @@ const MUI_NAME_TO_COMPONENT_MAP = {
   pencil: EditIcon,
   plus: AddIcon,
   'monitor-weight': MonitorWeightOutlinedIcon,
+  run: DirectionsRunIcon,
   square: SquareIcon,
   star: StarIcon,
   'star-outline': StarBorderIcon,
