@@ -86,7 +86,7 @@ export default function Board() {
     } else {
       return {
         title: board?.attributes?.name ?? '(unnamed board)',
-        icon: board?.attributes?.icon,
+        icon: board?.attributes['icon-extended'],
         titleHref: 'edit',
         isFetching,
         headerRight: () => (

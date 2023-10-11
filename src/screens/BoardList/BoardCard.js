@@ -15,7 +15,7 @@ export default function BoardCard({board, href, style}) {
       <Card href={href}>
         <div style={styles.boardCard}>
           <BoardIcon
-            name={board.attributes.icon}
+            name={board.attributes['icon-extended']}
             style={sharedStyles.mr}
             sx={{color: primaryColor}}
           />

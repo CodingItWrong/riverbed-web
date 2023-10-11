@@ -101,8 +101,8 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
           />
           <ButtonGroup
             label="Icon"
-            value={attributes.icon}
-            onChangeValue={value => updateAttribute('icon', value)}
+            value={attributes['icon-extended']}
+            onChangeValue={value => updateAttribute('icon-extended', value)}
             options={ICON_OPTIONS}
           />
           <TextField
