@@ -11,6 +11,7 @@ const ICONS = [
   {key: 'map-marker', label: 'Map Marker', muiName: 'place'},
   {key: 'medical-bag', label: 'Medical Bag', muiName: 'medical-services'},
   {key: 'money', label: 'Money', muiName: 'paid-outlined'},
+  {key: 'runner', label: 'Runner', muiName: 'run'},
   {key: 'scale', label: 'Scale', muiName: 'monitor-weight'},
   {key: 'television', label: 'Television', muiName: 'tv'},
   {key: 'tree', label: 'Tree', muiName: 'park'},
