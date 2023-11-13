@@ -29,7 +29,6 @@ export default function SignUpForm({onClose}) {
     event.preventDefault();
 
     if (attributes.email === '') {
-      console.log('HI');
       setError('Email is required');
     } else if (!isValidEmail(attributes.email)) {
       setError('Email does not appear to be a valid email address');

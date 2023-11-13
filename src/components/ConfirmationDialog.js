@@ -14,15 +14,6 @@ export default function ConfirmationDialog({
   onDismiss,
   destructive,
 }) {
-  console.log({
-    open,
-    title,
-    message,
-    confirmButtonLabel,
-    onConfirm,
-    onDismiss,
-    destructive,
-  });
   return (
     <Dialog open={open} onClose={onDismiss}>
       <DialogTitle>{title}</DialogTitle>
