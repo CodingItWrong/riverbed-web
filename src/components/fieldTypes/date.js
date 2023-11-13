@@ -2,8 +2,8 @@ import {Suspense, lazy} from 'react';
 import FIELD_DATA_TYPES from '../../enums/fieldDataTypes';
 import dateUtils from '../../utils/dateUtils';
 
-const LazyDateEditorComponent = lazy(() =>
-  import('./lazy/DateEditorComponent'),
+const LazyDateEditorComponent = lazy(
+  () => import('./lazy/DateEditorComponent'),
 );
 
 const dateFieldDataType = {
