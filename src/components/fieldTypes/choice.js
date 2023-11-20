@@ -29,7 +29,6 @@ function ChoiceEditorComponent({
       onValueChange={choice => setValue(choice?.id)}
       options={choices}
       keyExtractor={choice => choice.id}
-      labelExtractor={choice => choice.label}
       disabled={disabled}
       style={style}
       testID={`choice-input-${field.id}`}
