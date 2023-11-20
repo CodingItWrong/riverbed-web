@@ -20,7 +20,6 @@ function ChoiceEditorComponent({
   style,
 }) {
   const {options: {choices} = {}} = field.attributes;
-  // TODO: try using MUI's component for browser-native <select>
   return (
     <DropdownField
       fieldLabel={label}
