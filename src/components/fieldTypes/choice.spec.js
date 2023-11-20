@@ -74,6 +74,28 @@ describe('choice field type', () => {
       expect(options[0]).toHaveTextContent('(choose)');
     });
 
+    it('only shows the default option when options are missing', async () => {
+      const fieldWithNoChoices = {
+        id: 123,
+        attributes: {},
+      };
+      render(
+        <EditorComponent
+          field={fieldWithNoChoices}
+          label={label}
+          value={null}
+        />,
+      );
+
+      expect(screen.getByRole('combobox', {name: label})).toHaveTextContent(
+        '(choose)',
+      );
+      await user.click(screen.getByRole('combobox', {name: label}));
+      const options = screen.getAllByRole('option');
+      expect(options.length).toEqual(1);
+      expect(options[0]).toHaveTextContent('(choose)');
+    });
+
     it('calls setValue with the ID of the choice chosen by the user', async () => {
       const setValue = jest.fn().mockName('setValue');
       render(
