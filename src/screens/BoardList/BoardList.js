@@ -75,7 +75,7 @@ export default function BoardList() {
           </MuiMenuItem>
           <MuiMenuItem
             component="a"
-            href="https://link.riverbed.app/source-ios"
+            href="https://link.riverbed.app/source-web"
             onClick={closeMenu}
           >
             Source code
