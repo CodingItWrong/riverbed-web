@@ -11,8 +11,10 @@ function DateEditorComponent({field, label, value, setValue, disabled, style}) {
         label={label}
         value={value ? dayjs(value) : null}
         onChange={dayJsObject => {
-          const string = dateUtils.objectToServerString(dayJsObject);
-          setValue(string);
+          if (!dayJsObject || dayJsObject.isValid()) {
+            const string = dateUtils.objectToServerString(dayJsObject);
+            setValue(string);
+          }
         }}
         disabled={disabled}
         slotProps={{
