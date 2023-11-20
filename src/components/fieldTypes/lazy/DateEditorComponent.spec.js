@@ -39,8 +39,24 @@ describe('DateEditorComponent', () => {
 
     await user.type(screen.getByRole('textbox', {name: label}), '10/31/2023');
 
-    // TODO: investigate multiple calls to setValue while typing, see if that causes issues
     expect(setValue).toHaveBeenCalledWith('2023-10-31');
+  });
+
+  it('does not call setValue when an invalid date is entered', async () => {
+    const setValue = jest.fn().mockName('setValue');
+    render(
+      <DateEditorComponent
+        field={field}
+        label={label}
+        value={null}
+        setValue={setValue}
+      />,
+    );
+
+    // simulates a partially-entered date
+    await user.type(screen.getByRole('textbox', {name: label}), '1');
+
+    expect(setValue).not.toHaveBeenCalled();
   });
 
   it('calls setValue with null upon clearing the field', async () => {
