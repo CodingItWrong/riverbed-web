@@ -1,5 +1,6 @@
 import {useCallback, useEffect, useState} from 'react';
 import {Outlet, useNavigate, useParams} from 'react-router-dom';
+import {large, useBreakpoint} from '../../breakpoints';
 import BackButton from '../../components/BackButton';
 import ConfirmationDialog from '../../components/ConfirmationDialog';
 import ErrorSnackbar from '../../components/ErrorSnackbar';
@@ -14,6 +15,9 @@ import EditCardForm from './EditCardForm';
 import ElementList from './ElementList';
 
 export default function CardScreen() {
+  const breakpoint = useBreakpoint();
+  const fullScreen = breakpoint !== large;
+
   const {boardId, cardId} = useParams();
   const navigate = useNavigate();
   const [isEditingElements, setIsEditingElements] = useState(false);
@@ -102,7 +106,12 @@ export default function CardScreen() {
         onDismiss={() => setConfirmingDelete(false)}
       />
       <BaseModalScreen backTo={backPath}>
-        <div style={sharedStyles.headerRow}>
+        <div
+          style={{
+            ...sharedStyles.headerRow,
+            ...(fullScreen ? {marginLeft: '8px', marginRight: '8px'} : null),
+          }}
+        >
           <BackButton to={backPath} accessibilityLabel="Close card" />
           {renderButtonControls()}
         </div>
