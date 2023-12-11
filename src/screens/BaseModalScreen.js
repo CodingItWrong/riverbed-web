@@ -20,7 +20,9 @@ export default function BaseModalScreen({backTo, children}) {
       fullScreen={fullScreen}
       onClose={() => navigate(backTo)}
     >
-      <DialogContent>{children}</DialogContent>
+      <DialogContent sx={fullScreen ? {padding: '8px'} : undefined}>
+        {children}
+      </DialogContent>
     </Dialog>
   );
 }
