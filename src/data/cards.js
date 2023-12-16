@@ -39,11 +39,20 @@ export function useCards(board) {
   );
 }
 
-// TODO: not sure if this is the cleanest API
+// WARNING: only use with data that you *know* is the latest, i.e. just sent to the server to update.
+// Otherwise you will get bad data in the edit form and lose data.
+// TODO: not sure if this is the cleanest API.
 export function usePrimeCard({board}) {
   const queryClient = useQueryClient();
   return function primeCard(card) {
     queryClient.setQueryData(['cards', board.id, card.id], card);
+  };
+}
+
+export function useForgetCard(board) {
+  const queryClient = useQueryClient();
+  return function forgetCard(card) {
+    queryClient.removeQueries(['cards', board.id, card.id]);
   };
 }
 

@@ -1,11 +1,11 @@
 import Card from '../../../components/Card';
 import Field from '../../../components/Field';
 import Text from '../../../components/Text';
-import {usePrimeCard} from '../../../data/cards';
+import {useForgetCard} from '../../../data/cards';
 import sortByDisplayOrder from '../../../utils/sortByDisplayOrder';
 
 export default function CardSummary({card, board, elements, style}) {
-  const primeCard = usePrimeCard({board});
+  const forgetCard = useForgetCard(board);
 
   const fieldsToShow = sortByDisplayOrder(
     elements.filter(field => field.attributes['show-in-summary']),
@@ -33,7 +33,7 @@ export default function CardSummary({card, board, elements, style}) {
     <Card
       key={card.id}
       style={style}
-      onClick={() => primeCard(card.id)}
+      onClick={() => forgetCard(card)}
       href={`/boards/${board.id}/cards/${card.id}`}
       testID={`card-${card.id}`}
       contentStyle={styles.card}
