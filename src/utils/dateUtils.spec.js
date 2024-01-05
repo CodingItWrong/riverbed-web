@@ -96,6 +96,14 @@ describe('dateUtils', () => {
         expect(dateUtils.isMonthOffset(value, -1)).toBe(result);
       },
     );
+
+    it('handles year changes', () => {
+      const januaryDate = new Date('2024-01-04T00:00:00.000Z');
+      nowFn.mockReturnValue(januaryDate);
+
+      const decemberDateString = '2023-12-30';
+      expect(dateUtils.isMonthOffset(decemberDateString, -1)).toBe(true);
+    });
   });
 
   describe('serverStringToObject', () => {
