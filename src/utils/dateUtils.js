@@ -18,11 +18,11 @@ const dateUtils = {
 
     const fieldObj = dayjs(dateString);
     const n = now();
-    const nowObj = dayjs(n);
+    const offsetObj = dayjs(n).add(offset, 'month');
 
     return (
-      fieldObj.year() === nowObj.year() &&
-      fieldObj.month() === nowObj.month() + offset
+      fieldObj.year() === offsetObj.year() &&
+      fieldObj.month() === offsetObj.month()
     );
   },
   serverStringToObject(dateString) {
