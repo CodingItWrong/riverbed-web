@@ -94,7 +94,7 @@ export default function Column({column, board}) {
         sections={cardGroups}
         sectionKeyExtractor={group => group.value}
         itemKeyExtractor={card => card.id}
-        contentContainerStyle={sharedStyles.columnPadding}
+        contentContainerStyle={{...sharedStyles.columnPadding, flex: 1}}
         ListEmptyComponent={<Text size={3}>(no cards)</Text>}
         renderSectionHeader={({section: group}) => {
           if (!applyGrouping) {
