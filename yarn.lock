@@ -2270,10 +2270,10 @@
     prop-types "^15.8.1"
     react-is "^18.2.0"
 
-"@mui/x-date-pickers@^7.2.0":
-  version "7.2.0"
-  resolved "https://registry.yarnpkg.com/@mui/x-date-pickers/-/x-date-pickers-7.2.0.tgz#d25275cef2e7b0a9946ce7f9a86b701c222a8209"
-  integrity sha512-hsXugZ+n1ZnHRYzf7+PFrjZ44T+FyGZmTreBmH0M2RUaAblgK+A1V3KNLT+r4Y9gJLH+92LwePxQ9xyfR+E51A==
+"@mui/x-date-pickers@^7.3.2":
+  version "7.3.2"
+  resolved "https://registry.yarnpkg.com/@mui/x-date-pickers/-/x-date-pickers-7.3.2.tgz#4b834e575e25ebdce4fad73e01953a76203d0320"
+  integrity sha512-i7JaDs1eXSZWyJihfszUHVV0t/C2HvtdMv5tHwv3E3enMx5Hup1vkJ64vZAH2fgGrTHQH8mjxvVsmI6jhDXIUg==
   dependencies:
     "@babel/runtime" "^7.24.0"
     "@mui/base" "^5.0.0-beta.40"
