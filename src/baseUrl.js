@@ -6,7 +6,7 @@ function getBaseUrl() {
   if (__DEV__) {
     return 'http://localhost:3000';
   } else {
-    return 'https://eb.api.riverbed.app';
+    return 'https://api.riverbed.app';
   }
 }
 
