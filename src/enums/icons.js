@@ -3,6 +3,7 @@ const ICONS = [
   {key: 'baseball', label: 'Baseball', muiName: 'sports-baseball'},
   {key: 'bed', label: 'Bed', muiName: 'bed'},
   {key: 'book', label: 'Book', muiName: 'menu-book'},
+  {key: 'car', label: 'Car', muiName: 'directions-car'},
   {key: 'chart', label: 'Chart', muiName: 'view-timeline'},
   {key: 'checkbox', label: 'Checkbox', muiName: 'check-box'},
   {key: 'food', label: 'Food', muiName: 'fastfood'},

@@ -7,6 +7,7 @@ import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined';
 import CropFreeIcon from '@mui/icons-material/CropFree';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DirectionsIcon from '@mui/icons-material/Directions';
+import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 import DoneIcon from '@mui/icons-material/Done';
 import DragHandleIcon from '@mui/icons-material/DragHandle';
@@ -48,6 +49,7 @@ const MUI_NAME_TO_COMPONENT_MAP = {
   compass: ExploreIcon,
   delete: DeleteIcon,
   directions: DirectionsIcon,
+  'directions-car': DirectionsCarIcon,
   'dots-square': CropFreeIcon,
   'dots-vertical': MoreVertIcon,
   fastfood: FastfoodOutlinedIcon,
