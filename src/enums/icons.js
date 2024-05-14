@@ -1,4 +1,4 @@
-// find more at https://pictogrammers.com/library/mdi/
+// muiName corresponds to name in getMuiIcon.js
 const ICONS = [
   {key: 'baseball', label: 'Baseball', muiName: 'sports-baseball'},
   {key: 'bed', label: 'Bed', muiName: 'bed'},
