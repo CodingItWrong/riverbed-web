@@ -74,7 +74,7 @@ export default function CardScreen() {
         </div>
       );
     }
-  }, [isEditingElements, handleDeleteCard]);
+  }, [isEditingElements]);
 
   function renderContents() {
     if (isFetching && isFirstLoaded) {
