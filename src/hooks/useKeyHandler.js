@@ -13,5 +13,5 @@ export default function useKeyHandler(key, callback) {
     return () => {
       document.removeEventListener('keydown', onKeyDown);
     };
-  }, [callback]);
+  }, [key, callback]);
 }
