@@ -1,4 +1,8 @@
-require('dotenv').config({path: './.env.production'});
+const dotenvResult = require('dotenv').config({path: './.env.production'});
+
+if (dotenvResult.error) {
+  throw dotenvResult.error;
+}
 
 const webpack = require('webpack');
 const {merge} = require('webpack-merge');
