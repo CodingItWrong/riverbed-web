@@ -11,5 +11,7 @@ updates:
       interval: "weekly"
     ignore:
       - dependency-name: "@babel/core"
+      - dependency-name: "eslint"
+        versions: [">= 9"]
       - dependency-name: "react-native"
       - dependency-name: "react-native-web"
