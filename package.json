@@ -22,7 +22,7 @@
   "dependencies": {
     "@codingitwrong/jsonapi-client": "^0.0.11",
     "@emotion/react": "^11.13.5",
-    "@emotion/styled": "^11.13.5",
+    "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^6.1.6",
     "@mui/material": "^6.1.9",
     "@mui/x-date-pickers": "^7.23.1",
