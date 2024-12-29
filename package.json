@@ -17,7 +17,7 @@
     "explore:app": "source-map-explorer dist/app.*.js",
     "explore:vendors": "source-map-explorer dist/vendors.*.js",
     "deploy": "npm run build && netlify deploy --prod",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "dependencies": {
     "@codingitwrong/jsonapi-client": "^0.0.11",
