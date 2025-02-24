@@ -64,7 +64,7 @@
     "html-webpack-plugin": "^5.6.3",
     "husky": "^9.1.7",
     "jest-environment-jsdom": "^29.7.0",
-    "prettier": "^3.5.1",
+    "prettier": "^3.5.2",
     "source-map-explorer": "^2.5.3",
     "webpack": "^5.97.1",
     "webpack-cli": "^6.0.1",
