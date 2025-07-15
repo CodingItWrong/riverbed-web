@@ -63,7 +63,7 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "html-webpack-plugin": "^5.6.3",
     "husky": "^9.1.7",
-    "jest-environment-jsdom": "^30.0.2",
+    "jest-environment-jsdom": "^30.0.4",
     "prettier": "^3.6.2",
     "source-map-explorer": "^2.5.3",
     "webpack": "^5.99.9",
