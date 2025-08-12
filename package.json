@@ -52,7 +52,7 @@
     "@testing-library/user-event": "^14.6.1",
     "babel-loader": "^10.0.0",
     "copy-webpack-plugin": "^13.0.0",
-    "cypress": "^14.5.3",
+    "cypress": "^14.5.4",
     "dotenv": "^17.2.1",
     "eslint": "^8.57",
     "eslint-config-prettier": "^10.1.8",
