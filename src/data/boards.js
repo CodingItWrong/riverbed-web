@@ -19,16 +19,19 @@ const refreshBoards = queryClient => queryClient.invalidateQueries(['boards']);
 
 export function useBoards() {
   const boardClient = useBoardClient();
-  return useQuery(['boards'], () => boardClient.all().then(resp => resp.data));
+  return useQuery({
+    queryKey: ['boards'],
+    queryFn: () => boardClient.all().then(resp => resp.data),
+  });
 }
 
 export function useBoard(id) {
   const boardClient = useBoardClient();
-  return useQuery(
-    ['boards', id],
-    () => boardClient.find({id}).then(response => response.data),
-    {enabled: !!id},
-  );
+  return useQuery({
+    queryKey: ['boards', id],
+    queryFn: () => boardClient.find({id}).then(response => response.data),
+    enabled: !!id,
+  });
 }
 
 export function useCreateBoard() {

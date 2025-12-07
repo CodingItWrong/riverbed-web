@@ -32,11 +32,11 @@ export function useRefreshCards(board) {
 
 export function useCards(board) {
   const cardClient = useCardClient();
-  return useQuery(
-    ['cards', board?.id],
-    () => cardClient.related({parent: board}).then(resp => resp.data),
-    {enabled: !!board},
-  );
+  return useQuery({
+    queryKey: ['cards', board?.id],
+    queryFn: () => cardClient.related({parent: board}).then(resp => resp.data),
+    enabled: !!board,
+  });
 }
 
 // WARNING: only use with data that you *know* is the latest, i.e. just sent to the server to update.
@@ -58,11 +58,12 @@ export function useForgetCard(board) {
 
 export function useCard({boardId, cardId, options}) {
   const cardClient = useCardClient();
-  return useQuery(
-    ['cards', boardId, cardId],
-    () => cardClient.find({id: cardId}).then(resp => resp.data ?? null),
-    options,
-  );
+  return useQuery({
+    queryKey: ['cards', boardId, cardId],
+    queryFn: () =>
+      cardClient.find({id: cardId}).then(resp => resp.data ?? null),
+    ...options,
+  });
 }
 
 export function useCreateCard(board) {

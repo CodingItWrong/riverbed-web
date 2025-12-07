@@ -20,18 +20,20 @@ const refreshColumns = (queryClient, board) =>
 
 export function useColumns(board) {
   const columnClient = useColumnClient();
-  return useQuery(
-    ['columns', board?.id],
-    () => columnClient.related({parent: board}).then(resp => resp.data),
-    {enabled: !!board},
-  );
+  return useQuery({
+    queryKey: ['columns', board?.id],
+    queryFn: () =>
+      columnClient.related({parent: board}).then(resp => resp.data),
+    enabled: !!board,
+  });
 }
 
 export function useColumn({boardId, columnId}) {
   const columnClient = useColumnClient();
-  return useQuery(['columns', boardId, columnId], () =>
-    columnClient.find({id: columnId}).then(resp => resp.data),
-  );
+  return useQuery({
+    queryKey: ['columns', boardId, columnId],
+    queryFn: () => columnClient.find({id: columnId}).then(resp => resp.data),
+  });
 }
 
 export function useCreateColumn(board) {

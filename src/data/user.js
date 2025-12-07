@@ -21,11 +21,11 @@ export function useCurrentUser(options) {
     token: {userId},
   } = useToken();
 
-  return useQuery(
-    ['user', String(userId)],
-    () => userClient.find({id: userId}).then(resp => resp.data),
-    options,
-  );
+  return useQuery({
+    queryKey: ['user', String(userId)],
+    queryFn: () => userClient.find({id: userId}).then(resp => resp.data),
+    ...options,
+  });
 }
 
 export function useCreateUser(options) {
