@@ -10458,10 +10458,10 @@ react-beautiful-dnd@^13.1.1:
     redux "^4.0.4"
     use-memo-one "^1.1.1"
 
-react-beforeunload@^2.6.0:
-  version "2.6.0"
-  resolved "https://registry.yarnpkg.com/react-beforeunload/-/react-beforeunload-2.6.0.tgz#e7ead8dc39009a205b4249619050772595bfeefd"
-  integrity sha512-aKrGaRNc7fZQlDnmSYrXu4cbz9QEPhScA4A2mLxhjcULDy4VILLyLhSEjg2goIw3o5LQ1zss44kmQh5LXWYGCw==
+react-beforeunload@^2.7.0:
+  version "2.7.0"
+  resolved "https://registry.yarnpkg.com/react-beforeunload/-/react-beforeunload-2.7.0.tgz#d741f4e3952a2b59903b9580dac736744ce5d931"
+  integrity sha512-iyHA7CI2m76ECgOMC8WdPM5J6GKDmVzHj1oJ/1h8bKft+cqFggbU3/tUlZ4vCChH3vA4Jj1ciY2hquwGbB5VPA==
 
 react-devtools-core@^4.26.1:
   version "4.28.5"
