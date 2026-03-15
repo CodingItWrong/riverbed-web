@@ -4,25 +4,25 @@ Web client for Riverbed, an app for creating interactive CRUD apps with no progr
 
 ## Requirements
 
-- [Node 16.x](https://nodejs.org) (newer not yet supported by a react-native-web dependency)
-- [Yarn 1.x](https://classic.yarnpkg.com/lang/en/)
+- [Node 22.x](https://nodejs.org)
+- [pnpm](https://pnpm.io)
 
 ## Installation
 
 - Clone the repo
-- Run `yarn install`
+- Run `pnpm install`
 - Copy `.env.sample` to `.env.local` and `.env.production`, and fill in API key values from Google Cloud
 
-Dependencies are locked with `yarn.lock`; please use `yarn` rather than `npm` for installing.
+Dependencies are locked with `pnpm-lock.yaml`; please use `pnpm` rather than `npm` or `yarn` for installing.
 
 ## Running
 
-- Run `yarn serve`
+- Run `pnpm serve`
 
 ## E2E Tests: Cypress
 
-- Start webpack by running `yarn serve`
-- In another terminal, run `yarn cypress`
+- Start webpack by running `pnpm serve`
+- In another terminal, run `pnpm cypress`
 - Choose E2E Testing, then any browser, then click "Start E2E Testing"
 
 ## Copyright and License
