@@ -1,4 +1,4 @@
-import merge from 'lodash.merge';
+import merge from 'lodash/merge';
 import ELEMENT_TYPES from '../../src/enums/elementTypes';
 
 const IDS = {};
