@@ -1,8 +1,11 @@
 const dotenvResult = require('dotenv').config({path: './.env.production'});
 
-if (dotenvResult.error) {
+// Allow the env var to be set directly (e.g. via CI secrets) without a .env file
+if (dotenvResult.error && !process.env.RIVERBED_GOOGLE_MAPS_API_KEY) {
   throw dotenvResult.error;
-} else if (!dotenvResult.parsed.RIVERBED_GOOGLE_MAPS_API_KEY) {
+}
+
+if (!process.env.RIVERBED_GOOGLE_MAPS_API_KEY) {
   throw new Error('Missing required envvar: RIVERBED_GOOGLE_MAPS_API_KEY');
 }
 
