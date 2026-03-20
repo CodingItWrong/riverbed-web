@@ -37,6 +37,9 @@ describe('edit buttons', () => {
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/columns?`, {
       data: [allColumn],
     });
+    cy.intercept('GET', `http://cypressapi/columns/${allColumn.id}/cards?`, {
+      data: [],
+    });
   });
 
   function goToBoard() {
@@ -73,6 +76,9 @@ describe('edit buttons', () => {
       data: [greetingField],
     });
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
+      data: [greetingCard],
+    });
+    cy.intercept('GET', `http://cypressapi/columns/${allColumn.id}/cards?`, {
       data: [greetingCard],
     });
     cy.intercept('GET', `http://cypressapi/cards/${greetingCard.id}?`, {
@@ -155,6 +161,9 @@ describe('edit buttons', () => {
       cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
         data: [quietedCard],
       });
+      cy.intercept('GET', `http://cypressapi/columns/${allColumn.id}/cards?`, {
+        data: [quietedCard],
+      });
       cy.intercept('GET', `http://cypressapi/cards/${quietedCard.id}?`, {
         data: quietedCard,
       });
@@ -184,6 +193,9 @@ describe('edit buttons', () => {
       data: greetButton,
     });
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
+      data: [greetingCard],
+    });
+    cy.intercept('GET', `http://cypressapi/columns/${allColumn.id}/cards?`, {
       data: [greetingCard],
     });
     cy.intercept('GET', `http://cypressapi/cards/${greetingCard.id}?`, {
@@ -240,6 +252,9 @@ describe('edit buttons', () => {
       data: greetButton,
     });
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
+      data: [greetingCard],
+    });
+    cy.intercept('GET', `http://cypressapi/columns/${allColumn.id}/cards?`, {
       data: [greetingCard],
     });
     cy.intercept('GET', `http://cypressapi/cards/${greetingCard.id}?`, {
@@ -300,6 +315,9 @@ describe('edit buttons', () => {
       data: [greetedAtField],
     });
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
+      data: [card],
+    });
+    cy.intercept('GET', `http://cypressapi/columns/${allColumn.id}/cards?`, {
       data: [card],
     });
     cy.intercept('GET', `http://cypressapi/cards/${card.id}?`, {
@@ -373,6 +391,9 @@ describe('edit buttons', () => {
       cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
         data: [deferredCard],
       });
+      cy.intercept('GET', `http://cypressapi/columns/${allColumn.id}/cards?`, {
+        data: [deferredCard],
+      });
       cy.intercept('GET', `http://cypressapi/cards/${deferredCard.id}?`, {
         data: deferredCard,
       });
@@ -412,6 +433,9 @@ describe('edit buttons', () => {
       data: [greetingField, greetButton],
     });
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
+      data: [greetingCard],
+    });
+    cy.intercept('GET', `http://cypressapi/columns/${allColumn.id}/cards?`, {
       data: [greetingCard],
     });
     cy.intercept('GET', `http://cypressapi/cards/${greetingCard.id}?`, {
@@ -479,6 +503,9 @@ describe('edit buttons', () => {
       cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
         data: [updatedCard],
       });
+      cy.intercept('GET', `http://cypressapi/columns/${allColumn.id}/cards?`, {
+        data: [updatedCard],
+      });
       cy.intercept('GET', `http://cypressapi/cards/${updatedCard.id}?`, {
         data: updatedCard,
       });
@@ -533,6 +560,9 @@ describe('edit buttons', () => {
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
       data: [colorCard],
     });
+    cy.intercept('GET', `http://cypressapi/columns/${allColumn.id}/cards?`, {
+      data: [colorCard],
+    });
     cy.intercept('GET', `http://cypressapi/cards/${colorCard.id}?`, {
       data: colorCard,
     });
@@ -583,6 +613,9 @@ describe('edit buttons', () => {
       cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
         data: [updatedCard],
       });
+      cy.intercept('GET', `http://cypressapi/columns/${allColumn.id}/cards?`, {
+        data: [updatedCard],
+      });
       cy.intercept('GET', `http://cypressapi/cards/${updatedCard.id}?`, {
         data: updatedCard,
       });
@@ -616,6 +649,9 @@ describe('edit buttons', () => {
       data: [completedAtField],
     });
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
+      data: [card],
+    });
+    cy.intercept('GET', `http://cypressapi/columns/${allColumn.id}/cards?`, {
       data: [card],
     });
     cy.intercept('GET', `http://cypressapi/cards/${card.id}?`, {
@@ -740,6 +776,9 @@ describe('edit buttons', () => {
         success: true,
       }).as('updateCard');
       cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
+        data: [uncompletedCard],
+      });
+      cy.intercept('GET', `http://cypressapi/columns/${allColumn.id}/cards?`, {
         data: [uncompletedCard],
       });
       cy.intercept('GET', `http://cypressapi/cards/${card.id}?`, {
