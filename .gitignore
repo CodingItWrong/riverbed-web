@@ -27,3 +27,5 @@ coverage
 
 .env.local
 .env.production
+
+.playwright-mcp
