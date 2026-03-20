@@ -1,0 +1,290 @@
+# Server-Side Card Filtering Plan (Web Frontend)
+
+This document describes the plan for updating the web frontend to use the new `GET /columns/:id/cards` API endpoint for server-side filtering, replacing the current client-side filtering logic.
+
+---
+
+## Background
+
+Currently, the `Column` component (`src/screens/Board/Column/Column.js`) fetches **all** cards for a board via `useCards(board)` and filters them client-side using `checkConditions()`. The API now supports `GET /columns/:id/cards`, which returns only the cards matching a column's `card-inclusion-conditions`. See `api/docs/server-side-filtering-plan.md` for the API spec.
+
+---
+
+## Overview of Changes
+
+The core change is small: instead of each `Column` component reading from a shared board-level card cache and filtering locally, each `Column` will fetch its own pre-filtered cards from `GET /columns/:id/cards`. Sorting, grouping, and summary calculation remain client-side (the API does not handle these).
+
+---
+
+## Files to Modify
+
+| File | Change |
+|---|---|
+| `src/data/cards.js` | Add `useColumnCards(column)` hook that fetches `GET /columns/:id/cards` |
+| `src/screens/Board/Column/Column.js` | Replace `useCards(board)` + `checkConditions` with `useColumnCards(column)` |
+| `src/screens/Board/Board.js` | Remove `useCards` import if no longer needed at board level (see analysis below) |
+| `src/screens/Board/Column/ColumnList.js` | Remove `useCards` import if no longer needed (see analysis below) |
+
+### Files That May Be Deletable Later (Not in This Change)
+
+| File | Reason |
+|---|---|
+| `src/utils/checkConditions.js` | No longer called from Column; still used by `src/components/Field.js` for show-conditions |
+| `src/logic/queries.js` | Same — still used by show-conditions |
+
+**Important:** `checkConditions` is also used for element `show-conditions` (controlling field visibility on the card edit screen), so it **cannot** be deleted. The client-side filtering code stays; it just stops being used for column card filtering.
+
+---
+
+## Detailed Changes
+
+### 1. New Data Hook: `useColumnCards(column)`
+
+**File:** `src/data/cards.js`
+
+Add a new hook that fetches cards for a specific column:
+
+```js
+export function useColumnCards(column) {
+  const {token} = useToken();
+
+  const client = useMemo(() => httpClient({token}), [token]);
+
+  return useQuery({
+    queryKey: ['columnCards', column?.id],
+    queryFn: () =>
+      client.get(`columns/${column.id}/cards`).then(resp => resp.data.data),
+    enabled: !!column,
+  });
+}
+```
+
+Key design decisions:
+- Uses `httpClient` directly (not `ResourceClient`) because `GET /columns/:id/cards` is a custom action, not a standard JSON:API resource endpoint. The response shape is `{data: [...cards...]}` — we extract the array.
+- Query key is `['columnCards', column.id]` — separate from the board-level `['cards', boardId]` cache, so board-level card operations don't interfere.
+
+### 2. Update `Column` Component
+
+**File:** `src/screens/Board/Column/Column.js`
+
+Before:
+```js
+import {useCards} from '../../../data/cards';
+import checkConditions from '../../../utils/checkConditions';
+// ...
+const {data: cards = []} = useCards(board);
+const filteredCards = cards.filter(card =>
+  checkConditions({
+    fieldValues: card.attributes['field-values'],
+    conditions: cardInclusionConditions,
+    elements,
+  }),
+);
+```
+
+After:
+```js
+import {useColumnCards} from '../../../data/cards';
+// ...
+const {data: filteredCards = []} = useColumnCards(column);
+```
+
+This removes:
+- The `useCards` import
+- The `checkConditions` import
+- The `'card-inclusion-conditions'` destructuring from column attributes (no longer needed here)
+- The entire `cards.filter(...)` block
+
+Everything downstream (sorting, grouping, summary) continues to operate on `filteredCards` unchanged.
+
+### 3. Keep Board-Level Card Fetching for Card Creation
+
+**File:** `src/screens/Board/Board.js`
+
+`Board.js` uses `useCards(board)` for:
+- Loading state tracking (`isFetchingCards`)
+- `useRefreshCards` for refreshing after navigation
+- `useCreateCard` for the "Add Card" button
+
+These remain necessary. When a card is created or edited, we need to invalidate the column-level caches so columns re-fetch their filtered cards.
+
+### 4. Cache Invalidation Strategy
+
+When a card is created, updated, or deleted, the column-level caches must be invalidated so each column re-fetches its filtered results.
+
+**Approach:** Invalidate all `columnCards` queries when any card mutation succeeds.
+
+In `src/data/cards.js`, update the mutation hooks:
+
+```js
+const refreshAllColumnCards = (queryClient) =>
+  queryClient.invalidateQueries(['columnCards']);
+
+// In useCreateCard, useUpdateCard, useDeleteCard onSuccess callbacks:
+// Add: refreshAllColumnCards(queryClient);
+```
+
+Invalidating `['columnCards']` (prefix match) will invalidate all `['columnCards', *]` queries, causing every visible column to re-fetch. This is simple and correct — individual column invalidation would require knowing which columns a card belongs to, which is the server's job.
+
+### 5. Board.js and ColumnList.js Cleanup
+
+**`Board.js`:** Keep `useCards(board)` — it's still used for `isFetchingCards` loading state, `useRefreshCards`, and `useCreateCard`. However, consider whether `isFetchingCards` should track column-level fetches instead. For now, keep the board-level fetch for loading state since it's lightweight and ensures the card count is available quickly.
+
+**`ColumnList.js`:** Currently uses `useCards(board)` only for `isLoadingCards`/`isFetchingCards`. This can be removed if we track loading at the column level instead. However, the simplest approach is to leave it for now — the board-level card fetch is cheap and provides a unified loading indicator.
+
+### 6. Refresh on Navigation
+
+`Board.js` calls `refreshCards()` (via `useRefreshCards`) when navigating back to the board. This invalidates `['cards', boardId]`. We should also invalidate column cards at this point:
+
+```js
+export function useRefreshColumnCards() {
+  const queryClient = useQueryClient();
+  return useCallback(
+    () => queryClient.invalidateQueries(['columnCards']),
+    [queryClient],
+  );
+}
+```
+
+Call this alongside `refreshCards()` in `Board.js`'s `useNavigateEffect`.
+
+---
+
+## What Does NOT Change
+
+- **Column configuration UI** (`EditColumnForm.js`, `ConditionsInputs.js`): Still saves `card-inclusion-conditions` to the column via `PATCH /columns/:id`. No change needed.
+- **Sorting logic**: Remains client-side in `Column.js`.
+- **Grouping logic**: Remains client-side in `groupCards.js`.
+- **Summary calculation**: Remains client-side in `calculateSummary.js`.
+- **Card edit screen**: Still fetches individual cards via `useCard({boardId, cardId})`.
+- **Show-conditions** (element visibility): Still uses `checkConditions` client-side.
+- **`queries.js` / `checkConditions.js`**: Remain in codebase for show-conditions.
+
+---
+
+## Test Plan
+
+### Unit Tests (Jest)
+
+**New test file:** `src/data/useColumnCards.spec.js`
+
+Test the `useColumnCards` hook in isolation using `@testing-library/react-hooks` or `renderHook` from `@testing-library/react`:
+
+| Scenario | Expected |
+|---|---|
+| `column` is null/undefined | Query is disabled, no fetch |
+| `column` is provided | Fetches `GET /columns/:id/cards`, returns card array |
+| Query key includes column ID | Different columns have separate caches |
+
+**Existing test updates:**
+
+- `src/utils/checkConditions.spec.js` — No changes needed. These tests remain valid for show-conditions.
+- `src/logic/queries.spec.js` — No changes needed.
+
+### Cypress E2E Tests
+
+#### Update: `cypress/e2e/display-cards.cy.js`
+
+Currently intercepts `GET /boards/:id/cards` and relies on client-side filtering. Update to:
+
+1. Keep the `GET /boards/:id/cards` intercept (Board.js still fetches board-level cards).
+2. Add intercepts for `GET /columns/:id/cards` that return pre-filtered results:
+
+```js
+cy.intercept('GET', `http://cypressapi/columns/${releasedColumn.id}/cards?`, {
+  data: [releasedCard],
+});
+cy.intercept('GET', `http://cypressapi/columns/${unreleasedColumn.id}/cards?`, {
+  data: [unreleasedCard],
+});
+```
+
+3. The existing assertions (`cy.get('[data-testid=column-...]').contains(...)`) remain unchanged — they verify the same visual outcome.
+
+#### Update: `cypress/e2e/edit-columns.cy.js`
+
+The "allows editing column filtering" and "allows filtering a column by a specific value" tests need similar updates:
+
+1. Add `GET /columns/:id/cards` intercepts that return the expected filtered results after column save.
+2. The test flow (set filter → save → verify cards) remains the same, but the data source changes from client-side filter of mocked board cards to server-returned column cards.
+
+For the filtering test, after the column is saved and columns are re-fetched:
+```js
+// After save, the column re-fetches its cards from the server
+cy.intercept('GET', `http://cypressapi/columns/${allColumn.id}/cards?`, {
+  data: [unplayedCard1, unplayedCard2],  // server returns only matching cards
+});
+```
+
+#### Other Cypress tests that set up cards
+
+Any test that sets up columns with cards displayed will need a `GET /columns/:id/cards` intercept. Audit all tests under `cypress/e2e/` for this pattern. Likely affected:
+- `display-cards.cy.js` (confirmed)
+- `edit-columns.cy.js` (confirmed)
+- Any test that navigates to a board and expects cards in columns
+
+### Playwright MCP Manual Testing
+
+Use the Playwright MCP browser tools to manually verify the feature end-to-end against the real API:
+
+#### Setup
+1. Start the API server: `cd api && bin/serve`
+2. Start the web dev server: `cd web && pnpm start`
+3. Navigate to `http://localhost:8080` in the Playwright browser
+
+#### Test Steps
+
+1. **Sign in** with test credentials
+2. **Navigate to a board** that has columns with card-inclusion-conditions configured
+3. **Verify filtered cards display correctly:**
+   - Open browser Network tab (via `browser_network_requests`) to confirm `GET /columns/:id/cards` requests are being made (not just `GET /boards/:id/cards`)
+   - Verify each column shows only the cards matching its conditions
+4. **Create a new card:**
+   - Click "Add Card", fill in fields, save
+   - Verify the new card appears in the correct column(s) based on conditions
+   - Verify it does NOT appear in columns whose conditions it doesn't match
+5. **Edit a card to change which column it belongs to:**
+   - Edit a card's field value so it no longer matches a column's condition
+   - Navigate back to the board
+   - Verify the card moved to the correct column(s)
+6. **Edit column conditions:**
+   - Edit a column's card-inclusion-conditions
+   - Save
+   - Verify the column now shows different cards matching the new conditions
+7. **Delete a card:**
+   - Delete a card from the card edit screen
+   - Verify it disappears from its column
+8. **Verify empty state:**
+   - Create a column with conditions that no cards match
+   - Verify it shows "(no cards)"
+
+#### Specific Things to Watch For
+- **No stale data**: After card mutations, columns should show updated results (cache invalidation works)
+- **No duplicate requests**: Each column should make exactly one `GET /columns/:id/cards` request on load
+- **Loading states**: Columns should show loading indicators while fetching, not flash empty/stale data
+- **Column with no conditions**: Should return all board cards (same as before)
+
+---
+
+## Migration Notes
+
+### Backward Compatibility
+
+The frontend change is purely a data-fetching change. If the API endpoint is unavailable (e.g., deployed frontend against an older API), columns will show errors. There is no graceful fallback — the API and frontend should be deployed together.
+
+### Performance Considerations
+
+- **More HTTP requests**: Instead of 1 `GET /boards/:id/cards`, we now make N requests (one per column). For boards with many columns, this adds latency. However, the requests happen in parallel (React Query fires them concurrently), and each response is smaller (filtered cards only).
+- **Reduced client-side work**: No more iterating all cards × all conditions × all columns in JavaScript.
+- **Cache size**: Column-level caches store filtered subsets, so total memory use is similar (some cards appear in multiple columns).
+
+### Side-by-Side Comparison
+
+Deploy the `server-side-filtering` branch to Netlify as a preview site to compare against the current production GitHub Pages deployment. Both will hit the same API (`https://api.riverbed.app`), so the only difference is client-side vs server-side filtering. Use browser DevTools Network tab to verify `GET /columns/:id/cards` requests (new) vs `GET /boards/:id/cards` (old).
+
+### Rollout
+
+1. Deploy the API with `GET /columns/:id/cards` endpoint (already done, commit `8e5629c`)
+2. Deploy the frontend with the changes described here
+3. No database migration needed
+4. No feature flag needed — the change is transparent to users
