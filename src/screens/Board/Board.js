@@ -12,6 +12,7 @@ import {
   useCreateCard,
   usePrimeCard,
   useRefreshCards,
+  useRefreshColumnCards,
 } from '../../data/cards';
 import {useColumns} from '../../data/columns';
 import {useBoardElements} from '../../data/elements';
@@ -56,6 +57,7 @@ export default function Board() {
   }
 
   const refreshCards = useRefreshCards(board);
+  const refreshColumnCards = useRefreshColumnCards();
 
   const {data: elements} = useBoardElements(board);
   const primeCard = usePrimeCard({board});
@@ -107,7 +109,8 @@ export default function Board() {
         document.title = board?.attributes?.name ?? '(unnamed board)';
       }
       refreshCards();
-    }, [board, refreshCards]),
+      refreshColumnCards();
+    }, [board, refreshCards, refreshColumnCards]),
   );
 
   const colorTheme = useColorSchemeTheme(board?.attributes['color-theme']);
