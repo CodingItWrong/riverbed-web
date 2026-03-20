@@ -62,6 +62,7 @@ export function useColumnCards(column) {
 Key design decisions:
 - Uses `httpClient` directly (not `ResourceClient`) because `GET /columns/:id/cards` is a custom action, not a standard JSON:API resource endpoint. The response shape is `{data: [...cards...]}` — we extract the array.
 - Query key is `['columnCards', column.id]` — separate from the board-level `['cards', boardId]` cache, so board-level card operations don't interfere.
+- The hook constructs its own `httpClient` instance via `useMemo` rather than calling `useCardClient()`, because `useCardClient()` returns a `ResourceClient` wrapping the http client, and we need the raw http client to call the custom URL directly. This is a minor structural departure from the other hooks in `cards.js` and should be noted in code review.
 
 ### 2. Update `Column` Component
 
@@ -117,20 +118,35 @@ When a card is created, updated, or deleted, the column-level caches must be inv
 In `src/data/cards.js`, update the mutation hooks:
 
 ```js
-const refreshAllColumnCards = (queryClient) =>
-  queryClient.invalidateQueries(['columnCards']);
+const refreshAllColumnCards = queryClient =>
+  queryClient.invalidateQueries({queryKey: ['columnCards']});
 
 // In useCreateCard, useUpdateCard, useDeleteCard onSuccess callbacks:
 // Add: refreshAllColumnCards(queryClient);
 ```
 
-Invalidating `['columnCards']` (prefix match) will invalidate all `['columnCards', *]` queries, causing every visible column to re-fetch. This is simple and correct — individual column invalidation would require knowing which columns a card belongs to, which is the server's job.
+Invalidating `{queryKey: ['columnCards']}` (prefix match) will invalidate all `['columnCards', *]` queries, causing every visible column to re-fetch. This is simple and correct — individual column invalidation would require knowing which columns a card belongs to, which is the server's job.
+
+**Note on React Query v5 API:** The canonical `invalidateQueries` signature in v5 is `invalidateQueries({ queryKey: [...] })`. The existing codebase uses the array shorthand (`invalidateQueries(['cards', board.id])`), which still works due to backward compatibility shims but is not the v5 idiomatic form. The new `refreshAllColumnCards` helper above uses the v5 object form. When adding calls to the existing mutation hooks, either form will work, but prefer consistency with whichever style is adopted. Consider updating the existing `refreshCards` and `refreshCard` helpers to the object form as a follow-up.
+
+**Special case — `useUpdateCard`:** The current `onSuccess` callback only calls `refreshCards` when `!mountedRef.current`. The `refreshAllColumnCards` call should be added **unconditionally** (outside the `if` block), because column card caches always need invalidating after a card update regardless of whether the card form is still mounted:
+
+```js
+onSuccess: () => {
+  refreshCard(queryClient, board, card);
+  refreshAllColumnCards(queryClient); // always invalidate column caches
+
+  if (!mountedRef.current) {
+    refreshCards(queryClient, board);
+  }
+},
+```
 
 ### 5. Board.js and ColumnList.js Cleanup
 
-**`Board.js`:** Keep `useCards(board)` — it's still used for `isFetchingCards` loading state, `useRefreshCards`, and `useCreateCard`. However, consider whether `isFetchingCards` should track column-level fetches instead. For now, keep the board-level fetch for loading state since it's lightweight and ensures the card count is available quickly.
+**`Board.js`:** Keep `useCards(board)` — it is still used for `isFetchingCards` (contributes to the navigation bar spinner), `useRefreshCards`, `useCreateCard`, and `usePrimeCard`. It also provides `cardsError` and `refetchCards` for the error snackbar and retry logic. No changes needed.
 
-**`ColumnList.js`:** Currently uses `useCards(board)` only for `isLoadingCards`/`isFetchingCards`. This can be removed if we track loading at the column level instead. However, the simplest approach is to leave it for now — the board-level card fetch is cheap and provides a unified loading indicator.
+**`ColumnList.js`:** Currently uses `useCards(board)` for both `isLoadingCards` (drives the full-screen `LoadingIndicator` on first load, via the `isLoading` calculation on line 50–52) and `isFetchingCards` (drives the small reload indicator). Both are included in the `isLoading` guard that gates all column rendering. If we remove `useCards` here, the board would render columns before cards are available and each column would show its own loading state. For now, keep `useCards` in `ColumnList.js` so the existing unified first-load experience is preserved. This is a separate UX decision that can be revisited once the core change is working.
 
 ### 6. Refresh on Navigation
 
@@ -140,13 +156,13 @@ Invalidating `['columnCards']` (prefix match) will invalidate all `['columnCards
 export function useRefreshColumnCards() {
   const queryClient = useQueryClient();
   return useCallback(
-    () => queryClient.invalidateQueries(['columnCards']),
+    () => queryClient.invalidateQueries({queryKey: ['columnCards']}),
     [queryClient],
   );
 }
 ```
 
-Call this alongside `refreshCards()` in `Board.js`'s `useNavigateEffect`.
+Call this alongside `refreshCards()` in `Board.js`'s `useNavigateEffect`. Unlike `useRefreshCards`, this hook takes no parameter because column card invalidation is not scoped to a board — all visible column caches should be refreshed together.
 
 ---
 
@@ -166,9 +182,11 @@ Call this alongside `refreshCards()` in `Board.js`'s `useNavigateEffect`.
 
 ### Unit Tests (Jest)
 
-**New test file:** `src/data/useColumnCards.spec.js`
+**New test file:** `src/data/cards.spec.js`
 
-Test the `useColumnCards` hook in isolation using `@testing-library/react-hooks` or `renderHook` from `@testing-library/react`:
+No existing spec files live in `src/data/`, so this would be a new file co-located with `cards.js` following the `*.spec.js` convention used throughout the project. Do not create `src/data/useColumnCards.spec.js` — spec files in this codebase are named after the module they test, not the individual export.
+
+Test the `useColumnCards` hook in isolation using `renderHook` from `@testing-library/react` (the `@testing-library/react-hooks` package is not used in this codebase; `renderHook` is provided directly by `@testing-library/react` since v13):
 
 | Scenario | Expected |
 |---|---|
@@ -218,10 +236,16 @@ cy.intercept('GET', `http://cypressapi/columns/${allColumn.id}/cards?`, {
 
 #### Other Cypress tests that set up cards
 
-Any test that sets up columns with cards displayed will need a `GET /columns/:id/cards` intercept. Audit all tests under `cypress/e2e/` for this pattern. Likely affected:
-- `display-cards.cy.js` (confirmed)
-- `edit-columns.cy.js` (confirmed)
-- Any test that navigates to a board and expects cards in columns
+Any test that navigates to a board and renders columns will need a `GET /columns/:id/cards` intercept per column. The full list of affected files (confirmed by reading each test):
+
+- `display-cards.cy.js` — intercepts `GET .../cards?`, renders two columns with filtered cards
+- `edit-columns.cy.js` — all tests except `allows creating columns` use `setUpInitialData()` which includes `GET .../cards?` and renders `allColumn`; every test in this file that navigates to the board needs a `GET /columns/${allColumn.id}/cards?` intercept. Tests that re-intercept the columns list (sort, grouping, filtering, ordering, summary) may also need to re-intercept the column cards endpoint after each column save, since the column's query key changes when the column data changes.
+- `edit-card.cy.js` — intercepts `GET .../cards?` and displays cards in two columns; needs per-column intercepts
+- `field-data-types.cy.js` — intercepts `GET .../cards?` and displays one card in `allColumn`; needs a column cards intercept
+- `buttons.cy.js` — intercepts `GET .../cards?` and displays cards across two columns; needs per-column intercepts
+- `edit-fields.cy.js`, `edit-boards.cy.js`, `edit-buttons.cy.js` — audit each to determine if they navigate to a board and display cards in columns
+
+The `setUpInitialData()` helper in `edit-columns.cy.js` is a good candidate to receive a column cards intercept as part of its setup, so it does not need to be added to every individual test step.
 
 ### Playwright MCP Manual Testing
 
