@@ -21,6 +21,9 @@ const refreshCards = (queryClient, board) =>
 const refreshCard = (queryClient, board, card) =>
   queryClient.invalidateQueries(['cards', board.id, card.id]);
 
+const refreshAllColumnCards = queryClient =>
+  queryClient.invalidateQueries({queryKey: ['columnCards']});
+
 export function useRefreshCards(board) {
   const queryClient = useQueryClient();
   const returnedRefreshCards = useCallback(
@@ -30,12 +33,30 @@ export function useRefreshCards(board) {
   return returnedRefreshCards;
 }
 
+export function useRefreshColumnCards() {
+  const queryClient = useQueryClient();
+  return useCallback(
+    () => refreshAllColumnCards(queryClient),
+    [queryClient],
+  );
+}
+
 export function useCards(board) {
   const cardClient = useCardClient();
   return useQuery({
     queryKey: ['cards', board?.id],
     queryFn: () => cardClient.related({parent: board}).then(resp => resp.data),
     enabled: !!board,
+  });
+}
+
+export function useColumnCards(column) {
+  const cardClient = useCardClient();
+  return useQuery({
+    queryKey: ['columnCards', column?.id],
+    queryFn: () =>
+      cardClient.related({parent: column}).then(resp => resp.data),
+    enabled: !!column,
   });
 }
 
@@ -77,7 +98,10 @@ export function useCreateCard(board) {
           board: {data: {type: 'boards', id: board.id}},
         },
       }),
-    onSuccess: () => refreshCards(queryClient, board),
+    onSuccess: () => {
+      refreshCards(queryClient, board);
+      refreshAllColumnCards(queryClient);
+    },
   });
 }
 
@@ -94,6 +118,7 @@ export function useUpdateCard(card, board, mountedRef) {
     onSuccess: () => {
       // always refresh the individual card
       refreshCard(queryClient, board, card);
+      refreshAllColumnCards(queryClient);
 
       if (!mountedRef.current) {
         // if card form was unloaded while card saving, reload cards.
@@ -111,6 +136,7 @@ export function useDeleteCard(card, board) {
     mutationFn: () => cardClient.delete({id: card.id}),
     onSuccess: () => {
       refreshCards(queryClient, board);
+      refreshAllColumnCards(queryClient);
       return null; // don't wait on refresh, so we can close the modal
     },
   });

@@ -7,11 +7,10 @@ import SectionList from '../../../components/SectionList';
 import Text from '../../../components/Text';
 import fieldTypes from '../../../components/fieldTypes';
 import sharedStyles, {useColumnStyle} from '../../../components/sharedStyles';
-import {useCards} from '../../../data/cards';
+import {useColumnCards} from '../../../data/cards';
 import {useBoardElements} from '../../../data/elements';
 import SORT_DIRECTIONS from '../../../enums/sortDirections';
 import calculateSummary from '../../../utils/calculateSummary';
-import checkConditions from '../../../utils/checkConditions';
 import CardSummary from './CardSummary';
 import groupCards from './groupCards';
 
@@ -19,23 +18,15 @@ export default function Column({column, board}) {
   const columnWidthStyle = useColumnStyle();
 
   const {data: elements} = useBoardElements(board);
-  const {data: cards = []} = useCards(board);
+  const {data: filteredCards = []} = useColumnCards(column);
 
   const {
     name,
     'card-sort-order': cardSortOrder,
-    'card-inclusion-conditions': cardInclusionConditions,
     'card-grouping': cardGrouping,
     summary,
   } = column.attributes;
 
-  const filteredCards = cards.filter(card =>
-    checkConditions({
-      fieldValues: card.attributes['field-values'],
-      conditions: cardInclusionConditions,
-      elements,
-    }),
-  );
   let columnCards;
 
   if (cardSortOrder?.field && cardSortOrder?.direction) {
