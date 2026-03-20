@@ -35,10 +35,7 @@ export function useRefreshCards(board) {
 
 export function useRefreshColumnCards() {
   const queryClient = useQueryClient();
-  return useCallback(
-    () => refreshAllColumnCards(queryClient),
-    [queryClient],
-  );
+  return useCallback(() => refreshAllColumnCards(queryClient), [queryClient]);
 }
 
 export function useCards(board) {
@@ -54,8 +51,7 @@ export function useColumnCards(column) {
   const cardClient = useCardClient();
   return useQuery({
     queryKey: ['columnCards', column?.id],
-    queryFn: () =>
-      cardClient.related({parent: column}).then(resp => resp.data),
+    queryFn: () => cardClient.related({parent: column}).then(resp => resp.data),
     enabled: !!column,
   });
 }
