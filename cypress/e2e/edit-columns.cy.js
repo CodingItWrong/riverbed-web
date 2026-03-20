@@ -117,6 +117,9 @@ describe('edit columns', () => {
       cy.intercept('GET', `${apiUrl}/columns/${newColumn.id}?`, {
         data: newColumn,
       });
+      cy.intercept('GET', `${apiUrl}/columns/${newColumn.id}/cards?`, {
+        data: [],
+      });
       cy.contains('Add Column').click();
       cy.wait('@addColumn')
         .its('request.body')
@@ -458,8 +461,14 @@ describe('edit columns', () => {
     cy.intercept('GET', `${apiUrl}/columns/${columnA.id}?`, {
       data: columnA,
     });
+    cy.intercept('GET', `${apiUrl}/columns/${columnA.id}/cards?`, {
+      data: [],
+    });
     cy.intercept('GET', `${apiUrl}/columns/${columnB.id}?`, {
       data: columnB,
+    });
+    cy.intercept('GET', `${apiUrl}/columns/${columnB.id}/cards?`, {
+      data: [],
     });
 
     goToBoard();
