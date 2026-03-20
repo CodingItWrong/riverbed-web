@@ -69,12 +69,20 @@ describe('edit cards', () => {
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
       data: [card],
     });
-    cy.intercept('GET', `http://cypressapi/columns/${releasedColumn.id}/cards?`, {
-      data: [],
-    });
-    cy.intercept('GET', `http://cypressapi/columns/${unreleasedColumn.id}/cards?`, {
-      data: [card],
-    });
+    cy.intercept(
+      'GET',
+      `http://cypressapi/columns/${releasedColumn.id}/cards?`,
+      {
+        data: [],
+      },
+    );
+    cy.intercept(
+      'GET',
+      `http://cypressapi/columns/${unreleasedColumn.id}/cards?`,
+      {
+        data: [card],
+      },
+    );
     cy.intercept('GET', `http://cypressapi/cards/${card.id}?`, {
       data: card,
     });
@@ -104,12 +112,20 @@ describe('edit cards', () => {
       cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
         data: [updatedCard],
       });
-      cy.intercept('GET', `http://cypressapi/columns/${releasedColumn.id}/cards?`, {
-        data: [],
-      });
-      cy.intercept('GET', `http://cypressapi/columns/${unreleasedColumn.id}/cards?`, {
-        data: [updatedCard],
-      });
+      cy.intercept(
+        'GET',
+        `http://cypressapi/columns/${releasedColumn.id}/cards?`,
+        {
+          data: [],
+        },
+      );
+      cy.intercept(
+        'GET',
+        `http://cypressapi/columns/${unreleasedColumn.id}/cards?`,
+        {
+          data: [updatedCard],
+        },
+      );
       cy.intercept('GET', `http://cypressapi/cards/${card.id}?`, {
         data: updatedCard,
       });
@@ -137,12 +153,20 @@ describe('edit cards', () => {
       cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
         data: [],
       });
-      cy.intercept('GET', `http://cypressapi/columns/${releasedColumn.id}/cards?`, {
-        data: [],
-      });
-      cy.intercept('GET', `http://cypressapi/columns/${unreleasedColumn.id}/cards?`, {
-        data: [],
-      });
+      cy.intercept(
+        'GET',
+        `http://cypressapi/columns/${releasedColumn.id}/cards?`,
+        {
+          data: [],
+        },
+      );
+      cy.intercept(
+        'GET',
+        `http://cypressapi/columns/${unreleasedColumn.id}/cards?`,
+        {
+          data: [],
+        },
+      );
 
       cy.contains(updatedTitle).click();
       cy.get('[aria-label="Delete Card"]').click();
@@ -159,12 +183,20 @@ describe('edit cards', () => {
       cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
         data: [newCard],
       });
-      cy.intercept('GET', `http://cypressapi/columns/${releasedColumn.id}/cards?`, {
-        data: [],
-      });
-      cy.intercept('GET', `http://cypressapi/columns/${unreleasedColumn.id}/cards?`, {
-        data: [newCard],
-      });
+      cy.intercept(
+        'GET',
+        `http://cypressapi/columns/${releasedColumn.id}/cards?`,
+        {
+          data: [],
+        },
+      );
+      cy.intercept(
+        'GET',
+        `http://cypressapi/columns/${unreleasedColumn.id}/cards?`,
+        {
+          data: [newCard],
+        },
+      );
       cy.intercept('GET', `http://cypressapi/cards/${newCard.id}?`, {
         data: newCard,
       });
@@ -189,12 +221,20 @@ describe('edit cards', () => {
       cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
         data: [updatedNewCard],
       });
-      cy.intercept('GET', `http://cypressapi/columns/${releasedColumn.id}/cards?`, {
-        data: [],
-      });
-      cy.intercept('GET', `http://cypressapi/columns/${unreleasedColumn.id}/cards?`, {
-        data: [updatedNewCard],
-      });
+      cy.intercept(
+        'GET',
+        `http://cypressapi/columns/${releasedColumn.id}/cards?`,
+        {
+          data: [],
+        },
+      );
+      cy.intercept(
+        'GET',
+        `http://cypressapi/columns/${unreleasedColumn.id}/cards?`,
+        {
+          data: [updatedNewCard],
+        },
+      );
       cy.intercept('GET', `http://cypressapi/cards/${updatedNewCard.id}?`, {
         data: updatedNewCard,
       });
