@@ -84,6 +84,9 @@ describe('edit columns', () => {
       cy.intercept('GET', `${apiUrl}/columns/${allColumn.id}?`, {
         data: allColumn,
       });
+      cy.intercept('GET', `${apiUrl}/columns/${allColumn.id}/cards?`, {
+        data: [unownedCard, unplayedCard1, unplayedCard2, playedCard],
+      });
     }
   }
 
@@ -253,6 +256,9 @@ describe('edit columns', () => {
       cy.intercept('GET', `${apiUrl}/boards/${board.id}/columns?`, {
         data: [filteredColumn],
       });
+      cy.intercept('GET', `${apiUrl}/columns/${allColumn.id}/cards?`, {
+        data: [unplayedCard1, unplayedCard2],
+      });
       cy.contains('Save Column').click();
       cy.wait('@updateColumn')
         .its('request.body')
@@ -307,6 +313,9 @@ describe('edit columns', () => {
       ).as('updateColumn');
       cy.intercept('GET', `${apiUrl}/boards/${board.id}/columns?`, {
         data: [filteredColumn],
+      });
+      cy.intercept('GET', `${apiUrl}/columns/${allColumn.id}/cards?`, {
+        data: [unownedCard],
       });
       cy.contains('Save Column').click();
       cy.wait('@updateColumn')

@@ -87,6 +87,9 @@ describe('field data types', () => {
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
       data: [card],
     });
+    cy.intercept('GET', `http://cypressapi/columns/${column.id}/cards?`, {
+      data: [card],
+    });
     cy.intercept('GET', `http://cypressapi/cards/${card.id}?`, {
       data: card,
     });
