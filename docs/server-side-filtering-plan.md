@@ -46,23 +46,19 @@ Add a new hook that fetches cards for a specific column:
 
 ```js
 export function useColumnCards(column) {
-  const {token} = useToken();
-
-  const client = useMemo(() => httpClient({token}), [token]);
+  const cardClient = useCardClient();
 
   return useQuery({
     queryKey: ['columnCards', column?.id],
-    queryFn: () =>
-      client.get(`columns/${column.id}/cards`).then(resp => resp.data.data),
+    queryFn: () => cardClient.related({parent: column}).then(resp => resp.data),
     enabled: !!column,
   });
 }
 ```
 
 Key design decisions:
-- Uses `httpClient` directly (not `ResourceClient`) because `GET /columns/:id/cards` is a custom action, not a standard JSON:API resource endpoint. The response shape is `{data: [...cards...]}` — we extract the array.
+- Uses `useCardClient()` and `ResourceClient.related({parent: column})`, which constructs `GET /columns/:id/cards` — the same pattern already used by `useCards(board)` to fetch `GET /boards/:id/cards`.
 - Query key is `['columnCards', column.id]` — separate from the board-level `['cards', boardId]` cache, so board-level card operations don't interfere.
-- The hook constructs its own `httpClient` instance via `useMemo` rather than calling `useCardClient()`, because `useCardClient()` returns a `ResourceClient` wrapping the http client, and we need the raw http client to call the custom URL directly. This is a minor structural departure from the other hooks in `cards.js` and should be noted in code review.
 
 ### 2. Update `Column` Component
 
