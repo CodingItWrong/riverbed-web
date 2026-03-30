@@ -73,7 +73,7 @@ describe('edit columns', () => {
     cy.intercept('GET', `${apiUrl}/boards/${board.id}/elements?`, {
       data: [titleField, purchaseDate, completeDate, price],
     });
-    cy.intercept('GET', `${apiUrl}/boards/${board.id}/cards?`, {
+    cy.intercept('GET', `${apiUrl}/boards/${board.id}/cards*`, {
       data: [unownedCard, unplayedCard1, unplayedCard2, playedCard],
     });
 
@@ -84,7 +84,7 @@ describe('edit columns', () => {
       cy.intercept('GET', `${apiUrl}/columns/${allColumn.id}?`, {
         data: allColumn,
       });
-      cy.intercept('GET', `${apiUrl}/columns/${allColumn.id}/cards?`, {
+      cy.intercept('GET', `${apiUrl}/columns/${allColumn.id}/cards*`, {
         data: [unownedCard, unplayedCard1, unplayedCard2, playedCard],
       });
     }
@@ -117,7 +117,7 @@ describe('edit columns', () => {
       cy.intercept('GET', `${apiUrl}/columns/${newColumn.id}?`, {
         data: newColumn,
       });
-      cy.intercept('GET', `${apiUrl}/columns/${newColumn.id}/cards?`, {
+      cy.intercept('GET', `${apiUrl}/columns/${newColumn.id}/cards*`, {
         data: [],
       });
       cy.contains('Add Column').click();
@@ -259,7 +259,7 @@ describe('edit columns', () => {
       cy.intercept('GET', `${apiUrl}/boards/${board.id}/columns?`, {
         data: [filteredColumn],
       });
-      cy.intercept('GET', `${apiUrl}/columns/${allColumn.id}/cards?`, {
+      cy.intercept('GET', `${apiUrl}/columns/${allColumn.id}/cards*`, {
         data: [unplayedCard1, unplayedCard2],
       });
       cy.contains('Save Column').click();
@@ -317,7 +317,7 @@ describe('edit columns', () => {
       cy.intercept('GET', `${apiUrl}/boards/${board.id}/columns?`, {
         data: [filteredColumn],
       });
-      cy.intercept('GET', `${apiUrl}/columns/${allColumn.id}/cards?`, {
+      cy.intercept('GET', `${apiUrl}/columns/${allColumn.id}/cards*`, {
         data: [unownedCard],
       });
       cy.contains('Save Column').click();
@@ -461,13 +461,13 @@ describe('edit columns', () => {
     cy.intercept('GET', `${apiUrl}/columns/${columnA.id}?`, {
       data: columnA,
     });
-    cy.intercept('GET', `${apiUrl}/columns/${columnA.id}/cards?`, {
+    cy.intercept('GET', `${apiUrl}/columns/${columnA.id}/cards*`, {
       data: [],
     });
     cy.intercept('GET', `${apiUrl}/columns/${columnB.id}?`, {
       data: columnB,
     });
-    cy.intercept('GET', `${apiUrl}/columns/${columnB.id}/cards?`, {
+    cy.intercept('GET', `${apiUrl}/columns/${columnB.id}/cards*`, {
       data: [],
     });
 

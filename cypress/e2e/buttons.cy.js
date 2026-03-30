@@ -101,19 +101,19 @@ describe('buttons', () => {
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/columns?`, {
       data: [releasedColumn, unreleasedColumn],
     });
-    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards*`, {
       data: [card],
     });
     cy.intercept(
       'GET',
-      `http://cypressapi/columns/${releasedColumn.id}/cards?`,
+      `http://cypressapi/columns/${releasedColumn.id}/cards*`,
       {
         data: [],
       },
     );
     cy.intercept(
       'GET',
-      `http://cypressapi/columns/${unreleasedColumn.id}/cards?`,
+      `http://cypressapi/columns/${unreleasedColumn.id}/cards*`,
       {
         data: [card],
       },
@@ -139,19 +139,19 @@ describe('buttons', () => {
     cy.intercept('PATCH', `http://cypressapi/cards/${card.id}?`, {
       success: true,
     }).as('updateCard');
-    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards*`, {
       data: [updatedCard],
     });
     cy.intercept(
       'GET',
-      `http://cypressapi/columns/${releasedColumn.id}/cards?`,
+      `http://cypressapi/columns/${releasedColumn.id}/cards*`,
       {
         data: [updatedCard],
       },
     );
     cy.intercept(
       'GET',
-      `http://cypressapi/columns/${unreleasedColumn.id}/cards?`,
+      `http://cypressapi/columns/${unreleasedColumn.id}/cards*`,
       {
         data: [],
       },

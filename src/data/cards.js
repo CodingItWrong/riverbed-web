@@ -51,7 +51,13 @@ export function useColumnCards(column) {
   const cardClient = useCardClient();
   return useQuery({
     queryKey: ['columnCards', column?.id],
-    queryFn: () => cardClient.related({parent: column}).then(resp => resp.data),
+    queryFn: () =>
+      cardClient
+        .related({
+          parent: column,
+          options: {timezone: Intl.DateTimeFormat().resolvedOptions().timeZone},
+        })
+        .then(resp => resp.data),
     enabled: !!column,
   });
 }
