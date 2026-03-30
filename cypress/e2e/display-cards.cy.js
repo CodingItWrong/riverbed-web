@@ -66,19 +66,19 @@ describe('display cards', () => {
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/columns?`, {
       data: [releasedColumn, unreleasedColumn],
     });
-    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards?`, {
+    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards*`, {
       data: cards,
     });
     cy.intercept(
       'GET',
-      `http://cypressapi/columns/${releasedColumn.id}/cards?`,
+      `http://cypressapi/columns/${releasedColumn.id}/cards*`,
       {
         data: [releasedCard],
       },
     );
     cy.intercept(
       'GET',
-      `http://cypressapi/columns/${unreleasedColumn.id}/cards?`,
+      `http://cypressapi/columns/${unreleasedColumn.id}/cards*`,
       {
         data: [unreleasedCard],
       },

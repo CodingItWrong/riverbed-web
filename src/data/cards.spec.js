@@ -65,7 +65,7 @@ describe('useColumnCards', () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
     expect(global.fetch).toHaveBeenCalledWith(
-      expect.stringContaining('/columns/42/cards'),
+      expect.stringMatching(/\/columns\/42\/cards\?.*timezone=/),
       expect.any(Object),
     );
     expect(result.current.data).toEqual(cards);
