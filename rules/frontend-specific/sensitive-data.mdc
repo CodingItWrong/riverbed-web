@@ -1,0 +1,24 @@
+---
+description: Sensitive data handling and storage in front-end
+globs: "**/*.tsx,**/*.jsx,**/*.vue,**/*.ts,**/*.js"
+alwaysApply: false
+---
+
+# Sensitive Data (Front-End)
+
+## What Counts as Sensitive
+
+- Passwords, API keys, tokens, session IDs; PII (name, email, phone, address, SSN, payment); health/financial data; regulated data (GDPR, HIPAA, PCI).
+
+## Rules
+
+1. **Do not log sensitive data** – No `console.log`, error reporting, or analytics with tokens, passwords, or PII; sanitize or redact.
+2. **No secrets in front-end** – No hardcoded keys; no committed `.env` with secrets. Use secure config/backend.
+3. **Minimize storage** – Store only what’s needed; prefer sessionStorage for sensitive session data; clear on logout.
+4. **No tokens/PII in query params** – Leak via Referer, history, logs. Use headers or POST body.
+
+## Errors
+
+- Do not expose stack traces or internal details to users in production. Strip PII/tokens when sending to reporting services.
+
+See also: auth-sessions (token storage), api-network (tokens in requests).

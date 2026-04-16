@@ -1,0 +1,25 @@
+---
+description: Open redirect prevention for front-end and navigation
+globs: "**/*.ts,**/*.tsx,**/*.js,**/*.jsx,**/*.vue"
+alwaysApply: false
+---
+
+# Open Redirect Prevention (Front-End)
+
+Never send users to a URL built from user-controlled input; attackers can abuse it for phishing or malware.
+
+## Rules
+
+1. **Never build redirect URLs from user input** – Query params like `?redirect=`, `?returnTo=`, `?next=`, or form fields must not be used directly as the target of redirects.
+2. **Use an allowlist** – Validate redirect targets against a fixed list of paths (e.g. `/dashboard`, `/login`) or use server-provided redirect URIs (e.g. OAuth).
+3. **Relative vs absolute** – Prefer relative paths from allowlist; if accepting full URLs (e.g. OAuth), allow only same-origin or a strict allowlist of trusted domains.
+
+## Where It Applies
+
+- Login/logout flows, OAuth callback `redirect_uri`, "back to" links, and any `redirect()`, `window.location`, or `<a href>` that uses request parameters.
+
+See also: auth-sessions (OAuth redirect URIs), and framework rules (routing/redirect).
+
+## Red Flags
+
+- `redirect(req.query.returnTo)`, `window.location = userInput`, `<a href={searchParams.get('next')}>` without allowlist validation.

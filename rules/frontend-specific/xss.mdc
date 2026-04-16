@@ -1,0 +1,31 @@
+---
+description: XSS prevention for front-end apps
+globs: "**/*.tsx,**/*.jsx,**/*.vue,**/*.html,**/*.htm"
+alwaysApply: false
+---
+
+# XSS Prevention (Front-End)
+
+Never render unsanitized user or external data as HTML.
+
+## Do Not Use With Unsanitized Data
+
+- `innerHTML`, `outerHTML`, `insertAdjacentHTML`, `document.write`
+- `eval()`, `new Function()`, `setTimeout(string)`
+- `href="javascript:..."` or dynamic `javascript:` URLs
+- Framework-specific: React `dangerouslySetInnerHTML`, Vue `v-html`, Angular `[innerHTML]`/`bypassSecurityTrust*` – only with sanitized input.
+
+## Safe Patterns
+
+- Prefer text binding (React `{x}`, Vue `{{ x }}`, Angular `{{ x }}`) – frameworks escape by default.
+- For rich HTML: sanitize with DOMPurify (or framework equivalent) before rendering.
+
+## URL Safety
+
+- Validate and sanitize URLs before `<a href>`, `window.open`, or redirects. Allowlist `https://`; reject `javascript:` and unsafe `data:`.
+
+## CSP
+
+- Front-end should avoid patterns that require `unsafe-inline` or `unsafe-eval`. Recommend strict CSP in backend/docs.
+
+See also: csp-headers (CSP and framing).

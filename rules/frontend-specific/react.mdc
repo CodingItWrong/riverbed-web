@@ -1,0 +1,30 @@
+---
+description: React.js security (react.js app)
+globs: "**/react.js/**/*.tsx,**/react.js/**/*.jsx,**/react.js/**/*.ts,**/react.js/**/*.js,**/*.tsx,**/*.jsx,**/src/**/*.tsx,**/src/**/*.jsx,**/app/**/*.tsx,**/app/**/*.jsx"
+alwaysApply: false
+---
+
+# React.js Security
+
+Apply for **React.js** app (e.g. `react.js/`, port 8080). All shared front-end rules (xss, auth-sessions, sensitive-data, api-network, dependencies) also apply.
+
+## XSS
+
+- **Never** use `dangerouslySetInnerHTML` with unsanitized user or API data. For rich content, sanitize with DOMPurify: `__html: DOMPurify.sanitize(content)`.
+- Default `{userInput}` is safe (React escapes). Use for plain text.
+- Avoid `href={userUrl}` without validation; allowlist `https://` and reject `javascript:`.
+
+## Data and State
+
+- Do not store tokens or secrets in `useState`/`useRef`/context if they persist to storage or are sent to analytics. Prefer memory or HttpOnly cookies.
+- Clear auth state and redirect on logout; invalidate tokens.
+- Do not put secrets in `process.env` that get embedded in client bundle (only `NEXT_PUBLIC_*` or equivalent are safe for public config).
+
+## Routing
+
+- Never build redirect URLs from user input (open redirect). Use allowlisted routes or server-provided redirect URIs for OAuth.
+- Validate route params before rendering or fetching; avoid passing raw params to APIs or DOM.
+
+## Red Flags
+
+- `dangerouslySetInnerHTML={{ __html: userInput }}`; storing JWT in localStorage without documented exception; building `window.location` or `<a href>` from user input.

@@ -1,0 +1,23 @@
+---
+description: Content-Security-Policy and framing (clickjacking) for front-end
+globs: "**/*.html,**/*.ts,**/*.tsx,**/*.js,**/*.jsx,**/*.vue,**/next.config.*,**/nuxt.config.*,**/vite.config.*"
+alwaysApply: false
+---
+
+# CSP & Clickjacking (Front-End)
+
+## Content-Security-Policy (CSP)
+
+- Prefer a **strict CSP**; avoid `unsafe-inline` and `unsafe-eval` when possible.
+- For inline scripts when necessary: use **nonce** or **hash** instead of `'unsafe-inline'`.
+- Restrict script sources to your origin and trusted CDNs; avoid broad `*` for scripts.
+- Use CSP **reporting** (e.g. `report-uri` or `report-to`) in production to detect violations.
+
+## Framing (Clickjacking)
+
+- Prevent the app from being embedded in untrusted frames: set **`X-Frame-Options: DENY`** or **`SAMEORIGIN`**, or use CSP **`frame-ancestors 'none'`** (or `'self'`).
+- Prefer CSP `frame-ancestors` where supported; it overrides `X-Frame-Options`.
+
+## Red Flags
+
+- CSP with `'unsafe-inline'` or `'unsafe-eval'` without a migration path; no framing protection; missing CSP in production.

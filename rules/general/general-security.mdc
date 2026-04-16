@@ -1,0 +1,33 @@
+---
+description: General security principles for all applications
+alwaysApply: true
+---
+
+# General Security Principles
+
+Apply these in every change; security is non-negotiable.
+
+## Core Rules
+
+1. **Never trust client input** – Validate and sanitize all user input. Assume the client can be compromised or malicious.
+2. **Never expose secrets in code** – No API keys, tokens, or passwords in source, committed env, or client bundles. Use backend/env vault/secure config.
+3. **Least privilege** – Request only permissions and data needed. Avoid broad `*` or admin scopes.
+4. **Secure defaults** – HTTPS only, secure cookies (HttpOnly, SameSite, Secure), strict CSP where possible.
+5. **Defense in depth** – Validate on client for UX; enforce and validate on server. Client checks can be bypassed.
+
+## When Generating Code
+
+- Auth, tokens, secrets: server-side or secure env; never hardcode.
+- User content: sanitize before render and before persisting or sending to APIs.
+- New dependencies: prefer well-maintained, minimal trees; check for known vulnerabilities.
+
+## Errors (Production)
+
+- Do not expose stack traces or internal error details to the client in production; log server-side only.
+
+## Red Flags to Avoid
+
+- `eval()`, `new Function()`, or `innerHTML` with unsanitized data
+- Storing tokens or PII in `localStorage` without necessity and strict XSS controls
+- Disabling CORS, certificate checks, or security headers for convenience
+- Logging or sending sensitive data (passwords, tokens, PII) to external services

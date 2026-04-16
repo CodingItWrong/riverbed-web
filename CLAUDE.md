@@ -52,6 +52,20 @@ Copy `.env.sample` to `.env.local` and fill in `RIVERBED_GOOGLE_MAPS_API_KEY` fo
 
 Node version: 22.x (see `.nvmrc`)
 
+## Security Rules
+
+Reference these when writing or reviewing security-sensitive code:
+
+@rules/general/general-security.mdc — Apply to all code changes.
+@rules/frontend-specific/react.mdc — Apply when writing or reviewing React components, hooks, or JSX.
+@rules/frontend-specific/api-network.mdc — Apply when making API calls, handling responses, or configuring the HTTP client.
+@rules/frontend-specific/auth-sessions.mdc — Apply when working with authentication, tokens, sign-in/sign-up, or session state.
+@rules/frontend-specific/xss.mdc — Apply when rendering user-supplied content or using dangerouslySetInnerHTML.
+@rules/frontend-specific/sensitive-data.mdc — Apply when handling passwords, tokens, PII, or any data stored client-side.
+@rules/frontend-specific/csp-headers.mdc — Apply when modifying HTML templates, webpack config, or server response headers.
+@rules/frontend-specific/dependencies.mdc — Apply when adding, removing, or upgrading packages.
+@rules/frontend-specific/open-redirect.mdc — Apply when writing navigation logic or handling redirect URLs.
+
 ## Code Style
 
 - Single quotes, no semicolons beyond what Prettier enforces, trailing commas, no arrow-function parens
