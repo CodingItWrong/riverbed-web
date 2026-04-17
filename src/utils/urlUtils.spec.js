@@ -13,6 +13,9 @@ describe('urlUtils', () => {
       new Date(),
       'This is a sentence.',
       'domain.com',
+      'javascript://example.com/%0aalert(1)',
+      'data://text/html,<script>alert(1)</script>',
+      'ftp://files.example.com',
     ];
 
     describe('valid URLs', () => {

@@ -1,0 +1,29 @@
+---
+description: Authentication and session security for front-end
+globs: "**/*.tsx,**/*.jsx,**/*.vue,**/*.ts,**/*.js"
+alwaysApply: false
+---
+
+# Authentication & Session Security (Front-End)
+
+## Token Storage
+
+- **Access tokens**: Prefer memory or short-lived HttpOnly cookies. Avoid `localStorage` when possible (XSS can steal).
+- **Refresh tokens**: HttpOnly cookie or backend-only; never `localStorage`/sessionStorage for sensitive apps.
+- If `localStorage` is required: document the risk; enforce strict XSS prevention and CSP.
+
+## Cookies
+
+- Use `Secure`, `SameSite=Strict` or `Lax`; avoid `None` unless cross-site required (then always `Secure`). Prefer `HttpOnly` for auth (set by backend).
+
+## Auth Flows
+
+- Do not implement password handling beyond sending over HTTPS to backend. No client-side hashing as replacement for server auth.
+- OAuth/OIDC redirect URIs must be allowlisted; never build redirect URL from user input.
+- On logout: clear in-memory tokens and client state; redirect to known safe URL.
+
+## Red Flags
+
+- Storing passwords or long-lived secrets in front-end; sending tokens in URL query params; disabling certificate errors.
+
+See also: open-redirect (redirect URIs), api-network (auth headers).

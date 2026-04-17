@@ -1,0 +1,34 @@
+---
+description: API and network security for front-end
+globs: "**/*.ts,**/*.tsx,**/*.js,**/*.jsx,**/*.vue"
+alwaysApply: false
+---
+
+# API & Network Security (Front-End)
+
+## HTTPS and Origins
+
+- Call APIs over **HTTPS** only. Use relative or allowlisted base URLs; avoid building URLs from user input without validation.
+
+## Authentication
+
+- Send tokens in `Authorization` header (e.g. `Bearer <token>`), not in query params unless design uses cookie-based auth.
+- Do not attach auth to cross-origin requests unless CORS and credentials are correctly configured.
+
+## CSRF
+
+- For state-changing requests with cookie-based auth: use CSRF tokens (from server, in header or body). Prefer SameSite cookies or non-cookie auth.
+
+## CORS
+
+- Do not disable CORS for convenience. Backend allows only needed origins/methods. Front-end requests credentials only to own API or trusted domains.
+
+## Input and Output
+
+- Validate and sanitize data before sending to API. Backend must validate again. Do not rely on client to enforce security.
+
+## Red Flags
+
+- `fetch(url, { mode: 'no-cors' })` for same-origin API; sensitive data in GET query params; disabling TLS/certificate checks in production.
+
+See also: auth-sessions (token storage, cookies).

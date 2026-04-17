@@ -8,7 +8,12 @@ export function AutoDetectLink({link, enableLinking, size, children}) {
     // div prevents the clickable link from being the entire width
     return (
       <div>
-        <Link href={link} target="_blank" onClick={preventParentClickBehavior}>
+        <Link
+          href={link}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={preventParentClickBehavior}
+        >
           <Text component="span" size={size} color={null}>
             {children}
           </Text>

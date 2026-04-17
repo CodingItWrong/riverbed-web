@@ -1,0 +1,34 @@
+---
+description: Dependency and supply-chain security for front-end
+globs: "**/package.json,**/yarn.lock,**/pnpm-lock.yaml,**/package-lock.json"
+alwaysApply: false
+---
+
+# Dependencies & Supply Chain (Front-End)
+
+## Adding Dependencies
+
+- Prefer well-maintained packages (clear ownership, recent updates, wide use). Prefer minimal dependency trees.
+- Before adding: check for known vulnerabilities (`npm audit`, Snyk, Dependabot).
+
+## Lockfiles
+
+- Commit lockfiles so installs are reproducible. Use `npm ci` / `yarn install --frozen-lockfile` in CI.
+
+## Scripts and Build
+
+- Avoid postinstall/preinstall that download or execute remote code unless trusted and integrity-checked.
+- Prefer exact or range-locked versions for critical deps; review major upgrades.
+
+## Audits
+
+- Run `npm audit` (or equivalent) in CI; fix high/critical or document accepted risk. Keep deps updated.
+
+## Third-Party Scripts (CDN / External)
+
+- For scripts loaded from CDNs or third-party domains: use **Subresource Integrity (SRI)** – set the `integrity` attribute (and `crossorigin="anonymous"`) so the browser verifies the script hash.
+- Prefer bundling scripts from npm over loading from CDNs when possible; if using a CDN, pin the version and use SRI.
+
+## Red Flags
+
+- Package with few downloads, no repo, or no recent maintenance; scripts that fetch from the network; ignoring audit without exception; `<script src="https://...">` without `integrity` for third-party scripts.

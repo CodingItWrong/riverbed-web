@@ -1,4 +1,4 @@
-const URL_REGEX = /^\w+:\/\/([^/]+\.\w+)/;
+const URL_REGEX = /^https?:\/\/([^/]+\.\w+)/;
 
 export function isValidUrl(string) {
   // new URL does not throw on React Native for invalid URLs
