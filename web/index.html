@@ -8,6 +8,8 @@
       This viewport works for phones with notches.
       It's optimized for gestures by disabling global zoom.
      -->
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; script-src 'self' https://maps.googleapis.com 'sha256-9yDLpCvyPQoMyH6tTf7R4Jm2ANepZPwsxW6EqHaG4oU=' 'sha256-vTUfocKxGsY6N2dxungLCotM0AC8cpG10hIY9su9tWE='; style-src 'self' 'unsafe-inline'; connect-src 'self' https://api.riverbed.app http://localhost:3000 http://cypressapi https://maps.googleapis.com; img-src 'self' data: https://*.googleapis.com https://*.gstatic.com https://*.google.com; font-src 'self' data:;" />
   <meta name="viewport"
     content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1.00001, viewport-fit=cover" />
   <title>Riverbed</title>
@@ -92,6 +94,11 @@
         );
       }
     })(window.location);
+  </script>
+  <script>
+    // Clickjacking protection: break out of frames.
+    // CSP frame-ancestors cannot be set via meta tag; this is a fallback.
+    if (window.top !== window.self) { window.top.location = window.self.location; }
   </script>
 </head>
 

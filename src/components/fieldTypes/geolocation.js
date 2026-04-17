@@ -49,7 +49,7 @@ function GeolocationEditorComponent({field, label, value, setValue, disabled}) {
   function openMapsApp() {
     const daddr = `${value.lat},${value.lng}`;
     const company = 'google';
-    window.open(`http://maps.${company}.com/maps?daddr=${daddr}`);
+    window.open(`https://maps.${company}.com/maps?daddr=${daddr}`);
   }
 
   return (

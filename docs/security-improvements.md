@@ -2,78 +2,39 @@
 
 Audit of the Riverbed Web codebase against the project's security rules (`rules/`).
 
-## High Priority
+## Addressed
 
-### 2. No Content-Security-Policy headers (csp-headers)
+### 2. No Content-Security-Policy headers (csp-headers) — FIXED
 
-**File:** `web/index.html`, deployment config
+Added a `<meta http-equiv="Content-Security-Policy">` tag to `web/index.html` with a strict policy:
 
-There is no CSP `<meta>` tag in `web/index.html` and no server-side CSP headers configured. The app is deployed to GitHub Pages, which does not support custom response headers natively.
+- `script-src` restricted to `'self'`, Google Maps API, and SHA-256 hashes of inline scripts
+- `style-src` allows `'unsafe-inline'` (required by MUI/Emotion runtime style injection)
+- `connect-src` restricted to `'self'`, production API, dev API, Cypress test API, and Google Maps
+- `img-src` restricted to `'self'`, `data:`, and Google Maps domains
+- `font-src` restricted to `'self'` and `data:`
 
-**Rule:** _csp-headers.mdc_ — "Prefer a strict CSP; avoid `unsafe-inline` and `unsafe-eval`."
+**Known limitation:** `style-src 'unsafe-inline'` is required because MUI's Emotion CSS-in-JS injects `<style>` tags at runtime. This cannot be removed without switching CSS strategies.
 
-**Recommendation:**
+### 3. No clickjacking protection (csp-headers) — FIXED
 
-- Add a `<meta http-equiv="Content-Security-Policy">` tag to `web/index.html` with a policy restricting `script-src`, `style-src`, and `connect-src` to the app's own origin and required third-party domains (e.g., Google Maps API).
-- Note: the inline `<style>` block and the SPA routing `<script>` in `index.html` would need nonces or hashes, or be moved to external files.
+Added a frame-busting inline script to `web/index.html` that redirects the top frame to the app's URL if loaded inside an iframe. CSP `frame-ancestors` cannot be set via `<meta>` tag (per spec), and GitHub Pages does not support custom response headers, so this JS-based approach is the available fallback.
 
-### 3. No clickjacking protection (csp-headers)
+### 5. URL validation allows javascript: scheme (xss, react) — FIXED
 
-**Rule:** _csp-headers.mdc_ — "Set X-Frame-Options: DENY or use CSP frame-ancestors 'none'."
+Changed `isValidUrl` regex in `src/utils/urlUtils.js` from `/^\w+:\/\//` to `/^https?:\/\//`, restricting to only `http://` and `https://` schemes.
 
-**Recommendation:** Add `frame-ancestors 'none'` to the CSP meta tag (see above). GitHub Pages doesn't set `X-Frame-Options`, so the CSP approach is the only option without a proxy.
+### 6. Google Maps link uses HTTP instead of HTTPS (general-security, api-network) — FIXED
 
-## Medium Priority
+Changed `http://` to `https://` in `src/components/fieldTypes/geolocation.js` for the Google Maps directions link.
 
-### 5. URL validation allows javascript: scheme (xss, react)
+### 7. No dependency audit in CI (dependencies) — FIXED
 
-**File:** `src/utils/urlUtils.js`
+Added a `Dependency Audit` job to `.github/workflows/test.yml` that runs `pnpm audit --audit-level=high`.
 
-The `isValidUrl` regex (`/^\w+:\/\/([^/]+\.\w+)/`) matches any scheme including `javascript://`. While `javascript:` URLs typically don't contain `//`, a crafted URL like `javascript://example.com/%0aalert(1)` could pass validation and be rendered in `AutoDetectLink` as a clickable `<a href>`.
+### 9. Missing rel="noopener noreferrer" on some target="\_blank" links — FIXED
 
-**Rule:** _xss.mdc_ — "Validate and sanitize URLs before `<a href>`. Allowlist `https://`; reject `javascript:`."
-_react.mdc_ — "Avoid `href={userUrl}` without validation; allowlist `https://` and reject `javascript:`."
-
-**Recommendation:** Change `isValidUrl` to allowlist only `http://` and `https://` schemes:
-
-```js
-export function isValidUrl(string) {
-  return /^https?:\/\/([^/]+\.\w+)/.test(string);
-}
-```
-
-### 6. Google Maps link uses HTTP instead of HTTPS (general-security, api-network)
-
-**File:** `src/components/fieldTypes/geolocation.js:52`
-
-```js
-window.open(`http://maps.${company}.com/maps?daddr=${daddr}`);
-```
-
-**Rule:** _general-security.mdc_ — "HTTPS only."
-_api-network.mdc_ — "Call APIs over HTTPS only."
-
-**Recommendation:** Change `http://` to `https://`.
-
-### 7. No dependency audit in CI (dependencies)
-
-**Files:** `.github/workflows/test.yml`, `.github/workflows/deploy.yml`
-
-Neither CI workflow runs `pnpm audit` or uses Dependabot/Snyk for vulnerability scanning.
-
-**Rule:** _dependencies.mdc_ — "Run npm audit (or equivalent) in CI; fix high/critical or document accepted risk."
-
-**Recommendation:** Add a `pnpm audit --audit-level=high` step to the test workflow, and/or enable Dependabot security alerts on the GitHub repository.
-
-## Low Priority
-
-### 9. Missing rel="noopener noreferrer" on some target="\_blank" links
-
-**File:** `src/components/AutoDetectLink.js:11`
-
-The `<Link>` component opens user-provided URLs in a new tab with `target="_blank"` but no explicit `rel="noopener noreferrer"`. While modern browsers default to `noopener`, explicitly setting it is a defense-in-depth measure. The SignIn page links correctly use `rel="noreferrer"`.
-
-**Recommendation:** Add `rel="noopener noreferrer"` to the `AutoDetectLink` component.
+Added `rel="noopener noreferrer"` to the `<Link>` in `src/components/AutoDetectLink.js`.
 
 ## Not Acting on Right Now
 
@@ -134,16 +95,16 @@ The development base URL is `http://localhost:3000`. This is expected for local 
 
 ## Summary Table
 
-| #   | Issue                             | Rule(s)                          | Priority        |
-| --- | --------------------------------- | -------------------------------- | --------------- |
-| 1   | Token in localStorage             | auth-sessions, sensitive-data    | High            |
-| 2   | No CSP headers                    | csp-headers                      | High            |
-| 3   | No clickjacking protection        | csp-headers                      | High            |
-| 4   | console.error in production       | sensitive-data, general-security | Medium          |
-| 5   | URL validation allows javascript: | xss, react                       | Medium          |
-| 6   | Maps link uses HTTP               | general-security, api-network    | Medium          |
-| 7   | No dependency audit in CI         | dependencies                     | Medium          |
-| 8   | Server error text passed to UI    | general-security                 | Medium          |
-| 9   | Missing rel on target=\_blank     | xss (defense-in-depth)           | Low             |
-| 10  | Maps API key in bundle            | sensitive-data                   | Low             |
-| 11  | Dev base URL uses HTTP            | api-network                      | Low (no action) |
+| #   | Issue                             | Rule(s)                          | Status              |
+| --- | --------------------------------- | -------------------------------- | ------------------- |
+| 2   | No CSP headers                    | csp-headers                      | Fixed               |
+| 3   | No clickjacking protection        | csp-headers                      | Fixed               |
+| 5   | URL validation allows javascript: | xss, react                       | Fixed               |
+| 6   | Maps link uses HTTP               | general-security, api-network    | Fixed               |
+| 7   | No dependency audit in CI         | dependencies                     | Fixed               |
+| 9   | Missing rel on target=\_blank     | xss (defense-in-depth)           | Fixed               |
+| 1   | Token in localStorage             | auth-sessions, sensitive-data    | Not acting on       |
+| 4   | console.error in production       | sensitive-data, general-security | Not acting on       |
+| 8   | Server error text passed to UI    | general-security                 | Not acting on       |
+| 10  | Maps API key in bundle            | sensitive-data                   | Not acting on       |
+| 11  | Dev base URL uses HTTP            | api-network                      | Not acting on       |
