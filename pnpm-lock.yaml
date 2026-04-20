@@ -133,8 +133,8 @@ importers:
         specifier: ^5.2.0
         version: 5.2.0(eslint@8.57.1)
       html-webpack-plugin:
-        specifier: ^5.6.6
-        version: 5.6.6(webpack@5.106.1)
+        specifier: ^5.6.7
+        version: 5.6.7(webpack@5.106.1)
       husky:
         specifier: ^9.1.7
         version: 9.1.7
@@ -3543,8 +3543,8 @@ packages:
     engines: {node: '>=12'}
     hasBin: true
 
-  html-webpack-plugin@5.6.6:
-    resolution: {integrity: sha512-bLjW01UTrvoWTJQL5LsMRo1SypHW80FTm12OJRSnr3v6YHNhfe+1r0MYUZJMACxnCHURVnBWRwAsWs2yPU9Ezw==}
+  html-webpack-plugin@5.6.7:
+    resolution: {integrity: sha512-md+vXtdCAe60s1k6AU3dUyMJnDxUyQAwfwPKoLisvgUF1IXjtlLsk2se54+qfL9Mdm26bbwvjJybpNx48NKRLw==}
     engines: {node: '>=10.13.0'}
     peerDependencies:
       '@rspack/core': 0.x || 1.x
@@ -5498,10 +5498,6 @@ packages:
     os: [darwin, linux, win32, freebsd, openbsd, netbsd, sunos, android]
     hasBin: true
 
-  tapable@2.3.0:
-    resolution: {integrity: sha512-g9ljZiwki/LfxmQADO3dEY1CbpmXT5Hm2fJ+QaGKwSXUylMybePR7/67YW7jOrrvjEgL1Fmz5kzyAjWVWLlucg==}
-    engines: {node: '>=6'}
-
   tapable@2.3.2:
     resolution: {integrity: sha512-1MOpMXuhGzGL5TTCZFItxCc0AARf1EZFQkGqMm7ERKj8+Hgr5oLvJOVFcC+lRmR8hCe2S3jC4T5D7Vg/d7/fhA==}
     engines: {node: '>=6'}
@@ -5533,11 +5529,6 @@ packages:
         optional: true
       uglify-js:
         optional: true
-
-  terser@5.46.0:
-    resolution: {integrity: sha512-jTwoImyr/QbOWFFso3YoU3ik0jBBDJ6JTOQiy/J2YxVJdZCc+5u7skhNwiOR3FQIygFqVUPHl7qbbxtjW2K3Qg==}
-    engines: {node: '>=10'}
-    hasBin: true
 
   terser@5.46.1:
     resolution: {integrity: sha512-vzCjQO/rgUuK9sf8VJZvjqiqiHFaZLnOiimmUuOKODxWL8mm/xua7viT7aqX7dgPY60otQjUotzFMmCB4VdmqQ==}
@@ -10279,15 +10270,15 @@ snapshots:
       he: 1.2.0
       param-case: 3.0.4
       relateurl: 0.2.7
-      terser: 5.46.0
+      terser: 5.46.1
 
-  html-webpack-plugin@5.6.6(webpack@5.106.1):
+  html-webpack-plugin@5.6.7(webpack@5.106.1):
     dependencies:
       '@types/html-minifier-terser': 6.1.0
       html-minifier-terser: 6.1.0
       lodash: 4.18.1
       pretty-error: 4.0.0
-      tapable: 2.3.0
+      tapable: 2.3.2
     optionalDependencies:
       webpack: 5.106.1(webpack-cli@7.0.2)
 
@@ -12850,8 +12841,6 @@ snapshots:
 
   systeminformation@5.31.5: {}
 
-  tapable@2.3.0: {}
-
   tapable@2.3.2: {}
 
   temp@0.8.3:
@@ -12875,13 +12864,6 @@ snapshots:
       schema-utils: 4.3.3
       terser: 5.46.1
       webpack: 5.106.1(webpack-cli@7.0.2)
-
-  terser@5.46.0:
-    dependencies:
-      '@jridgewell/source-map': 0.3.11
-      acorn: 8.16.0
-      commander: 2.20.3
-      source-map-support: 0.5.21
 
   terser@5.46.1:
     dependencies:
