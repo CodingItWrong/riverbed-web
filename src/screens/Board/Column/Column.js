@@ -34,10 +34,12 @@ export default function Column({column, board}) {
     const fieldType = fieldTypes[sortField.attributes['data-type']];
     columnCards = sortBy(filteredCards, [
       card =>
-        fieldType.getSortValue({
-          value: get(card, `attributes.field-values.${cardSortOrder.field}`),
-          options: sortField.attributes.options,
-        }),
+        fieldType
+          .getSortValue({
+            value: get(card, `attributes.field-values.${cardSortOrder.field}`),
+            options: sortField.attributes.options,
+          })
+          .toLowerCase(),
     ]);
     if (cardSortOrder?.direction === SORT_DIRECTIONS.DESCENDING.key) {
       columnCards.reverse();
