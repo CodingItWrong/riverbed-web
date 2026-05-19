@@ -33,8 +33,8 @@ importers:
         specifier: ^7.28.3
         version: 7.29.4(@emotion/react@11.14.0(@types/react@19.2.14)(react@18.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@18.3.1))(@types/react@19.2.14)(react@18.3.1))(@mui/material@6.5.0(@emotion/react@11.14.0(@types/react@19.2.14)(react@18.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@18.3.1))(@types/react@19.2.14)(react@18.3.1))(@types/react@19.2.14)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@mui/system@6.5.0(@emotion/react@11.14.0(@types/react@19.2.14)(react@18.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@18.3.1))(@types/react@19.2.14)(react@18.3.1))(@types/react@19.2.14)(react@18.3.1))(@types/react@19.2.14)(dayjs@1.11.20)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@tanstack/react-query':
-        specifier: ^5.100.10
-        version: 5.100.10(react@18.3.1)
+        specifier: ^5.100.11
+        version: 5.100.11(react@18.3.1)
       dayjs:
         specifier: ^1.11.19
         version: 1.11.20
@@ -86,7 +86,7 @@ importers:
         version: 7.28.5(@babel/core@7.29.0)
       '@tanstack/react-query-devtools':
         specifier: ^5.100.10
-        version: 5.100.10(@tanstack/react-query@5.100.10(react@18.3.1))(react@18.3.1)
+        version: 5.100.10(@tanstack/react-query@5.100.11(react@18.3.1))(react@18.3.1)
       '@testing-library/jest-dom':
         specifier: ^6.9.1
         version: 6.9.1
@@ -1651,8 +1651,8 @@ packages:
   '@sinonjs/fake-timers@15.4.0':
     resolution: {integrity: sha512-DsG+8/LscQIQg68J6Ef3dv10u6nVyetYn923s3/sus5eaGfTo1of5WMZSLf0UJc9KDuKPilPH0UDJCjvNbDNCA==}
 
-  '@tanstack/query-core@5.100.10':
-    resolution: {integrity: sha512-8UR0yJR+GiQ40m3lPhUr0xbfAupe6GSQiksSBSa9SM2NjezFyxXCIA69/lz8cSoNKZLrw1/PktIyQBJcVeMi3w==}
+  '@tanstack/query-core@5.100.11':
+    resolution: {integrity: sha512-lmE0994apShXPj8CUxgx4ch5yUJhE9k/+tVwihBvPOyerACWdBocfFg24t8+0RhtlTd7tEgchDkhlCxNssvDxw==}
 
   '@tanstack/query-devtools@5.100.10':
     resolution: {integrity: sha512-3DmJf25hDPus5IpVvp6ujXv6bKV2zPzI9vpbAmpJigsL/H6DPvPjmf7/Q9yVKEke//8fgeQ45abjgnLuyYxAiw==}
@@ -1663,8 +1663,8 @@ packages:
       '@tanstack/react-query': ^5.100.10
       react: ^18 || ^19
 
-  '@tanstack/react-query@5.100.10':
-    resolution: {integrity: sha512-FLaZf2RCrA/Zgp4aiu5tG3TyasTRO7aZ99skxQpr3Hg/zXOhu6yq5FZCYQ/tRaJtM9ylnoK8tFK7PolXQadv6Q==}
+  '@tanstack/react-query@5.100.11':
+    resolution: {integrity: sha512-J0f9s5x3LE1450nNNfYx+e/n0DMa0uOBdFJUy5r0RvmsXd4nB/n0rbHtHI1vYXhikNFan+wf51p6Tmp4c8ucrg==}
     peerDependencies:
       react: ^18 || ^19
 
@@ -8146,19 +8146,19 @@ snapshots:
     dependencies:
       '@sinonjs/commons': 3.0.1
 
-  '@tanstack/query-core@5.100.10': {}
+  '@tanstack/query-core@5.100.11': {}
 
   '@tanstack/query-devtools@5.100.10': {}
 
-  '@tanstack/react-query-devtools@5.100.10(@tanstack/react-query@5.100.10(react@18.3.1))(react@18.3.1)':
+  '@tanstack/react-query-devtools@5.100.10(@tanstack/react-query@5.100.11(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@tanstack/query-devtools': 5.100.10
-      '@tanstack/react-query': 5.100.10(react@18.3.1)
+      '@tanstack/react-query': 5.100.11(react@18.3.1)
       react: 18.3.1
 
-  '@tanstack/react-query@5.100.10(react@18.3.1)':
+  '@tanstack/react-query@5.100.11(react@18.3.1)':
     dependencies:
-      '@tanstack/query-core': 5.100.10
+      '@tanstack/query-core': 5.100.11
       react: 18.3.1
 
   '@testing-library/dom@10.4.1':
