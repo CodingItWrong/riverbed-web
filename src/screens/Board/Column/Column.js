@@ -39,7 +39,7 @@ export default function Column({column, board}) {
             value: get(card, `attributes.field-values.${cardSortOrder.field}`),
             options: sortField.attributes.options,
           })
-          .toLowerCase(),
+          ?.toLowerCase(),
     ]);
     if (cardSortOrder?.direction === SORT_DIRECTIONS.DESCENDING.key) {
       columnCards.reverse();
