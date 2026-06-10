@@ -50,7 +50,7 @@ Card and Column routes render as modals on top of the Board screen (`BaseModalSc
 
 Copy `.env.sample` to `.env.local` and fill in `RIVERBED_GOOGLE_MAPS_API_KEY` for Google Maps support. Production builds require `.env.production` with the same key.
 
-Node version: 22.x (see `.nvmrc`)
+Node version: 24.x (see `.nvmrc`)
 
 ## Security Rules
 
