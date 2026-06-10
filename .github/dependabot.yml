@@ -9,6 +9,11 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    # Wait 7 days after a release before opening a PR, matching the
+    # minimumReleaseAge: 10080 (1 week) supply-chain policy in pnpm-workspace.yaml.
+    # Avoids PRs that would fail CI's frozen install on too-new versions.
+    cooldown:
+      default-days: 7
     ignore:
       - dependency-name: "@babel/core"
       - dependency-name: "@mui/x-date-pickers"
