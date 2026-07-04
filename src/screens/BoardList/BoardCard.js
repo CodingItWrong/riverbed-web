@@ -54,7 +54,7 @@ function FavoriteButton({board}) {
           : `${attributes.name} is not a favorite board. Tap to favorite`
       }
       icon={isFavorite ? 'star' : 'star-outline'}
-      style={[styles.favoriteStar, {opacity: isFavorite ? 1.0 : 0.5}]}
+      style={{...styles.favoriteStar, opacity: isFavorite ? 1.0 : 0.5}}
       onPress={handleUpdateBoard}
     />
   );
