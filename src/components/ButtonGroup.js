@@ -1,5 +1,6 @@
 import ToggleButton from '@mui/material/ToggleButton';
 import Text from '@mui/material/Typography';
+
 import {primaryColors} from '../theme/primaryColors';
 import Icon from './Icon';
 import Stack from './Stack';

@@ -1,8 +1,8 @@
 import BoardIcon from '../../components/BoardIcon';
 import Card from '../../components/Card';
 import IconButton from '../../components/IconButton';
-import Text from '../../components/Text';
 import sharedStyles from '../../components/sharedStyles';
+import Text from '../../components/Text';
 import {useUpdateBoard} from '../../data/boards';
 import useColorSchemeTheme from '../../theme/useColorSchemeTheme';
 import dateTimeUtils from '../../utils/dateTimeUtils';
@@ -54,7 +54,7 @@ function FavoriteButton({board}) {
           : `${attributes.name} is not a favorite board. Tap to favorite`
       }
       icon={isFavorite ? 'star' : 'star-outline'}
-      style={(styles.favoriteStar, {opacity: isFavorite ? 1.0 : 0.5})}
+      style={{...styles.favoriteStar, opacity: isFavorite ? 1.0 : 0.5}}
       onPress={handleUpdateBoard}
     />
   );

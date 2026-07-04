@@ -1,11 +1,12 @@
 import {Suspense, lazy, useState} from 'react';
+
 import FIELD_DATA_TYPES from '../../enums/fieldDataTypes';
 import IconButton from '../IconButton';
 import LoadingIndicator from '../LoadingIndicator';
 import NumberField from '../NumberField';
+import sharedStyles from '../sharedStyles';
 import Stack from '../Stack';
 import Text from '../Text';
-import sharedStyles from '../sharedStyles';
 
 // lazy to defer loading google-maps-react
 const Map = lazy(() => import('../Map'));

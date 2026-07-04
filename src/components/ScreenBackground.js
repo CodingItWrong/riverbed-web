@@ -1,4 +1,5 @@
 import {styled} from '@mui/material/styles';
+
 import sharedStyles from './sharedStyles';
 
 const ScreenBackground = styled('div')(({theme}) => ({

@@ -10,8 +10,9 @@ pnpm test           # Jest in watch mode
 pnpm test:ci        # Jest (single run, for CI)
 pnpm cypress        # Open Cypress UI for e2e tests
 pnpm cypress:run    # Run Cypress headlessly
-pnpm lint           # ESLint + Prettier check
-pnpm format         # Auto-format with Prettier
+pnpm lint           # oxlint (fails on warnings)
+pnpm format:check   # Check formatting with oxfmt
+pnpm format         # Auto-format with oxfmt
 pnpm build          # Production build to dist/
 ```
 
@@ -68,7 +69,9 @@ Reference these when writing or reviewing security-sensitive code:
 
 ## Code Style
 
-- Single quotes, no semicolons beyond what Prettier enforces, trailing commas, no arrow-function parens
-- ESLint enforces alphabetized and deduplicated imports (`eslint-plugin-import`)
+- Single quotes, no semicolons beyond what oxfmt enforces, trailing commas, no arrow-function parens
+- Formatting is handled by **oxfmt** (`.oxfmtrc.json`); linting by **oxlint** (`.oxlintrc.json`)
+- oxfmt sorts imports (`sortImports`); oxlint dedupes them (`no-duplicate-imports`)
+- `eslint-plugin-cypress` runs through oxlint's ESLint-compat layer (`jsPlugins`); all other rules are oxlint built-ins
 - No PropTypes — the project does not use React prop type validation
-- Run `pnpm format` before committing (Husky enforces this via pre-commit hook)
+- Run `pnpm format` before committing; the Husky pre-push hook runs `pnpm lint && pnpm format:check`

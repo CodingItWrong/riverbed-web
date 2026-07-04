@@ -1,6 +1,7 @@
 import {ThemeProvider as MuiProvider} from '@mui/material/styles';
 import {useCallback} from 'react';
 import {Outlet, useNavigate, useParams} from 'react-router-dom';
+
 import ErrorSnackbar from '../../components/ErrorSnackbar';
 import IconButton from '../../components/IconButton';
 import NavigationBar from '../../components/NavigationBar';

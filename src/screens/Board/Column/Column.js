@@ -1,12 +1,13 @@
 import get from 'lodash/get';
 import sortBy from 'lodash/sortBy';
 import {Link as RouterLink} from 'react-router-dom';
+
+import fieldTypes from '../../../components/fieldTypes';
 import IconButton from '../../../components/IconButton';
 import SectionHeader from '../../../components/SectionHeader';
 import SectionList from '../../../components/SectionList';
-import Text from '../../../components/Text';
-import fieldTypes from '../../../components/fieldTypes';
 import sharedStyles, {useColumnStyle} from '../../../components/sharedStyles';
+import Text from '../../../components/Text';
 import {useColumnCards} from '../../../data/cards';
 import {useBoardElements} from '../../../data/elements';
 import SORT_DIRECTIONS from '../../../enums/sortDirections';
