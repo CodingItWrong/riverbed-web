@@ -29,6 +29,8 @@ export default function ConditionInputs({
   return (
     <>
       {conditions.map((condition, index) => (
+        // conditions have no stable id in the persisted model; index key is the best available
+        // oxlint-disable-next-line react/no-array-index-key
         <div key={`condition-${index}`} style={sharedStyles.row}>
           <div style={styles.conditionElements}>
             <DropdownField
