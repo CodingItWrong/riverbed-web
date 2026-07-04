@@ -1,5 +1,6 @@
 import {useCallback, useEffect, useState} from 'react';
 import {Outlet, useNavigate, useParams} from 'react-router-dom';
+
 import {large, useBreakpoint} from '../../breakpoints';
 import BackButton from '../../components/BackButton';
 import ConfirmationDialog from '../../components/ConfirmationDialog';

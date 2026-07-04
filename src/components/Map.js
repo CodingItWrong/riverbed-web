@@ -1,5 +1,6 @@
 import {GoogleApiWrapper, Map as GoogleMap, Marker} from 'google-maps-react';
 import {useMemo} from 'react';
+
 import Constants from '../constants';
 import Text from './Text';
 

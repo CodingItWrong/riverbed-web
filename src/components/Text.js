@@ -1,4 +1,5 @@
 import Typography from '@mui/material/Typography';
+
 import TEXT_SIZES from '../enums/textSizes';
 
 // TODO: abstract away variant from Paper dependnecy

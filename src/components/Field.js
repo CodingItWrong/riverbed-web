@@ -1,7 +1,7 @@
 import {domainForUrl} from '../utils/urlUtils';
 import {AutoDetectLink} from './AutoDetectLink';
-import Text from './Text';
 import fieldTypes from './fieldTypes';
+import Text from './Text';
 
 export default function Field({
   field,

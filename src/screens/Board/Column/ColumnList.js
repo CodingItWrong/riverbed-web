@@ -1,5 +1,6 @@
 import {ScrollView} from 'react-native';
 import {useNavigate} from 'react-router-dom';
+
 import {large, useBreakpoint} from '../../../breakpoints';
 import Button from '../../../components/Button';
 import ErrorSnackbar from '../../../components/ErrorSnackbar';

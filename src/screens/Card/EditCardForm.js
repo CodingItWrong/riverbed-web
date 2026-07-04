@@ -1,12 +1,13 @@
 import debounce from 'lodash/debounce';
 import {useCallback, useEffect, useRef, useState} from 'react';
+
 import ButtonElement from '../../components/ButtonElement';
 import ButtonMenuElement from '../../components/ButtonMenuElement';
 import ErrorMessage from '../../components/ErrorMessage';
 import Field from '../../components/Field';
+import sharedStyles from '../../components/sharedStyles';
 import Stack from '../../components/Stack';
 import Text from '../../components/Text';
-import sharedStyles from '../../components/sharedStyles';
 import {useUpdateCard} from '../../data/cards';
 import {useBoardElements} from '../../data/elements';
 import COMMANDS from '../../enums/commands';
@@ -189,7 +190,7 @@ export default function EditCardForm({card, board, onClose}) {
             );
           default:
             return (
-              <Text size={4}>
+              <Text key={element.id} size={4}>
                 unknown element type: {element.attributes['element-type']}
               </Text>
             );

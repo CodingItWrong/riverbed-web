@@ -1,6 +1,7 @@
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import {useNavigate} from 'react-router-dom';
+
 import {large, useBreakpoint} from '../breakpoints';
 
 export default function BaseModalScreen({backTo, children}) {

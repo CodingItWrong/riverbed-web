@@ -1,21 +1,22 @@
 import set from 'lodash/set';
 import startCase from 'lodash/startCase';
 import {useState} from 'react';
+
 import Button from '../../components/Button';
 import ConditionInputs from '../../components/ConditionsInputs';
 import ConfirmationDialog from '../../components/ConfirmationDialog';
 import DropdownField from '../../components/DropdownField';
 import ErrorMessage from '../../components/ErrorMessage';
 import Field from '../../components/Field';
+import fieldTypes from '../../components/fieldTypes';
 import FormGroup from '../../components/FormGroup';
 import IconButton from '../../components/IconButton';
 import LabeledCheckbox from '../../components/LabeledCheckbox';
 import NumberField from '../../components/NumberField';
+import sharedStyles from '../../components/sharedStyles';
 import Stack from '../../components/Stack';
 import Text from '../../components/Text';
 import TextField from '../../components/TextField';
-import fieldTypes from '../../components/fieldTypes';
-import sharedStyles from '../../components/sharedStyles';
 import {
   useBoardElements,
   useDeleteElement,

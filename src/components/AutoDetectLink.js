@@ -1,4 +1,5 @@
 import Link from '@mui/material/Link';
+
 import {isValidUrl} from '../utils/urlUtils';
 import Text from './Text';
 

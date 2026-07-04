@@ -1,14 +1,15 @@
 import {DragDropContext, Draggable, Droppable} from 'react-beautiful-dnd';
 import {Link as RouterLink, useNavigate} from 'react-router-dom';
+
 import Button from '../../components/Button';
 import DropdownMenu from '../../components/DropdownMenu';
 import ErrorSnackbar from '../../components/ErrorSnackbar';
 import Field from '../../components/Field';
 import Icon from '../../components/Icon';
 import IconButton from '../../components/IconButton';
+import sharedStyles from '../../components/sharedStyles';
 import Stack from '../../components/Stack';
 import Text from '../../components/Text';
-import sharedStyles from '../../components/sharedStyles';
 import {
   useBoardElements,
   useCreateElement,

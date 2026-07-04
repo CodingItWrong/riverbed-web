@@ -1,0 +1,46 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["react"],
+  "jsPlugins": ["eslint-plugin-cypress"],
+  "env": {
+    "browser": true,
+    "es2024": true,
+    "node": true
+  },
+  "globals": {
+    "__DEV__": "readonly",
+    "cy": "readonly",
+    "Cypress": "readonly",
+    "expect": "readonly",
+    "assert": "readonly"
+  },
+  "settings": {
+    "react": {
+      "version": "18.3.1"
+    }
+  },
+  "rules": {
+    "no-duplicate-imports": "error",
+    "react/no-unstable-nested-components": ["warn", {"allowAsProps": true}],
+    "react/react-in-jsx-scope": "off",
+    "react-hooks/exhaustive-deps": "warn",
+    "react-hooks/rules-of-hooks": "error"
+  },
+  "overrides": [
+    {
+      "files": ["**/*.spec.js"],
+      "plugins": ["jest"],
+      "rules": {
+        "jest/no-focused-tests": "error"
+      }
+    },
+    {
+      "files": ["cypress/**/*.js"],
+      "rules": {
+        "cypress/no-assigning-return-values": "error",
+        "cypress/no-async-tests": "error",
+        "cypress/no-unnecessary-waiting": "error"
+      }
+    }
+  ]
+}

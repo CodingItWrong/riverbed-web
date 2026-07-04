@@ -1,6 +1,7 @@
 import {createTheme} from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import {useMemo} from 'react';
+
 import {primaryColors} from './primaryColors';
 
 export default function useColorSchemeTheme(colorTheme) {

@@ -8,6 +8,7 @@ import {
   red,
   yellow,
 } from '@mui/material/colors';
+
 import COLOR_THEMES from '../enums/colorThemes';
 
 export const primaryColors = {

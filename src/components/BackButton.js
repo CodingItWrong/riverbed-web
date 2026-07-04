@@ -1,5 +1,6 @@
 import MuiIconButton from '@mui/material/IconButton';
 import {useNavigate} from 'react-router-dom';
+
 import Icon from './Icon';
 
 export default function BackButton({to, accessibilityLabel = 'Go back'}) {
