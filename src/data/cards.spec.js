@@ -1,7 +1,7 @@
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {renderHook, waitFor} from '@testing-library/react';
 
-import {useColumnCards} from './cards';
+import {useColumnCards, useForgetCard, useRefreshCards} from './cards';
 
 jest.mock('./token', () => ({
   useToken: () => ({token: null}),
@@ -9,15 +9,20 @@ jest.mock('./token', () => ({
 
 jest.mock('../baseUrl', () => 'http://testapi');
 
-function makeWrapper() {
+function makeClientAndWrapper() {
   const queryClient = new QueryClient({
     defaultOptions: {queries: {retry: false}},
   });
-  return function Wrapper({children}) {
+  function Wrapper({children}) {
     return (
       <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     );
-  };
+  }
+  return {queryClient, wrapper: Wrapper};
+}
+
+function makeWrapper() {
+  return makeClientAndWrapper().wrapper;
 }
 
 describe('useColumnCards', () => {
@@ -109,5 +114,86 @@ describe('useColumnCards', () => {
 
     expect(resultA.current.data).toEqual(cardsA);
     expect(resultB.current.data).toEqual(cardsB);
+  });
+});
+
+describe('useForgetCard', () => {
+  beforeEach(() => {
+    global.fetch = jest.fn();
+  });
+
+  afterEach(() => {
+    jest.resetAllMocks();
+  });
+
+  it('does not reload the cards shown on the board', async () => {
+    const board = {id: '1', type: 'boards', attributes: {}};
+    const column = {id: '10', type: 'columns', attributes: {}};
+    const card = {id: '2', type: 'cards', attributes: {'field-values': {}}};
+
+    global.fetch.mockResolvedValue({
+      ok: true,
+      json: async () => ({data: [card]}),
+    });
+
+    const {wrapper} = makeClientAndWrapper();
+    const {result, rerender} = renderHook(
+      () => ({
+        columnCards: useColumnCards(column),
+        forgetCard: useForgetCard(board),
+      }),
+      {wrapper},
+    );
+
+    await waitFor(() =>
+      expect(result.current.columnCards.isSuccess).toBe(true),
+    );
+    expect(global.fetch).toHaveBeenCalledTimes(1);
+
+    result.current.forgetCard(card);
+    rerender(); // clicking a card navigates, which rerenders the board
+
+    expect(result.current.columnCards.data).toEqual([card]);
+    expect(global.fetch).toHaveBeenCalledTimes(1);
+  });
+
+  it('removes only the individual card query', () => {
+    const board = {id: '1', type: 'boards', attributes: {}};
+    const card = {id: '2', type: 'cards', attributes: {'field-values': {}}};
+
+    const {queryClient, wrapper} = makeClientAndWrapper();
+    queryClient.setQueryData(['cards', board.id, card.id], card);
+    queryClient.setQueryData(['columnCards', '10'], [card]);
+    queryClient.setQueryData(['cards', board.id], [card]);
+
+    const {result} = renderHook(() => useForgetCard(board), {wrapper});
+    result.current(card);
+
+    expect(
+      queryClient.getQueryData(['cards', board.id, card.id]),
+    ).toBeUndefined();
+    expect(queryClient.getQueryData(['columnCards', '10'])).toEqual([card]);
+    expect(queryClient.getQueryData(['cards', board.id])).toEqual([card]);
+  });
+});
+
+describe('useRefreshCards', () => {
+  it("invalidates only the board's card list", async () => {
+    const board = {id: '1', type: 'boards', attributes: {}};
+    const card = {id: '2', type: 'cards', attributes: {'field-values': {}}};
+
+    const {queryClient, wrapper} = makeClientAndWrapper();
+    queryClient.setQueryData(['cards', board.id], [card]);
+    queryClient.setQueryData(['columnCards', '10'], [card]);
+    queryClient.setQueryData(['boards'], [board]);
+
+    const {result} = renderHook(() => useRefreshCards(board), {wrapper});
+    await result.current();
+
+    const isStale = queryKey =>
+      queryClient.getQueryState(queryKey).isInvalidated;
+    expect(isStale(['cards', board.id])).toBe(true);
+    expect(isStale(['columnCards', '10'])).toBe(false);
+    expect(isStale(['boards'])).toBe(false);
   });
 });

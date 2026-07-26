@@ -16,7 +16,8 @@ function useBoardClient() {
   return boardClient;
 }
 
-const refreshBoards = queryClient => queryClient.invalidateQueries(['boards']);
+const refreshBoards = queryClient =>
+  queryClient.invalidateQueries({queryKey: ['boards']});
 
 export function useBoards() {
   const boardClient = useBoardClient();

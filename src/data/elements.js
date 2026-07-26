@@ -17,7 +17,7 @@ function useElementClient() {
 }
 
 const refreshElements = (queryClient, board) =>
-  queryClient.invalidateQueries(['elements', board.id]);
+  queryClient.invalidateQueries({queryKey: ['elements', board.id]});
 
 export function useBoardElements(board) {
   const elementClient = useElementClient();
