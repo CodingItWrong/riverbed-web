@@ -47,6 +47,8 @@ Card and Column routes render as modals on top of the Board screen (`BaseModalSc
 
 **E2E tests (Cypress):** In `cypress/e2e/`. Tests mock API responses using `cy.intercept()`. The dev server must be running on port 8080. `cypress/support/Factory.js` provides test data factories; `cypress/support/commands.js` provides `cy.signIn()` and other custom commands.
 
+**Manual testing against a local backend:** the API runs on port 3000 and the dev server on 8080. Sign in with `example@example.com` / `password` — a local dev seed account only, never valid anywhere else.
+
 ## Environment
 
 Copy `.env.sample` to `.env.local` and fill in `RIVERBED_GOOGLE_MAPS_API_KEY` for Google Maps support. Production builds require `.env.production` with the same key.
