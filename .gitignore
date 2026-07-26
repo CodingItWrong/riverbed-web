@@ -29,3 +29,7 @@ coverage
 .env.production
 
 .playwright-mcp
+
+# Claude Code local state; shared config like .claude/settings.json stays tracked
+.claude/settings.local.json
+.claude/worktrees/
