@@ -1,0 +1,11 @@
+name: riverbed-web
+root: .
+
+windows:
+  - main:
+      layout: main-vertical
+      panes:
+        - claude: claudeyolo
+        - server: pnpm start
+        # size columns equally, then leave shell available for future commands
+        - shell: tmux set-option -t main main-pane-width "50%" && tmux select-layout -t main main-vertical && clear

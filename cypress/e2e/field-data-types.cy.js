@@ -122,35 +122,57 @@ describe('field data types', () => {
         .should('deep.include', {[choiceField.id]: 'fake_uuid_1'});
     });
 
-    // complex to manage desktop vs mobile version
-    // cy.step('TEST DATE FIELD', () => {
-    //   // button is not present in mobile date picker on CI
-    //   // cy.get(`[data-testid="element-${dateField.id}"] button`).click();
-    //   // cy.get('button').contains(/^2$/).click();
-    //   cy.get('[data-testid="date-input-2"]').type('01/02/2023');
-    //   cy.wait('@updateCard')
-    //     .its('request.body.data.attributes["field-values"]')
-    //     .should('deep.include', {[dateField.id]: '2023-01-02'});
-    // });
+    // The pickers render the accessible field DOM structure: instead of one
+    // <input>, each part of the date is a contenteditable span with
+    // role=spinbutton and an aria-label. Edit a single section so exactly one
+    // change is emitted.
 
-    // just skip it: typing and pasting both have issues in Cypress
-    // cy.step('TEST DATETIME FIELD', () => {
-    //   // button is not present in mobile date picker on CI
-    //   // cy.get(`[data-testid=element-${dateTimeField.id}] button`).click();
-    //   // cy.get('button').contains(/^3$/).click();
-    //   // cy.get('[role=option]').contains(/^05$/).click();
-    //   // cy.get('[role=option]').contains(/^15$/).click();
-    //   // cy.get('[role=option]').contains(/^PM$/).click();
-    //   // cy.contains('OK').click();
-    //   cy.get('[data-testid="datetime-input-3"] input').focus();
-    //   // paste
-    //   cy.get('[data-testid="datetime-input-3"] input').invoke(
-    //     'val',
-    //     '01/02/2023 04:56 PM',
-    //   );
-    //   cy.get('[data-testid="datetime-input-3"] input').blur();
-    //   cy.wait('@updateCard'); // not verifying contents due to time zone issues
-    // });
+    cy.step('TEST DATE FIELD', () => {
+      cy.get(`[data-testid="date-input-${dateField.id}"]`)
+        .find('[aria-label="Day"]')
+        .click()
+        .type('2');
+      cy.wait('@updateCard')
+        .its('request.body.data.attributes["field-values"]')
+        .should('deep.include', {[dateField.id]: '2023-01-02'});
+    });
+
+    cy.step('TEST DATE FIELD KEYBOARD NAVIGATION', () => {
+      const dateInput = () =>
+        cy.get(`[data-testid="date-input-${dateField.id}"]`);
+
+      // arrow keys move focus between sections and step the focused section's
+      // value; that section model is the point of the accessible DOM structure
+      dateInput().find('[aria-label="Month"]').click().type('{rightArrow}');
+      dateInput().find('[aria-label="Day"]').should('be.focused');
+      dateInput().find('[aria-label="Day"]').type('{rightArrow}');
+      dateInput().find('[aria-label="Year"]').should('be.focused');
+
+      dateInput().find('[aria-label="Year"]').type('{upArrow}');
+      // only the year is asserted: it steps 2023 -> 2024 regardless of which
+      // day the step above left behind
+      cy.wait('@updateCard')
+        .its(`request.body.data.attributes["field-values"][${dateField.id}]`)
+        .should('match', /^2024-/);
+    });
+
+    cy.step('TEST DATETIME FIELD', () => {
+      cy.get(`[data-testid="datetime-input-${dateTimeField.id}"]`)
+        .find('[aria-label="Minutes"]')
+        .click()
+        .type('45');
+      // asserted through a local Date rather than a literal string: the value
+      // is sent as UTC, so the expected string differs per time zone
+      cy.wait('@updateCard')
+        .its(
+          `request.body.data.attributes["field-values"][${dateTimeField.id}]`,
+        )
+        .then(value => {
+          const sent = new Date(value);
+          expect(sent.getHours()).to.equal(13);
+          expect(sent.getMinutes()).to.equal(45);
+        });
+    });
 
     cy.step('TEST GEOLCOATION FIELD', () => {
       cy.get(
