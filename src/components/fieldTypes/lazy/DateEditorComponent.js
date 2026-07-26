@@ -18,16 +18,14 @@ function DateEditorComponent({field, label, value, setValue, disabled, style}) {
           }
         }}
         disabled={disabled}
-        // TODO: remove before upgrading to x-date-pickers v9; the accessible
-        // field DOM structure is the v8 default and this opts back out of it.
-        enableAccessibleFieldDOMStructure={false}
         slotProps={{
           textField: {
             variant: 'filled',
             style,
-            inputProps: {
-              'data-testid': `date-input-${field.id}`,
-            },
+            // on the field root, not the input: the accessible field DOM
+            // structure renders the editable sections as spans and keeps only
+            // a visually hidden input for form interop.
+            'data-testid': `date-input-${field.id}`,
           },
         }}
       />

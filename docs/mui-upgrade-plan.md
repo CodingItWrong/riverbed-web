@@ -45,29 +45,45 @@ Notes from this stage:
   back out via `enableAccessibleFieldDOMStructure={false}` to keep markup and
   `data-testid` placement unchanged. See Stage 2.
 
-## Stage 2 — adopt the accessible field DOM structure
+## Stage 2 — adopt the accessible field DOM structure (complete)
 
-**Do this as its own PR, before Stage 3.** It is a behavioral change to the date
-pickers, not a version bump, and it should not be entangled with one.
+Done as its own PR, before Stage 3: a behavioral change to the date pickers
+rather than a version bump, so it was kept out of one. The opt-out added in
+Stage 1 pinned deprecated v7 behavior, and the flag is removed outright in
+pickers v9 — carrying it further would have turned that bump into a forced UI
+change.
 
-The opt-out added in Stage 1 pins deprecated v7 behavior. Carrying it into a
-further major risks the flag being removed while the migration is still
-outstanding, which would turn a version bump into a forced UI change.
+Work done:
 
-Work involved:
-
-- Remove `enableAccessibleFieldDOMStructure={false}` from
+- Removed `enableAccessibleFieldDOMStructure={false}` from
   `src/components/fieldTypes/lazy/DateEditorComponent.js` and
   `src/components/fieldTypes/lazy/DateTimeEditorComponent.js`.
-- Move the `data-testid` off the deprecated `slotProps.textField.inputProps` and
-  onto `slotProps.htmlInput` or the field root, since there is no longer a
-  single `<input>` to hang it on.
-- Re-enable and rewrite the date-editing assertions in
-  `cypress/e2e/field-data-types.cy.js`, which are currently commented out. They
-  type into the picker input directly and will need to drive the sectioned
-  field instead.
-- Manually check keyboard navigation across the date sections, since the section
-  model is what the new structure exists to provide.
+- Moved the date editor's `data-testid` from `slotProps.textField.inputProps`
+  onto the field root, matching what the datetime editor already did. Not
+  `slotProps.htmlInput`: under the new structure that lands on the *visually
+  hidden* input kept only for form interop, which tests cannot drive.
+- Re-enabled and rewrote the date-editing assertions in
+  `cypress/e2e/field-data-types.cy.js`, plus a keyboard-navigation step.
+- Rewrote the three `DateEditorComponent.spec.js` tests that queried
+  `role="textbox"`, which no longer exists.
+
+Notes from this stage:
+
+- The rendered field is a `role="group"` wrapping one
+  `span[role="spinbutton"][contenteditable]` per section, labelled `Month`,
+  `Day`, `Year` (plus `Hours`, `Minutes`, `Meridiem` for datetime). Select
+  sections by `aria-label`; there is no input to type into.
+- Edit **one section at a time** in tests. Typing a full date walks through
+  several intermediate valid dates and emits a PATCH for each, so a single
+  `cy.wait('@updateCard')` would assert against the wrong one.
+- Clearing is `ctrl+A` then `Delete` — `user.clear()` needs an input.
+- The datetime value is sent as UTC, so assert through a local `Date` rather
+  than a literal string, or the test only passes in one time zone.
+- The old "mobile picker on CI" problem did not reappear: under
+  `--browser chrome`, which is what CI uses, the desktop variant renders and
+  its sections are editable. Worth re-checking if these tests ever fail only on
+  CI, since the mobile field is read-only and typing into it silently does
+  nothing.
 
 ## Stage 3 — Material 7 → 9, pickers 8 → 9
 

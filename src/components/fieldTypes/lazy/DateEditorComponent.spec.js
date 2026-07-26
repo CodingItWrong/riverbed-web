@@ -38,7 +38,10 @@ describe('DateEditorComponent', () => {
       />,
     );
 
-    await user.type(screen.getByRole('textbox', {name: label}), '10/31/2023');
+    // the accessible field DOM structure has no single <input>: each part of
+    // the date is a spinbutton, and typing advances to the next one
+    await user.click(screen.getByRole('spinbutton', {name: 'Month'}));
+    await user.keyboard('10312023');
 
     expect(setValue).toHaveBeenCalledWith('2023-10-31');
   });
@@ -54,8 +57,9 @@ describe('DateEditorComponent', () => {
       />,
     );
 
-    // simulates a partially-entered date
-    await user.type(screen.getByRole('textbox', {name: label}), '1');
+    // simulates a partially-entered date: month only, no day or year
+    await user.click(screen.getByRole('spinbutton', {name: 'Month'}));
+    await user.keyboard('1');
 
     expect(setValue).not.toHaveBeenCalled();
   });
@@ -71,7 +75,9 @@ describe('DateEditorComponent', () => {
       />,
     );
 
-    await user.clear(screen.getByRole('textbox'));
+    // ctrl+A selects every section, so Delete empties the whole field
+    await user.click(screen.getByRole('spinbutton', {name: 'Month'}));
+    await user.keyboard('{Control>}a{/Control}{Delete}');
 
     expect(setValue).toHaveBeenCalledWith(null);
   });

@@ -70,7 +70,8 @@
   "jest": {
     "testEnvironment": "jsdom",
     "modulePathIgnorePatterns": [
-      "cypress"
+      "cypress",
+      "<rootDir>/.claude"
     ],
     "setupFilesAfterEnv": [
       "./setupTests.js"
