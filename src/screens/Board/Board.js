@@ -1,5 +1,5 @@
 import {ThemeProvider as MuiProvider} from '@mui/material/styles';
-import {useCallback} from 'react';
+import {useCallback, useEffect} from 'react';
 import {Outlet, useNavigate, useParams} from 'react-router-dom';
 
 import ErrorSnackbar from '../../components/ErrorSnackbar';
@@ -104,14 +104,17 @@ export default function Board() {
     }
   })();
 
+  useEffect(() => {
+    if (board) {
+      document.title = board?.attributes?.name ?? '(unnamed board)';
+    }
+  }, [board]);
+
   useNavigateEffect(
     useCallback(() => {
-      if (board) {
-        document.title = board?.attributes?.name ?? '(unnamed board)';
-      }
       refreshCards();
       refreshColumnCards();
-    }, [board, refreshCards, refreshColumnCards]),
+    }, [refreshCards, refreshColumnCards]),
   );
 
   const colorTheme = useColorSchemeTheme(board?.attributes['color-theme']);

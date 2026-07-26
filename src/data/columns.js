@@ -17,7 +17,7 @@ function useColumnClient() {
 }
 
 const refreshColumns = (queryClient, board) =>
-  queryClient.invalidateQueries(['columns', board.id]);
+  queryClient.invalidateQueries({queryKey: ['columns', board.id]});
 
 export function useColumns(board) {
   const columnClient = useColumnClient();

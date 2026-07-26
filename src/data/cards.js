@@ -17,10 +17,10 @@ function useCardClient() {
 }
 
 const refreshCards = (queryClient, board) =>
-  queryClient.invalidateQueries(['cards', board.id]);
+  queryClient.invalidateQueries({queryKey: ['cards', board.id]});
 
 const refreshCard = (queryClient, board, card) =>
-  queryClient.invalidateQueries(['cards', board.id, card.id]);
+  queryClient.invalidateQueries({queryKey: ['cards', board.id, card.id]});
 
 const refreshAllColumnCards = queryClient =>
   queryClient.invalidateQueries({queryKey: ['columnCards']});
@@ -76,7 +76,7 @@ export function usePrimeCard({board}) {
 export function useForgetCard(board) {
   const queryClient = useQueryClient();
   return function forgetCard(card) {
-    queryClient.removeQueries(['cards', board.id, card.id]);
+    queryClient.removeQueries({queryKey: ['cards', board.id, card.id]});
   };
 }
 
