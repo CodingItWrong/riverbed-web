@@ -16,8 +16,18 @@ function useCardClient() {
   return cardClient;
 }
 
+const cardQueryKey = (boardId, cardId) => ['cards', boardId, cardId];
+
+const cardQuery = ({cardClient, boardId, cardId}) => ({
+  queryKey: cardQueryKey(boardId, cardId),
+  queryFn: () => cardClient.find({id: cardId}).then(resp => resp.data ?? null),
+  // long enough that the card screen doesn't refetch a card prefetched on
+  // click; saving a card still refetches it, because that invalidates it
+  staleTime: 10 * 1000,
+});
+
 const refreshCard = (queryClient, board, card) =>
-  queryClient.invalidateQueries({queryKey: ['cards', board.id, card.id]});
+  queryClient.invalidateQueries({queryKey: cardQueryKey(board.id, card.id)});
 
 const refreshAllColumnCards = queryClient =>
   queryClient.invalidateQueries({queryKey: ['columnCards']});
@@ -43,23 +53,29 @@ export function useColumnCards(column) {
 export function usePrimeCard({board}) {
   const queryClient = useQueryClient();
   return function primeCard(card) {
-    queryClient.setQueryData(['cards', board.id, card.id], card);
+    queryClient.setQueryData(cardQueryKey(board.id, card.id), card);
   };
 }
 
-export function useForgetCard(board) {
+// Discards any cached copy of the card, so the edit form never starts from
+// stale data, and starts loading it right away. Call this when a card is
+// clicked: useCard joins the in-flight request instead of waiting until the
+// card screen renders to start it.
+export function usePrefetchCard(board) {
+  const cardClient = useCardClient();
   const queryClient = useQueryClient();
-  return function forgetCard(card) {
-    queryClient.removeQueries({queryKey: ['cards', board.id, card.id]});
+  return function prefetchCard(card) {
+    queryClient.removeQueries({queryKey: cardQueryKey(board.id, card.id)});
+    queryClient.prefetchQuery(
+      cardQuery({cardClient, boardId: board.id, cardId: card.id}),
+    );
   };
 }
 
 export function useCard({boardId, cardId, options}) {
   const cardClient = useCardClient();
   return useQuery({
-    queryKey: ['cards', boardId, cardId],
-    queryFn: () =>
-      cardClient.find({id: cardId}).then(resp => resp.data ?? null),
+    ...cardQuery({cardClient, boardId, cardId}),
     ...options,
   });
 }

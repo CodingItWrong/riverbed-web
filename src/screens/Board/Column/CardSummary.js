@@ -3,11 +3,11 @@ import {memo} from 'react';
 import Card from '../../../components/Card';
 import Field from '../../../components/Field';
 import Text from '../../../components/Text';
-import {useForgetCard} from '../../../data/cards';
+import {usePrefetchCard} from '../../../data/cards';
 import sortByDisplayOrder from '../../../utils/sortByDisplayOrder';
 
 function CardSummary({card, board, elements, style}) {
-  const forgetCard = useForgetCard(board);
+  const prefetchCard = usePrefetchCard(board);
 
   const fieldsToShow = sortByDisplayOrder(
     elements.filter(field => field.attributes['show-in-summary']),
@@ -35,7 +35,7 @@ function CardSummary({card, board, elements, style}) {
     <Card
       key={card.id}
       style={style}
-      onClick={() => forgetCard(card)}
+      onClick={() => prefetchCard(card)}
       href={`/boards/${board.id}/cards/${card.id}`}
       testID={`card-${card.id}`}
       contentStyle={styles.card}

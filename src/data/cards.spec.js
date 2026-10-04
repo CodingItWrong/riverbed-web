@@ -1,7 +1,7 @@
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {renderHook, waitFor} from '@testing-library/react';
 
-import {useColumnCards, useForgetCard} from './cards';
+import {useCard, useColumnCards, usePrefetchCard} from './cards';
 
 jest.mock('./token', () => ({
   useToken: () => ({token: null}),
@@ -117,7 +117,7 @@ describe('useColumnCards', () => {
   });
 });
 
-describe('useForgetCard', () => {
+describe('usePrefetchCard', () => {
   beforeEach(() => {
     global.fetch = jest.fn();
   });
@@ -140,7 +140,7 @@ describe('useForgetCard', () => {
     const {result, rerender} = renderHook(
       () => ({
         columnCards: useColumnCards(column),
-        forgetCard: useForgetCard(board),
+        prefetchCard: usePrefetchCard(board),
       }),
       {wrapper},
     );
@@ -150,27 +150,87 @@ describe('useForgetCard', () => {
     );
     expect(global.fetch).toHaveBeenCalledTimes(1);
 
-    result.current.forgetCard(card);
+    result.current.prefetchCard(card);
     rerender(); // clicking a card navigates, which rerenders the board
 
     expect(result.current.columnCards.data).toEqual([card]);
-    expect(global.fetch).toHaveBeenCalledTimes(1);
+    expect(global.fetch).toHaveBeenCalledTimes(2);
+    expect(global.fetch).toHaveBeenLastCalledWith(
+      expect.stringMatching(/\/cards\/2\?/),
+      expect.any(Object),
+    );
   });
 
-  it('removes only the individual card query', () => {
+  it('replaces a cached copy of the card with a fresh request', async () => {
+    const board = {id: '1', type: 'boards', attributes: {}};
+    const staleCard = {
+      id: '2',
+      type: 'cards',
+      attributes: {'field-values': {a: 'old'}},
+    };
+    const freshCard = {
+      id: '2',
+      type: 'cards',
+      attributes: {'field-values': {a: 'new'}},
+    };
+
+    global.fetch.mockResolvedValue({
+      ok: true,
+      json: async () => ({data: freshCard}),
+    });
+
+    const {queryClient, wrapper} = makeClientAndWrapper();
+    queryClient.setQueryData(['cards', board.id, staleCard.id], staleCard);
+    queryClient.setQueryData(['columnCards', '10'], [staleCard]);
+
+    const {result} = renderHook(() => usePrefetchCard(board), {wrapper});
+    result.current(staleCard);
+
+    expect(
+      queryClient.getQueryData(['cards', board.id, staleCard.id]),
+    ).toBeUndefined();
+    await waitFor(() =>
+      expect(
+        queryClient.getQueryData(['cards', board.id, staleCard.id]),
+      ).toEqual(freshCard),
+    );
+    expect(queryClient.getQueryData(['columnCards', '10'])).toEqual([
+      staleCard,
+    ]);
+  });
+
+  it('is reused by useCard instead of requesting the card again', async () => {
     const board = {id: '1', type: 'boards', attributes: {}};
     const card = {id: '2', type: 'cards', attributes: {'field-values': {}}};
 
-    const {queryClient, wrapper} = makeClientAndWrapper();
-    queryClient.setQueryData(['cards', board.id, card.id], card);
-    queryClient.setQueryData(['columnCards', '10'], [card]);
+    global.fetch.mockResolvedValue({
+      ok: true,
+      json: async () => ({data: card}),
+    });
 
-    const {result} = renderHook(() => useForgetCard(board), {wrapper});
-    result.current(card);
+    const {wrapper} = makeClientAndWrapper();
+    const {result: prefetch} = renderHook(() => usePrefetchCard(board), {
+      wrapper,
+    });
 
-    expect(
-      queryClient.getQueryData(['cards', board.id, card.id]),
-    ).toBeUndefined();
-    expect(queryClient.getQueryData(['columnCards', '10'])).toEqual([card]);
+    // while the request is still in flight
+    prefetch.current(card);
+    const {result: inFlight} = renderHook(
+      () => useCard({boardId: board.id, cardId: card.id}),
+      {wrapper},
+    );
+    await waitFor(() => expect(inFlight.current.data).toEqual(card));
+    expect(global.fetch).toHaveBeenCalledTimes(1);
+
+    // after the request has finished
+    prefetch.current(card);
+    await waitFor(() => expect(global.fetch).toHaveBeenCalledTimes(2));
+    await new Promise(resolve => setTimeout(resolve, 0));
+    const {result: afterLoad} = renderHook(
+      () => useCard({boardId: board.id, cardId: card.id}),
+      {wrapper},
+    );
+    await waitFor(() => expect(afterLoad.current.data).toEqual(card));
+    expect(global.fetch).toHaveBeenCalledTimes(2);
   });
 });
