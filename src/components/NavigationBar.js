@@ -12,7 +12,9 @@ export default function NavigationBar({options, backTo}) {
   const {title, icon, titleHref, headerRight} = options;
 
   return (
-    <AppBar position="relative">
+    // Must stay sticky: a home-screen web app on the iOS 27 beta draws a Liquid
+    // Glass blur over the top strip of *scrolling* content, smearing the bar.
+    <AppBar position="sticky">
       <Toolbar>
         {backTo && <BackButton to={backTo} />}
         {icon && <BoardIcon name={icon} style={sharedStyles.mr} />}
