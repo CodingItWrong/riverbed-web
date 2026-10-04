@@ -16,36 +16,15 @@ function useCardClient() {
   return cardClient;
 }
 
-const refreshCards = (queryClient, board) =>
-  queryClient.invalidateQueries({queryKey: ['cards', board.id]});
-
 const refreshCard = (queryClient, board, card) =>
   queryClient.invalidateQueries({queryKey: ['cards', board.id, card.id]});
 
 const refreshAllColumnCards = queryClient =>
   queryClient.invalidateQueries({queryKey: ['columnCards']});
 
-export function useRefreshCards(board) {
-  const queryClient = useQueryClient();
-  const returnedRefreshCards = useCallback(
-    () => board && refreshCards(queryClient, board),
-    [board, queryClient],
-  );
-  return returnedRefreshCards;
-}
-
 export function useRefreshColumnCards() {
   const queryClient = useQueryClient();
   return useCallback(() => refreshAllColumnCards(queryClient), [queryClient]);
-}
-
-export function useCards(board) {
-  const cardClient = useCardClient();
-  return useQuery({
-    queryKey: ['cards', board?.id],
-    queryFn: () => cardClient.related({parent: board}).then(resp => resp.data),
-    enabled: !!board,
-  });
 }
 
 export function useColumnCards(column) {
@@ -102,13 +81,12 @@ export function useCreateCard(board) {
         },
       }),
     onSuccess: () => {
-      refreshCards(queryClient, board);
       refreshAllColumnCards(queryClient);
     },
   });
 }
 
-export function useUpdateCard(card, board, mountedRef) {
+export function useUpdateCard(card, board) {
   const cardClient = useCardClient();
   const queryClient = useQueryClient();
   return useMutation({
@@ -122,23 +100,16 @@ export function useUpdateCard(card, board, mountedRef) {
       // always refresh the individual card
       refreshCard(queryClient, board, card);
       refreshAllColumnCards(queryClient);
-
-      if (!mountedRef.current) {
-        // if card form was unloaded while card saving, reload cards.
-        // cards are refreshed upon card form unload, but this handles when a change was saved after that.
-        refreshCards(queryClient, board);
-      }
     },
   });
 }
 
-export function useDeleteCard(card, board) {
+export function useDeleteCard(card) {
   const cardClient = useCardClient();
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: () => cardClient.delete({id: card.id}),
     onSuccess: () => {
-      refreshCards(queryClient, board);
       refreshAllColumnCards(queryClient);
       return null; // don't wait on refresh, so we can close the modal
     },

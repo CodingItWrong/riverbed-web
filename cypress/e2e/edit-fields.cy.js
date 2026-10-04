@@ -55,12 +55,6 @@ describe('edit fields', () => {
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
       data: [],
     });
-    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards*`, {
-      data: [],
-    });
-    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards*`, {
-      data: [card],
-    });
     cy.intercept('GET', `http://cypressapi/columns/${allColumn.id}/cards*`, {
       data: [card],
     });
@@ -114,9 +108,6 @@ describe('edit fields', () => {
       cy.intercept('PATCH', `http://cypressapi/cards/${card.id}?`, {
         success: true,
       }).as('updateField');
-      cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards*`, {
-        data: [Factory.card({[localGreetingField.id]: greeting})],
-      });
       cy.intercept('GET', `http://cypressapi/columns/${allColumn.id}/cards*`, {
         data: [Factory.card({[localGreetingField.id]: greeting}, card)],
       });
@@ -138,9 +129,6 @@ describe('edit fields', () => {
       data: greetingField,
     });
     const card = Factory.card({});
-    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards*`, {
-      data: [card],
-    });
     cy.intercept('GET', `http://cypressapi/columns/${allColumn.id}/cards*`, {
       data: [card],
     });
@@ -200,9 +188,6 @@ describe('edit fields', () => {
       data: greetingField,
     });
     const card = Factory.card({});
-    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards*`, {
-      data: [card],
-    });
     cy.intercept('GET', `http://cypressapi/columns/${allColumn.id}/cards*`, {
       data: [card],
     });
@@ -260,9 +245,6 @@ describe('edit fields', () => {
       data: greetingField,
     });
     const card = Factory.card({});
-    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards*`, {
-      data: [card],
-    });
     cy.intercept('GET', `http://cypressapi/columns/${allColumn.id}/cards*`, {
       data: [card],
     });
@@ -312,9 +294,6 @@ describe('edit fields', () => {
 
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
       data: [],
-    });
-    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards*`, {
-      data: [card],
     });
     cy.intercept('GET', `http://cypressapi/columns/${allColumn.id}/cards*`, {
       data: [card],
@@ -387,9 +366,6 @@ describe('edit fields', () => {
       cy.intercept('PATCH', `http://cypressapi/cards/${card.id}?`, {
         success: true,
       }).as('updateCard');
-      cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards*`, {
-        data: [updatedCard],
-      });
       cy.intercept('GET', `http://cypressapi/columns/${allColumn.id}/cards*`, {
         data: [updatedCard],
       });
@@ -438,9 +414,6 @@ describe('edit fields', () => {
     });
     cy.intercept('GET', `http://cypressapi/elements/${fieldB.id}?`, {
       data: fieldB,
-    });
-    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards*`, {
-      data: [card],
     });
     cy.intercept('GET', `http://cypressapi/cards/${card.id}?`, {
       data: card,
@@ -541,9 +514,6 @@ describe('edit fields', () => {
       data: dateTimeField,
     });
     const card = Factory.card({});
-    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards*`, {
-      data: [card],
-    });
     cy.intercept('GET', `http://cypressapi/columns/${allColumn.id}/cards*`, {
       data: [card],
     });
@@ -615,9 +585,6 @@ describe('edit fields', () => {
       cy.intercept('POST', 'http://cypressapi/cards?', {data: newCard}).as(
         'createCard',
       );
-      cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards*`, {
-        data: [newCard],
-      });
       cy.intercept('GET', `http://cypressapi/columns/${allColumn.id}/cards*`, {
         data: [newCard],
       });
@@ -647,9 +614,6 @@ describe('edit fields', () => {
       data: greetingField,
     });
     const card = Factory.card({});
-    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards*`, {
-      data: [card],
-    });
     cy.intercept('GET', `http://cypressapi/columns/${allColumn.id}/cards*`, {
       data: [card],
     });
@@ -704,9 +668,6 @@ describe('edit fields', () => {
       cy.intercept('POST', 'http://cypressapi/cards?', {data: newCard}).as(
         'createCard',
       );
-      cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards*`, {
-        data: [newCard],
-      });
       cy.intercept('GET', `http://cypressapi/columns/${allColumn.id}/cards*`, {
         data: [newCard],
       });

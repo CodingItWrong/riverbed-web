@@ -1,7 +1,7 @@
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {renderHook, waitFor} from '@testing-library/react';
 
-import {useColumnCards, useForgetCard, useRefreshCards} from './cards';
+import {useColumnCards, useForgetCard} from './cards';
 
 jest.mock('./token', () => ({
   useToken: () => ({token: null}),
@@ -164,7 +164,6 @@ describe('useForgetCard', () => {
     const {queryClient, wrapper} = makeClientAndWrapper();
     queryClient.setQueryData(['cards', board.id, card.id], card);
     queryClient.setQueryData(['columnCards', '10'], [card]);
-    queryClient.setQueryData(['cards', board.id], [card]);
 
     const {result} = renderHook(() => useForgetCard(board), {wrapper});
     result.current(card);
@@ -173,27 +172,5 @@ describe('useForgetCard', () => {
       queryClient.getQueryData(['cards', board.id, card.id]),
     ).toBeUndefined();
     expect(queryClient.getQueryData(['columnCards', '10'])).toEqual([card]);
-    expect(queryClient.getQueryData(['cards', board.id])).toEqual([card]);
-  });
-});
-
-describe('useRefreshCards', () => {
-  it("invalidates only the board's card list", async () => {
-    const board = {id: '1', type: 'boards', attributes: {}};
-    const card = {id: '2', type: 'cards', attributes: {'field-values': {}}};
-
-    const {queryClient, wrapper} = makeClientAndWrapper();
-    queryClient.setQueryData(['cards', board.id], [card]);
-    queryClient.setQueryData(['columnCards', '10'], [card]);
-    queryClient.setQueryData(['boards'], [board]);
-
-    const {result} = renderHook(() => useRefreshCards(board), {wrapper});
-    await result.current();
-
-    const isStale = queryKey =>
-      queryClient.getQueryState(queryKey).isInvalidated;
-    expect(isStale(['cards', board.id])).toBe(true);
-    expect(isStale(['columnCards', '10'])).toBe(false);
-    expect(isStale(['boards'])).toBe(false);
   });
 });

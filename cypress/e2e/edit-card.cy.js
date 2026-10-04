@@ -66,9 +66,6 @@ describe('edit cards', () => {
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/columns?`, {
       data: [releasedColumn, unreleasedColumn],
     });
-    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards*`, {
-      data: [card],
-    });
     cy.intercept(
       'GET',
       `http://cypressapi/columns/${releasedColumn.id}/cards*`,
@@ -109,9 +106,6 @@ describe('edit cards', () => {
       cy.intercept('PATCH', `http://cypressapi/cards/${card.id}?`, {
         success: true,
       }).as('updateCard1');
-      cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards*`, {
-        data: [updatedCard],
-      });
       cy.intercept(
         'GET',
         `http://cypressapi/columns/${releasedColumn.id}/cards*`,
@@ -150,9 +144,6 @@ describe('edit cards', () => {
       cy.intercept('DELETE', `http://cypressapi/cards/${card.id}`, {
         success: true,
       }).as('deleteCard');
-      cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards*`, {
-        data: [],
-      });
       cy.intercept(
         'GET',
         `http://cypressapi/columns/${releasedColumn.id}/cards*`,
@@ -180,9 +171,6 @@ describe('edit cards', () => {
       cy.intercept('POST', 'http://cypressapi/cards?', {data: newCard}).as(
         'createCard',
       );
-      cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards*`, {
-        data: [newCard],
-      });
       cy.intercept(
         'GET',
         `http://cypressapi/columns/${releasedColumn.id}/cards*`,
@@ -218,9 +206,6 @@ describe('edit cards', () => {
       cy.intercept('PATCH', `http://cypressapi/cards/${newCard.id}?`, {
         success: true,
       }).as('updateNewCard');
-      cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards*`, {
-        data: [updatedNewCard],
-      });
       cy.intercept(
         'GET',
         `http://cypressapi/columns/${releasedColumn.id}/cards*`,

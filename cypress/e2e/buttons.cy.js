@@ -101,9 +101,6 @@ describe('buttons', () => {
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/columns?`, {
       data: [releasedColumn, unreleasedColumn],
     });
-    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards*`, {
-      data: [card],
-    });
     cy.intercept(
       'GET',
       `http://cypressapi/columns/${releasedColumn.id}/cards*`,
@@ -139,9 +136,6 @@ describe('buttons', () => {
     cy.intercept('PATCH', `http://cypressapi/cards/${card.id}?`, {
       success: true,
     }).as('updateCard');
-    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards*`, {
-      data: [updatedCard],
-    });
     cy.intercept(
       'GET',
       `http://cypressapi/columns/${releasedColumn.id}/cards*`,
