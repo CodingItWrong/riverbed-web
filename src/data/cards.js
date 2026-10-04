@@ -1,6 +1,6 @@
 import {ResourceClient} from '@codingitwrong/jsonapi-client';
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
-import {useCallback, useMemo} from 'react';
+import {useMemo} from 'react';
 
 import httpClient from './httpClient';
 import {useToken} from './token';
@@ -21,11 +21,6 @@ const refreshCard = (queryClient, board, card) =>
 
 const refreshAllColumnCards = queryClient =>
   queryClient.invalidateQueries({queryKey: ['columnCards']});
-
-export function useRefreshColumnCards() {
-  const queryClient = useQueryClient();
-  return useCallback(() => refreshAllColumnCards(queryClient), [queryClient]);
-}
 
 export function useColumnCards(column) {
   const cardClient = useCardClient();

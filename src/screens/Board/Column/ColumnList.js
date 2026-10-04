@@ -1,4 +1,5 @@
 import {useIsFetching} from '@tanstack/react-query';
+import {memo} from 'react';
 import {ScrollView} from 'react-native';
 import {useNavigate} from 'react-router-dom';
 
@@ -12,9 +13,7 @@ import {useBoardElements} from '../../../data/elements';
 import sortByDisplayOrder from '../../../utils/sortByDisplayOrder';
 import Column from './Column';
 
-export default function ColumnList({board, isLoadingBoard}) {
-  const navigate = useNavigate();
-
+function ColumnList({board, isLoadingBoard}) {
   const {isLoading: isLoadingElements, isFetching: isFetchingElements} =
     useBoardElements(board);
   const {
@@ -24,16 +23,6 @@ export default function ColumnList({board, isLoadingBoard}) {
     error: columnsError,
   } = useColumns(board);
   const isFetchingCards = useIsFetching({queryKey: ['columnCards']}) > 0;
-
-  const {
-    mutate: createColumn,
-    isLoading: isAddingColumn,
-    error: createColumnError,
-  } = useCreateColumn(board);
-  const handleCreateColumn = () =>
-    createColumn(null, {
-      onSuccess: ({data: column}) => navigate(`columns/${column.id}`),
-    });
 
   const breakpoint = useBreakpoint();
   const responsiveButtonContainerStyle = {
@@ -78,14 +67,7 @@ export default function ColumnList({board, isLoadingBoard}) {
         {board && (
           <div style={{...columnWidthStyle, ...sharedStyles.columnPadding}}>
             <div style={fullContainerStyle}>
-              <Button
-                mode="link"
-                icon="plus"
-                onPress={handleCreateColumn}
-                disabled={isAddingColumn}
-              >
-                Add Column
-              </Button>
+              <AddColumnButton board={board} />
             </div>
           </div>
         )}
@@ -93,10 +75,40 @@ export default function ColumnList({board, isLoadingBoard}) {
       <ErrorSnackbar error={columnsError}>
         An error occurred loading columns.
       </ErrorSnackbar>
+    </div>
+  );
+}
+
+export default memo(ColumnList);
+
+// Kept separate so that ColumnList does not call useNavigate, which would
+// rerender every column whenever the route changes (e.g. opening a card)
+function AddColumnButton({board}) {
+  const navigate = useNavigate();
+  const {
+    mutate: createColumn,
+    isLoading: isAddingColumn,
+    error: createColumnError,
+  } = useCreateColumn(board);
+  const handleCreateColumn = () =>
+    createColumn(null, {
+      onSuccess: ({data: column}) => navigate(`columns/${column.id}`),
+    });
+
+  return (
+    <>
+      <Button
+        mode="link"
+        icon="plus"
+        onPress={handleCreateColumn}
+        disabled={isAddingColumn}
+      >
+        Add Column
+      </Button>
       <ErrorSnackbar error={createColumnError}>
         An error occurred adding a column.
       </ErrorSnackbar>
-    </div>
+    </>
   );
 }
 
