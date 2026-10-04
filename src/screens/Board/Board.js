@@ -1,6 +1,6 @@
 import {ThemeProvider as MuiProvider} from '@mui/material/styles';
 import {useIsFetching} from '@tanstack/react-query';
-import {useEffect} from 'react';
+import {useEffect, useMemo} from 'react';
 import {Outlet, useNavigate, useParams} from 'react-router-dom';
 
 import ErrorSnackbar from '../../components/ErrorSnackbar';
@@ -27,17 +27,21 @@ export default function Board() {
     refetch: refetchBoard,
   } = useBoard(boardId);
 
+  // Columns and elements are requested by board ID, which is already in the
+  // URL, so request them alongside the board instead of after it loads
+  const boardRef = useMemo(() => ({type: 'boards', id: boardId}), [boardId]);
+
   const isFetchingCards = useIsFetching({queryKey: ['columnCards']}) > 0;
   const {
     isFetching: isFetchingColumns,
     error: columnsError,
     refetch: refetchColumns,
-  } = useColumns(board);
+  } = useColumns(boardRef);
   const {
     isFetching: isFetchingElements,
     error: elementsError,
     refetch: refetchElements,
-  } = useBoardElements(board);
+  } = useBoardElements(boardRef);
   const isFetching = isFetchingCards || isFetchingColumns || isFetchingElements;
   const error = boardError ?? columnsError ?? elementsError;
   function refetch() {
@@ -46,7 +50,7 @@ export default function Board() {
     refetchElements();
   }
 
-  const {data: elements} = useBoardElements(board);
+  const {data: elements} = useBoardElements(boardRef);
   const primeCard = usePrimeCard({board});
   const {
     mutate: createCard,
