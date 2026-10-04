@@ -1,10 +1,12 @@
+import {memo} from 'react';
+
 import Card from '../../../components/Card';
 import Field from '../../../components/Field';
 import Text from '../../../components/Text';
 import {useForgetCard} from '../../../data/cards';
 import sortByDisplayOrder from '../../../utils/sortByDisplayOrder';
 
-export default function CardSummary({card, board, elements, style}) {
+function CardSummary({card, board, elements, style}) {
   const forgetCard = useForgetCard(board);
 
   const fieldsToShow = sortByDisplayOrder(
@@ -42,6 +44,8 @@ export default function CardSummary({card, board, elements, style}) {
     </Card>
   );
 }
+
+export default memo(CardSummary);
 
 const styles = {
   card: {

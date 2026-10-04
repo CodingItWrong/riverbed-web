@@ -1,5 +1,6 @@
 import get from 'lodash/get';
 import sortBy from 'lodash/sortBy';
+import {memo} from 'react';
 import {Link as RouterLink} from 'react-router-dom';
 
 import fieldTypes from '../../../components/fieldTypes';
@@ -15,7 +16,7 @@ import calculateSummary from '../../../utils/calculateSummary';
 import CardSummary from './CardSummary';
 import groupCards from './groupCards';
 
-export default function Column({column, board}) {
+function Column({column, board}) {
   const columnWidthStyle = useColumnStyle();
 
   const {data: elements} = useBoardElements(board);
@@ -130,6 +131,8 @@ export default function Column({column, board}) {
     </div>
   );
 }
+
+export default memo(Column);
 
 const styles = {
   columnWrapper: {
