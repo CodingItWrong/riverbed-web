@@ -19,6 +19,9 @@ function useColumnClient() {
 const refreshColumns = (queryClient, board) =>
   queryClient.invalidateQueries({queryKey: ['columns', board.id]});
 
+const refreshColumnCards = (queryClient, column) =>
+  queryClient.invalidateQueries({queryKey: ['columnCards', column.id]});
+
 export function useColumns(board) {
   const columnClient = useColumnClient();
   return useQuery({
@@ -62,7 +65,11 @@ export function useUpdateColumn(column, board) {
       };
       return columnClient.update(updatedColumn);
     },
-    onSuccess: () => refreshColumns(queryClient, board),
+    onSuccess: () => {
+      refreshColumns(queryClient, board);
+      // the column's filters may have changed which cards it includes
+      refreshColumnCards(queryClient, column);
+    },
   });
 }
 

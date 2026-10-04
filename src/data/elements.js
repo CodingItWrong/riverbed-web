@@ -19,6 +19,11 @@ function useElementClient() {
 const refreshElements = (queryClient, board) =>
   queryClient.invalidateQueries({queryKey: ['elements', board.id]});
 
+// Column filters are evaluated using each field's data type, so changing or
+// removing a field can change which cards a column includes
+const refreshAllColumnCards = queryClient =>
+  queryClient.invalidateQueries({queryKey: ['columnCards']});
+
 export function useBoardElements(board) {
   const elementClient = useElementClient();
   return useQuery({
@@ -62,7 +67,10 @@ export function useUpdateElement(element, board) {
         id: element.id,
         attributes,
       }),
-    onSuccess: () => refreshElements(queryClient, board),
+    onSuccess: () => {
+      refreshElements(queryClient, board);
+      refreshAllColumnCards(queryClient);
+    },
   });
 }
 
@@ -105,6 +113,9 @@ export function useDeleteElement(element, board) {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: () => elementClient.delete({id: element.id}),
-    onSuccess: () => refreshElements(queryClient, board),
+    onSuccess: () => {
+      refreshElements(queryClient, board);
+      refreshAllColumnCards(queryClient);
+    },
   });
 }
