@@ -1,4 +1,5 @@
 import {ThemeProvider as MuiProvider} from '@mui/material/styles';
+import {useIsFetching} from '@tanstack/react-query';
 import {useCallback, useEffect} from 'react';
 import {Outlet, useNavigate, useParams} from 'react-router-dom';
 
@@ -9,10 +10,8 @@ import ScreenBackground from '../../components/ScreenBackground';
 import sharedStyles from '../../components/sharedStyles';
 import {useBoard} from '../../data/boards';
 import {
-  useCards,
   useCreateCard,
   usePrimeCard,
-  useRefreshCards,
   useRefreshColumnCards,
 } from '../../data/cards';
 import {useColumns} from '../../data/columns';
@@ -33,11 +32,7 @@ export default function Board() {
     refetch: refetchBoard,
   } = useBoard(boardId);
 
-  const {
-    isFetching: isFetchingCards,
-    error: cardsError,
-    refetch: refetchCards,
-  } = useCards(board);
+  const isFetchingCards = useIsFetching({queryKey: ['columnCards']}) > 0;
   const {
     isFetching: isFetchingColumns,
     error: columnsError,
@@ -49,15 +44,13 @@ export default function Board() {
     refetch: refetchElements,
   } = useBoardElements(board);
   const isFetching = isFetchingCards || isFetchingColumns || isFetchingElements;
-  const error = boardError ?? cardsError ?? columnsError ?? elementsError;
+  const error = boardError ?? columnsError ?? elementsError;
   function refetch() {
     refetchBoard();
-    refetchCards();
     refetchColumns();
     refetchElements();
   }
 
-  const refreshCards = useRefreshCards(board);
   const refreshColumnCards = useRefreshColumnCards();
 
   const {data: elements} = useBoardElements(board);
@@ -112,9 +105,8 @@ export default function Board() {
 
   useNavigateEffect(
     useCallback(() => {
-      refreshCards();
       refreshColumnCards();
-    }, [refreshCards, refreshColumnCards]),
+    }, [refreshColumnCards]),
   );
 
   const colorTheme = useColorSchemeTheme(board?.attributes['color-theme']);

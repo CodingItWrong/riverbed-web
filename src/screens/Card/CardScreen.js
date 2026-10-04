@@ -43,7 +43,7 @@ export default function CardScreen() {
 
   useKeyHandler('Escape', closeModal);
 
-  const {mutate: deleteCard, error: deleteError} = useDeleteCard(card, board);
+  const {mutate: deleteCard, error: deleteError} = useDeleteCard(card);
   const handleDeleteCard = useCallback(
     () => deleteCard(null, {onSuccess: closeModal}),
     [closeModal, deleteCard],

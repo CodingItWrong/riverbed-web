@@ -19,7 +19,7 @@ export default function Column({column, board}) {
   const columnWidthStyle = useColumnStyle();
 
   const {data: elements} = useBoardElements(board);
-  const {data: filteredCards = []} = useColumnCards(column);
+  const {data: filteredCards = [], isLoading} = useColumnCards(column);
 
   const {
     name,
@@ -89,7 +89,7 @@ export default function Column({column, board}) {
         sectionKeyExtractor={group => group.value}
         itemKeyExtractor={card => card.id}
         contentContainerStyle={{...sharedStyles.columnPadding, flex: 1}}
-        ListEmptyComponent={<Text size={3}>(no cards)</Text>}
+        ListEmptyComponent={!isLoading && <Text size={3}>(no cards)</Text>}
         renderSectionHeader={({section: group}) => {
           if (!applyGrouping) {
             return;

@@ -1,3 +1,4 @@
+import {useIsFetching} from '@tanstack/react-query';
 import {ScrollView} from 'react-native';
 import {useNavigate} from 'react-router-dom';
 
@@ -6,7 +7,6 @@ import Button from '../../../components/Button';
 import ErrorSnackbar from '../../../components/ErrorSnackbar';
 import LoadingIndicator from '../../../components/LoadingIndicator';
 import sharedStyles, {useColumnStyle} from '../../../components/sharedStyles';
-import {useCards} from '../../../data/cards';
 import {useColumns, useCreateColumn} from '../../../data/columns';
 import {useBoardElements} from '../../../data/elements';
 import sortByDisplayOrder from '../../../utils/sortByDisplayOrder';
@@ -23,8 +23,7 @@ export default function ColumnList({board, isLoadingBoard}) {
     isFetching: isFetchingColumns,
     error: columnsError,
   } = useColumns(board);
-  const {isLoading: isLoadingCards, isFetching: isFetchingCards} =
-    useCards(board);
+  const isFetchingCards = useIsFetching({queryKey: ['columnCards']}) > 0;
 
   const {
     mutate: createColumn,
@@ -49,7 +48,7 @@ export default function ColumnList({board, isLoadingBoard}) {
   const pagingEnabled = breakpoint !== large;
 
   const isLoading = board
-    ? isLoadingCards || isLoadingColumns || isLoadingElements
+    ? isLoadingColumns || isLoadingElements
     : isLoadingBoard;
   const isFetching = isFetchingCards || isFetchingColumns || isFetchingElements;
   if (isLoading) {

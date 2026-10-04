@@ -52,7 +52,6 @@ describe('display cards', () => {
       [titleField.id]: 'Castlevania: Symphony of the Night',
       [publisherField.id]: 'Konami',
     });
-    const cards = [releasedCard, unreleasedCard];
 
     cy.intercept('GET', 'http://cypressapi/boards?', {
       data: [board],
@@ -65,9 +64,6 @@ describe('display cards', () => {
     });
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/columns?`, {
       data: [releasedColumn, unreleasedColumn],
-    });
-    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards*`, {
-      data: cards,
     });
     cy.intercept(
       'GET',

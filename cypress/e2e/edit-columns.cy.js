@@ -73,9 +73,6 @@ describe('edit columns', () => {
     cy.intercept('GET', `${apiUrl}/boards/${board.id}/elements?`, {
       data: [titleField, purchaseDate, completeDate, price],
     });
-    cy.intercept('GET', `${apiUrl}/boards/${board.id}/cards*`, {
-      data: [unownedCard, unplayedCard1, unplayedCard2, playedCard],
-    });
 
     if (column) {
       cy.intercept('GET', `${apiUrl}/boards/${board.id}/columns?`, {

@@ -75,9 +75,6 @@ describe('edit buttons', () => {
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
       data: [greetingField],
     });
-    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards*`, {
-      data: [greetingCard],
-    });
     cy.intercept('GET', `http://cypressapi/columns/${allColumn.id}/cards*`, {
       data: [greetingCard],
     });
@@ -158,9 +155,6 @@ describe('edit buttons', () => {
       cy.intercept('PATCH', `http://cypressapi/cards/${greetingCard.id}?`, {
         success: true,
       }).as('updateCard');
-      cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards*`, {
-        data: [quietedCard],
-      });
       cy.intercept('GET', `http://cypressapi/columns/${allColumn.id}/cards*`, {
         data: [quietedCard],
       });
@@ -191,9 +185,6 @@ describe('edit buttons', () => {
     });
     cy.intercept('GET', `http://cypressapi/elements/${greetButton.id}?`, {
       data: greetButton,
-    });
-    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards*`, {
-      data: [greetingCard],
     });
     cy.intercept('GET', `http://cypressapi/columns/${allColumn.id}/cards*`, {
       data: [greetingCard],
@@ -250,9 +241,6 @@ describe('edit buttons', () => {
     });
     cy.intercept('GET', `http://cypressapi/elements/${greetButton.id}?`, {
       data: greetButton,
-    });
-    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards*`, {
-      data: [greetingCard],
     });
     cy.intercept('GET', `http://cypressapi/columns/${allColumn.id}/cards*`, {
       data: [greetingCard],
@@ -313,9 +301,6 @@ describe('edit buttons', () => {
 
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
       data: [greetedAtField],
-    });
-    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards*`, {
-      data: [card],
     });
     cy.intercept('GET', `http://cypressapi/columns/${allColumn.id}/cards*`, {
       data: [card],
@@ -388,9 +373,6 @@ describe('edit buttons', () => {
       cy.intercept('PATCH', `http://cypressapi/cards/${card.id}?`, {
         success: true,
       }).as('updateCard');
-      cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards*`, {
-        data: [deferredCard],
-      });
       cy.intercept('GET', `http://cypressapi/columns/${allColumn.id}/cards*`, {
         data: [deferredCard],
       });
@@ -431,9 +413,6 @@ describe('edit buttons', () => {
 
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
       data: [greetingField, greetButton],
-    });
-    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards*`, {
-      data: [greetingCard],
     });
     cy.intercept('GET', `http://cypressapi/columns/${allColumn.id}/cards*`, {
       data: [greetingCard],
@@ -500,9 +479,6 @@ describe('edit buttons', () => {
       cy.intercept('PATCH', `http://cypressapi/cards/${greetingCard.id}?`, {
         success: true,
       }).as('updateCard');
-      cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards*`, {
-        data: [updatedCard],
-      });
       cy.intercept('GET', `http://cypressapi/columns/${allColumn.id}/cards*`, {
         data: [updatedCard],
       });
@@ -557,9 +533,6 @@ describe('edit buttons', () => {
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
       data: [colorField, goButton],
     });
-    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards*`, {
-      data: [colorCard],
-    });
     cy.intercept('GET', `http://cypressapi/columns/${allColumn.id}/cards*`, {
       data: [colorCard],
     });
@@ -610,9 +583,6 @@ describe('edit buttons', () => {
       cy.intercept('PATCH', `http://cypressapi/cards/${colorCard.id}?`, {
         success: true,
       }).as('updateCard');
-      cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards*`, {
-        data: [updatedCard],
-      });
       cy.intercept('GET', `http://cypressapi/columns/${allColumn.id}/cards*`, {
         data: [updatedCard],
       });
@@ -647,9 +617,6 @@ describe('edit buttons', () => {
     const uncompleteItemName = 'Uncomplete';
     cy.intercept('GET', `http://cypressapi/boards/${board.id}/elements?`, {
       data: [completedAtField],
-    });
-    cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards*`, {
-      data: [card],
     });
     cy.intercept('GET', `http://cypressapi/columns/${allColumn.id}/cards*`, {
       data: [card],
@@ -775,9 +742,6 @@ describe('edit buttons', () => {
       cy.intercept('PATCH', `http://cypressapi/cards/${card.id}?`, {
         success: true,
       }).as('updateCard');
-      cy.intercept('GET', `http://cypressapi/boards/${board.id}/cards*`, {
-        data: [uncompletedCard],
-      });
       cy.intercept('GET', `http://cypressapi/columns/${allColumn.id}/cards*`, {
         data: [uncompletedCard],
       });
