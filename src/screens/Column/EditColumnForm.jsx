@@ -90,7 +90,7 @@ export default function EditColumnForm({column, board, onChange, onCancel}) {
             testID="text-input-column-name"
           />
           <NumberField
-            keyboard-type="number-pad"
+            inputMode="number"
             label="Order"
             value={
               attributes['display-order'] == null

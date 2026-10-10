@@ -419,6 +419,7 @@ function ActionInputs({actions, updateActionsAttribute, fields}) {
               )}
             {action.command === COMMANDS.ADD_DAYS.key && (
               <NumberField
+                inputMode="number"
                 label="Days to Add"
                 testID="number-input-days-to-add"
                 value={action?.['specific-value'] ?? ''}

@@ -19,6 +19,7 @@ function NumberEditorComponent({
 }) {
   return (
     <NumberField
+      inputMode="decimal"
       key={field.id}
       label={label}
       testID={`number-input-${field.id}`}

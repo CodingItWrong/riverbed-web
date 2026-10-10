@@ -5,7 +5,7 @@ export default function NumberField({
   value,
   onChangeText,
   disabled,
-  keyboardType = 'decimal-pad',
+  inputMode,
   testID,
   style,
 }) {
@@ -18,7 +18,7 @@ export default function NumberField({
   return (
     <MuiTextField
       type="number"
-      inputMode={getInputMode({keyboardType})}
+      inputMode={inputMode}
       variant="filled"
       label={label}
       inputProps={{
@@ -30,15 +30,4 @@ export default function NumberField({
       style={style}
     />
   );
-}
-
-function getInputMode({keyboardType}) {
-  switch (keyboardType) {
-    case 'decimal-pad':
-      return 'decimal';
-    case 'number-pad':
-      return 'number';
-    default:
-      return null;
-  }
 }
