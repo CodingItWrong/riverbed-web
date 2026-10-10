@@ -13,8 +13,6 @@
     "format:check": "oxfmt --check src cypress/e2e",
     "lint": "oxlint src cypress/e2e --max-warnings=0",
     "build": "vite build",
-    "explore:app": "source-map-explorer dist/app.*.js",
-    "explore:vendors": "source-map-explorer dist/vendors.*.js",
     "deploy": "netlify deploy --prod",
     "prepare": "husky"
   },
@@ -54,7 +52,6 @@
     "jest-environment-jsdom": "^30.5.2",
     "oxfmt": "0.71.0",
     "oxlint": "1.71.0",
-    "source-map-explorer": "^2.5.3",
     "vite": "8.3.2"
   },
   "private": true,
