@@ -64,7 +64,9 @@ export function useColumnStyle() {
   const breakpoint = useBreakpoint();
 
   return {
+    'min-width': breakpoint === large ? 400 : '100vw',
     width: breakpoint === large ? 400 : '100vw',
     padding: 8,
+    'scroll-snap-align': 'start',
   };
 }
