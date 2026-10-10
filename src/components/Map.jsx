@@ -1,19 +1,19 @@
-import {GoogleApiWrapper, Map as GoogleMap, Marker} from 'google-maps-react';
+import {APIProvider, Map as GoogleMap, Marker} from '@vis.gl/react-google-maps';
 import {useMemo} from 'react';
 
 import Constants from '../constants';
 import Text from './Text';
 
-function Map({style, location, disabled, onPressLocation, google}) {
-  function handleClick(_props, _marker, event) {
+export default function Map({style, location, disabled, onPressLocation}) {
+  function handleClick(event) {
     if (disabled) {
       return;
     }
 
-    const {latLng} = event;
+    const {latLng} = event.detail;
     const clickLocation = {
-      lat: String(latLng.lat()),
-      lng: String(latLng.lng()),
+      lat: String(latLng.lat),
+      lng: String(latLng.lng),
     };
     onPressLocation(clickLocation);
   }
@@ -30,31 +30,22 @@ function Map({style, location, disabled, onPressLocation, google}) {
 
   return (
     <div style={{...styles.mapWrapper, ...style}}>
-      <GoogleMap
-        google={google}
-        zoom={13}
-        initialCenter={mapLocation}
-        center={mapLocation}
-        onClick={handleClick}
-        draggable={!disabled}
-        zoomControl={false}
-        scaleControl={false}
-        panControl={false}
-        rotateControl={false}
-        streetViewControl={false}
-        fullscreenControl={false}
-      >
-        <Marker position={markerLocation} />
-      </GoogleMap>
+      <APIProvider apiKey={Constants.googleMapsApiKeyWeb}>
+        <GoogleMap
+          defaultCenter={mapLocation}
+          defaultZoom={13}
+          gestureHandling="greedy"
+          disableDefaultUI
+          onClick={handleClick}
+        >
+          <Marker position={markerLocation} />
+        </GoogleMap>
+      </APIProvider>
     </div>
   );
 }
 
 const defaultLocation = {lat: '33.7489954', lng: '-84.3879824'}; // Atlanta GA
-
-export default GoogleApiWrapper({
-  apiKey: Constants.googleMapsApiKeyWeb,
-})(Map);
 
 const valueToCoords = value =>
   value
