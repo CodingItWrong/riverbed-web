@@ -16,10 +16,10 @@ const scrollViewStyles = {
   contentView: {
     display: 'flex',
     flex: '1 1 0%',
-    'flex-direction': 'row',
-    'overflow-x': 'auto',
+    flexDirection: 'row',
+    overflowX: 'auto',
   },
   paging: {
-    'scroll-snap-type': 'x mandatory',
+    scrollSnapType: 'x mandatory',
   },
 };

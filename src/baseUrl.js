@@ -3,7 +3,7 @@ function getBaseUrl() {
     return 'http://cypressapi';
   }
 
-  if (__DEV__) {
+  if (import.meta.env.DEV) {
     return 'http://localhost:3000';
   } else {
     return 'https://api.riverbed.app';
