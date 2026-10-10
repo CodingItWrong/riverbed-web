@@ -56,7 +56,7 @@ function ColumnList({board, isLoadingBoard}) {
       style={{...sharedStyles.column, ...styles.containerHeight}}
     >
       {isFetching && <LoadingIndicator style={styles.reloadIndicator} />}
-      <ScrollView pagingEnabled style={sharedStyles.fullHeight}>
+      <ScrollView pagingEnabled={pagingEnabled} style={sharedStyles.fullHeight}>
         {sortedColumns.map(column => (
           <Column key={column.id} column={column} board={board} />
         ))}
