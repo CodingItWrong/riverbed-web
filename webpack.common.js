@@ -26,13 +26,6 @@ module.exports = {
     publicPath: '/',
     clean: true,
   },
-  resolve: {
-    extensions: ['*', '.js', '.jsx'],
-    alias: {
-      // see https://necolas.github.io/react-native-web/docs/setup/#bundler
-      'react-native$': 'react-native-web',
-    },
-  },
   module: {
     rules: [
       {

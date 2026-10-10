@@ -1,12 +1,12 @@
 import {useIsFetching} from '@tanstack/react-query';
 import {memo} from 'react';
-import {ScrollView} from 'react-native';
 import {useNavigate} from 'react-router-dom';
 
 import {large, useBreakpoint} from '../../../breakpoints';
 import Button from '../../../components/Button';
 import ErrorSnackbar from '../../../components/ErrorSnackbar';
 import LoadingIndicator from '../../../components/LoadingIndicator';
+import ScrollView from '../../../components/ScrollView';
 import sharedStyles, {useColumnStyle} from '../../../components/sharedStyles';
 import {useColumns, useCreateColumn} from '../../../data/columns';
 import {useBoardElements} from '../../../data/elements';
@@ -56,11 +56,7 @@ function ColumnList({board, isLoadingBoard}) {
       style={{...sharedStyles.column, ...styles.containerHeight}}
     >
       {isFetching && <LoadingIndicator style={styles.reloadIndicator} />}
-      <ScrollView
-        horizontal
-        pagingEnabled={pagingEnabled}
-        style={sharedStyles.fullHeight}
-      >
+      <ScrollView pagingEnabled={pagingEnabled} style={sharedStyles.fullHeight}>
         {sortedColumns.map(column => (
           <Column key={column.id} column={column} board={board} />
         ))}
