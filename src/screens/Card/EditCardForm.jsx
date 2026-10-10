@@ -35,14 +35,6 @@ export default function EditCardForm({card, board, onClose}) {
 
   useWebRefreshGuard(isChanged);
 
-  // every time field values change, schedule a debounced run of the update
-  useEffect(() => {
-    if (isChanged) {
-      debounceSave(handleUpdateCard);
-    }
-    // TODO: fieldValues shouldn't be needed here, but there seems to be a dependency issue with handleUpdateCard; not properly recreated for new fiedValues
-  }, [fieldValues, isChanged, handleUpdateCard]);
-
   const {data: elements = []} = useBoardElements(board);
 
   const sortedElements = sortByDisplayOrder(
@@ -121,6 +113,14 @@ export default function EditCardForm({card, board, onClose}) {
     },
     [updateCard, fieldValues],
   );
+
+  // every time field values change, schedule a debounced run of the update
+  useEffect(() => {
+    if (isChanged) {
+      debounceSave(handleUpdateCard);
+    }
+    // TODO: fieldValues shouldn't be needed here, but there seems to be a dependency issue with handleUpdateCard; not properly recreated for new fiedValues
+  }, [fieldValues, isChanged, handleUpdateCard]);
 
   function getErrorMessage() {
     if (isUpdateError) {

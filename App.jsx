@@ -2,9 +2,10 @@ import {CssBaseline} from '@mui/material';
 import {ThemeProvider as MuiProvider} from '@mui/material/styles';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {ReactQueryDevtools} from '@tanstack/react-query-devtools';
-import Navigation from './src/Navigation';
+
 import TokenLoadBuffer from './src/components/TokenLoadBuffer';
-import {TokenProvider} from './src/data/token';
+import {TokenProvider} from './src/data/token.jsx';
+import Navigation from './src/Navigation';
 import useColorSchemeTheme from './src/theme/useColorSchemeTheme';
 
 const queryClient = new QueryClient({
@@ -29,7 +30,7 @@ export default function App() {
         <MuiProvider theme={theme}>
           <CssBaseline />
           <QueryClientProvider client={queryClient}>
-            {__DEV__ && (
+            {import.meta.env.DEV && (
               <ReactQueryDevtools
                 initialIsOpen={false}
                 position="bottom-right"
