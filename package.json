@@ -55,7 +55,7 @@
   },
   "private": true,
   "engines": {
-    "pnpm": ">=11 <12"
+    "pnpm": ">=10 <12"
   },
   "jest": {
     "testEnvironment": "jsdom",
