@@ -7,7 +7,7 @@ import fieldTypes from '../../../components/fieldTypes';
 import IconButton from '../../../components/IconButton';
 import SectionHeader from '../../../components/SectionHeader';
 import SectionList from '../../../components/SectionList';
-import sharedStyles, {useColumnStyle} from '../../../components/sharedStyles';
+import sharedStyles, {useColumnClasses} from '../../../components/sharedStyles';
 import Text from '../../../components/Text';
 import {useColumnCards} from '../../../data/cards';
 import {useBoardElements} from '../../../data/elements';
@@ -17,7 +17,7 @@ import CardSummary from './CardSummary';
 import groupCards from './groupCards';
 
 function Column({column, board}) {
-  const columnWidthStyle = useColumnStyle();
+  const columnClasses = useColumnClasses();
 
   const {data: elements} = useBoardElements(board);
   const {data: filteredCards = [], isLoading} = useColumnCards(column);
@@ -59,8 +59,8 @@ function Column({column, board}) {
     <div
       key={column.id}
       data-testid={`column-${column.id}`}
+      className={columnClasses}
       style={{
-        ...columnWidthStyle,
         ...styles.columnWrapper,
         ...sharedStyles.column,
       }}

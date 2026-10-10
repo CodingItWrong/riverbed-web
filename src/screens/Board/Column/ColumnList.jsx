@@ -7,7 +7,7 @@ import Button from '../../../components/Button';
 import ErrorSnackbar from '../../../components/ErrorSnackbar';
 import LoadingIndicator from '../../../components/LoadingIndicator';
 import ScrollView from '../../../components/ScrollView';
-import sharedStyles, {useColumnStyle} from '../../../components/sharedStyles';
+import sharedStyles, {useColumnClasses} from '../../../components/sharedStyles';
 import {useColumns, useCreateColumn} from '../../../data/columns';
 import {useBoardElements} from '../../../data/elements';
 import sortByDisplayOrder from '../../../utils/sortByDisplayOrder';
@@ -33,7 +33,7 @@ function ColumnList({board, isLoadingBoard}) {
     ...styles.buttonContainer,
     ...responsiveButtonContainerStyle,
   };
-  const columnWidthStyle = useColumnStyle();
+  const columnClasses = useColumnClasses();
   const pagingEnabled = breakpoint !== large;
 
   const isLoading = board
@@ -61,7 +61,7 @@ function ColumnList({board, isLoadingBoard}) {
           <Column key={column.id} column={column} board={board} />
         ))}
         {board && (
-          <div style={{...columnWidthStyle, ...sharedStyles.columnPadding}}>
+          <div className={columnClasses} style={sharedStyles.columnPadding}>
             <div style={fullContainerStyle}>
               <AddColumnButton board={board} />
             </div>

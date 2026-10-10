@@ -1,0 +1,25 @@
+.contentView {
+  display: flex;
+  flex: 1 1 0%;
+  flex-direction: row;
+  overflow-x: auto;
+}
+
+.paging {
+  scroll-snap-type: x mandatory;
+}
+
+.column {
+  padding: 8;
+  scroll-snap-align: start;
+}
+
+.column-large {
+  min-width: 400px;
+  width: 400px;
+}
+
+.column-small {
+  min-width: 100vw;
+  width: 100vw;
+}

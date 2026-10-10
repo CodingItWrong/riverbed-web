@@ -1,5 +1,7 @@
 import {large, useBreakpoint} from '../breakpoints';
 
+import scrollViewClasses from './ScrollView.module.css';
+
 const sharedStyles = {
   column: {
     position: 'relative',
@@ -60,13 +62,8 @@ const sharedStyles = {
 
 export default sharedStyles;
 
-export function useColumnStyle() {
+export function useColumnClasses() {
   const breakpoint = useBreakpoint();
 
-  return {
-    minWidth: breakpoint === large ? 400 : '100vw',
-    width: breakpoint === large ? 400 : '100vw',
-    padding: 8,
-    scrollSnapAlign: 'start',
-  };
+  return `${scrollViewClasses.column} ${scrollViewClasses[breakpoint === large ? 'column-large' : 'column-small']}`;
 }
