@@ -8,15 +8,14 @@ export default function TextField({
   multiline,
   autoCapitalize,
   autoCorrect,
-  secureTextEntry,
-  keyboardType,
+  inputType,
   testID,
   style,
 }) {
   return (
     <MuiTextField
       variant="filled"
-      type={getInputType({secureTextEntry, keyboardType})}
+      type={inputType}
       label={label}
       aria-label={label}
       inputProps={{
@@ -31,19 +30,4 @@ export default function TextField({
       style={style}
     />
   );
-}
-
-function getInputType({secureTextEntry, keyboardType}) {
-  if (secureTextEntry) {
-    return 'password';
-  }
-
-  switch (keyboardType) {
-    case 'email-address':
-      return 'email';
-    case 'decimal-pad':
-      return 'number';
-    default:
-      return 'text';
-  }
 }

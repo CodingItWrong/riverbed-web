@@ -89,6 +89,7 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
       <form>
         <Stack spacing={1}>
           <TextField
+            inputType="text"
             label="Board Name"
             value={attributes.name ?? ''}
             onChangeText={value => updateAttribute('name', value)}
@@ -107,6 +108,7 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
             options={ICON_OPTIONS}
           />
           <TextField
+            inputType="text"
             label="Card Create Webhook"
             value={attributes.options.webhooks?.['card-create'] ?? ''}
             onChangeText={value =>
@@ -114,6 +116,7 @@ export default function EditBoardForm({board, onSave, onDelete, onCancel}) {
             }
           />
           <TextField
+            inputType="text"
             label="Card Update Webhook"
             value={attributes.options.webhooks?.['card-update'] ?? ''}
             onChangeText={value =>

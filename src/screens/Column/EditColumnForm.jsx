@@ -84,13 +84,14 @@ export default function EditColumnForm({column, board, onChange, onCancel}) {
       <form onSubmit={handleUpdateColumn}>
         <Stack spacing={1}>
           <TextField
+            inputType="text"
             label="Column Name"
             value={attributes.name ?? ''}
             onChangeText={value => updateAttribute('name', value)}
             testID="text-input-column-name"
           />
           <NumberField
-            keyboard-type="number-pad"
+            inputMode="number"
             label="Order"
             value={
               attributes['display-order'] == null

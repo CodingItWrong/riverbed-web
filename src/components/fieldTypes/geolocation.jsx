@@ -80,6 +80,7 @@ function GeolocationEditorComponent({field, label, value, setValue, disabled}) {
       </Stack>
       <Stack direction="row" spacing={1}>
         <NumberField
+          inputMode="decimal"
           label="latitude"
           value={value?.lat ?? ''}
           onChangeText={newValue => setValue({...value, lat: newValue})}
@@ -88,6 +89,7 @@ function GeolocationEditorComponent({field, label, value, setValue, disabled}) {
           style={styles.grow}
         />
         <NumberField
+          inputMode="decimal"
           label="longitude"
           value={value?.lng ?? ''}
           onChangeText={newValue => setValue({...value, lng: newValue})}
