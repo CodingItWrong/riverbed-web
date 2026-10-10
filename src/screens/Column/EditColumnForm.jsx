@@ -84,6 +84,7 @@ export default function EditColumnForm({column, board, onChange, onCancel}) {
       <form onSubmit={handleUpdateColumn}>
         <Stack spacing={1}>
           <TextField
+            inputType="text"
             label="Column Name"
             value={attributes.name ?? ''}
             onChangeText={value => updateAttribute('name', value)}

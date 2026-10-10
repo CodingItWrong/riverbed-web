@@ -125,6 +125,7 @@ export default function EditElementForm({
     <form onSubmit={handleUpdateElement}>
       <Stack spacing={1}>
         <TextField
+          inputType="text"
           label={`${startCase(elementType)} Name`}
           value={elementAttributes.name ?? ''}
           onChangeText={value => updateAttribute('name', value)}
@@ -194,6 +195,7 @@ export default function EditElementForm({
                 {elementAttributes.options.choices?.map((choice, index) => (
                   <div key={choice.id} style={sharedStyles.row}>
                     <TextField
+                      inputType="text"
                       label="Choice"
                       value={choice.label ?? ''}
                       onChangeText={value =>
@@ -282,6 +284,7 @@ export default function EditElementForm({
               >
                 <div style={sharedStyles.row}>
                   <TextField
+                    inputType="text"
                     label="Menu Item Name"
                     testID={`text-input-menu-item-${index}-name`}
                     value={menuItem.name ?? ''}

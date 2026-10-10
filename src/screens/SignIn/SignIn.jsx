@@ -50,20 +50,20 @@ export default function SignIn() {
           <form onSubmit={handleSubmit}>
             <Stack spacing={1}>
               <TextField
+                inputType="email"
                 label="Email"
                 testID="text-input-email"
                 value={username}
                 onChangeText={handleChange('username')}
-                keyboardType="email-address"
                 autoCapitalize="none"
                 autoCorrect="off"
               />
               <TextField
+                inputType="password"
                 label="Password"
                 testID="text-input-password"
                 value={password}
                 onChangeText={handleChange('password')}
-                secureTextEntry
               />
               <ErrorMessage>{error}</ErrorMessage>
               <Button type="submit" mode="primary">

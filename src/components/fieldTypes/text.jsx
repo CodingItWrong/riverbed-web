@@ -13,6 +13,7 @@ function TextEditorComponent({field, label, value, setValue, disabled, style}) {
   const {options: {multiline} = {}} = field.attributes;
   return (
     <TextField
+      inputType="text"
       label={label}
       value={value ?? ''}
       onChangeText={setValue}

@@ -61,27 +61,27 @@ export default function SignUpForm({onClose}) {
       <form onSubmit={handleCreateUser}>
         <Stack spacing={1}>
           <TextField
+            inputType="email"
             label="Email"
             testID="text-input-new-email"
             value={attributes.email}
             onChangeText={handleChangeAttribute('email')}
-            keyboardType="email-address"
             autoCapitalize="none"
             autoCorrect="off"
           />
           <TextField
+            inputType="password"
             label="Password"
             testID="text-input-new-password"
             value={attributes.password}
             onChangeText={handleChangeAttribute('password')}
-            secureTextEntry
           />
           <TextField
+            inputType="password"
             label="Confirm Password"
             testID="text-input-confirm-new-password"
             value={passwordConfirmation}
             onChangeText={setPasswordConfirmation}
-            secureTextEntry
           />
           <DropdownField
             fieldLabel="Allow important emails about your account?"
