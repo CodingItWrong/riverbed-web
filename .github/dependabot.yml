@@ -5,19 +5,17 @@
 
 version: 2
 updates:
-  - package-ecosystem: "npm"
-    directory: "/"
+  - package-ecosystem: 'npm'
+    directory: '/'
     schedule:
-      interval: "weekly"
+      interval: 'weekly'
     # Wait 7 days after a release before opening a PR, matching the
     # minimumReleaseAge: 10080 (1 week) supply-chain policy in pnpm-workspace.yaml.
     # Avoids PRs that would fail CI's frozen install on too-new versions.
     cooldown:
       default-days: 7
     ignore:
-      - dependency-name: "@babel/core"
-      - dependency-name: "@mui/x-date-pickers"
-        versions: [">= 7"]
-      - dependency-name: "eslint-plugin-react-hooks"
-      - dependency-name: "react-native"
-      - dependency-name: "react-native-web"
+      - dependency-name: '@babel/core'
+      - dependency-name: '@mui/x-date-pickers'
+        versions: ['>= 7']
+      - dependency-name: 'eslint-plugin-react-hooks'
