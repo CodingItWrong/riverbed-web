@@ -11,26 +11,28 @@ export default function SectionList({
   ListEmptyComponent = null,
 }) {
   return (
-    <div style={{...styles.container, ...contentContainerStyle}}>
-      {sections.length === 0
-        ? ListEmptyComponent
-        : sections.map(section => (
-            <div key={sectionKeyExtractor(section)}>
-              {/*Replace with a section key extractor*/}
-              {renderSectionHeader({section})}
-              {section.data.map((item, index) => (
-                <div key={itemKeyExtractor(item)} style={sharedStyles.column}>
-                  {renderItem({item, section, index})}
-                </div>
-              ))}
-            </div>
-          ))}
+    <div style={styles.scroller}>
+      <div style={contentContainerStyle}>
+        {sections.length === 0
+          ? ListEmptyComponent
+          : sections.map(section => (
+              <div key={sectionKeyExtractor(section)}>
+                {/*Replace with a section key extractor*/}
+                {renderSectionHeader({section})}
+                {section.data.map((item, index) => (
+                  <div key={itemKeyExtractor(item)} style={sharedStyles.column}>
+                    {renderItem({item, section, index})}
+                  </div>
+                ))}
+              </div>
+            ))}
+      </div>
     </div>
   );
 }
 
 const styles = {
-  container: {
+  scroller: {
     overflowY: 'auto',
   },
 };
