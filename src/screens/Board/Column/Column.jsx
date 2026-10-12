@@ -89,7 +89,10 @@ function Column({column, board}) {
         sections={cardGroups}
         sectionKeyExtractor={group => group.value}
         itemKeyExtractor={card => card.id}
-        contentContainerStyle={{...sharedStyles.columnPadding, flex: 1}}
+        contentContainerStyle={{
+          ...sharedStyles.columnPadding,
+          ...styles.contentContainer,
+        }}
         ListEmptyComponent={!isLoading && <Text size={3}>(no cards)</Text>}
         renderSectionHeader={({section: group}) => {
           if (!applyGrouping) {
@@ -143,5 +146,8 @@ const styles = {
     display: 'flex',
     flexDirection: 'row',
     gap: '5px',
+  },
+  contentContainer: {
+    marginBottom: 'env(safe-area-inset-bottom)',
   },
 };
