@@ -41,7 +41,7 @@
     "@tanstack/react-query-devtools": "^5.101.0",
     "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.2",
-    "@testing-library/user-event": "^14.6.1",
+    "@testing-library/user-event": "^14.6.7",
     "@vitejs/plugin-react": "^6.1.1",
     "cypress": "^16.1.1",
     "eslint-plugin-cypress": "^7.0.2",
