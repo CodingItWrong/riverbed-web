@@ -7,7 +7,7 @@ import useNavigateEffect from './useNavigateEffect';
 
 function renderScreens(callback) {
   function Parent() {
-    useNavigateEffect(useCallback(callback, [callback]));
+    useNavigateEffect(useCallback(() => callback(), []));
     return (
       <div>
         <Link to="/boards/1/cards/2">open child</Link>
