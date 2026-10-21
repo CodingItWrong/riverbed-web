@@ -33,6 +33,7 @@ export default function CardScreen() {
   useEffect(() => {
     if (card) {
       // do not do this in useCard onSuccess because we want it to happen even if the card is cached
+      // oxlint-disable-next-line react/set-state-in-effect
       setIsFirstLoaded(false);
     }
   }, [card]);
