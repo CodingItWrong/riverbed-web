@@ -7,6 +7,7 @@ export default function ErrorSnackbar({error, onRetry, children}) {
 
   // show when a new error is present
   useEffect(() => {
+    // oxlint-disable-next-line react/set-state-in-effect
     setVisible(Boolean(error));
   }, [error]);
 

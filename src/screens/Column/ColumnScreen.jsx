@@ -20,6 +20,7 @@ export default function ColumnScreen() {
   useEffect(() => {
     if (column) {
       // do not do this in useCard onSuccess because we want it to happen even if the card is cached
+      // oxlint-disable-next-line react/set-state-in-effect
       setIsFirstLoaded(false);
     }
   }, [column]);
