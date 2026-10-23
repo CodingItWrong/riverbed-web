@@ -31,7 +31,7 @@
     "react-beautiful-dnd": "^13.1.1",
     "react-beforeunload": "^2.7.0",
     "react-dom": "19.3.0",
-    "react-router-dom": "^7.16.0",
+    "react-router-dom": "^7.18.4",
     "uuid": "^14.0.3"
   },
   "devDependencies": {
