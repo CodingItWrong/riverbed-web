@@ -33,7 +33,7 @@ importers:
         version: 7.3.11(@emotion/react@11.14.0(@types/react@19.2.16)(react@19.3.0)(supports-color@8.1.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.16)(react@19.3.0)(supports-color@8.1.1))(@types/react@19.2.16)(react@19.3.0)(supports-color@8.1.1))(@types/react@19.2.16)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@mui/x-date-pickers':
         specifier: ^8.29.2
-        version: 8.29.2(@emotion/react@11.14.0(@types/react@19.2.16)(react@19.3.0)(supports-color@8.1.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.16)(react@19.3.0)(supports-color@8.1.1))(@types/react@19.2.16)(react@19.3.0)(supports-color@8.1.1))(@mui/material@7.3.11(@emotion/react@11.14.0(@types/react@19.2.16)(react@19.3.0)(supports-color@8.1.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.16)(react@19.3.0)(supports-color@8.1.1))(@types/react@19.2.16)(react@19.3.0)(supports-color@8.1.1))(@types/react@19.2.16)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(@mui/system@7.3.11(@emotion/react@11.14.0(@types/react@19.2.16)(react@19.3.0)(supports-color@8.1.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.16)(react@19.3.0)(supports-color@8.1.1))(@types/react@19.2.16)(react@19.3.0)(supports-color@8.1.1))(@types/react@19.2.16)(react@19.3.0))(@types/react@19.2.16)(dayjs@1.11.21)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        version: 8.29.2(@emotion/react@11.14.0(@types/react@19.2.16)(react@19.3.0)(supports-color@8.1.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.16)(react@19.3.0)(supports-color@8.1.1))(@types/react@19.2.16)(react@19.3.0)(supports-color@8.1.1))(@mui/material@7.3.11(@emotion/react@11.14.0(@types/react@19.2.16)(react@19.3.0)(supports-color@8.1.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.16)(react@19.3.0)(supports-color@8.1.1))(@types/react@19.2.16)(react@19.3.0)(supports-color@8.1.1))(@types/react@19.2.16)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(@mui/system@7.3.11(@emotion/react@11.14.0(@types/react@19.2.16)(react@19.3.0)(supports-color@8.1.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.16)(react@19.3.0)(supports-color@8.1.1))(@types/react@19.2.16)(react@19.3.0)(supports-color@8.1.1))(@types/react@19.2.16)(react@19.3.0))(@types/react@19.2.16)(dayjs@1.11.23)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@tanstack/react-query':
         specifier: ^5.104.5
         version: 5.104.5(@types/react@19.2.16)(react@19.3.0)
@@ -41,8 +41,8 @@ importers:
         specifier: ^1.10.1
         version: 1.10.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       dayjs:
-        specifier: ^1.11.21
-        version: 1.11.21
+        specifier: ^1.11.23
+        version: 1.11.23
       lodash:
         specifier: ^4.18.1
         version: 4.18.1
@@ -2263,9 +2263,6 @@ packages:
   data-urls@5.0.0:
     resolution: {integrity: sha512-ZYP5VBHshaDAiVZxjbRVcFJpc+4xGgT0bK3vzy1HLN8jTO975HEbuYzZJcHoQEY5K1a0z8YayJkyVETa08eNTg==}
     engines: {node: '>=18'}
-
-  dayjs@1.11.21:
-    resolution: {integrity: sha512-98IT+HOahAisibz/yjKbzuOBwYcjJ7BCLPzARyHiyEBmRz4fatF+KPJszEHXsGYjUG234aH/cOjW1wwTbKUZlA==}
 
   dayjs@1.11.23:
     resolution: {integrity: sha512-QDTCU0M0MxR3hQfnlDJfwekQiaanm1ubOD231u73WBckQ/fsamwRLiE2GBz6D3a/xF1NgfiDLJjXBa1hYOYTtQ==}
@@ -5342,7 +5339,7 @@ snapshots:
     optionalDependencies:
       '@types/react': 19.2.16
 
-  '@mui/x-date-pickers@8.29.2(@emotion/react@11.14.0(@types/react@19.2.16)(react@19.3.0)(supports-color@8.1.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.16)(react@19.3.0)(supports-color@8.1.1))(@types/react@19.2.16)(react@19.3.0)(supports-color@8.1.1))(@mui/material@7.3.11(@emotion/react@11.14.0(@types/react@19.2.16)(react@19.3.0)(supports-color@8.1.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.16)(react@19.3.0)(supports-color@8.1.1))(@types/react@19.2.16)(react@19.3.0)(supports-color@8.1.1))(@types/react@19.2.16)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(@mui/system@7.3.11(@emotion/react@11.14.0(@types/react@19.2.16)(react@19.3.0)(supports-color@8.1.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.16)(react@19.3.0)(supports-color@8.1.1))(@types/react@19.2.16)(react@19.3.0)(supports-color@8.1.1))(@types/react@19.2.16)(react@19.3.0))(@types/react@19.2.16)(dayjs@1.11.21)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@mui/x-date-pickers@8.29.2(@emotion/react@11.14.0(@types/react@19.2.16)(react@19.3.0)(supports-color@8.1.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.16)(react@19.3.0)(supports-color@8.1.1))(@types/react@19.2.16)(react@19.3.0)(supports-color@8.1.1))(@mui/material@7.3.11(@emotion/react@11.14.0(@types/react@19.2.16)(react@19.3.0)(supports-color@8.1.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.16)(react@19.3.0)(supports-color@8.1.1))(@types/react@19.2.16)(react@19.3.0)(supports-color@8.1.1))(@types/react@19.2.16)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(@mui/system@7.3.11(@emotion/react@11.14.0(@types/react@19.2.16)(react@19.3.0)(supports-color@8.1.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.16)(react@19.3.0)(supports-color@8.1.1))(@types/react@19.2.16)(react@19.3.0)(supports-color@8.1.1))(@types/react@19.2.16)(react@19.3.0))(@types/react@19.2.16)(dayjs@1.11.23)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
     dependencies:
       '@babel/runtime': 7.29.7
       '@mui/material': 7.3.11(@emotion/react@11.14.0(@types/react@19.2.16)(react@19.3.0)(supports-color@8.1.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.16)(react@19.3.0)(supports-color@8.1.1))(@types/react@19.2.16)(react@19.3.0)(supports-color@8.1.1))(@types/react@19.2.16)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
@@ -5358,7 +5355,7 @@ snapshots:
     optionalDependencies:
       '@emotion/react': 11.14.0(@types/react@19.2.16)(react@19.3.0)(supports-color@8.1.1)
       '@emotion/styled': 11.14.1(@emotion/react@11.14.0(@types/react@19.2.16)(react@19.3.0)(supports-color@8.1.1))(@types/react@19.2.16)(react@19.3.0)(supports-color@8.1.1)
-      dayjs: 1.11.21
+      dayjs: 1.11.23
     transitivePeerDependencies:
       - '@types/react'
 
@@ -6231,8 +6228,6 @@ snapshots:
     dependencies:
       whatwg-mimetype: 4.0.0
       whatwg-url: 14.2.0
-
-  dayjs@1.11.21: {}
 
   dayjs@1.11.23: {}
 
