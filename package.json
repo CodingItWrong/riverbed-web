@@ -44,7 +44,7 @@
     "@testing-library/user-event": "^14.6.8",
     "@vitejs/plugin-react": "^6.3.0",
     "cypress": "^16.2.1",
-    "eslint-plugin-cypress": "^7.0.2",
+    "eslint-plugin-cypress": "^7.0.4",
     "husky": "^9.1.7",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^30.5.2",
